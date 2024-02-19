@@ -38,15 +38,8 @@ const ImageText = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   transition: background-color .2s ease-in-out,opacity .2s ease-in-out;
-  width: 100%;
-  align-items: center;
   font-size: 30px;
   font-weight: 900;
-  justify-content: center;
-  line-height: 1;
-  margin: 0;
-  padding: 1.25rem;
-  text-align: center;
   text-transform: uppercase;
   color: white;
   opacity: 0;
@@ -57,11 +50,12 @@ const ImageText = styled.div`
 `;
 
 const ImageLink = styled(Link)`
+  position: relative;
+
   &:hover {
     opacity: .5;
     ${ImageText} {
       opacity: 1;
     }
   }
-  position: relative;
 `;
