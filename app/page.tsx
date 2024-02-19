@@ -46,6 +46,9 @@ const ImageText = styled.div`
 
   @media (max-width: 767px) {
     opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `;
 
