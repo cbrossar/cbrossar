@@ -58,7 +58,7 @@ const ImageText = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   transition: background-color .2s ease-in-out,opacity .2s ease-in-out;
-  font-size: 30px;
+  font-size: 1.5rem;
   font-weight: 900;
   text-transform: uppercase;
   color: white;
@@ -66,6 +66,7 @@ const ImageText = styled.div`
 
   @media (max-width: 900px) {
     opacity: 1;
+    font-size: 1.125rem;
   }
 `;
 
