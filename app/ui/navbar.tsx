@@ -29,6 +29,10 @@ const NavbarWrapper = styled.div`
     max-width: 900px;
     margin: 0 auto;
 
+    @media (max-width: 900px) {
+        justify-content: center;
+    }
+
 `;
 
 const NavLink = styled(Link)`
@@ -44,7 +48,7 @@ const NavLink = styled(Link)`
         color: rgb(254, 217, 37);
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 900px) {
         display: none;
     }
 `;
