@@ -8,28 +8,34 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <HomeWrapper>
-      <div>
-      <ImageLink
-        href="/soccer"
-      >
-        <Image
-            src="/colombia-soccer.jpeg"
-            width={900}
-            height={450}
-            alt="Colombia soccer"
-          />
-          <ImageText>Soccer</ImageText>
-      </ImageLink>
-      </div>
+      <ImageWrapper>
+        <ImageLink
+          href="/soccer"
+        >
+          <Image
+              src="/colombia-soccer.jpeg"
+              width={900}
+              height={450}
+              alt="Colombia soccer"
+            />
+            <ImageText>Soccer</ImageText>
+        </ImageLink>
+      </ImageWrapper>
     </HomeWrapper>
   );
 }
+
+
 
 const HomeWrapper = styled.div`
     margin: 0 auto;
     max-width: 58.75rem;
     min-height: 85vh;
     padding: 0px 20px;
+`;
+
+const ImageWrapper = styled.div`
+  position: relative;
 `;
 
 const ImageText = styled.div`
@@ -50,8 +56,6 @@ const ImageText = styled.div`
 `;
 
 const ImageLink = styled(Link)`
-  position: relative;
-
   &:hover {
     opacity: .5;
     ${ImageText} {
