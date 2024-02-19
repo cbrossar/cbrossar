@@ -35,10 +35,15 @@ const NavLink = styled(Link)`
     padding-right: 0.3125rem;
     text-transform: uppercase;
     text-decoration: none;
+
+    .hover {
+        color: rgb(254, 217, 37);
+        background-color: black;
+    }
 `;
 
 const HomeLink = styled(NavLink)`
     font-size: 2.5rem;
-    background-color: rgb(254, 217, 37);;
+    background-color: rgb(254, 217, 37);
     padding: 0px 10px;
 `;
