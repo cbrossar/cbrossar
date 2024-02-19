@@ -32,7 +32,7 @@ const NavbarWrapper = styled.div`
 `;
 
 const NavLink = styled(Link)`
-    font-size: 1.125rem;
+    font-size: 1.5rem;
     font-weight: 900;
     padding-left: 0.3125rem;
     padding-right: 0.3125rem;
@@ -48,5 +48,10 @@ const NavLink = styled(Link)`
 const HomeLink = styled(NavLink)`
     font-size: 2.5rem;
     background-color: rgb(254, 217, 37);
-    padding: 0px 10px;
+    padding: 0px 16px;
+    align-items: center;
+    height: 50px;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
 `;
