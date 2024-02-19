@@ -36,9 +36,9 @@ const NavLink = styled(Link)`
     text-transform: uppercase;
     text-decoration: none;
 
-    .hover {
-        color: rgb(254, 217, 37);
+    &:hover {
         background-color: black;
+        color: rgb(254, 217, 37);
     }
 `;
 
