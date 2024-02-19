@@ -26,6 +26,9 @@ const NavbarWrapper = styled.div`
     align-items: center;
     display: flex;
     justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+
 `;
 
 const NavLink = styled(Link)`

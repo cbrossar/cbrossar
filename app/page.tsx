@@ -28,6 +28,7 @@ const HomeWrapper = styled.div`
     max-width: 58.75rem;
     min-height: 85vh;
     position:relative;
+    padding: 10px 20px;
 `;
 
 const ImageLink = styled(Link)`
