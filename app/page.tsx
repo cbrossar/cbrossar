@@ -10,6 +10,19 @@ export default function Home() {
     <HomeWrapper>
       <ImageWrapper>
         <ImageLink
+          href="/music"
+        >
+          <Image
+              src="/vinyl-collage.jpg"
+              width={900}
+              height={450}
+              alt="Vinyl Collage"
+            />
+            <ImageText>Music</ImageText>
+        </ImageLink>
+      </ImageWrapper>
+      <ImageWrapper>
+        <ImageLink
           href="/soccer"
         >
           <Image
@@ -36,6 +49,7 @@ const HomeWrapper = styled.div`
 
 const ImageWrapper = styled.div`
   position: relative;
+  margin-bottom: 20px;
 `;
 
 const ImageText = styled.div`
