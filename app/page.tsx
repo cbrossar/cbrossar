@@ -32,13 +32,14 @@ const HomeWrapper = styled.div`
 `;
 
 const ImageText = styled.div`
-  left: 0;
+
   position: absolute;
-  top: 180px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   transition: background-color .2s ease-in-out,opacity .2s ease-in-out;
   width: 100%;
   align-items: center;
-  display: flex;
   font-size: 30px;
   font-weight: 900;
   justify-content: center;
@@ -49,6 +50,10 @@ const ImageText = styled.div`
   text-transform: uppercase;
   color: white;
   opacity: 0;
+
+  @media (max-width: 767px) {
+    opacity: 1;
+  }
 `;
 
 const ImageLink = styled(Link)`
@@ -58,4 +63,5 @@ const ImageLink = styled(Link)`
       opacity: 1;
     }
   }
+  position: relative;
 `;

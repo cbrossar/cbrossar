@@ -43,6 +43,10 @@ const NavLink = styled(Link)`
         background-color: black;
         color: rgb(254, 217, 37);
     }
+
+    @media (max-width: 767px) {
+        display: none;
+    }
 `;
 
 const HomeLink = styled(NavLink)`
