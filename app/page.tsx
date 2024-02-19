@@ -8,6 +8,7 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <HomeWrapper>
+      <div>
       <ImageLink
         href="/soccer"
       >
@@ -19,6 +20,7 @@ export default function Home() {
           />
           <ImageText>Soccer</ImageText>
       </ImageLink>
+      </div>
     </HomeWrapper>
   );
 }
@@ -27,12 +29,10 @@ const HomeWrapper = styled.div`
     margin: 0 auto;
     max-width: 58.75rem;
     min-height: 85vh;
-    position:relative;
     padding: 0px 20px;
 `;
 
 const ImageText = styled.div`
-
   position: absolute;
   top: 50%;
   left: 50%;
