@@ -44,11 +44,8 @@ const ImageText = styled.div`
   color: white;
   opacity: 0;
 
-  @media (max-width: 767px) {
+  @media (max-width: 900px) {
     opacity: 1;
-    top: 90px;
-    left: 186px;
-    transform: none;
   }
 `;
 
