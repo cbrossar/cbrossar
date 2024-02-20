@@ -40,12 +40,7 @@ export default function Home() {
 
 
 
-const HomeWrapper = styled.div`
-    margin: 0 auto;
-    max-width: 58.75rem;
-    min-height: 85vh;
-    padding: 0px 20px;
-`;
+const HomeWrapper = styled.div``;
 
 const ImageWrapper = styled.div`
   position: relative;

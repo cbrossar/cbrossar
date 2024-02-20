@@ -22,7 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
        <StyledComponentsRegistry>
         <Navbar />
+        <main>
         {children}
+        </main>
        </StyledComponentsRegistry>
       
       </body>
