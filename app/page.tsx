@@ -1,44 +1,37 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import styled from 'styled-components';
-import Image from 'next/image';
-
+import Link from "next/link";
+import styled from "styled-components";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <HomeWrapper>
       <ImageWrapper>
-        <ImageLink
-          href="/music"
-        >
+        <ImageLink href="/music">
           <Image
-              src="/vinyl-collage.jpg"
-              width={900}
-              height={450}
-              alt="Vinyl Collage"
-            />
-            <ImageText>Music</ImageText>
+            src="/vinyl-collage.jpg"
+            width={900}
+            height={450}
+            alt="Vinyl Collage"
+          />
+          <ImageText>Music</ImageText>
         </ImageLink>
       </ImageWrapper>
       <ImageWrapper>
-        <ImageLink
-          href="/soccer"
-        >
+        <ImageLink href="/soccer">
           <Image
-              src="/colombia-soccer.jpeg"
-              width={900}
-              height={450}
-              alt="Colombia soccer"
-            />
-            <ImageText>Soccer</ImageText>
+            src="/colombia-soccer.jpeg"
+            width={900}
+            height={450}
+            alt="Colombia soccer"
+          />
+          <ImageText>Soccer</ImageText>
         </ImageLink>
       </ImageWrapper>
     </HomeWrapper>
   );
 }
-
-
 
 const HomeWrapper = styled.div``;
 
@@ -52,7 +45,9 @@ const ImageText = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  transition: background-color .2s ease-in-out,opacity .2s ease-in-out;
+  transition:
+    background-color 0.2s ease-in-out,
+    opacity 0.2s ease-in-out;
   font-size: 1.5rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -67,7 +62,7 @@ const ImageText = styled.div`
 
 const ImageLink = styled(Link)`
   &:hover {
-    opacity: .5;
+    opacity: 0.5;
     ${ImageText} {
       opacity: 1;
     }

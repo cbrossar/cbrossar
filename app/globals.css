@@ -2,14 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-body, html {
-    background-color: #fff;
-    font-family: Arial,sans-serif;
+body,
+html {
+  background-color: #fff;
+  font-family: Arial, sans-serif;
 }
 
 main {
-    margin: 0 auto;
-    max-width: 58.75rem;
-    min-height: 85vh;
-    padding: 0px 20px;
+  margin: 0 auto;
+  max-width: 58.75rem;
+  min-height: 85vh;
+  padding: 0px 20px;
 }
