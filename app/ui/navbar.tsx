@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styled from "styled-components";
+import { Colors, MobileWidth } from "@/app/lib/constants";
 
 export default function Navbar() {
     return (
@@ -28,7 +29,7 @@ const NavbarWrapper = styled.div`
     max-width: 900px;
     margin: 0 auto;
 
-    @media (max-width: 900px) {
+    @media (max-width: ${MobileWidth}) {
         justify-content: center;
     }
 `;
@@ -43,17 +44,17 @@ const NavLink = styled(Link)`
 
     &:hover {
         background-color: black;
-        color: rgb(254, 217, 37);
+        color: ${Colors.yellow};
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: ${MobileWidth}) {
         display: none;
     }
 `;
 
 const HomeLink = styled(NavLink)`
     font-size: 2.5rem;
-    background-color: rgb(254, 217, 37);
+    background-color: ${Colors.yellow};
     padding: 0px 16px;
     align-items: center;
     height: 50px;

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
+import { MobileWidth } from "@/app/lib/constants";
 
 export default function Home() {
     return (
@@ -54,7 +55,7 @@ const ImageText = styled.div`
     color: white;
     opacity: 0;
 
-    @media (max-width: 900px) {
+    @media (max-width: ${MobileWidth}) {
         opacity: 1;
         font-size: 1.125rem;
     }
