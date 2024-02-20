@@ -7,23 +7,23 @@ import StyledComponentsRegistry from "./lib/registry";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "COLE",
-  description: "Cole Brossart",
+    title: "COLE",
+    description: "Cole Brossart",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <StyledComponentsRegistry>
-          <Navbar />
-          <main>{children}</main>
-        </StyledComponentsRegistry>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={inter.className}>
+                <StyledComponentsRegistry>
+                    <Navbar />
+                    <main>{children}</main>
+                </StyledComponentsRegistry>
+            </body>
+        </html>
+    );
 }

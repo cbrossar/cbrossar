@@ -5,66 +5,66 @@ import styled from "styled-components";
 import Image from "next/image";
 
 export default function Home() {
-  return (
-    <HomeWrapper>
-      <ImageWrapper>
-        <ImageLink href="/music">
-          <Image
-            src="/vinyl-collage.jpg"
-            width={900}
-            height={450}
-            alt="Vinyl Collage"
-          />
-          <ImageText>Music</ImageText>
-        </ImageLink>
-      </ImageWrapper>
-      <ImageWrapper>
-        <ImageLink href="/soccer">
-          <Image
-            src="/colombia-soccer.jpeg"
-            width={900}
-            height={450}
-            alt="Colombia soccer"
-          />
-          <ImageText>Soccer</ImageText>
-        </ImageLink>
-      </ImageWrapper>
-    </HomeWrapper>
-  );
+    return (
+        <HomeWrapper>
+            <ImageWrapper>
+                <ImageLink href="/music">
+                    <Image
+                        src="/vinyl-collage.jpg"
+                        width={900}
+                        height={450}
+                        alt="Vinyl Collage"
+                    />
+                    <ImageText>Music</ImageText>
+                </ImageLink>
+            </ImageWrapper>
+            <ImageWrapper>
+                <ImageLink href="/soccer">
+                    <Image
+                        src="/colombia-soccer.jpeg"
+                        width={900}
+                        height={450}
+                        alt="Colombia soccer"
+                    />
+                    <ImageText>Soccer</ImageText>
+                </ImageLink>
+            </ImageWrapper>
+        </HomeWrapper>
+    );
 }
 
 const HomeWrapper = styled.div``;
 
 const ImageWrapper = styled.div`
-  position: relative;
-  margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 20px;
 `;
 
 const ImageText = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition:
-    background-color 0.2s ease-in-out,
-    opacity 0.2s ease-in-out;
-  font-size: 1.5rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: white;
-  opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition:
+        background-color 0.2s ease-in-out,
+        opacity 0.2s ease-in-out;
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: white;
+    opacity: 0;
 
-  @media (max-width: 900px) {
-    opacity: 1;
-    font-size: 1.125rem;
-  }
+    @media (max-width: 900px) {
+        opacity: 1;
+        font-size: 1.125rem;
+    }
 `;
 
 const ImageLink = styled(Link)`
-  &:hover {
-    opacity: 0.5;
-    ${ImageText} {
-      opacity: 1;
+    &:hover {
+        opacity: 0.5;
+        ${ImageText} {
+            opacity: 1;
+        }
     }
-  }
 `;
