@@ -81,7 +81,7 @@ const ImageText = styled.div`
     z-index: 2;
 
     @media (max-width: ${MobileWidth}) {
-        opacity: 0.5;
+        opacity: 0;
         font-size: 1.125rem;
     }
 `;
