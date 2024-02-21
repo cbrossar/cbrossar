@@ -89,8 +89,10 @@ const ImageText = styled.div`
 const ImageLink = styled(Link)`
     &:hover {
         opacity: 0.5;
-        ${ImageText} {
-            opacity: 1;
+        @media (min-width: ${MobileWidth}) {
+            ${ImageText} {
+                opacity: 1;
+            }
         }
     }
 `;
