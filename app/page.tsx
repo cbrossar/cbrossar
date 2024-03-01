@@ -31,17 +31,6 @@ export default function Home() {
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
-                <ImageLink href="/code">
-                    <Image
-                        src="/code.png"
-                        width={900}
-                        height={450}
-                        alt="Code"
-                    />
-                    <ImageText>Code Collection</ImageText>
-                </ImageLink>
-            </ImageWrapper>
-            <ImageWrapper>
                 <ImageLink href="/photos">
                     <Image
                         src="/flagler-surfer.jpg"
@@ -50,6 +39,17 @@ export default function Home() {
                         alt="Flagler surfer"
                     />
                     <ImageText>Film Photos</ImageText>
+                </ImageLink>
+            </ImageWrapper>
+            <ImageWrapper>
+                <ImageLink href="/code">
+                    <Image
+                        src="/code.png"
+                        width={900}
+                        height={450}
+                        alt="Code"
+                    />
+                    <ImageText>Code Collection</ImageText>
                 </ImageLink>
             </ImageWrapper>
         </HomeWrapper>
