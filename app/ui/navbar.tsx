@@ -20,6 +20,12 @@ export default function Navbar() {
 
 const Header = styled.header`
     padding: 30px 60px;
+    background-color: #fff;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
 `;
 
 const NavbarWrapper = styled.div`
