@@ -14,9 +14,9 @@ export default function Home() {
                         src="/vinyl-collage.jpg"
                         width={900}
                         height={450}
-                        alt="Vinyl Collage"
+                        alt="Vinyl collage"
                     />
-                    <ImageText>Music</ImageText>
+                    <ImageText>Music Reviews</ImageText>
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
@@ -27,7 +27,18 @@ export default function Home() {
                         height={450}
                         alt="Colombia soccer"
                     />
-                    <ImageText>Soccer</ImageText>
+                    <ImageText>Soccer Stats</ImageText>
+                </ImageLink>
+            </ImageWrapper>
+            <ImageWrapper>
+                <ImageLink href="/photos">
+                    <Image
+                        src="/flagler-surfer.jpg"
+                        width={900}
+                        height={450}
+                        alt="Flagler surfer"
+                    />
+                    <ImageText>Film Photos</ImageText>
                 </ImageLink>
             </ImageWrapper>
         </HomeWrapper>
