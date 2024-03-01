@@ -41,17 +41,6 @@ export default function Home() {
                     <ImageText>Film Photos</ImageText>
                 </ImageLink>
             </ImageWrapper>
-            <ImageWrapper>
-                <ImageLink href="/photos">
-                    <Image
-                        src="/flagler-surfer-2.jpg"
-                        width={900}
-                        height={450}
-                        alt="Flagler surfer"
-                    />
-                    <ImageText>Film Photos</ImageText>
-                </ImageLink>
-            </ImageWrapper>
         </HomeWrapper>
     );
 }
