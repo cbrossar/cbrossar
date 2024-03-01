@@ -44,7 +44,7 @@ export default function Home() {
             <ImageWrapper>
                 <ImageLink href="/code">
                     <Image
-                        src="/code.png"
+                        src="/canva-code.png"
                         width={900}
                         height={450}
                         alt="Code"
