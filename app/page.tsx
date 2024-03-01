@@ -57,7 +57,6 @@ export default function Home() {
 }
 
 const HomeWrapper = styled.div`
-    margin-top: 110px;
 `;
 
 const ImageWrapper = styled.div`
