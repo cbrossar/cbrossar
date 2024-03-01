@@ -56,8 +56,7 @@ export default function Home() {
     );
 }
 
-const HomeWrapper = styled.div`
-`;
+const HomeWrapper = styled.div``;
 
 const ImageWrapper = styled.div`
     position: relative;
