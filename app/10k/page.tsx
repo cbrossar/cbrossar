@@ -58,7 +58,7 @@ export default function Calculate() {
     return (
         <Container>
             <Title>Calculate 10,000th Day</Title>
-            <SubTitle>Because Emily cant code...</SubTitle>
+            <SubTitle>Because Emily can&apos;t code...</SubTitle>
             <Label>
                 Enter your birthday:
                 <Input
