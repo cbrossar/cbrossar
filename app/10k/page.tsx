@@ -17,7 +17,7 @@ export default function Calculate() {
         }
     }, [urlBirthday]);
 
-    const calculateDate = (birthday) => {
+    const calculateDate = (birthday: string) => {
         if (!birthday) {
             setError("Please enter a valid date");
             setResult("");
