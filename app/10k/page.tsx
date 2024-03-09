@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 export default function Calculate() {
     const router = useRouter();
-    const { birthday: urlBirthday } = useSearchParams();
+    const { birthday: urlBirthday } = useSearchParams() as any;;
     const [birthday, setBirthday] = useState(urlBirthday ?? "");
     const [result, setResult] = useState("");
     const [error, setError] = useState("");
