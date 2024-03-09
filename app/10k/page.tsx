@@ -1,15 +1,23 @@
 "use client";
-
-import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { format, addDays } from "date-fns";
 import styled from "styled-components";
 
 export default function Calculate() {
-    const [birthday, setBirthday] = useState("");
+    const router = useRouter();
+    const { birthday: urlBirthday } = useSearchParams();
+    const [birthday, setBirthday] = useState(urlBirthday ?? "");
     const [result, setResult] = useState("");
     const [error, setError] = useState("");
 
-    const calculateDate = () => {
+    useEffect(() => {
+        if (urlBirthday) {
+            calculateDate(urlBirthday);
+        }
+    }, [urlBirthday]);
+
+    const calculateDate = (birthday) => {
         if (!birthday) {
             setError("Please enter a valid date");
             setResult("");
@@ -21,6 +29,11 @@ export default function Calculate() {
         const futureDate = addDays(parsedDate, 10000);
         setResult(format(futureDate, "dd MMMM yyyy"));
         setError("");
+    };
+
+    const handleCalculate = () => {
+        calculateDate(birthday);
+        router.push(`?birthday=${birthday}`);
     };
 
     return (
@@ -36,13 +49,12 @@ export default function Calculate() {
                 />
             </Label>
 
-            <Button onClick={calculateDate}>Calculate</Button>
+            <Button onClick={handleCalculate}>Calculate</Button>
             {error && <ErrorText>{error}</ErrorText>}
             {result && <Result>Your 10,000th day will be on: {result}</Result>}
         </Container>
     );
 }
-
 
 const Container = styled.div`
     max-width: 400px;
