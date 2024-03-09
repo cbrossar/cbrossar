@@ -4,9 +4,19 @@ import { useState, useEffect } from "react";
 import { format, addDays } from "date-fns";
 import styled from "styled-components";
 
+import SuspenseBoundary from "./suspense"; // Update the path
+
 export default function Calculate() {
+    return (
+        <SuspenseBoundary>
+            <CalculateContent />
+        </SuspenseBoundary>
+    );
+}
+
+function CalculateContent() {
     const router = useRouter();
-    const { birthday: urlBirthday } = useSearchParams() as any;;
+    const { birthday: urlBirthday } = useSearchParams() as any;
     const [birthday, setBirthday] = useState(urlBirthday ?? "");
     const [result, setResult] = useState("");
     const [error, setError] = useState("");
