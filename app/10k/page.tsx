@@ -37,7 +37,7 @@ function CalculateContent() {
         const [year, month, day] = birthday.split("-").map(Number);
         const parsedDate = new Date(year, month - 1, day);
         const futureDate = addDays(parsedDate, 10000);
-        setResult(format(futureDate, "dd MMMM yyyy"));
+        setResult(format(futureDate, "MMMM dd, yyyy"));
         setError("");
     };
 
