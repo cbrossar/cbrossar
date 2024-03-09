@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { format, addDays } from "date-fns";
 import styled from "styled-components";
@@ -15,17 +15,23 @@ export default function Calculate() {
 }
 
 function CalculateContent() {
-    const router = useRouter();
-    const { birthday: urlBirthday } = useSearchParams() as any;
-    const [birthday, setBirthday] = useState(urlBirthday ?? "");
+    const [birthday, setBirthday] = useState("");
     const [result, setResult] = useState("");
     const [error, setError] = useState("");
 
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
+    const params = new URLSearchParams(searchParams);
+
     useEffect(() => {
-        if (urlBirthday) {
-            calculateDate(urlBirthday);
+        const birthdayParam = params.get("birthday");
+        if (birthdayParam) {
+            setBirthday(birthdayParam);
+            calculateDate(birthdayParam);
         }
-    }, [urlBirthday]);
+    }, []);
 
     const calculateDate = (birthday: string) => {
         if (!birthday) {
@@ -37,13 +43,14 @@ function CalculateContent() {
         const [year, month, day] = birthday.split("-").map(Number);
         const parsedDate = new Date(year, month - 1, day);
         const futureDate = addDays(parsedDate, 10000);
-        setResult(format(futureDate, "MMMM dd, yyyy"));
+        setResult(format(futureDate, "MMMM do, yyyy"));
         setError("");
     };
 
     const handleCalculate = () => {
         calculateDate(birthday);
-        router.push(`?birthday=${birthday}`);
+        params.set("birthday", birthday);
+        replace(`${pathname}?${params.toString()}`);
     };
 
     return (
@@ -61,7 +68,12 @@ function CalculateContent() {
 
             <Button onClick={handleCalculate}>Calculate</Button>
             {error && <ErrorText>{error}</ErrorText>}
-            {result && <Result>Your 10,000th day will be on: <br />{result}</Result>}
+            {result && (
+                <Result>
+                    Your 10,000th day will be on: <br />
+                    {result}
+                </Result>
+            )}
         </Container>
     );
 }
