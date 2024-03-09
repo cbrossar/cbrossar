@@ -45,14 +45,28 @@ const SubTitle = styled.p`
     margin-bottom: 20px;
 `;
 
+const ErrorText = styled.p`
+    color: red;
+    font-weight: bold;
+`;
+
 export default function Calculate() {
     const [birthday, setBirthday] = useState("");
     const [result, setResult] = useState("");
+    const [error, setError] = useState("");
 
     const calculateDate = () => {
-        const parsedDate = new Date(birthday);
-        const futureDate = addDays(parsedDate, 10000);
+        if (!birthday) {
+            setError("Please enter a valid date");
+            setResult("");
+            return;
+        }
+
+        const [year, month, day] = birthday.split("-").map(Number);
+        const parsedDate = new Date(year, month - 1, day);
+        const futureDate = addDays(parsedDate, 1);
         setResult(format(futureDate, "dd MMMM yyyy"));
+        setError("");
     };
 
     return (
@@ -67,7 +81,9 @@ export default function Calculate() {
                     onChange={(e) => setBirthday(e.target.value)}
                 />
             </Label>
+
             <Button onClick={calculateDate}>Calculate</Button>
+            {error && <ErrorText>{error}</ErrorText>}
             {result && <Result>Your 10,000th day will be on: {result}</Result>}
         </Container>
     );
