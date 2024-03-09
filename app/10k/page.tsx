@@ -4,6 +4,46 @@ import { useState } from "react";
 import { format, addDays } from "date-fns";
 import styled from "styled-components";
 
+export default function Calculate() {
+    const [birthday, setBirthday] = useState("");
+    const [result, setResult] = useState("");
+    const [error, setError] = useState("");
+
+    const calculateDate = () => {
+        if (!birthday) {
+            setError("Please enter a valid date");
+            setResult("");
+            return;
+        }
+
+        const [year, month, day] = birthday.split("-").map(Number);
+        const parsedDate = new Date(year, month - 1, day);
+        const futureDate = addDays(parsedDate, 10000);
+        setResult(format(futureDate, "dd MMMM yyyy"));
+        setError("");
+    };
+
+    return (
+        <Container>
+            <Title>Calculate 10,000th Day</Title>
+            <SubTitle>Because Emily can&apos;t code...</SubTitle>
+            <Label>
+                Enter your birthday:
+                <Input
+                    type="date"
+                    value={birthday}
+                    onChange={(e) => setBirthday(e.target.value)}
+                />
+            </Label>
+
+            <Button onClick={calculateDate}>Calculate</Button>
+            {error && <ErrorText>{error}</ErrorText>}
+            {result && <Result>Your 10,000th day will be on: {result}</Result>}
+        </Container>
+    );
+}
+
+
 const Container = styled.div`
     max-width: 400px;
     margin: 0 auto;
@@ -49,42 +89,3 @@ const ErrorText = styled.p`
     color: red;
     font-weight: bold;
 `;
-
-export default function Calculate() {
-    const [birthday, setBirthday] = useState("");
-    const [result, setResult] = useState("");
-    const [error, setError] = useState("");
-
-    const calculateDate = () => {
-        if (!birthday) {
-            setError("Please enter a valid date");
-            setResult("");
-            return;
-        }
-
-        const [year, month, day] = birthday.split("-").map(Number);
-        const parsedDate = new Date(year, month - 1, day);
-        const futureDate = addDays(parsedDate, 10000);
-        setResult(format(futureDate, "dd MMMM yyyy"));
-        setError("");
-    };
-
-    return (
-        <Container>
-            <Title>Calculate 10,000th Day</Title>
-            <SubTitle>Because Emily can&apos;t code...</SubTitle>
-            <Label>
-                Enter your birthday:
-                <Input
-                    type="date"
-                    value={birthday}
-                    onChange={(e) => setBirthday(e.target.value)}
-                />
-            </Label>
-
-            <Button onClick={calculateDate}>Calculate</Button>
-            {error && <ErrorText>{error}</ErrorText>}
-            {result && <Result>Your 10,000th day will be on: {result}</Result>}
-        </Container>
-    );
-}
