@@ -61,7 +61,7 @@ function CalculateContent() {
 
             <Button onClick={handleCalculate}>Calculate</Button>
             {error && <ErrorText>{error}</ErrorText>}
-            {result && <Result>Your 10,000th day will be on: {result}</Result>}
+            {result && <Result>Your 10,000th day will be on: <br />{result}</Result>}
         </Container>
     );
 }
