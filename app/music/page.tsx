@@ -7,6 +7,7 @@ import { fetchMusicReviews } from "@/app/lib/data";
 import { MobileWidth } from "@/app/lib/constants";
 
 export default async function Page() {
+    
     const musicReviews = await fetchMusicReviews();
 
     return (
