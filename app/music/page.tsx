@@ -3,16 +3,16 @@
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
-import { fetchAlbumReviews } from "@/app/lib/data";
+import { fetchMusicReviews } from "@/app/lib/data";
 import { MobileWidth } from "@/app/lib/constants";
 
 export default async function Page() {
-    const albumReviews = await fetchAlbumReviews();
+    const musicReviews = await fetchMusicReviews();
 
     return (
         <MusicWrapper>
             <Grid>
-                {albumReviews.map((album, i) => (
+                {musicReviews.map((review, i) => (
                     <AlbumCard key={i}>
                         <ImageWrapper>
                             <ImageLink href="/">
@@ -24,13 +24,13 @@ export default async function Page() {
                                 />
                                 <ImageText>
                                     <Circle>
-                                        <Rating>{album.rating}</Rating>
+                                        <Rating>{9.7}</Rating>
                                     </Circle>
                                 </ImageText>
                             </ImageLink>
                         </ImageWrapper>
-                        <p>{album.artist}</p>
-                        <p>{album.name}</p>
+                        <p>{"Artist"}</p>
+                        <p>{review.album}</p>
                     </AlbumCard>
                 ))}
             </Grid>

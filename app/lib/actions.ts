@@ -37,7 +37,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     const date = new Date().toISOString().split("T")[0];
     try {
         await sql`
-        INSERT INTO MusicReviews (album, date)
+        INSERT INTO music_reviews (album, date)
         VALUES (${album}, ${date})
       `;
     } catch (error) {
