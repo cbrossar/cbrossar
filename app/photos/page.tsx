@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Image from "next/image";
 
 export default function Page() {
-
     const photos = [
         "got-slushed.jpeg",
         "bottles.jpeg",
@@ -24,7 +23,7 @@ export default function Page() {
     ];
 
     return (
-        <PhotosWrapper>  
+        <PhotosWrapper>
             {photos.map((photo, i) => (
                 <ImageWrapper key={i}>
                     <Image
@@ -43,6 +42,5 @@ const ImageWrapper = styled.div`
     position: relative;
     margin-bottom: 20px;
 `;
-
 
 const PhotosWrapper = styled.div``;

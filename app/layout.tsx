@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import Navbar from "./ui/navbar";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/registry";
-import { Analytics } from "@vercel/analytics/react"
-
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
