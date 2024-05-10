@@ -6,8 +6,8 @@ import Link from "next/link";
 import { fetchAlbumReviews } from "@/app/lib/data";
 import { MobileWidth } from "@/app/lib/constants";
 
-export default function Page() {
-    const albumReviews = fetchAlbumReviews();
+export default async function Page() {
+    const albumReviews = await fetchAlbumReviews();
 
     return (
         <MusicWrapper>
@@ -17,10 +17,10 @@ export default function Page() {
                         <ImageWrapper>
                             <ImageLink href="/">
                                 <Image
-                                    src={"/" + album.image_url}
+                                    src={"/flower-boy.jpg"}
                                     width={500}
                                     height={500}
-                                    alt="album"
+                                    alt={`Photo ${i}`}
                                 />
                                 <ImageText>
                                     <Circle>

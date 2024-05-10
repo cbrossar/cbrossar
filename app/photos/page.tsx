@@ -25,13 +25,13 @@ export default function Page() {
 
     return (
         <PhotosWrapper>  
-            {photos.map((photo, index) => (
-                <ImageWrapper key={index}>
+            {photos.map((photo, i) => (
+                <ImageWrapper key={i}>
                     <Image
                         src={`/photos/${photo}`}
                         width={900}
                         height={450}
-                        alt={`Photo ${index}`}
+                        alt={`Photo ${i}`}
                     />
                 </ImageWrapper>
             ))}
