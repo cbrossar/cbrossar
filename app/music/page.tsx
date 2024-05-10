@@ -8,13 +8,12 @@ import { MobileWidth } from "@/app/lib/constants";
 
 export default function Page() {
     const albumReviews = fetchAlbumReviews();
-    console.log(albumReviews);
 
     return (
         <MusicWrapper>
             <Grid>
-                {albumReviews.map((album) => (
-                    <AlbumCard key={album.name}>
+                {albumReviews.map((album, i) => (
+                    <AlbumCard key={i}>
                         <ImageWrapper>
                             <ImageLink href="/">
                                 <Image
