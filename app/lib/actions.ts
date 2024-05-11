@@ -4,7 +4,6 @@ import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { put } from "@vercel/blob";
-import { File } from "next/types";
 
 const FormSchema = z.object({
     id: z.string(),
