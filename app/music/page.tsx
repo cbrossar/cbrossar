@@ -14,7 +14,7 @@ export default async function Page() {
                         <div className={styles.imageWrapper}>
                             <Link href="/">
                                 <Image
-                                    src={"/flower-boy.jpg"}
+                                    src={review.image_url}
                                     width={500}
                                     height={500}
                                     alt={`Photo ${i}`}

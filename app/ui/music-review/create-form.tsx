@@ -105,6 +105,38 @@ export default function Form() {
                     </div>
                 </div>
 
+                {/* Image file */}
+                <div className="mb-4">
+                    <label
+                        htmlFor="image_file"
+                        className="mb-2 block text-sm font-medium"
+                    >
+                        Image
+                    </label>
+                    <input
+                        id="image_file"
+                        name="image_file"
+                        type="file"
+                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        aria-describedby="image_file-error"
+                    />
+                    <div
+                        id="image_file-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                        {state.errors?.image_file &&
+                            state.errors.image_file.map((error: string) => (
+                                <p
+                                    className="mt-2 text-sm text-red-500"
+                                    key={error}
+                                >
+                                    {error}
+                                </p>
+                            ))}
+                    </div>
+                </div>
+
                 <div id="error-message" aria-live="polite" aria-atomic="true">
                     {state.message && (
                         <p className="mt-2 text-sm text-red-500">

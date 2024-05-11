@@ -3,6 +3,7 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { put } from "@vercel/blob";
 
 const FormSchema = z.object({
     id: z.string(),
@@ -20,6 +21,7 @@ const FormSchema = z.object({
             message: "Rating should have only one decimal place.",
             path: ["rating"],
         }),
+    image_file: z.instanceof(File),
     created: z.string(),
 });
 
@@ -39,6 +41,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
         album: formData.get("album"),
         artist: formData.get("artist"),
         rating: formData.get("rating"),
+        image_file: formData.get("image_file"),
     });
     console.log(validatedFields);
     // If form validation fails, return errors early. Otherwise, continue.
@@ -48,13 +51,19 @@ export async function createMusicReview(prevState: State, formData: FormData) {
             message: "Missing Fields. Failed to Create Music Review.",
         };
     }
+
     // Prepare data for insertion into the database
-    const { album, artist, rating } = validatedFields.data;
+    const { album, artist, rating, image_file } = validatedFields.data;
+
+    const blob = await put(image_file.name, image_file, {
+        access: "public",
+    });
+
     const created = new Date().toISOString().split("T")[0];
     try {
         await sql`
-        INSERT INTO music_reviews (album, artist, rating, created)
-        VALUES (${album}, ${artist}, ${rating}, ${created})
+        INSERT INTO music_reviews (album, artist, rating, image_url, created)
+        VALUES (${album}, ${artist}, ${rating}, ${blob.url}, ${created})
       `;
     } catch (error) {
         return {
