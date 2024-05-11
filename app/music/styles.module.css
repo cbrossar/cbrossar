@@ -30,10 +30,6 @@
     color: white;
     opacity: 0;
     z-index: 2;
-
-    /* @media (max-width: ${MobileWidth}) {
-        
-    } */
 }
 
 .circle {
@@ -68,13 +64,17 @@
     overflow-wrap: normal;
 }
 
-@media (min-width: 900px) {
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+@media (max-width: 900px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .imageWrapper:hover .imageText {
-        opacity: 1;
     }
 
     .imageText {
@@ -83,8 +83,9 @@
     }
 }
 
-@media (min-width: 1024px) {
-    .grid {
-        grid-template-columns: repeat(4, 1fr);
+
+@media (min-width: 900px) {
+    .imageWrapper:hover .imageText {
+        opacity: 1;
     }
 }
