@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { put } from "@vercel/blob";
 
-
 const FormSchema = z.object({
     id: z.string(),
     album: z.string({
