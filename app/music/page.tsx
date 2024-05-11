@@ -22,13 +22,13 @@ export default async function Page() {
                                 <div className={styles.imageText}>
                                     <div className={styles.circle}>
                                         <div className={styles.rating}>
-                                            {9.7}
+                                            {review.rating.toFixed(1)}
                                         </div>
                                     </div>
                                 </div>
                             </Link>
                         </div>
-                        <p>{"Artist"}</p>
+                        <p>{review.artist}</p>
                         <p>{review.album}</p>
                     </div>
                 ))}

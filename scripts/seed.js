@@ -9,7 +9,9 @@ async function seedMusicReviews(client) {
     CREATE TABLE IF NOT EXISTS music_reviews (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     album VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
+    artist VARCHAR(255) NOT NULL,
+    rating FLOAT NOT NULL,
+    created DATE NOT NULL
   );
 `;
 

@@ -16,7 +16,7 @@ export default function Form() {
                         htmlFor="album"
                         className="mb-2 block text-sm font-medium"
                     >
-                        Album Name
+                        Album
                     </label>
                     <input
                         id="album"
@@ -29,6 +29,72 @@ export default function Form() {
                     <div id="album-error" aria-live="polite" aria-atomic="true">
                         {state.errors?.album &&
                             state.errors.album.map((error: string) => (
+                                <p
+                                    className="mt-2 text-sm text-red-500"
+                                    key={error}
+                                >
+                                    {error}
+                                </p>
+                            ))}
+                    </div>
+                </div>
+
+                {/* Artist name */}
+                <div className="mb-4">
+                    <label
+                        htmlFor="artist"
+                        className="mb-2 block text-sm font-medium"
+                    >
+                        Artist
+                    </label>
+                    <input
+                        id="artist"
+                        name="artist"
+                        type="text"
+                        placeholder="Enter artist name"
+                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        aria-describedby="artist-error"
+                    />
+                    <div
+                        id="artist-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                        {state.errors?.artist &&
+                            state.errors.artist.map((error: string) => (
+                                <p
+                                    className="mt-2 text-sm text-red-500"
+                                    key={error}
+                                >
+                                    {error}
+                                </p>
+                            ))}
+                    </div>
+                </div>
+
+                {/* Rating */}
+                <div className="mb-4">
+                    <label
+                        htmlFor="rating"
+                        className="mb-2 block text-sm font-medium"
+                    >
+                        Rating
+                    </label>
+                    <input
+                        id="rating"
+                        name="rating"
+                        type="float"
+                        placeholder="Enter rating"
+                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        aria-describedby="rating-error"
+                    />
+                    <div
+                        id="rating-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                        {state.errors?.rating &&
+                            state.errors.rating.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
                                     key={error}

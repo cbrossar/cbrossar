@@ -1,5 +1,7 @@
 export type MusicReview = {
     id: string;
     album: string;
-    date: string;
+    artist: string;
+    rating: number;
+    created: string;
 };
