@@ -64,13 +64,11 @@
     overflow-wrap: normal;
 }
 
-
 @media (max-width: 1024px) {
     .grid {
         grid-template-columns: repeat(4, 1fr);
     }
 }
-
 
 @media (max-width: 900px) {
     .grid {
@@ -82,7 +80,6 @@
         font-size: 1.125rem;
     }
 }
-
 
 @media (min-width: 900px) {
     .imageWrapper:hover .imageText {
