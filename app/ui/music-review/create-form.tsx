@@ -78,7 +78,7 @@ export default function Form() {
                         htmlFor="rating"
                         className="mb-2 block text-sm font-medium"
                     >
-                        Rating
+                        Rating (0.0 - 10.0)
                     </label>
                     <input
                         id="rating"
@@ -111,7 +111,7 @@ export default function Form() {
                         htmlFor="image_file"
                         className="mb-2 block text-sm font-medium"
                     >
-                        Image
+                        Image (Crop to 1:1 Aspect Ratio)
                     </label>
                     <input
                         id="image_file"
