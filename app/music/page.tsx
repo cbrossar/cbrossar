@@ -12,7 +12,7 @@ export default async function Page() {
                 {musicReviews.map((review, i) => (
                     <div key={i}>
                         <div className={styles.imageWrapper}>
-                            <Link href="/">
+                            <Link href={`/music/${review.id}`}>
                                 <Image
                                     src={review.image_url}
                                     width={500}
@@ -28,8 +28,8 @@ export default async function Page() {
                                 </div>
                             </Link>
                         </div>
-                        <p>{review.artist}</p>
                         <p>{review.album}</p>
+                        <p>{review.artist}</p>
                     </div>
                 ))}
             </div>

@@ -1,0 +1,100 @@
+.wrapper {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    width: 50%;
+}
+
+.details {
+    width: 50%;
+}
+
+.album {
+    font-family: helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.25em;
+    font-style: italic;
+    padding-bottom: 20px;
+}
+
+.artist {
+    font-family: helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.25em;
+    padding-bottom: 20px;
+}
+
+.review {
+    font-family: helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.25em;
+}
+
+.reviewedBy {
+    padding-bottom: 22px;
+}
+
+.circle {
+    position: relative;
+    border: 7px solid black;
+    border-radius: 50%;
+    padding-bottom: 1rem;
+    width: 135px;
+    height: 135px;
+    text-align: center;
+    color: black;
+}
+
+.rating {
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    color: black;
+    --type-token: globalEditorial.numerical-large;
+    text-transform: none;
+    font-family: helvetica, sans-serif;
+    font-feature-settings: normal;
+    font-style: normal;
+    letter-spacing: normal;
+    line-break: auto;
+    line-height: 1em;
+    font-size: 50px;
+    font-weight: 600;
+    overflow-wrap: normal;
+}
+
+@media (max-width: 48rem) {
+    .wrapper {
+        display: block;
+        gap: unset;
+    }
+
+    .image {
+        width: 80%;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+
+    .details {
+        width: 100%;
+        text-align: center;
+    }
+
+    .review {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .circle {
+        margin: 0 auto;
+    }
+}
