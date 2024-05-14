@@ -14,7 +14,7 @@ async function seedMusicReviews(client) {
     review TEXT NOT NULL,
     review_author VARCHAR(255) NOT NULL,
     image_url VARCHAR(255) NOT NULL,
-    created DATETIME DEFAULT CURRENT_TIMESTAMP
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
 `;
 
