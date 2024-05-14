@@ -3,6 +3,8 @@ export type MusicReview = {
     album: string;
     artist: string;
     rating: number;
+    review: string;
+    name: string;
     image_url: string;
     created: string;
 };

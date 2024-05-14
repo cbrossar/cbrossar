@@ -20,9 +20,10 @@ const FormSchema = z.object({
     review: z.string(),
     name: z.string(),
     image_file: z.instanceof(File),
+    // created?
 });
 
-const CreateMusicReview = FormSchema.omit({ id: true, created: true });
+const CreateMusicReview = FormSchema.omit({ id: true });
 
 export type State = {
     errors?: {
@@ -40,7 +41,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
         name: formData.get("name"),
         image_file: formData.get("image_file"),
     });
-    console.log(validatedFields);
+
     // If form validation fails, return errors early. Otherwise, continue.
     if (!validatedFields.success) {
         return {
