@@ -11,8 +11,10 @@ async function seedMusicReviews(client) {
     album VARCHAR(255) NOT NULL,
     artist VARCHAR(255) NOT NULL,
     rating FLOAT NOT NULL,
+    review TEXT NOT NULL,
+    review_author VARCHAR(255) NOT NULL,
     image_url VARCHAR(255) NOT NULL,
-    created DATE NOT NULL
+    created DATETIME DEFAULT CURRENT_TIMESTAMP
   );
 `;
 

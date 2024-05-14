@@ -2,6 +2,7 @@
 
 import { createMusicReview } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
+import { Button } from "@/app/ui/button";
 
 export default function Form() {
     const initialState = { message: "", errors: {} };
@@ -26,17 +27,6 @@ export default function Form() {
                         className="block w-full rounded-md border border-gray-200 py-2 text-sm"
                         aria-describedby="album-error"
                     />
-                    <div id="album-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.album &&
-                            state.errors.album.map((error: string) => (
-                                <p
-                                    className="mt-2 text-sm text-red-500"
-                                    key={error}
-                                >
-                                    {error}
-                                </p>
-                            ))}
-                    </div>
                 </div>
 
                 {/* Artist name */}
@@ -105,6 +95,67 @@ export default function Form() {
                     </div>
                 </div>
 
+                {/* Review */}
+                <div className="mb-4">
+                    <label
+                        htmlFor="review"
+                        className="mb-2 block text-sm font-medium"
+                    >
+                        Review
+                    </label>
+                    <textarea
+                        id="review"
+                        name="review"
+                        placeholder="Live with the album for at least a week. Share your thoughts!"
+                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        aria-describedby="review-error"
+                    />
+                    <div
+                        id="review-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                        {state.errors?.review &&
+                            state.errors.review.map((error: string) => (
+                                <p
+                                    className="mt-2 text-sm text-red-500"
+                                    key={error}
+                                >
+                                    {error}
+                                </p>
+                            ))}
+                    </div>
+                </div>
+
+                {/* Your name */}
+                <div className="mb-4">
+                    <label
+                        htmlFor="name"
+                        className="mb-2 block text-sm font-medium"
+                    >
+                        Your Name
+                    </label>
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Enter your name"
+                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        aria-describedby="name-error"
+                    />
+                    <div id="name-error" aria-live="polite" aria-atomic="true">
+                        {state.errors?.name &&
+                            state.errors.name.map((error: string) => (
+                                <p
+                                    className="mt-2 text-sm text-red-500"
+                                    key={error}
+                                >
+                                    {error}
+                                </p>
+                            ))}
+                    </div>
+                </div>
+
                 {/* Image file */}
                 <div className="mb-4">
                     <label
@@ -146,7 +197,7 @@ export default function Form() {
                 </div>
             </div>
             <div className="mt-6 flex justify-end gap-4">
-                <button type="submit">Create Music Review</button>
+                <Button type="submit">Create Music Review</Button>
             </div>
         </form>
     );

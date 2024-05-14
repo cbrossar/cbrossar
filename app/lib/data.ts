@@ -8,7 +8,8 @@ export async function fetchMusicReviews() {
     noStore();
 
     try {
-        const data = await sql<MusicReview>`SELECT * FROM music_reviews`;
+        const data =
+            await sql<MusicReview>`SELECT * FROM music_reviews ORDER BY created ASC`;
         return data.rows;
     } catch (error) {
         console.error("Database Error:", error);
@@ -17,6 +18,9 @@ export async function fetchMusicReviews() {
 }
 
 export async function fetchMusicReviewById(id: string) {
+    // TODO: Remove
+    noStore();
+
     try {
         const data =
             await sql<MusicReview>`SELECT * FROM music_reviews WHERE id = ${id}`;

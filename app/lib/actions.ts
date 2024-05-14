@@ -7,12 +7,8 @@ import { put } from "@vercel/blob";
 
 const FormSchema = z.object({
     id: z.string(),
-    album: z.string({
-        invalid_type_error: "Please enter an album name.",
-    }),
-    artist: z.string({
-        invalid_type_error: "Please enter an artist name.",
-    }),
+    album: z.string(),
+    artist: z.string(),
     rating: z.coerce
         .number()
         .min(0, { message: "Rating should be at least 0." })
@@ -21,16 +17,15 @@ const FormSchema = z.object({
             message: "Rating should have only one decimal place.",
             path: ["rating"],
         }),
+    review: z.string(),
+    name: z.string(),
     image_file: z.instanceof(File),
-    created: z.string(),
 });
 
 const CreateMusicReview = FormSchema.omit({ id: true, created: true });
 
 export type State = {
     errors?: {
-        album?: string[];
-        artist?: string[];
         rating?: string[];
     };
     message?: string | null;
@@ -41,6 +36,8 @@ export async function createMusicReview(prevState: State, formData: FormData) {
         album: formData.get("album"),
         artist: formData.get("artist"),
         rating: formData.get("rating"),
+        review: formData.get("review"),
+        name: formData.get("name"),
         image_file: formData.get("image_file"),
     });
     console.log(validatedFields);
@@ -53,8 +50,15 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     }
 
     // Prepare data for insertion into the database
-    const { album, artist, rating, image_file } = validatedFields.data;
+    const { album, artist, rating, review, name, image_file } =
+        validatedFields.data;
 
+    // Upload the image to the Blob Storage
+    if (image_file.size === 0) {
+        return {
+            message: "Image File Missing. Failed to Create Music Review.",
+        };
+    }
     const blob = await put(image_file.name, image_file, {
         access: "public",
     });
@@ -62,8 +66,8 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     const created = new Date().toISOString().split("T")[0];
     try {
         await sql`
-        INSERT INTO music_reviews (album, artist, rating, image_url, created)
-        VALUES (${album}, ${artist}, ${rating}, ${blob.url}, ${created})
+        INSERT INTO music_reviews (album, artist, rating, review, name, image_url)
+        VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${blob.url})
       `;
     } catch (error) {
         return {
