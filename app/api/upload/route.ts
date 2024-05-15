@@ -6,10 +6,12 @@ export async function POST(request: Request) {
     const { filename, contentType } = await request.json();
 
     try {
-        const client = new S3Client({ region: process.env.AWS_REGION });
+        const bucketName = process.env.AWS_BUCKET_NAME as string;
+        const region = process.env.AWS_REGION as string;
+        const client = new S3Client({ region });
         const key = `${uuidv4()}-${filename}`;
         const { url, fields } = await createPresignedPost(client, {
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: bucketName,
             Key: key,
             Conditions: [
                 ["content-length-range", 0, 10485760], // up to 10 MB
@@ -24,6 +26,6 @@ export async function POST(request: Request) {
 
         return Response.json({ url, fields, key });
     } catch (error) {
-        return Response.json({ error: error.message });
+        return Response.json({ error: "An unknown error occurred" });
     }
 }

@@ -81,7 +81,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     redirect("/music");
 }
 
-async function uploadFile(file) {
+async function uploadFile(file: File) {
     const response = await fetch(
         process.env.NEXT_PUBLIC_BASE_URL + "/api/upload",
         {
@@ -102,6 +102,7 @@ async function uploadFile(file) {
 
     const formData = new FormData();
     Object.entries(fields).forEach(([key, value]) => {
+        // @ts-ignore
         formData.append(key, value);
     });
     formData.append("file", file);
