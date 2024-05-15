@@ -11,10 +11,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
 
     const reviewDate = review.created.toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
 
     return (
         <div className={styles.wrapper}>
@@ -29,8 +29,10 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div className={styles.details}>
                 <h1 className={styles.album}>{review.album}</h1>
                 <h2 className={styles.artist}> By {review.artist}</h2>
-                <p className={styles.review}>"{review.review}"</p>
-                <p className={styles.reviewedBy}>- {review.name}, {reviewDate}</p>
+                <p className={styles.review}>&quot;{review.review}&quot;</p>
+                <p className={styles.reviewedBy}>
+                    - {review.name}, {reviewDate}
+                </p>
                 <div className={styles.circle}>
                     <div className={styles.rating}>
                         {review.rating.toFixed(1)}
