@@ -127,19 +127,19 @@ export default function Form() {
                     </div>
                 </div>
 
-                {/* Your name */}
+                {/* Your first name */}
                 <div className="mb-4">
                     <label
                         htmlFor="name"
                         className="mb-2 block text-sm font-medium"
                     >
-                        Your Name
+                        Your First Name
                     </label>
                     <input
                         id="name"
                         name="name"
                         type="text"
-                        placeholder="Enter your name"
+                        placeholder="Enter your first name"
                         className="block w-full rounded-md border border-gray-200 py-2 text-sm"
                         aria-describedby="name-error"
                     />
