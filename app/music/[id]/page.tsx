@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         notFound();
     }
 
-    const reviewDate = review.created.toLocaleDateString(undefined, {
+    const reviewDate = new Date(review.created).toLocaleDateString(undefined, {
         year: "numeric",
         month: "long",
         day: "numeric",
