@@ -9,7 +9,7 @@ export async function fetchMusicReviews() {
 
     try {
         const data =
-            await sql<MusicReview>`SELECT * FROM music_reviews ORDER BY created ASC`;
+            await sql<MusicReview>`SELECT * FROM music_reviews ORDER BY created DESC`;
         return data.rows;
     } catch (error) {
         console.error("Database Error:", error);
@@ -18,7 +18,6 @@ export async function fetchMusicReviews() {
 }
 
 export async function fetchMusicReviewById(id: string) {
-    // TODO: Remove
     noStore();
 
     try {

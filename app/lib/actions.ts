@@ -3,7 +3,6 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { put } from "@vercel/blob";
 
 const FormSchema = z.object({
     id: z.string(),
@@ -20,7 +19,6 @@ const FormSchema = z.object({
     review: z.string(),
     name: z.string(),
     image_file: z.instanceof(File),
-    // created?
 });
 
 const CreateMusicReview = FormSchema.omit({ id: true });
@@ -60,15 +58,19 @@ export async function createMusicReview(prevState: State, formData: FormData) {
             message: "Image File Missing. Failed to Create Music Review.",
         };
     }
-    const blob = await put(image_file.name, image_file, {
-        access: "public",
-    });
 
-    const created = new Date().toISOString().split("T")[0];
+    const image_url = await uploadFile(image_file);
+
+    if (!image_url) {
+        return {
+            message: "Image Upload Failed. Failed to Create Music Review.",
+        };
+    }
+
     try {
         await sql`
         INSERT INTO music_reviews (album, artist, rating, review, name, image_url)
-        VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${blob.url})
+        VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${image_url})
       `;
     } catch (error) {
         return {
@@ -77,4 +79,46 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     }
     revalidatePath("/music");
     redirect("/music");
+}
+
+async function uploadFile(file) {
+    const response = await fetch(
+        process.env.NEXT_PUBLIC_BASE_URL + "/api/upload",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                filename: file.name,
+                contentType: file.type,
+            }),
+        },
+    );
+
+    const { url, fields, key } = await response.json();
+
+    console.log(key);
+
+    const formData = new FormData();
+    Object.entries(fields).forEach(([key, value]) => {
+        formData.append(key, value);
+    });
+    formData.append("file", file);
+
+    const uploadResponse = await fetch(url, {
+        method: "POST",
+        body: formData,
+    });
+
+    if (uploadResponse.ok) {
+        const bucketName = process.env.AWS_BUCKET_NAME;
+        const s3Url = `https://${bucketName}.s3.amazonaws.com/${key}`;
+
+        console.log("Upload successful!", s3Url);
+        return s3Url;
+    } else {
+        console.error("Upload failed!");
+        return null;
+    }
 }
