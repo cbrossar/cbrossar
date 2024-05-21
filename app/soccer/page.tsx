@@ -4,48 +4,58 @@ import styles from "./styles.module.css";
 
 export default function Page() {
     return (
-        <div>
-            <div className={styles.grid}>
-                <div className={styles.imageWrapper}>
-                    <Link href="https://register.ilovenysoccer.com/team/342/werder-beermen">
+        <div className={styles.grid}>
+            <div className={styles.item}>
+                <Link href="https://register.ilovenysoccer.com/team/342/werder-beermen">
+                    <div className={styles.imageWrapper}>
                         <Image
                             src="/soccer/werder-beermen-logo.png"
-                            width={500}
-                            height={500}
+                            width={200}
+                            height={200}
                             alt="Werder Beermen"
                         />
-                    </Link>
-                </div>
-                <div className={styles.imageWrapper}>
-                    <Link href="https://gothamsoccer.com/newyorkcity">
+                    </div>
+                </Link>
+                <div className={styles.caption}>Werder Beermen</div>
+            </div>
+            <div className={styles.item}>
+                <Link href="https://gothamsoccer.com/newyorkcity">
+                    <div className={styles.imageWrapper}>
                         <Image
                             src="/soccer/gotham-logo.png"
-                            width={500}
-                            height={500}
+                            width={200}
+                            height={200}
                             alt="Gotham"
                         />
-                    </Link>
-                </div>
-                <div className={styles.imageWrapper}>
-                    <Link href="https://sfelitemetro.com/">
+                    </div>
+                </Link>
+                <div className={styles.caption}>Brooklyn Hove Albion</div>
+            </div>
+            <div className={styles.item}>
+                <Link href="https://sfelitemetro.com/">
+                    <div className={styles.imageWrapper}>
                         <Image
                             src="/soccer/metro-logo.png"
-                            width={500}
-                            height={500}
+                            width={200}
+                            height={200}
                             alt="Metro"
                         />
-                    </Link>
-                </div>
-                <div className={styles.imageWrapper}>
-                    <Link href="https://uscmenssoccer.wordpress.com/">
+                    </div>
+                </Link>
+                <div className={styles.caption}>SF Metropolitan FC</div>
+            </div>
+            <div className={styles.item}>
+                <Link href="https://uscmenssoccer.wordpress.com/">
+                    <div className={styles.imageWrapper}>
                         <Image
                             src="/soccer/usc-mens-soccer-logo.png"
-                            width={500}
-                            height={500}
+                            width={200}
+                            height={200}
                             alt="USC Mens Soccer"
                         />
-                    </Link>
-                </div>
+                    </div>
+                </Link>
+                <div className={styles.caption}>USC Men&apos;s Soccer</div>
             </div>
         </div>
     );

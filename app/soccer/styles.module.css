@@ -8,12 +8,34 @@
     grid-template-columns: repeat(4, 1fr);
 }
 
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align children to the bottom */
+    align-items: center; /* Center the items horizontally */
+    text-align: center; /* Center the text */
+}
+
 .imageWrapper {
     position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the items horizontally */
+    text-align: center; /* Center the text */
+}
+
+.imageWrapper img {
+    display: block;
+    margin: auto auto;
 }
 
 .imageWrapper:hover {
     opacity: 0.5;
+}
+
+.caption {
+    margin-top: 10px; /* Space between the image and the caption */
 }
 
 @media (max-width: 900px) {
