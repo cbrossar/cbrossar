@@ -78,9 +78,7 @@
     position: relative;
 }
 
-.w,
-.l,
-.d {
+.w, .l, .d {
     display: flex;
     height: 24px;
     width: 24px;
@@ -104,9 +102,7 @@
     background-color: #8d9499;
 }
 
-.wLine,
-.lLine,
-.dLine {
+.wLine, .lLine, .dLine {
     content: "";
     display: block;
     width: 16px;
@@ -122,7 +118,7 @@
     border-bottom-color: #00985f;
 }
 
-.lLine {
+.lLine{
     border-bottom-color: #dd3636;
 }
 
