@@ -1,9 +1,15 @@
 // next.config.js
 module.exports = {
     images: {
-        domains: [
-            "k2btciufj0chkpse.public.blob.vercel-storage.com",
-            "cbrossar-website.s3.amazonaws.com",
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "k2btciufj0chkpse.public.blob.vercel-storage.com",
+            },
+            {
+                protocol: "https",
+                hostname: "cbrossar-website.s3.amazonaws.com",
+            },
         ],
     },
 };
