@@ -1,8 +1,9 @@
 .wrapper {
     display: flex;
-    gap: 2rem;
     justify-content: center;
     align-items: center;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .image {
@@ -31,6 +32,12 @@
 }
 
 .review {
+    padding: 40px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.reviewText {
     font-family: helvetica, sans-serif;
     font-weight: 400;
     font-size: 18px;
@@ -44,6 +51,7 @@
     font-style: italic;
     line-height: 1.25em;
     padding-bottom: 22px;
+    padding-top: 10px;
 }
 
 .circle {
@@ -55,6 +63,7 @@
     height: 135px;
     text-align: center;
     color: black;
+    margin: 0 auto;
 }
 
 .rating {
@@ -80,7 +89,6 @@
 @media (max-width: 48rem) {
     .wrapper {
         display: block;
-        gap: unset;
     }
 
     .image {
@@ -96,11 +104,7 @@
 
     .review {
         width: 80%;
-        margin: 0 auto;
-    }
-
-    .circle {
-        margin: 0 auto;
-        margin-bottom: 50px;
+        padding: 0;
+        padding-top: 40px;
     }
 }

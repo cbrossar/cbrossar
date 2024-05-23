@@ -17,27 +17,32 @@ export default async function Page({ params }: { params: { id: string } }) {
     });
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.image}>
-                <Image
-                    src={review.image_url}
-                    width={500}
-                    height={500}
-                    alt={`Photo ${review.id}`}
-                />
+        <div>
+            <div className={styles.wrapper}>
+                <div className={styles.image}>
+                    <Image
+                        src={review.image_url}
+                        width={500}
+                        height={500}
+                        alt={`Photo ${review.id}`}
+                    />
+                </div>
+                <div className={styles.details}>
+                    <h1 className={styles.album}>{review.album}</h1>
+                    <h2 className={styles.artist}> By {review.artist}</h2>
+
+                    <div className={styles.circle}>
+                        <div className={styles.rating}>
+                            {review.rating.toFixed(1)}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className={styles.details}>
-                <h1 className={styles.album}>{review.album}</h1>
-                <h2 className={styles.artist}> By {review.artist}</h2>
-                <p className={styles.review}>&quot;{review.review}&quot;</p>
+            <div className={styles.review}>
+                <p className={styles.reviewText}>{review.review}</p>
                 <p className={styles.reviewedBy}>
                     - {review.name}, {reviewDate}
                 </p>
-                <div className={styles.circle}>
-                    <div className={styles.rating}>
-                        {review.rating.toFixed(1)}
-                    </div>
-                </div>
             </div>
         </div>
     );

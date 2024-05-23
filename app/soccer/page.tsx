@@ -23,10 +23,10 @@ export default async function Page() {
     const numMatches = myMatches.length;
 
     return (
-        <div>
+        <div className={styles.centerContainer}>
             <div className={styles.formSection}>
                 <>
-                    <div className={styles.formHeader}>Form</div>
+                    <div className={styles.formHeader}>Current Form</div>
                     {formTeams.map((team) => {
                         if (!team) {
                             return null;
@@ -36,7 +36,9 @@ export default async function Page() {
                                 ? spursMatches
                                 : myMatches;
                         const teamName =
-                            team.name === "Tottenham" ? team.name : "Cole's Teams";
+                            team.name === "Tottenham"
+                                ? team.name
+                                : "Cole's Teams";
 
                         return (
                             <div key={team.id} className={styles.formRow}>
@@ -79,8 +81,8 @@ export default async function Page() {
                                         const tooltip = `${matchDate}: ${teamNameMap[match.home_team_id]} ${match.home_score} - ${match.away_score} ${teamNameMap[match.away_team_id]}`;
                                         return (
                                             <div key={match.id}>
-                                                <Tooltip 
-                                                    title={tooltip} 
+                                                <Tooltip
+                                                    title={tooltip}
                                                     enterTouchDelay={0} // Show tooltip immediately on touch
                                                     leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
                                                 >

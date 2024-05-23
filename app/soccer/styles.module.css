@@ -38,12 +38,18 @@
     margin-top: 10px; /* Space between the image and the caption */
 }
 
+.centerContainer {
+    display: flex;
+    justify-content: center; /* Centers the form horizontally */
+    align-items: center; /* Centers the form vertically if needed */
+    flex-direction: column; /* Keeps the form items in a column */
+}
+
 .formHeader {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
-    font-size: larger;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .formSection {
