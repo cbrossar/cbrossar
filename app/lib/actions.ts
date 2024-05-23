@@ -22,6 +22,7 @@ const FormSchema = z.object({
 });
 
 const CreateMusicReview = FormSchema.omit({ id: true });
+const UpdateMusicReview = FormSchema.omit({ id: true });
 
 export type State = {
     errors?: {
@@ -79,6 +80,66 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     }
     revalidatePath("/music");
     redirect("/music");
+}
+
+export async function updateMusicReview(
+    id: string,
+    prevState: State,
+    formData: FormData,
+) {
+    const validatedFields = UpdateMusicReview.safeParse({
+        album: formData.get("album"),
+        artist: formData.get("artist"),
+        rating: formData.get("rating"),
+        review: formData.get("review"),
+        name: formData.get("name"),
+        image_file: formData.get("image_file"),
+    });
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: "Missing Fields. Failed to Update Music Review.",
+        };
+    }
+
+    const { album, artist, rating, review, name, image_file } =
+        validatedFields.data;
+
+    let image_url = null;
+
+    if (image_file.size > 0) {
+        image_url = await uploadFile(image_file);
+
+        if (!image_url) {
+            return {
+                message: "Image Upload Failed. Failed to Update Music Review.",
+            };
+        }
+    }
+
+    try {
+        if (image_url === null) {
+            await sql`
+                UPDATE music_reviews
+                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}
+                WHERE id = ${id}
+            `;
+        } else {
+            await sql`
+                UPDATE music_reviews
+                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}, image_url = ${image_url}
+                WHERE id = ${id}
+            `;
+        }
+    } catch (error) {
+        return {
+            message: "Database Error: Failed to Update Music Review.",
+        };
+    }
+
+    revalidatePath(`/music/${id}`);
+    redirect(`/music/${id}`);
 }
 
 async function uploadFile(file: File) {
