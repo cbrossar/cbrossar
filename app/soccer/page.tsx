@@ -41,6 +41,8 @@ export default function Page() {
         },
     ];
 
+    const numMatches = my_matches.length;
+
     return (
         <div>
             <div className={styles.formSection}>
@@ -109,13 +111,13 @@ export default function Page() {
                                     {isLoss && (
                                         <div className={styles.l}>L</div>
                                     )}
-                                    {idx === 4 && isWin && (
+                                    {idx === numMatches - 1 && isWin && (
                                         <div className={styles.wLine}></div>
                                     )}
-                                    {idx === 4 && isDraw && (
+                                    {idx === numMatches - 1 && isDraw && (
                                         <div className={styles.dLine}></div>
                                     )}
-                                    {idx === 4 && isLoss && (
+                                    {idx === numMatches - 1 && isLoss && (
                                         <div className={styles.lLine}></div>
                                     )}
                                 </div>

@@ -2,5 +2,14 @@
 format:
 	npm run lint && npx prettier . --write
 
-make run:
+run:
 	npm run dev
+
+build:
+	npm run build
+
+test:
+	npm run test
+
+seed:
+	npm run seed
