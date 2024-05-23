@@ -1,133 +1,146 @@
 import Image from "next/image";
 import Link from "next/link";
-import { fetchMatches } from "@/app/lib/data";
+import Tooltip from "@mui/material/Tooltip";
+import { fetchSpursMatches, fetchMyMatches, fetchTeams } from "@/app/lib/data";
 import styles from "./styles.module.css";
 
 export default async function Page() {
-    const my_matches = [
-        {
-            id: "1",
-            home_team_id: "me",
-            away_team_id: "you",
-            home_score: 3,
-            away_score: 0,
-        },
-        {
-            id: "2",
-            home_team_id: "me",
-            away_team_id: "you",
-            home_score: 0,
-            away_score: 1,
-        },
-        {
-            id: "3",
-            home_team_id: "me",
-            away_team_id: "you",
-            home_score: 3,
-            away_score: 2,
-        },
-        {
-            id: "4",
-            home_team_id: "me",
-            away_team_id: "you",
-            home_score: 1,
-            away_score: 2,
-        },
-        {
-            id: "5",
-            home_team_id: "me",
-            away_team_id: "you",
-            home_score: 1,
-            away_score: 2,
-        },
-    ];
-
-    const numMatches = my_matches.length;
-
-    const spursMatches = await fetchMatches();
+    const teams = await fetchTeams();
+    const teamNameMap = teams.reduce((acc, team) => {
+        acc[team.id] = team.name;
+        return acc;
+    }, {});
+    const formTeamNames = ["Werder Beermen", "Tottenham"];
+    const formTeams = formTeamNames.map((name) =>
+        teams.find((team) => team.name === name),
+    );
+    const spursMatches = await fetchSpursMatches();
+    const myMatches = await fetchMyMatches();
+    const numMatches = myMatches.length;
 
     return (
         <div>
             <div className={styles.formSection}>
-                <div className={styles.formHeader}>Form</div>
-                <div className={styles.formRow}>
-                    <div className={styles.formImageWrapper}>
-                        <Image
-                            src="/soccer/werder-beermen-logo.png"
-                            width={30}
-                            height={30}
-                            alt="Werder Beermen"
-                        />
-                    </div>
-                    <div className={styles.formTeam}>Cole</div>
-                    <div className={styles.resultRow}>
-                        {my_matches.map((match, idx) => {
-                            const isWin = match.home_score > match.away_score;
-                            const isDraw =
-                                match.home_score === match.away_score;
-                            const isLoss = match.home_score < match.away_score;
-                            return (
-                                <div key={match.id} className={styles.box}>
-                                    {isWin && <div className={styles.w}>W</div>}
-                                    {isDraw && (
-                                        <div className={styles.d}>D</div>
-                                    )}
-                                    {isLoss && (
-                                        <div className={styles.l}>L</div>
-                                    )}
-                                    {idx === 4 && isWin && (
-                                        <div className={styles.wLine}></div>
-                                    )}
-                                    {idx === 4 && isDraw && (
-                                        <div className={styles.dLine}></div>
-                                    )}
-                                    {idx === 4 && isLoss && (
-                                        <div className={styles.lLine}></div>
-                                    )}
+                <>
+                    <div className={styles.formHeader}>Form</div>
+                    {formTeams.map((team) => {
+                        const matches =
+                            team.name === "Tottenham"
+                                ? spursMatches
+                                : myMatches;
+                        const teamName =
+                            team.name === "Tottenham" ? team.name : "Cole";
+
+                        return (
+                            <div key={team.id} className={styles.formRow}>
+                                <div className={styles.formImageWrapper}>
+                                    <Image
+                                        src={`/soccer/${team.image_filename}`}
+                                        width={30}
+                                        height={30}
+                                        alt={team.name}
+                                    />
                                 </div>
-                            );
-                        })}
-                    </div>
-                </div>
-                <div className={styles.formRow}>
-                    <div className={styles.formImageWrapper}>
-                        <Image
-                            src="/soccer/tottenham-logo.png"
-                            width={30}
-                            height={30}
-                            alt="Tottenham"
-                        />
-                    </div>
-                    <div className={styles.formTeam}>Tottenham</div>
-                    <div className={styles.resultRow}>
-                        {spursMatches.reverse().map((match, idx) => {
-                            const isWin = match.home_score > match.away_score;
-                            const isDraw =
-                                match.home_score === match.away_score;
-                            const isLoss = match.home_score < match.away_score;
-                            return (
-                                <div key={match.id} className={styles.box}>
-                                    {isWin && <div className={styles.w}>W</div>}
-                                    {isDraw && (
-                                        <div className={styles.d}>D</div>
-                                    )}
-                                    {isLoss && (
-                                        <div className={styles.l}>L</div>
-                                    )}
-                                    {idx === numMatches - 1 && isWin && (
-                                        <div className={styles.wLine}></div>
-                                    )}
-                                    {idx === numMatches - 1 && isDraw && (
-                                        <div className={styles.dLine}></div>
-                                    )}
-                                    {idx === numMatches - 1 && isLoss && (
-                                        <div className={styles.lLine}></div>
-                                    )}
+                                <div className={styles.formTeam}>
+                                    {teamName}
                                 </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                                <div className={styles.resultRow}>
+                                    {matches.map((match, idx) => {
+                                        const isHome =
+                                            teamNameMap[match.home_team_id] ===
+                                            team.name;
+                                        const isWin = isHome
+                                            ? match.home_score >
+                                              match.away_score
+                                            : match.away_score >
+                                              match.home_score;
+                                        const isDraw =
+                                            match.home_score ===
+                                            match.away_score;
+                                        const isLoss = isHome
+                                            ? match.home_score <
+                                              match.away_score
+                                            : match.away_score <
+                                              match.home_score;
+                                        // Just show month and day
+                                        const matchDate = new Date(
+                                            match.date,
+                                        ).toLocaleDateString("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                        });
+                                        const tooltip = `${matchDate}: ${teamNameMap[match.home_team_id]} ${match.home_score} - ${match.away_score} ${teamNameMap[match.away_team_id]}`;
+                                        return (
+                                            <div key={match.id}>
+                                                <Tooltip title={tooltip}>
+                                                    <div
+                                                        key={match.id}
+                                                        className={styles.box}
+                                                    >
+                                                        {isWin && (
+                                                            <div
+                                                                className={
+                                                                    styles.w
+                                                                }
+                                                            >
+                                                                W
+                                                            </div>
+                                                        )}
+                                                        {isDraw && (
+                                                            <div
+                                                                className={
+                                                                    styles.d
+                                                                }
+                                                            >
+                                                                D
+                                                            </div>
+                                                        )}
+                                                        {isLoss && (
+                                                            <div
+                                                                className={
+                                                                    styles.l
+                                                                }
+                                                            >
+                                                                L
+                                                            </div>
+                                                        )}
+                                                        {idx ===
+                                                            numMatches - 1 &&
+                                                            isWin && (
+                                                                <div
+                                                                    className={
+                                                                        styles.wLine
+                                                                    }
+                                                                ></div>
+                                                            )}
+                                                        {idx ===
+                                                            numMatches - 1 &&
+                                                            isDraw && (
+                                                                <div
+                                                                    className={
+                                                                        styles.dLine
+                                                                    }
+                                                                ></div>
+                                                            )}
+                                                        {idx ===
+                                                            numMatches - 1 &&
+                                                            isLoss && (
+                                                                <div
+                                                                    className={
+                                                                        styles.lLine
+                                                                    }
+                                                                ></div>
+                                                            )}
+                                                    </div>
+                                                </Tooltip>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </>
             </div>
 
             <div className={styles.grid}>
@@ -135,7 +148,7 @@ export default async function Page() {
                     <Link href="https://register.ilovenysoccer.com/team/342/werder-beermen">
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/soccer/werder-beermen-logo.png"
+                                src="/soccer/werder-beermen.png"
                                 width={200}
                                 height={200}
                                 alt="Werder Beermen"
@@ -148,7 +161,7 @@ export default async function Page() {
                     <Link href="https://gothamsoccer.com/newyorkcity">
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/soccer/gotham-logo.png"
+                                src="/soccer/gotham.png"
                                 width={200}
                                 height={200}
                                 alt="Gotham"
@@ -161,7 +174,7 @@ export default async function Page() {
                     <Link href="https://sfelitemetro.com/">
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/soccer/metro-logo.png"
+                                src="/soccer/metro.png"
                                 width={200}
                                 height={200}
                                 alt="Metro"
@@ -174,7 +187,7 @@ export default async function Page() {
                     <Link href="https://uscmenssoccer.wordpress.com/">
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/soccer/usc-mens-soccer-logo.png"
+                                src="/soccer/usc-mens-soccer.png"
                                 width={200}
                                 height={200}
                                 alt="USC Mens Soccer"

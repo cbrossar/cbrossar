@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { MusicReview } from "./definitions";
+import { MusicReview, Match, Team } from "./definitions";
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchMusicReviews() {
@@ -30,14 +30,48 @@ export async function fetchMusicReviewById(id: string) {
     }
 }
 
-export async function fetchMatches() {
+export async function fetchTeams() {
     noStore();
 
     try {
-        const data = await sql`SELECT * FROM matches ORDER BY date DESC`;
+        const data = await sql<Team>`SELECT * FROM teams`;
+        return data.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch teams data.");
+    }
+}
+
+export async function fetchSpursMatches() {
+    noStore();
+
+    try {
+        const data = await sql<Match>`
+            SELECT * FROM matches
+            WHERE home_team_id = (SELECT id FROM teams WHERE name = 'Tottenham')
+            OR away_team_id = (SELECT id FROM teams WHERE name = 'Tottenham')
+            ORDER BY date ASC limit 5
+        `;
         return data.rows;
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch Spurs matches data.");
+    }
+}
+
+export async function fetchMyMatches() {
+    noStore();
+
+    try {
+        const data = await sql<Match>`
+            SELECT * FROM matches
+            WHERE home_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen' OR name = 'Brooklyn Hove Albion') 
+            OR away_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen'  OR name = 'Brooklyn Hove Albion')
+            ORDER BY date ASC limit 5
+        `;
+        return data.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch my matches data.");
     }
 }

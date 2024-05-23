@@ -69,9 +69,7 @@ async function seedSoccerStats(client) {
         console.log(`Created "teams", "matches", and "match_updates" tables`);
 
         // create teams for werder beermen, brooklyn hove albion, and all premier league teams such as tottenham, arsenal, chelsea, etc.
-        const createTeams = await client.sql`
-            INSERT INTO teams (name, image_filename) VALUES ('Werder Beermen', 'werder-beermen.png');
-            INSERT INTO teams (name, image_filename) VALUES ('Brooklyn Hove Albion', 'brooklyn-hove-albion.png');
+        const createEplTeams = await client.sql`
             INSERT INTO teams (name, image_filename) VALUES ('Tottenham', 'tottenham.png');
             INSERT INTO teams (name, image_filename) VALUES ('Arsenal', 'arsenal.png');
             INSERT INTO teams (name, image_filename) VALUES ('Chelsea', 'chelsea.png');
@@ -96,10 +94,20 @@ async function seedSoccerStats(client) {
             INSERT INTO teams (name, image_filename) VALUES ('Ipswich Town', 'ipswich-town.png');
         `;
 
+        const createMyTeams = await client.sql`
+            INSERT INTO teams (name, image_filename) VALUES ('Werder Beermen', 'werder-beermen.png');
+            INSERT INTO teams (name, image_filename) VALUES ('Brooklyn Hove Albion', 'brooklyn-hove-albion.png');
+            INSERT INTO teams (name) VALUES ('Brooklyn Blinders');
+            INSERT INTO teams (name) VALUES ('Pint men');
+            INSERT INTO teams (name) VALUES ('West Brooklyn Albion F.C.');
+            INSERT INTO teams (name) VALUES ('Brooklyn Hungarians');
+            INSERT INTO teams (name) VALUES ('FC Ginga');
+        `;
+
         console.log(`Inserted teams into "teams" table`);
 
         // insert into matches the last 5 tottenham games
-        const createMatches = await client.sql`
+        const createSpursMatches = await client.sql`
             INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
                 (SELECT id FROM teams WHERE name = 'Sheffield United'),
                 (SELECT id FROM teams WHERE name = 'Tottenham'),
@@ -108,7 +116,7 @@ async function seedSoccerStats(client) {
             INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
                 (SELECT id FROM teams WHERE name = 'Tottenham'),
                 (SELECT id FROM teams WHERE name = 'Manchester City'),
-                2, 0, '2024-5-14'
+                0, 2, '2024-5-14'
             );
             INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
                 (SELECT id FROM teams WHERE name = 'Tottenham'),
@@ -127,12 +135,42 @@ async function seedSoccerStats(client) {
             );
         `;
 
+        const createMyMatches = await client.sql`   
+            INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
+                (SELECT id FROM teams WHERE name = 'Brooklyn Blinders'),
+                (SELECT id FROM teams WHERE name = 'Werder Beermen'),
+                4, 5, '2024-5-16'
+            );
+            INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
+                (SELECT id FROM teams WHERE name = 'Werder Beermen'),
+                (SELECT id FROM teams WHERE name = 'Pint men'),
+                6, 1, '2024-5-9'
+            );
+            INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
+                (SELECT id FROM teams WHERE name = 'West Brooklyn Albion F.C.'),
+                (SELECT id FROM teams WHERE name = 'Werder Beermen'),
+                1, 4, '2024-5-2'
+            );
+            INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
+                (SELECT id FROM teams WHERE name = 'Werder Beermen'),
+                (SELECT id FROM teams WHERE name = 'Brooklyn Hungarians'),
+                4, 4, '2024-4-25'
+            );
+            INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date) VALUES (
+                (SELECT id FROM teams WHERE name = 'FC Ginga'),
+                (SELECT id FROM teams WHERE name = 'Brooklyn Hove Albion'),
+                3, 2, '2024-5-19'
+            );
+        `;
+
         return {
             createTeamsTable,
             createMatchesTable,
             createMatchUpdatesTable,
-            createTeams,
-            createMatches,
+            createEplTeams,
+            createMyTeams,
+            createSpursMatches,
+            createMyMatches,
         };
     } catch (error) {
         console.error("Error seeding soccer stats:", error);
