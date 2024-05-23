@@ -79,7 +79,11 @@ export default async function Page() {
                                         const tooltip = `${matchDate}: ${teamNameMap[match.home_team_id]} ${match.home_score} - ${match.away_score} ${teamNameMap[match.away_team_id]}`;
                                         return (
                                             <div key={match.id}>
-                                                <Tooltip title={tooltip}>
+                                                <Tooltip 
+                                                    title={tooltip} 
+                                                    enterTouchDelay={0} // Show tooltip immediately on touch
+                                                    leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
+                                                >
                                                     <div
                                                         key={match.id}
                                                         className={styles.box}
