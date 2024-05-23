@@ -11,8 +11,8 @@ export type MusicReview = {
 
 export type Match = {
     id: string;
-    home_team: string;
-    away_team: string;
+    home_team_id: string;
+    away_team_id: string;
     home_score: number;
     away_score: number;
     date: string;

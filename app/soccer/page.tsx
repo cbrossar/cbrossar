@@ -3,16 +3,20 @@ import Link from "next/link";
 import Tooltip from "@mui/material/Tooltip";
 import { fetchSpursMatches, fetchMyMatches, fetchTeams } from "@/app/lib/data";
 import styles from "./styles.module.css";
+import { Team } from "../lib/definitions";
 
 export default async function Page() {
     const teams = await fetchTeams();
-    const teamNameMap = teams.reduce((acc, team) => {
-        acc[team.id] = team.name;
-        return acc;
-    }, {});
+    const teamNameMap = teams.reduce(
+        (acc: { [key: string]: string }, team: Team) => {
+            acc[team.id] = team.name;
+            return acc;
+        },
+        {},
+    );
     const formTeamNames = ["Werder Beermen", "Tottenham"];
     const formTeams = formTeamNames.map((name) =>
-        teams.find((team) => team.name === name),
+        teams.find((team: Team) => team.name === name),
     );
     const spursMatches = await fetchSpursMatches();
     const myMatches = await fetchMyMatches();
@@ -24,6 +28,9 @@ export default async function Page() {
                 <>
                     <div className={styles.formHeader}>Form</div>
                     {formTeams.map((team) => {
+                        if (!team) {
+                            return null;
+                        }
                         const matches =
                             team.name === "Tottenham"
                                 ? spursMatches
