@@ -32,7 +32,7 @@ export default function Page() {
                 <div className={styles.caption}>Remesh</div>
             </div>
             <div className={styles.item}>
-                <Link href="https://drive.google.com/file/d/0B_un9hwZtr98cUJrLUY5XzBTOVE/view?resourcekey=0-KZFLd5dJLt9tSxrqM_tW0Q">
+                <Link href="/code/maxaer.jar">
                     <div className={styles.imageWrapper}>
                         <Image
                             src="/code/maxaer.png"
