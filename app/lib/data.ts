@@ -29,3 +29,15 @@ export async function fetchMusicReviewById(id: string) {
         throw new Error("Failed to fetch music review data.");
     }
 }
+
+export async function fetchMatches() {
+    noStore();
+
+    try {
+        const data = await sql`SELECT * FROM matches ORDER BY date DESC`;
+        return data.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch Spurs matches data.");
+    }
+}

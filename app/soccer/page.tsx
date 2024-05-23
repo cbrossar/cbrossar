@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { fetchMatches } from "@/app/lib/data";
 import styles from "./styles.module.css";
 
-export default function Page() {
+export default async function Page() {
     const my_matches = [
         {
             id: "1",
@@ -42,6 +43,8 @@ export default function Page() {
     ];
 
     const numMatches = my_matches.length;
+
+    const spursMatches = await fetchMatches();
 
     return (
         <div>
@@ -97,7 +100,7 @@ export default function Page() {
                     </div>
                     <div className={styles.formTeam}>Tottenham</div>
                     <div className={styles.resultRow}>
-                        {my_matches.reverse().map((match, idx) => {
+                        {spursMatches.reverse().map((match, idx) => {
                             const isWin = match.home_score > match.away_score;
                             const isDraw =
                                 match.home_score === match.away_score;
