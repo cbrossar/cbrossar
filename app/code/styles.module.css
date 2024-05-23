@@ -35,3 +35,9 @@
 .caption {
     margin-top: 10px; /* Space between the image and the caption */
 }
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
