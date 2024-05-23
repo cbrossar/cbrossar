@@ -45,19 +45,6 @@ export default function Page() {
                 <div className={styles.caption}>Maxaer</div>
             </div>
             <div className={styles.item}>
-                <Link href="10k">
-                    <div className={styles.imageWrapper}>
-                        <Image
-                            src="/code/10k.jpeg"
-                            width={200}
-                            height={200}
-                            alt="10k"
-                        />
-                    </div>
-                </Link>
-                <div className={styles.caption}>10,000th Day</div>
-            </div>
-            <div className={styles.item}>
                 <Link href="https://bracket-game.web.app/">
                     <div className={styles.imageWrapper}>
                         <Image
@@ -69,6 +56,19 @@ export default function Page() {
                     </div>
                 </Link>
                 <div className={styles.caption}>Bracket Game</div>
+            </div>
+            <div className={styles.item}>
+                <Link href="10k">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/10k.jpeg"
+                            width={200}
+                            height={200}
+                            alt="10k"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>10,000th Day</div>
             </div>
         </div>
     );
