@@ -36,7 +36,7 @@ export default async function Page() {
                                 ? spursMatches
                                 : myMatches;
                         const teamName =
-                            team.name === "Tottenham" ? team.name : "Cole";
+                            team.name === "Tottenham" ? team.name : "Cole's Teams";
 
                         return (
                             <div key={team.id} className={styles.formRow}>
