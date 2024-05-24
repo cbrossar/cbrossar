@@ -1,16 +1,6 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Navbar from "./ui/navbar";
-import "./globals.css";
-import StyledComponentsRegistry from "./lib/registry";
-import { Analytics } from "@vercel/analytics/react";
-
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-    title: "COLE",
-    description: "Cole Brossart",
-};
+// app/layout.tsx
+import ServerLayout from './server-layout';
+import ClientLayout from './client-layout';
 
 export default function RootLayout({
     children,
@@ -18,14 +8,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={inter.className}>
-                <StyledComponentsRegistry>
-                    <Navbar />
-                    <main>{children}</main>
-                    <Analytics />
-                </StyledComponentsRegistry>
-            </body>
-        </html>
+        <ServerLayout>
+            <ClientLayout>
+                {children}
+            </ClientLayout>
+        </ServerLayout>
     );
 }

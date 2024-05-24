@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./styles.module.css";
 
 export default function Page() {
+
     return (
         <div className={styles.grid}>
             <div className={styles.item}>
