@@ -103,6 +103,7 @@ export default function EditMusicReviewForm({
                         id="rating"
                         name="rating"
                         type="number"
+                        step="0.1"
                         placeholder="Enter rating"
                         className="block w-full rounded-md border border-gray-200 py-2 text-sm"
                         aria-describedby="rating-error"
