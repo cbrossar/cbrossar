@@ -69,15 +69,38 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     }
 
     try {
-        await sql`
-        INSERT INTO music_reviews (album, artist, rating, review, name, image_url)
-        VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${image_url})
-      `;
+        const result = await sql`
+            INSERT INTO music_reviews (album, artist, rating, review, name, image_url)
+            VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${image_url})
+            RETURNING id
+        `;
+
+        const id = result["rows"][0]["id"];
+
+        // send email
+        const email = process.env.EMAIL_USER;
+        const subject = "New Music Review";
+        const text = `A new music review has been added by ${name}. Album: ${album}, Artist: ${artist}, Rating: ${rating}, \nLink: https://cbrossar.com/music/${id}`;
+
+        const res = await fetch(
+            process.env.NEXT_PUBLIC_BASE_URL + "/api/send-email",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, subject, text }),
+            },
+        );
+
+        const emailResult = await res.json();
+        console.log(emailResult);
     } catch (error) {
         return {
             message: "Database Error: Failed to Create Music Review.",
         };
     }
+
     revalidatePath("/music");
     redirect("/music");
 }

@@ -1,6 +1,6 @@
 // app/layout.tsx
-import ServerLayout from './server-layout';
-import ClientLayout from './client-layout';
+import ServerLayout from "./server-layout";
+import ClientLayout from "./client-layout";
 
 export default function RootLayout({
     children,
@@ -9,9 +9,7 @@ export default function RootLayout({
 }>) {
     return (
         <ServerLayout>
-            <ClientLayout>
-                {children}
-            </ClientLayout>
+            <ClientLayout>{children}</ClientLayout>
         </ServerLayout>
     );
 }
