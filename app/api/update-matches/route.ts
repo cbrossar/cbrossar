@@ -22,7 +22,7 @@ export async function GET(request: Request) {
         }
 
         // Iterate over each .schedule-match element
-        $(".schedule-match").each((index, element) => {
+        $(".schedule-match").each(async (index, element) => {
             const matchDate = $(element).attr("data-date") ?? "";
             const awayScore = parseInt(
                 $(element).attr("data-away_score") ?? "0",
@@ -48,9 +48,9 @@ export async function GET(request: Request) {
             console.log(homeTeamName, awayTeamName);
 
             // create team if not exists
-            createTeam(client, homeTeamName);
-            createTeam(client, awayTeamName);
-            createMatch(
+            await createTeam(client, homeTeamName);
+            await createTeam(client, awayTeamName);
+            await createMatch(
                 client,
                 homeTeamName,
                 awayTeamName,
