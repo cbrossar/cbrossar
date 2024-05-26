@@ -21,16 +21,17 @@ export async function GET(request: Request) {
             return new Response("Failed to load the webpage", { status: 500 });
         }
 
-        // Iterate over each .schedule-match element
-        $(".schedule-match").each(async (index, element) => {
+        const scheduleMatches = $(".schedule-match").toArray();
+
+        for (const element of scheduleMatches) {
             const matchDate = $(element).attr("data-date") ?? "";
             const awayScore = parseInt(
                 $(element).attr("data-away_score") ?? "0",
-                0,
+                10,
             );
             const homeScore = parseInt(
                 $(element).attr("data-home_score") ?? "0",
-                0,
+                10,
             );
 
             console.log(matchDate, homeScore, awayScore);
@@ -60,13 +61,17 @@ export async function GET(request: Request) {
             );
 
             console.log("Attempted to create match.");
-        });
-        createMatchUpdate(client, true);
+        }
+
+        await createMatchUpdate(client, true);
+
+        await client.end();
 
         // Send back the extracted data as a response
         return new Response("Successfully crawled the webpage.");
     } catch (error) {
-        createMatchUpdate(client, false);
+        await createMatchUpdate(client, false);
+        await client.end();
         return new Response("Failed to crawl the webpage.", { status: 500 });
     }
 }
