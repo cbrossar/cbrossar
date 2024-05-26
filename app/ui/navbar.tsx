@@ -67,4 +67,5 @@ const HomeLink = styled(NavLink)`
     display: flex;
     align-items: center;
     justify-content: center;
+    letter-spacing: 1px;
 `;
