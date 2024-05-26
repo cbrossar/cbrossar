@@ -96,6 +96,7 @@ export async function createMatch(
     awayScore: number,
     date: string,
 ) {
+    console.log("Attempt to create match.");
     try {
         const existingMatch = await sql`
             SELECT id FROM matches
