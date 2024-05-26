@@ -2,12 +2,9 @@ export const dynamic = "force-dynamic"; // static by default, unless reading the
 
 import axios from "axios";
 import cheerio from "cheerio";
-import { createMatch } from "@/app/lib/data";
-const { db } = require("@vercel/postgres");
+import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
 
 export async function GET(request: Request) {
-    const client = await db.connect();
-
     try {
         const url =
             "https://register.ilovenysoccer.com/team/342/werder-beermen";
@@ -50,8 +47,8 @@ export async function GET(request: Request) {
             console.log(homeTeamName, awayTeamName);
 
             // create team if not exists
-            await createTeam(client, homeTeamName);
-            await createTeam(client, awayTeamName);
+            await createTeam(homeTeamName);
+            await createTeam(awayTeamName);
             await createMatch(
                 homeTeamName,
                 awayTeamName,
@@ -59,44 +56,14 @@ export async function GET(request: Request) {
                 awayScore,
                 matchDate,
             );
-
-            console.log("Attempted to create match.");
         }
 
-        await createMatchUpdate(client, true);
-
-        await client.end();
+        await createMatchUpdate(true);
 
         // Send back the extracted data as a response
         return new Response("Successfully crawled the webpage.");
     } catch (error) {
-        await createMatchUpdate(client, false);
-        await client.end();
+        await createMatchUpdate(false);
         return new Response("Failed to crawl the webpage.", { status: 500 });
-    }
-}
-
-async function createTeam(client: { sql: any }, name: string) {
-    try {
-        await client.sql`
-            INSERT INTO teams (name)
-            VALUES (${name})
-            ON CONFLICT (name) DO NOTHING
-        `;
-    } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to create team.");
-    }
-}
-
-async function createMatchUpdate(client: { sql: any }, success: boolean) {
-    try {
-        await client.sql`
-            INSERT INTO match_updates (success)
-            VALUES (${success})
-        `;
-    } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to create match update.");
     }
 }

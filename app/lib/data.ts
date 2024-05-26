@@ -114,3 +114,28 @@ export async function createMatch(
         throw new Error("Failed to create match.");
     }
 }
+
+export async function createTeam(name: string) {
+    try {
+        await sql`
+            INSERT INTO teams (name)
+            VALUES (${name})
+            ON CONFLICT (name) DO NOTHING
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create team.");
+    }
+}
+
+export async function createMatchUpdate(success: boolean) {
+    try {
+        await sql`
+            INSERT INTO match_updates (success)
+            VALUES (${success})
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create match update.");
+    }
+}
