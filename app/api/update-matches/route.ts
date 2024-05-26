@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"; // static by default, unless reading the
 
 import axios from "axios";
 import cheerio from "cheerio";
+import { createMatch } from "@/app/lib/data";
 const { db } = require("@vercel/postgres");
 
 export async function GET(request: Request) {
@@ -51,8 +52,7 @@ export async function GET(request: Request) {
             // create team if not exists
             await createTeam(client, homeTeamName);
             await createTeam(client, awayTeamName);
-            await createMatch(
-                client,
+            createMatch(
                 homeTeamName,
                 awayTeamName,
                 homeScore,
@@ -86,46 +86,6 @@ async function createTeam(client: { sql: any }, name: string) {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to create team.");
-    }
-}
-
-async function createMatch(
-    client: { sql: any },
-    homeTeamName: string,
-    awayTeamName: string,
-    homeScore: number,
-    awayScore: number,
-    date: string,
-) {
-    console.log("Attempt to create match.");
-    try {
-        const existingMatch = await client.sql`
-            SELECT id FROM matches
-            WHERE home_team_id = (SELECT id FROM teams WHERE name = ${homeTeamName})
-            AND away_team_id = (SELECT id FROM teams WHERE name = ${awayTeamName})
-            AND home_score = ${homeScore}
-            AND away_score = ${awayScore}
-            AND date = ${date}
-        `;
-
-        console.log("Existing match:", existingMatch);
-
-        if (existingMatch.rows.length === 0) {
-            console.log("Creating new match.");
-            await client.sql`
-                INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date)
-                VALUES (
-                    (SELECT id FROM teams WHERE name = ${homeTeamName}),
-                    (SELECT id FROM teams WHERE name = ${awayTeamName}),
-                    ${homeScore},
-                    ${awayScore},
-                    ${date}
-                )
-            `;
-        }
-    } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to create match.");
     }
 }
 
