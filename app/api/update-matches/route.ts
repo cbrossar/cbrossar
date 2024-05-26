@@ -52,7 +52,7 @@ export async function GET(request: Request) {
             // create team if not exists
             await createTeam(client, homeTeamName);
             await createTeam(client, awayTeamName);
-            createMatch(
+            await createMatch(
                 homeTeamName,
                 awayTeamName,
                 homeScore,
