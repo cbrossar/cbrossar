@@ -29,8 +29,20 @@
     margin: auto auto;
 }
 
-.imageWrapper:hover {
-    opacity: 0.5;
+.imageWrapper {
+    position: relative;
+}
+
+@media (min-width: 900px) {
+    .imageWrapper:hover {
+        opacity: 0.5;
+    }
+}
+
+@media (max-width: 900px) {
+    .imageWrapper:active {
+        opacity: 0.5;
+    }
 }
 
 .caption {
