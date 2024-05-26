@@ -2,7 +2,7 @@
     "crons": [
         {
             "path": "/api/update-matches",
-            "schedule": "37 17 * * *"
+            "schedule": "42 21 * * *"
         }
     ]
 }
