@@ -2,9 +2,11 @@ export const dynamic = "force-dynamic"; // static by default, unless reading the
 
 import axios from "axios";
 import cheerio from "cheerio";
-import { createTeam, createMatch, createMatchUpdate } from "@/app/lib/data";
+const { db } = require("@vercel/postgres");
 
 export async function GET(request: Request) {
+    const client = await db.connect();
+
     try {
         const url =
             "https://register.ilovenysoccer.com/team/342/werder-beermen";
@@ -46,9 +48,10 @@ export async function GET(request: Request) {
             console.log(homeTeamName, awayTeamName);
 
             // create team if not exists
-            createTeam(homeTeamName);
-            createTeam(awayTeamName);
+            createTeam(client, homeTeamName);
+            createTeam(client, awayTeamName);
             createMatch(
+                client,
                 homeTeamName,
                 awayTeamName,
                 homeScore,
@@ -58,12 +61,77 @@ export async function GET(request: Request) {
 
             console.log("Attempted to create match.");
         });
-        createMatchUpdate(true);
+        createMatchUpdate(client, true);
 
         // Send back the extracted data as a response
         return new Response("Successfully crawled the webpage.");
     } catch (error) {
-        createMatchUpdate(false);
+        createMatchUpdate(client, false);
         return new Response("Failed to crawl the webpage.", { status: 500 });
+    }
+}
+
+async function createTeam(client: { sql: any }, name: string) {
+    try {
+        await client.sql`
+            INSERT INTO teams (name)
+            VALUES (${name})
+            ON CONFLICT (name) DO NOTHING
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create team.");
+    }
+}
+
+async function createMatch(
+    client: { sql: any },
+    homeTeamName: string,
+    awayTeamName: string,
+    homeScore: number,
+    awayScore: number,
+    date: string,
+) {
+    console.log("Attempt to create match.");
+    try {
+        const existingMatch = await client.sql`
+            SELECT id FROM matches
+            WHERE home_team_id = (SELECT id FROM teams WHERE name = ${homeTeamName})
+            AND away_team_id = (SELECT id FROM teams WHERE name = ${awayTeamName})
+            AND home_score = ${homeScore}
+            AND away_score = ${awayScore}
+            AND date = ${date}
+        `;
+
+        console.log("Existing match:", existingMatch);
+
+        if (existingMatch.rows.length === 0) {
+            console.log("Creating new match.");
+            await client.sql`
+                INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date)
+                VALUES (
+                    (SELECT id FROM teams WHERE name = ${homeTeamName}),
+                    (SELECT id FROM teams WHERE name = ${awayTeamName}),
+                    ${homeScore},
+                    ${awayScore},
+                    ${date}
+                )
+            `;
+        }
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create match.");
+    }
+}
+
+async function createMatchUpdate(client: { sql: any }, success: boolean) {
+    try {
+        await client.sql`
+            INSERT INTO match_updates (success)
+            VALUES (${success})
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create match update.");
     }
 }
