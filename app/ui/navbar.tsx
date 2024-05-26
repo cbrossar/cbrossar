@@ -48,13 +48,22 @@ const NavLink = styled(Link)`
     text-transform: uppercase;
     text-decoration: none;
 
-    &:hover {
-        background-color: black;
-        color: ${Colors.yellow};
+    @media (max-width: ${MobileWidth}) {
+        display: none;
+    }
+
+    @media (min-width: ${MobileWidth}) {
+        &:hover {
+            background-color: black;
+            color: ${Colors.yellow};
+        }
     }
 
     @media (max-width: ${MobileWidth}) {
-        display: none;
+        &:active {
+            background-color: black;
+            color: ${Colors.yellow};
+        }
     }
 `;
 
