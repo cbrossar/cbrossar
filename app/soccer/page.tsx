@@ -5,6 +5,8 @@ import { fetchSpursMatches, fetchMyMatches, fetchTeams } from "@/app/lib/data";
 import styles from "./styles.module.css";
 import { Team } from "../lib/definitions";
 
+const SPURS = "Tottenham Hotspur FC";
+
 export default async function Page() {
     const teams = await fetchTeams();
     const teamNameMap = teams.reduce(
@@ -14,7 +16,7 @@ export default async function Page() {
         },
         {},
     );
-    const formTeamNames = ["Werder Beermen", "Tottenham"];
+    const formTeamNames = ["Werder Beermen", SPURS];
     const formTeams = formTeamNames.map((name) =>
         teams.find((team: Team) => team.name === name),
     );
@@ -32,12 +34,10 @@ export default async function Page() {
                             return null;
                         }
                         const matches =
-                            team.name === "Tottenham"
-                                ? spursMatches
-                                : myMatches;
+                            team.name === SPURS ? spursMatches : myMatches;
                         const teamName =
-                            team.name === "Tottenham"
-                                ? team.name
+                            team.name === SPURS
+                                ? team.name.slice(0, -11)
                                 : "Cole's Teams";
 
                         return (
@@ -54,7 +54,7 @@ export default async function Page() {
                                     {teamName}
                                 </div>
                                 <div className={styles.resultRow}>
-                                    {matches.map((match, idx) => {
+                                    {matches.reverse().map((match, idx) => {
                                         const isHome =
                                             teamNameMap[match.home_team_id] ===
                                             team.name;
@@ -78,7 +78,21 @@ export default async function Page() {
                                             month: "short",
                                             day: "numeric",
                                         });
-                                        const tooltip = `${matchDate}: ${teamNameMap[match.home_team_id]} ${match.home_score} - ${match.away_score} ${teamNameMap[match.away_team_id]}`;
+                                        const homeTeamName = teamNameMap[
+                                            match.home_team_id
+                                        ].endsWith(" FC")
+                                            ? teamNameMap[
+                                                  match.home_team_id
+                                              ].slice(0, -3)
+                                            : teamNameMap[match.home_team_id];
+                                        const awayTeamName = teamNameMap[
+                                            match.away_team_id
+                                        ].endsWith(" FC")
+                                            ? teamNameMap[
+                                                  match.away_team_id
+                                              ].slice(0, -3)
+                                            : teamNameMap[match.away_team_id];
+                                        const tooltip = `${matchDate}: ${homeTeamName} ${match.home_score} - ${match.away_score} ${awayTeamName}`;
                                         return (
                                             <div key={match.id}>
                                                 <Tooltip

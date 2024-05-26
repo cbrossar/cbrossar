@@ -48,9 +48,9 @@ export async function fetchSpursMatches() {
     try {
         const data = await sql<Match>`
             SELECT * FROM matches
-            WHERE home_team_id = (SELECT id FROM teams WHERE name = 'Tottenham')
-            OR away_team_id = (SELECT id FROM teams WHERE name = 'Tottenham')
-            ORDER BY date ASC limit 5
+            WHERE home_team_id = (SELECT id FROM teams WHERE name = 'Tottenham Hotspur FC')
+            OR away_team_id = (SELECT id FROM teams WHERE name = 'Tottenham Hotspur FC')
+            ORDER BY date DESC limit 5
         `;
         return data.rows;
     } catch (error) {
@@ -67,7 +67,7 @@ export async function fetchMyMatches() {
             SELECT * FROM matches
             WHERE home_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen' OR name = 'Brooklyn Hove Albion') 
             OR away_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen'  OR name = 'Brooklyn Hove Albion')
-            ORDER BY date ASC limit 5
+            ORDER BY date DESC limit 5
         `;
         return data.rows;
     } catch (error) {

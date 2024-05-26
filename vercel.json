@@ -1,8 +1,12 @@
 {
     "crons": [
         {
-            "path": "/api/update-matches",
+            "path": "/api/update-beermen-matches",
             "schedule": "0 3 * * *"
+        },
+        {
+            "path": "/api/update-hotspur-matches",
+            "schedule": "0 3 * * 1"
         }
     ]
 }
