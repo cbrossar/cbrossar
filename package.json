@@ -18,6 +18,8 @@
         "@vercel/analytics": "^1.2.2",
         "@vercel/blob": "^0.23.2",
         "@vercel/postgres": "^0.8.0",
+        "axios": "^1.7.2",
+        "cheerio": "^1.0.0-rc.12",
         "clsx": "^2.1.1",
         "date-fns": "^3.3.1",
         "dotenv": "^16.4.5",

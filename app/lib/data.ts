@@ -75,3 +75,66 @@ export async function fetchMyMatches() {
         throw new Error("Failed to fetch my matches data.");
     }
 }
+
+export async function createTeam(name: string) {
+    try {
+        await sql`
+            INSERT INTO teams (name)
+            VALUES (${name})
+            ON CONFLICT (name) DO NOTHING
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create team.");
+    }
+}
+
+export async function createMatch(
+    homeTeamName: string,
+    awayTeamName: string,
+    homeScore: number,
+    awayScore: number,
+    date: string,
+) {
+    try {
+        const existingMatch = await sql`
+            SELECT id FROM matches
+            WHERE home_team_id = (SELECT id FROM teams WHERE name = ${homeTeamName})
+            AND away_team_id = (SELECT id FROM teams WHERE name = ${awayTeamName})
+            AND home_score = ${homeScore}
+            AND away_score = ${awayScore}
+            AND date = ${date}
+        `;
+
+        console.log("Existing match:", existingMatch);
+
+        if (existingMatch.rows.length === 0) {
+            console.log("Creating new match.");
+            await sql`
+                INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date)
+                VALUES (
+                    (SELECT id FROM teams WHERE name = ${homeTeamName}),
+                    (SELECT id FROM teams WHERE name = ${awayTeamName}),
+                    ${homeScore},
+                    ${awayScore},
+                    ${date}
+                )
+            `;
+        }
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create match.");
+    }
+}
+
+export async function createMatchUpdate(success: boolean) {
+    try {
+        await sql`
+            INSERT INTO match_updates (success)
+            VALUES (${success})
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create match update.");
+    }
+}

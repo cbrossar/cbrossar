@@ -75,7 +75,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
             RETURNING id
         `;
 
-        const id = result["rows"][0]["id"];
+        const id = result.rows[0]["id"];
 
         // send email
         const email = process.env.EMAIL_USER;
