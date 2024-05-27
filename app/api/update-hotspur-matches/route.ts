@@ -8,8 +8,17 @@ const TEAM_ID = "73"; // Tottenham Hotspur's team ID in Football-Data.org
 
 export async function GET(request: Request) {
     try {
+        // 3 weeks ago
+        const dateFrom = new Date();
+        dateFrom.setDate(dateFrom.getDate() - 21);
+        const dateFromString = dateFrom.toISOString().split("T")[0];
+
+        // today
+        const dateTo = new Date();
+        const dateToString = dateTo.toISOString().split("T")[0];
+
         const response = await axios.get(
-            `https://api.football-data.org/v2/teams/${TEAM_ID}/matches`,
+            `https://api.football-data.org/v4/teams/${TEAM_ID}/matches?dateFrom=${dateFromString}&dateTo=${dateToString}`,
             {
                 headers: {
                     "X-Auth-Token": API_KEY,
@@ -20,10 +29,11 @@ export async function GET(request: Request) {
         const fixtures = response.data.matches;
 
         for (const fixture of fixtures) {
+            console.log(fixture);
             const homeTeamName = fixture.homeTeam.name;
             const awayTeamName = fixture.awayTeam.name;
-            const awayScore = fixture.score.fullTime.awayTeam;
-            const homeScore = fixture.score.fullTime.homeTeam;
+            const awayScore = fixture.score.fullTime.away;
+            const homeScore = fixture.score.fullTime.home;
             const matchDate = fixture.utcDate;
 
             console.log(
