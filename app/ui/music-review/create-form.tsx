@@ -163,7 +163,7 @@ export default function Form() {
                         htmlFor="image_file"
                         className="mb-2 block text-sm font-medium"
                     >
-                        Image (Crop to 1:1 Aspect Ratio)
+                        Image (Square - 1:1 Aspect Ratio)
                     </label>
                     <input
                         id="image_file"
