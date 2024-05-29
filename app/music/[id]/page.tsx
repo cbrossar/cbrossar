@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         year: "numeric",
         month: "long",
         day: "numeric",
-        timeZone: "America/New_York"
+        timeZone: "America/New_York",
     });
 
     return (
