@@ -109,7 +109,7 @@ export default function Form() {
                         placeholder="Live with the album for at least a week. Share your thoughts!"
                         className="block w-full rounded-md border border-gray-200 py-2 text-sm"
                         aria-describedby="review-error"
-                        rows={4}
+                        rows={5}
                     />
                     <div
                         id="review-error"

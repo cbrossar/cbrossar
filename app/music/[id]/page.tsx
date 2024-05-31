@@ -40,7 +40,14 @@ export default async function Page({ params }: { params: { id: string } }) {
                 </div>
             </div>
             <div className={styles.review}>
-                <p className={styles.reviewText}>{review.review}</p>
+                <p className={styles.reviewText}>
+                    {review.review.split('\n').map((line, index) => (
+                        <span key={index}>
+                            {line}
+                            <br />
+                        </span>
+                    ))}
+                </p>
                 <p className={styles.reviewedBy}>
                     - {review.name}, {reviewDate}
                 </p>

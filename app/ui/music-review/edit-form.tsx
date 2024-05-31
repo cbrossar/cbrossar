@@ -141,7 +141,7 @@ export default function EditMusicReviewForm({
                         className="block w-full rounded-md border border-gray-200 py-2 text-sm"
                         aria-describedby="review-error"
                         defaultValue={musicReview.review}
-                        rows={4}
+                        rows={5}
                     />
                     <div
                         id="review-error"
