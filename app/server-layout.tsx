@@ -7,7 +7,7 @@ import StyledComponentsRegistry from "./lib/registry";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "COLE",
+    title: "Cole Brossart",
     description: "Cole Brossart",
 };
 
