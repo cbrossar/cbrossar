@@ -38,7 +38,7 @@ export default async function Page() {
                         const teamName =
                             team.name === SPURS
                                 ? team.name.slice(0, -11)
-                                : "Cole's Teams";
+                                : team.name;
 
                         return (
                             <div key={team.id} className={styles.formRow}>
