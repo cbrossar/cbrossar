@@ -13,8 +13,6 @@ export async function GET(request: Request) {
         // Navigate to the login page
         await page.goto(bethpage_url); // Replace with actual login URL
 
-        await page.screenshot({ path: "screenshot1.png" }); // Change the path as needed
-
         // Click the "Resident" button
         await page.waitForSelector(".booking-classes .btn-primary:nth-of-type(1)");
         await page.click(".booking-classes .btn-primary:nth-of-type(1)");
@@ -23,12 +21,8 @@ export async function GET(request: Request) {
         await page.waitForSelector(".btn.btn-lg.btn-primary.login");
         await page.click(".btn.btn-lg.btn-primary.login");
 
-
         // Wait for the login form to appear
         await page.waitForSelector("#login_email"); // Wait for the email field to be available
-
-        await page.screenshot({ path: "screenshot2.png" }); // Change the path as needed
-
 
         // Enter login credentials
         await page.type("#login_email", process.env.BETHPAGE_EMAIL as string); // Replace with your email
