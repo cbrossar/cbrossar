@@ -22,8 +22,11 @@ export async function GET(request: Request) {
         await page.waitForSelector("#login_email"); // Wait for the email field to be available
 
         // Enter login credentials
-        await page.type("#login_email", process.env.BETHPAGE_EMAIL); // Replace with your email
-        await page.type("#login_password", process.env.BETHPAGE_PASSWORD); // Replace with your password
+        await page.type("#login_email", process.env.BETHPAGE_EMAIL as string); // Replace with your email
+        await page.type(
+            "#login_password",
+            process.env.BETHPAGE_PASSWORD as string,
+        ); // Replace with your password
         await page.click(".modal-content .btn.btn-primary.login");
 
         await page.waitForSelector("#schedule_select");
@@ -36,7 +39,10 @@ export async function GET(request: Request) {
         // Extract the text content of all booking labels with class .booking-start-time-label
         const bookingLabels = await page.$$eval(
             ".booking-start-time-label",
-            (elements) => elements.map((element) => element.textContent.trim()),
+            (elements) =>
+                elements.map((element) =>
+                    element.textContent ? element.textContent.trim() : "",
+                ),
         );
 
         await browser.close();
