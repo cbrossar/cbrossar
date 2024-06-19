@@ -5,7 +5,7 @@ export async function GET(request: Request) {
         const bethpage_url =
             "https://foreupsoftware.com/index.php/booking/19765/2431#/teetimes";
 
-        const browser = await puppeteer.launch({ headless: false }); // Set headless: true for production
+        const browser = await puppeteer.launch({ headless: true }); // Set headless: true for production
         const page = await browser.newPage();
 
         // Navigate to the login page
