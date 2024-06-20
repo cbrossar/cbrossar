@@ -18,7 +18,7 @@ async function getBrowser() {
         });
         return browser;
     } else {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({ headless: false });
         return browser;
     }
 }
@@ -58,6 +58,7 @@ export async function GET(request: Request) {
             "#login_password",
             process.env.BETHPAGE_PASSWORD as string,
         ); // Replace with your password
+
         await page.click(".modal-content .btn.btn-primary.login");
 
         await page.waitForSelector("#schedule_select");
@@ -65,7 +66,12 @@ export async function GET(request: Request) {
         // Select the desired option (Bethpage Blue Course)
         await page.select("#schedule_select", "2433");
 
-        await page.waitForSelector(".time-tile .time-summary");
+        // await page.waitForSelector(".time-tile .time-summary");
+
+        // Wait for the loading element to disappear
+        await page.waitForSelector(".loading-wrapper.loading", {
+            hidden: true,
+        });
 
         // Extract the text content of all booking labels with class .booking-start-time-label
         // @ts-ignore
