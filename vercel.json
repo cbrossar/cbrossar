@@ -10,8 +10,8 @@
         }
     ],
     "functions": {
-        "api/**/*": {
+        "api/bethpage/route.ts": {
           "maxDuration": 60
         }
-      }
+    }
 }
