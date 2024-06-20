@@ -7,7 +7,7 @@ interface BookingData {
         [date: string]: {
             time: string;
             holes: number;
-            people: number;
+            players: number;
         }[];
     };
 }
@@ -63,15 +63,15 @@ const BethpageBookingPage = () => {
                                     {bookingData[courseName][date].map(
                                         (booking) => (
                                             <li
-                                                key={`${booking.time}-${booking.holes}-${booking.people}`}
+                                                key={`${booking.time}-${booking.holes}-${booking.players}`}
                                                 className={styles.bookingItem}
                                             >
                                                 <strong>Time:</strong>{" "}
                                                 {booking.time},{" "}
                                                 <strong>Holes:</strong>{" "}
                                                 {booking.holes},{" "}
-                                                <strong>People:</strong>{" "}
-                                                {booking.people}
+                                                <strong>Players:</strong>{" "}
+                                                {booking.players}
                                             </li>
                                         ),
                                     )}
