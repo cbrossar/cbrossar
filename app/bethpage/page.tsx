@@ -30,6 +30,20 @@ const BethpageBookingPage = () => {
         fetchData();
     };
 
+    const getDayOfWeek = (dateString: string) => {
+        const daysOfWeek = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+        ];
+        const date = new Date(dateString);
+        return daysOfWeek[date.getUTCDay()];
+    };
+
     if (loading) {
         return <p className={styles.loading}>Loading...</p>; // Apply loading style
     }
@@ -51,7 +65,9 @@ const BethpageBookingPage = () => {
                     <h3 className={styles.courseName}>{courseName}</h3>
                     {Object.keys(bookingData[courseName]).map((date) => (
                         <div key={date} className={styles.dateContainer}>
-                            <h4 className={styles.date}>{date}</h4>
+                            <h4 className={styles.date}>
+                                {date} ({getDayOfWeek(date)})
+                            </h4>
                             {bookingData[courseName][date].length > 0 ? (
                                 <ul className={styles.bookingList}>
                                     {bookingData[courseName][date].map(
