@@ -1,7 +1,7 @@
 export const maxDuration = 60;
 
 import puppeteerCore from "puppeteer-core";
-import puppeteer from "puppeteer";
+import puppeteer, { Page } from "puppeteer";
 import chromium from "@sparticuz/chromium";
 
 export const dynamic = "force-dynamic";
@@ -22,21 +22,19 @@ async function getBrowser() {
         return browser;
     }
 }
+
 export async function GET(request: Request) {
     try {
         const bethpage_url =
             "https://foreupsoftware.com/index.php/booking/19765/2431#/teetimes";
 
-        // const browser = await puppeteer.launch({ headless: true });
         const browser = await getBrowser();
-
         const page = await browser.newPage();
 
         await page.setUserAgent(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
         );
 
-        // Navigate to the login page
         await page.goto(bethpage_url); // Replace with actual login URL
 
         // Click the "Resident" button
@@ -50,7 +48,7 @@ export async function GET(request: Request) {
         await page.click(".btn.btn-lg.btn-primary.login");
 
         // Wait for the login form to appear
-        await page.waitForSelector("#login_email"); // Wait for the email field to be available
+        await page.waitForSelector("#login_email");
 
         // Enter login credentials
         await page.type("#login_email", process.env.BETHPAGE_EMAIL as string); // Replace with your email
@@ -61,34 +59,89 @@ export async function GET(request: Request) {
 
         await page.click(".modal-content .btn.btn-primary.login");
 
-        await page.waitForSelector("#schedule_select");
+        await page.waitForSelector("#date-menu");
 
-        // Select the desired option (Bethpage Blue Course)
-        await page.select("#schedule_select", "2433");
+        // Define the dates
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const weekAhead = new Date(today);
+        weekAhead.setDate(today.getDate() + 7);
 
-        // await page.waitForSelector(".time-tile .time-summary");
+        const formattedTomorrow = `${(tomorrow.getMonth() + 1).toString().padStart(2, "0")}-${tomorrow.getDate().toString().padStart(2, "0")}-${tomorrow.getFullYear()}`;
+        const formattedWeekAhead = `${(weekAhead.getMonth() + 1).toString().padStart(2, "0")}-${weekAhead.getDate().toString().padStart(2, "0")}-${weekAhead.getFullYear()}`;
 
-        // Wait for the loading element to disappear
-        await page.waitForSelector(".loading-wrapper.loading", {
-            hidden: true,
-        });
+        const responseDict: Record<string, any> = {};
 
-        // Extract the text content of all booking labels with class .booking-start-time-label
-        // @ts-ignore
-        const bookingTimes = await page.$$eval(
-            ".booking-start-time-label",
-            (elements: Element[]) =>
-                elements.map((element) => (element as HTMLElement).innerText),
-        );
+        const courses = [
+            { name: "Bethpage Black", value: "2431" },
+            { name: "Bethpage Blue", value: "2433" },
+        ];
+
+        for (const course of courses) {
+            // Switch to the desired course
+            await page.select("#schedule_select", course.value);
+
+            // Extract booking times for tomorrow
+            await extractBookingTimes(
+                page,
+                formattedTomorrow,
+                course,
+                responseDict,
+            );
+
+            // Extract booking times for a week ahead
+            await extractBookingTimes(
+                page,
+                formattedWeekAhead,
+                course,
+                responseDict,
+            );
+        }
 
         await browser.close();
 
         // Send back the extracted data as a response
-        return new Response(JSON.stringify(bookingTimes), {
+        return new Response(JSON.stringify(responseDict), {
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
         console.error(error);
         return new Response("Failed to crawl the webpage.", { status: 500 });
     }
+}
+
+// Define the Course type
+type Course = {
+    name: string;
+    value: string;
+};
+
+// Define the ResponseDict type
+type ResponseDict = {
+    [key: string]: {
+        [date: string]: string[];
+    };
+};
+
+// Helper function to extract booking times
+async function extractBookingTimes(
+    page: any,
+    date: string,
+    course: Course,
+    responseDict: ResponseDict,
+): Promise<void> {
+    await page.select("#date-menu", date);
+    await page.waitForSelector(".loading-wrapper.loading", {
+        hidden: true,
+    });
+
+    const bookingTimes: string[] = await page.$$eval(
+        ".booking-start-time-label",
+        (elements: Element[]) =>
+            elements.map((element) => (element as HTMLElement).innerText),
+    );
+
+    responseDict[course.name] = responseDict[course.name] || {};
+    responseDict[course.name][date] = bookingTimes;
 }
