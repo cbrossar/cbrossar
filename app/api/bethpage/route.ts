@@ -83,7 +83,7 @@ export async function GET(request: Request) {
             await page.select("#schedule_select", course.value);
 
             // Extract booking times for tomorrow
-            await extractBookingTimes(
+            await extractBookingInfo(
                 page,
                 formattedTomorrow,
                 course,
@@ -91,7 +91,7 @@ export async function GET(request: Request) {
             );
 
             // Extract booking times for a week ahead
-            await extractBookingTimes(
+            await extractBookingInfo(
                 page,
                 formattedWeekAhead,
                 course,
@@ -117,15 +117,21 @@ type Course = {
     value: string;
 };
 
+interface BookingInfo {
+    time: string;
+    holes: number;
+    players: number;
+}
+
 // Define the ResponseDict type
 type ResponseDict = {
     [key: string]: {
-        [date: string]: string[];
+        [date: string]: BookingInfo[];
     };
 };
 
-// Helper function to extract booking times
-async function extractBookingTimes(
+// Helper function to extract booking times, holes, and players
+async function extractBookingInfo(
     page: any,
     date: string,
     course: Course,
@@ -136,12 +142,28 @@ async function extractBookingTimes(
         hidden: true,
     });
 
-    const bookingTimes: string[] = await page.$$eval(
-        ".booking-start-time-label",
+    const bookingInfoList: BookingInfo[] = await page.$$eval(
+        ".time-summary",
         (elements: Element[]) =>
-            elements.map((element) => (element as HTMLElement).innerText),
+            elements.map((element) => {
+                const timeElement = element.querySelector(
+                    ".booking-start-time-label",
+                ) as HTMLElement;
+                const holesElement = element.querySelector(
+                    ".booking-slot-holes span",
+                ) as HTMLElement;
+                const playersElement = element.querySelector(
+                    ".booking-slot-players span",
+                ) as HTMLElement;
+
+                return {
+                    time: timeElement.innerText.trim(),
+                    holes: parseInt(holesElement.innerText),
+                    players: parseInt(playersElement.innerText),
+                };
+            }),
     );
 
     responseDict[course.name] = responseDict[course.name] || {};
-    responseDict[course.name][date] = bookingTimes;
+    responseDict[course.name][date] = bookingInfoList;
 }
