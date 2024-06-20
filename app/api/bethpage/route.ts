@@ -18,7 +18,7 @@ async function getBrowser() {
         });
         return browser;
     } else {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({headless: true});
         return browser;
     }
 }
