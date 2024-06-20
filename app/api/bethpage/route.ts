@@ -62,14 +62,14 @@ export async function GET(request: Request) {
         await page.waitForSelector("#date-menu");
 
         // Define the dates
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
-        const weekAhead = new Date(today);
-        weekAhead.setDate(today.getDate() + 7);
+        // const day0 = new Date();
+        // const day1 = new Date(day0);
+        // day1.setDate(day0.getDate() + 1);
+        // const day7 = new Date(day0);
+        // day7.setDate(day0.getDate() + 7);
 
-        const formattedTomorrow = `${(tomorrow.getMonth() + 1).toString().padStart(2, "0")}-${tomorrow.getDate().toString().padStart(2, "0")}-${tomorrow.getFullYear()}`;
-        const formattedWeekAhead = `${(weekAhead.getMonth() + 1).toString().padStart(2, "0")}-${weekAhead.getDate().toString().padStart(2, "0")}-${weekAhead.getFullYear()}`;
+        // const fmtDay1 = `${(day1.getMonth() + 1).toString().padStart(2, "0")}-${day1.getDate().toString().padStart(2, "0")}-${day1.getFullYear()}`;
+        // const fmtDay7 = `${(day7.getMonth() + 1).toString().padStart(2, "0")}-${day7.getDate().toString().padStart(2, "0")}-${day7.getFullYear()}`;
 
         const responseDict: Record<string, any> = {};
 
@@ -78,25 +78,23 @@ export async function GET(request: Request) {
             { name: "Bethpage Blue", value: "2433" },
         ];
 
-        for (const course of courses) {
-            // Switch to the desired course
-            await page.select("#schedule_select", course.value);
+        // Loop over days 1, 2, 3, and 7
+        const daysToLoop = [1, 2, 3, 7];
+        for (const dayOffset of daysToLoop) {
+            const day = new Date();
+            day.setDate(day.getDate() + dayOffset);
+            const fmtDay = `${(day.getMonth() + 1).toString().padStart(2, "0")}-${day.getDate().toString().padStart(2, "0")}-${day.getFullYear()}`;
 
-            // Extract booking times for tomorrow
-            await extractBookingInfo(
-                page,
-                formattedTomorrow,
-                course,
-                responseDict,
-            );
+            for (const course of courses) {
+                await page.select("#schedule_select", course.value);
 
-            // Extract booking times for a week ahead
-            await extractBookingInfo(
-                page,
-                formattedWeekAhead,
-                course,
-                responseDict,
-            );
+                await extractBookingInfo(
+                    page,
+                    fmtDay,
+                    course,
+                    responseDict,
+                );
+            }
         }
 
         await browser.close();
