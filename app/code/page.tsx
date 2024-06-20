@@ -70,6 +70,19 @@ export default function Page() {
                 </Link>
                 <div className={styles.caption}>10,000th Day</div>
             </div>
+            <div className={styles.item}>
+                <Link href="api/bethpage">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/bethpage.jpeg"
+                            width={200}
+                            height={200}
+                            alt="bethpage"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>Bethpage</div>
+            </div>
         </div>
     );
 }
