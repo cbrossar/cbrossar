@@ -71,7 +71,7 @@ export default function Page() {
                 <div className={styles.caption}>10,000th Day</div>
             </div>
             <div className={styles.item}>
-                <Link href="api/bethpage">
+                <Link href="bethpage">
                     <div className={styles.imageWrapper}>
                         <Image
                             src="/code/bethpage.jpeg"

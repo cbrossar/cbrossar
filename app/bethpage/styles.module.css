@@ -1,0 +1,42 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.courseContainer {
+    margin-bottom: 30px;
+}
+
+.courseName {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.dateContainer {
+    margin-bottom: 15px;
+}
+
+.date {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.bookingList {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.bookingItem {
+    margin-bottom: 5px;
+}
+
+.noBooking {
+    color: #888;
+    font-style: italic;
+}
