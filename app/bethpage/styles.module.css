@@ -40,3 +40,35 @@
     color: #888;
     font-style: italic;
 }
+
+.refreshButton {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 20px;
+    background-color: #4c77af;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition:
+        background-color 0.3s,
+        transform 0.3s;
+}
+
+.refreshButton:hover {
+    background-color: #416998; /* Slightly darker blue for hover state */
+    transform: scale(1.05);
+}
+
+.refreshButton:active {
+    background-color: #36597f; /* Even darker blue for active state */
+    transform: scale(0.95);
+}
+
+.loading,
+.error {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 20px;
+}

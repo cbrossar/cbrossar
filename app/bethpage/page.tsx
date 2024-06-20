@@ -9,24 +9,26 @@ const BethpageBookingPage = () => {
     const [bookingData, setBookingData] = useState<BookingData>({});
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchBookingData = async () => {
-            try {
-                if (typeof window !== "undefined") {
-                    const data = await fetchBethpage();
-                    setBookingData(data);
-                }
-            } catch (error) {
-                setError(
-                    "Error fetching booking data. Please try again later.",
-                );
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await fetchBethpage();
+            setBookingData(data);
+        } catch (error) {
+            setError("Error fetching booking data. Please try again later.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchBookingData();
+    useEffect(() => {
+        fetchData();
     }, []);
+
+    const handleRefresh = () => {
+        fetchData();
+    };
 
     if (loading) {
         return <p className={styles.loading}>Loading...</p>; // Apply loading style
@@ -41,6 +43,9 @@ const BethpageBookingPage = () => {
             <h1 className={styles.heading}>
                 Bethpage Golf Course Booking Information
             </h1>
+            <button onClick={handleRefresh} className={styles.refreshButton}>
+                Refresh
+            </button>
             {Object.keys(bookingData).map((courseName) => (
                 <div key={courseName} className={styles.courseContainer}>
                     <h3 className={styles.courseName}>{courseName}</h3>
