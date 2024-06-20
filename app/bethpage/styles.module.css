@@ -72,3 +72,29 @@
     font-size: 1.2em;
     margin-top: 20px;
 }
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.loading {
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.progressBar {
+    width: 80%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 20px;
+    background-color: #4c77af;
+    width: 0;
+    transition: width 0.1s linear;
+}

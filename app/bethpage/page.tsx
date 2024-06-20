@@ -8,10 +8,12 @@ const BethpageBookingPage = () => {
     const [loading, setLoading] = useState(true);
     const [bookingData, setBookingData] = useState<BookingData>({});
     const [error, setError] = useState<string | null>(null);
+    const [progress, setProgress] = useState(0);
 
     const fetchData = async () => {
         setLoading(true);
         setError(null);
+        setProgress(0);
         try {
             const data = await fetchBethpage();
             setBookingData(data);
@@ -25,6 +27,20 @@ const BethpageBookingPage = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (loading) {
+            const interval = setInterval(() => {
+                setProgress((prevProgress) => {
+                    const newProgress = prevProgress + 0.5; // Increment progress for 20 seconds
+                    if (newProgress >= 100) {
+                        clearInterval(interval);
+                    }
+                    return newProgress;
+                });
+            }, 100);
+        }
+    }, [loading]);
 
     const handleRefresh = () => {
         fetchData();
@@ -45,7 +61,17 @@ const BethpageBookingPage = () => {
     };
 
     if (loading) {
-        return <p className={styles.loading}>Loading...</p>; // Apply loading style
+        return (
+            <div className={styles.loadingContainer}>
+                <p className={styles.loading}>Loading...</p>
+                <div className={styles.progressBar}>
+                    <div
+                        className={styles.progress}
+                        style={{ width: `${progress}%` }}
+                    />
+                </div>
+            </div>
+        );
     }
 
     if (error) {
