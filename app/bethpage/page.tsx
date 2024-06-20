@@ -46,8 +46,7 @@ const BethpageBookingPage = () => {
         fetchData();
     };
 
-    const getDayOfWeek = (dateString: string) => {
-        console.log(dateString);
+    const getFormattedDate = (dateString: string) => {
         const daysOfWeek = [
             "Sunday",
             "Monday",
@@ -57,9 +56,11 @@ const BethpageBookingPage = () => {
             "Friday",
             "Saturday",
         ];
-        const date = new Date(dateString);
-        console.log(`Date: ${date}, Day of Week: ${daysOfWeek[date.getUTCDay()]}`);
-        return daysOfWeek[date.getUTCDay()];
+
+        const [month, day, year] = dateString.split("-");
+        const formattedDate = `${year}-${month}-${day}`;
+        const date = new Date(formattedDate);
+        return `${month}-${day} (` + daysOfWeek[date.getUTCDay()] + `)`;
     };
 
     if (loading) {
@@ -94,9 +95,8 @@ const BethpageBookingPage = () => {
                     {Object.keys(bookingData[courseName]).map((date) => (
                         <div key={date} className={styles.dateContainer}>
                             <h4 className={styles.date}>
-                                {date} ({getDayOfWeek(date)}) 
+                                {getFormattedDate(date)}
                             </h4>
-                            <div> {(new Date(date)).getUTCDay()}</div>
                             {bookingData[courseName][date].length > 0 ? (
                                 <ul className={styles.bookingList}>
                                     {bookingData[courseName][date].map(
