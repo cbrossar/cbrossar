@@ -61,16 +61,6 @@ export async function GET(request: Request) {
 
         await page.waitForSelector("#date-menu");
 
-        // Define the dates
-        // const day0 = new Date();
-        // const day1 = new Date(day0);
-        // day1.setDate(day0.getDate() + 1);
-        // const day7 = new Date(day0);
-        // day7.setDate(day0.getDate() + 7);
-
-        // const fmtDay1 = `${(day1.getMonth() + 1).toString().padStart(2, "0")}-${day1.getDate().toString().padStart(2, "0")}-${day1.getFullYear()}`;
-        // const fmtDay7 = `${(day7.getMonth() + 1).toString().padStart(2, "0")}-${day7.getDate().toString().padStart(2, "0")}-${day7.getFullYear()}`;
-
         const responseDict: Record<string, any> = {};
 
         const courses = [
