@@ -88,12 +88,7 @@ export async function GET(request: Request) {
             for (const course of courses) {
                 await page.select("#schedule_select", course.value);
 
-                await extractBookingInfo(
-                    page,
-                    fmtDay,
-                    course,
-                    responseDict,
-                );
+                await extractBookingInfo(page, fmtDay, course, responseDict);
             }
         }
 
