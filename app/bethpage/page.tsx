@@ -1,16 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
+import { fetchBethpage } from "../lib/data";
+import { BookingData } from "../lib/definitions";
 import styles from "./styles.module.css"; // Import CSS module for styling
-
-interface BookingData {
-    [courseName: string]: {
-        [date: string]: {
-            time: string;
-            holes: number;
-            players: number;
-        }[];
-    };
-}
 
 const BethpageBookingPage = () => {
     const [loading, setLoading] = useState(true);
@@ -20,12 +12,9 @@ const BethpageBookingPage = () => {
     useEffect(() => {
         const fetchBookingData = async () => {
             try {
-                const response = await fetch("/api/bethpage");
-                const data = await response.json();
-                if (data) {
+                if (typeof window !== "undefined") {
+                    const data = await fetchBethpage();
                     setBookingData(data);
-                } else {
-                    throw new Error("Failed to fetch booking data");
                 }
             } catch (error) {
                 setError(

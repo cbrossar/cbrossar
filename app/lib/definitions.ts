@@ -23,3 +23,13 @@ export type Team = {
     name: string;
     image_filename: string;
 };
+
+export interface BookingData {
+    [courseName: string]: {
+        [date: string]: {
+            time: string;
+            holes: number;
+            players: number;
+        }[];
+    };
+}

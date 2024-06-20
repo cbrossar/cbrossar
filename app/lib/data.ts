@@ -139,3 +139,13 @@ export async function createMatchUpdate(success: boolean) {
         throw new Error("Failed to create match update.");
     }
 }
+
+export async function fetchBethpage() {
+    try {
+        const response = await fetch("/api/bethpage");
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw new Error("Failed to fetch booking data");
+    }
+}
