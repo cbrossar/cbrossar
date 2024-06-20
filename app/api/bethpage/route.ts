@@ -66,18 +66,15 @@ export async function GET(request: Request) {
         await page.waitForSelector(".time-tile .time-summary");
 
         // Extract the text content of all booking labels with class .booking-start-time-label
-        const bookingLabels = await page.$$eval(
-            ".booking-start-time-label",
-            (elements) =>
-                elements.map((element) =>
-                    element.textContent ? element.textContent.trim() : "",
-                ),
-        );
+        // const bookingLabels = await page.$$eval(
+        //     '.booking-start-time-label',
+        //     (elements: Element[]) => elements.map((element: Element) => element.textContent ? element.textContent.trim() : "")
+        // );
 
         await browser.close();
 
         // Send back the extracted data as a response
-        return new Response(JSON.stringify(bookingLabels), {
+        return new Response(JSON.stringify("success"), {
             headers: { "Content-Type": "application/json" },
         });
     } catch (error) {
