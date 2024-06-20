@@ -6,32 +6,32 @@ import chromium from "@sparticuz/chromium";
 export const dynamic = "force-dynamic";
 
 async function getBrowser() {
-  if (process.env.VERCEL_ENV === "prod") {
-    const executablePath = await chromium.executablePath();
+    if (process.env.VERCEL_ENV === "prod") {
+        const executablePath = await chromium.executablePath();
 
-    const browser = await puppeteerCore.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath,
-      headless: chromium.headless,
-    });
-    return browser;
-  } else {
-    const browser = await puppeteer.launch();
-    return browser;
-  }
+        const browser = await puppeteerCore.launch({
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath,
+            headless: chromium.headless,
+        });
+        return browser;
+    } else {
+        const browser = await puppeteer.launch();
+        return browser;
+    }
 }
 
 export async function GET(request: NextRequest) {
-  const browser = await getBrowser();
+    const browser = await getBrowser();
 
-  const page = await browser.newPage();
-  await page.goto("https://example.com");
-  const pdf = await page.pdf();
-  await browser.close();
-  return new NextResponse(pdf, {
-    headers: {
-      "Content-Type": "application/pdf",
-    },
-  });
+    const page = await browser.newPage();
+    await page.goto("https://example.com");
+    const pdf = await page.pdf();
+    await browser.close();
+    return new NextResponse(pdf, {
+        headers: {
+            "Content-Type": "application/pdf",
+        },
+    });
 }

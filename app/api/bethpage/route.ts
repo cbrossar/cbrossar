@@ -1,20 +1,46 @@
+import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
 
+export const dynamic = "force-dynamic";
+
+async function getBrowser() {
+    if (process.env.VERCEL_ENV === "prod") {
+        const executablePath = await chromium.executablePath();
+
+        const browser = await puppeteerCore.launch({
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath,
+            headless: chromium.headless,
+        });
+        return browser;
+    } else {
+        const browser = await puppeteer.launch();
+        return browser;
+    }
+}
 export async function GET(request: Request) {
     try {
         const bethpage_url =
             "https://foreupsoftware.com/index.php/booking/19765/2431#/teetimes";
 
-        const browser = await puppeteer.launch({ headless: true }); 
+        // const browser = await puppeteer.launch({ headless: true });
+        const browser = await getBrowser();
+
         const page = await browser.newPage();
 
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36');
+        await page.setUserAgent(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
+        );
 
         // Navigate to the login page
         await page.goto(bethpage_url); // Replace with actual login URL
 
         // Click the "Resident" button
-        await page.waitForSelector(".booking-classes .btn-primary:nth-of-type(1)");
+        await page.waitForSelector(
+            ".booking-classes .btn-primary:nth-of-type(1)",
+        );
         await page.click(".booking-classes .btn-primary:nth-of-type(1)");
 
         // Wait for the login button to be available and then click it
