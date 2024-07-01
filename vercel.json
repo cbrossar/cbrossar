@@ -10,7 +10,7 @@
         }
     ],
     "functions": {
-        "api/ltrain": {
+        "ltrain": {
           "includeFiles": "ltrain/gtfs-realtime.proto.cjs"
         }
     }
