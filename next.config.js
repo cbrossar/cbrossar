@@ -17,5 +17,8 @@ module.exports = {
             "puppeteer-core",
             "@sparticuz/chromium",
         ],
+        outputFileTracingIncludes: {
+            '/api/ltrain': ['./public/ltrain/**/*'],
+          },
     },
 };
