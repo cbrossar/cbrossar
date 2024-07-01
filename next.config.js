@@ -17,6 +17,7 @@ module.exports = {
             "puppeteer-core",
             "@sparticuz/chromium",
         ],
+        outputFileTracingRoot: path.join(__dirname, '../../'),
         outputFileTracingIncludes: {
             '/api/ltrain': ['ltrain/gtfs-realtime.proto'],
           },
