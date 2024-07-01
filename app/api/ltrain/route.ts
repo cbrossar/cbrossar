@@ -7,6 +7,15 @@ const MTA_API_URL =
 
 export async function GET(request: Request) {
     try {
+
+        console.log(process.cwd())
+        // log files in cwd
+        const fs = require('fs');
+        fs.readdirSync(process.cwd()).forEach(file => {
+            console.error(file);
+        });
+
+
         const response = await fetch(MTA_API_URL);
 
         const buffer = await response.arrayBuffer();
