@@ -11,7 +11,7 @@ export async function GET(request: Request) {
         console.log(process.cwd())
         // log files in cwd
         const fs = require('fs');
-        fs.readdirSync(process.cwd()).forEach(file => {
+        fs.readdirSync(process.cwd()).forEach((file: any) => {
             console.error(file);
         });
 
