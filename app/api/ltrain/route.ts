@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"; // static by default, unless reading the request
 import * as protobuf from "protobufjs";
 
 const MTA_API_URL =
@@ -5,19 +6,9 @@ const MTA_API_URL =
 
 export async function GET(request: Request) {
     try {
-
-        console.log(process.cwd())
-        // log files in cwd
-        const fs = require('fs');
-        fs.readdirSync(process.cwd()).forEach((file: any) => {
-            console.error(file);
-        });
-
-
         const response = await fetch(MTA_API_URL);
 
         const buffer = await response.arrayBuffer();
-        // const localPrefix = process.env.VERCEL_ENV === "prod" ? process.cwd() : "public/ltrain";
         const root = await protobuf.load("public/ltrain/gtfs-realtime.proto");
         const FeedMessage = root.lookupType("transit_realtime.FeedMessage");
 
