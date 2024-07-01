@@ -32,6 +32,32 @@ export default function Page() {
                 <div className={styles.caption}>Remesh</div>
             </div>
             <div className={styles.item}>
+                <Link href="bethpage">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/bethpage.jpeg"
+                            width={200}
+                            height={200}
+                            alt="bethpage"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>Bethpage</div>
+            </div>
+            <div className={styles.item}>
+                <Link href="ltrain">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/L-train.png"
+                            width={200}
+                            height={200}
+                            alt="L Train"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>L Train</div>
+            </div>
+            <div className={styles.item}>
                 <Link href="/code/maxaer.jar">
                     <div className={styles.imageWrapper}>
                         <Image
@@ -70,32 +96,7 @@ export default function Page() {
                 </Link>
                 <div className={styles.caption}>10,000th Day</div>
             </div>
-            <div className={styles.item}>
-                <Link href="bethpage">
-                    <div className={styles.imageWrapper}>
-                        <Image
-                            src="/code/bethpage.jpeg"
-                            width={200}
-                            height={200}
-                            alt="bethpage"
-                        />
-                    </div>
-                </Link>
-                <div className={styles.caption}>Bethpage</div>
-            </div>
-            <div className={styles.item}>
-                <Link href="ltrain">
-                    <div className={styles.imageWrapper}>
-                        <Image
-                            src="/code/L-train.png"
-                            width={200}
-                            height={200}
-                            alt="L Train"
-                        />
-                    </div>
-                </Link>
-                <div className={styles.caption}>L Train</div>
-            </div>
+            
         </div>
     );
 }
