@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic"; // static by default, unless reading the request
-
 import * as protobuf from "protobufjs";
 
 const MTA_API_URL =
