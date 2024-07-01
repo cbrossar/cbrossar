@@ -9,6 +9,8 @@ export async function GET(request: Request) {
         const response = await fetch(MTA_API_URL);
 
         const buffer = await response.arrayBuffer();
+
+        // Update next.config.js outputFileTracingIncludes to include proto file
         const root = await protobuf.load("app/api/ltrain/gtfs-realtime.proto");
         const FeedMessage = root.lookupType("transit_realtime.FeedMessage");
 
