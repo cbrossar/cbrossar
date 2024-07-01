@@ -18,7 +18,7 @@ module.exports = {
             "@sparticuz/chromium",
         ],
         outputFileTracingIncludes: {
-            '/api/ltrain': ['./app/api/ltrain/**/*'],
-          },
+            "/api/ltrain": ["./app/api/ltrain/**/*"],
+        },
     },
 };

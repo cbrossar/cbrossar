@@ -96,7 +96,6 @@ export default function Page() {
                 </Link>
                 <div className={styles.caption}>10,000th Day</div>
             </div>
-            
         </div>
     );
 }
