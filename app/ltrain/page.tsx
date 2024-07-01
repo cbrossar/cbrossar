@@ -10,7 +10,7 @@ export default function Page() {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-bold mb-6">L Train Times</h1>
+            <h1 className="text-3xl font-bold mb-6">L Train Bedford N Times</h1>
             <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
                 {lTrainTimes.map((time, i) => (
                     <li
