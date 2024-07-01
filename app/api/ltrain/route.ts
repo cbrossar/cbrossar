@@ -10,7 +10,8 @@ export async function GET(request: Request) {
         const response = await fetch(MTA_API_URL);
 
         const buffer = await response.arrayBuffer();
-        const root = await protobuf.load("ltrain/gtfs-realtime.proto");
+        const localPrefix = process.env.VERCEL_ENV === "prod" ? "" : "public";
+        const root = await protobuf.load(localPrefix + "/ltrain/gtfs-realtime.proto");
         const FeedMessage = root.lookupType("transit_realtime.FeedMessage");
 
         const message = FeedMessage.decode(new Uint8Array(buffer));
