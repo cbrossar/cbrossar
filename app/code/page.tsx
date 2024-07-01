@@ -83,19 +83,6 @@ export default function Page() {
                 </Link>
                 <div className={styles.caption}>Bethpage</div>
             </div>
-            <div className={styles.item}>
-                <Link href="ltrain">
-                    <div className={styles.imageWrapper}>
-                        <Image
-                            src="/code/L-train.png"
-                            width={200}
-                            height={200}
-                            alt="L Train"
-                        />
-                    </div>
-                </Link>
-                <div className={styles.caption}>L Train</div>
-            </div>
         </div>
     );
 }
