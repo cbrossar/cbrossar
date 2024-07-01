@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { fetchMusicReviews } from "@/app/lib/data";
-import Search from "../ui/search";
 import styles from "./styles.module.css";
 
 export default async function Page() {

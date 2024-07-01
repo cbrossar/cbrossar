@@ -149,3 +149,17 @@ export async function fetchBethpage() {
         throw new Error("Failed to fetch booking data");
     }
 }
+
+export async function fetchLTrainTimes() {
+    try {
+        console.log("fetching L train times");
+        const response = await fetch("/api/ltrain");
+        console.log("response", response);
+
+        const data = await response.json();
+        return data["bedfordNorthbound"];
+    } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch L train times data");
+    }
+}
