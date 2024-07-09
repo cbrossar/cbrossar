@@ -1,4 +1,5 @@
 "use client";
+import { format, parse } from "date-fns";
 import useLTrainTimes from "@/app/lib/useLTrainTimes";
 
 export default function Page() {
@@ -7,6 +8,20 @@ export default function Page() {
     if (error) {
         return <div className="text-red-500 text-center mt-10">{error}</div>;
     }
+
+    const calculateTimeUntil = (trainTime: string) => {
+        const now = new Date();
+        const today = format(now, "yyyy-MM-dd");
+        const trainDate = parse(
+            `${today} ${trainTime}`,
+            "yyyy-MM-dd h:mm:ss aa",
+            new Date(),
+        );
+        const minutesUntil = Math.round(
+            (trainDate.getTime() - now.getTime()) / 60000,
+        );
+        return `~${minutesUntil} min`;
+    };
 
     return (
         <div className="flex flex-col items-center">
@@ -17,7 +32,7 @@ export default function Page() {
                         key={i}
                         className="border-b last:border-b-0 py-2 text-gray-800 text-center"
                     >
-                        {time}
+                        {time} ({calculateTimeUntil(time)})
                     </li>
                 ))}
             </ul>
