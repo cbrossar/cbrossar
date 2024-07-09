@@ -49,7 +49,11 @@ export default function Page() {
                             key={i}
                             className="border-b last:border-b-0 py-2 text-gray-800 text-center"
                         >
-                            <Tooltip title={fullTime}>
+                            <Tooltip 
+                                title={fullTime}
+                                enterTouchDelay={0} // Show tooltip immediately on touch
+                                leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
+                            >
                                 <span>
                                     {minTime} (~{minutesUntil} min)
                                 </span>
