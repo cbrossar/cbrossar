@@ -37,7 +37,7 @@ export default function Page() {
     return (
         <div className="flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-6">L Train</h1>
-            <h2 className="text-xl mb-6">Bedford Ave - Manhattan Bound</h2>
+            <h2 className="text-xl mb-6 text-center">Bedford Ave - Manhattan Bound</h2>
             <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
                 {lTrainTimes.slice(0, 8).map((time, i) => {
                     const { minutesUntil, trainDatetime } =
