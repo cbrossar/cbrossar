@@ -10,16 +10,16 @@ export default function Page() {
     const calculateTimeUntil = (trainTime: string) => {
         const now = new Date();
         const today = format(now, "yyyy-MM-dd");
-        const trainDate = parse(
+        const trainDatetime = parse(
             `${today} ${trainTime}`,
             "yyyy-MM-dd h:mm:ss aa",
             new Date(),
         );
 
         const minutesUntil = Math.round(
-            (trainDate.getTime() - now.getTime()) / 60000,
+            (trainDatetime.getTime() - now.getTime()) / 60000,
         );
-        return { minutesUntil, trainDate };
+        return { minutesUntil, trainDatetime };
     };
 
     if (isLoading) {
@@ -40,10 +40,10 @@ export default function Page() {
             <h2 className="text-2xl mb-6">Bedford Ave - Manhattan Bound</h2>
             <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
                 {lTrainTimes.map((time, i) => {
-                    const { minutesUntil, trainDate } =
+                    const { minutesUntil, trainDatetime } =
                         calculateTimeUntil(time);
-                    const fullTime = format(trainDate, "hh:mm:ss aa");
-                    const minTime = format(trainDate, "h:mm");
+                    const fullTime = format(trainDatetime, "hh:mm:ss aa");
+                    const minTime = format(trainDatetime, "h:mm");
                     return (
                         <li
                             key={i}
@@ -58,6 +58,9 @@ export default function Page() {
                     );
                 })}
             </ul>
+            <p className="text-gray-500 text-sm mt-4">
+                Tap or hover to see the time in seconds.
+            </p>
         </div>
     );
 }
