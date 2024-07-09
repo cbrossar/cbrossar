@@ -167,6 +167,9 @@ export default async function Page() {
                             </div>
                         );
                     })}
+                    <p className="text-gray-500 text-sm mt-4 text-center">
+                        Tap or hover to see the match info.
+                    </p>
                 </>
             </div>
 
