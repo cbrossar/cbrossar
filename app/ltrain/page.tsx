@@ -1,13 +1,10 @@
 "use client";
 import { format, parse } from "date-fns";
 import useLTrainTimes from "@/app/lib/useLTrainTimes";
+import "./styles.css"; //
 
 export default function Page() {
-    const { lTrainTimes, error } = useLTrainTimes();
-
-    if (error) {
-        return <div className="text-red-500 text-center mt-10">{error}</div>;
-    }
+    const { lTrainTimes, error, isLoading } = useLTrainTimes();
 
     const calculateTimeUntil = (trainTime: string) => {
         const now = new Date();
@@ -17,11 +14,28 @@ export default function Page() {
             "yyyy-MM-dd h:mm:ss aa",
             new Date(),
         );
+
+        if (isNaN(trainDate)) {
+            return "Invalid time format";
+        }
+
         const minutesUntil = Math.round(
             (trainDate.getTime() - now.getTime()) / 60000,
         );
         return `~${minutesUntil} min`;
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center h-screen">
+                <div className="spinner"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return <div className="text-red-500 text-center mt-10">{error}</div>;
+    }
 
     return (
         <div className="flex flex-col items-center">
