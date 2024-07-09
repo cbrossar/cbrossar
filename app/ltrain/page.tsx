@@ -15,10 +15,6 @@ export default function Page() {
             new Date(),
         );
 
-        if (isNaN(trainDate)) {
-            return "Invalid time format";
-        }
-
         const minutesUntil = Math.round(
             (trainDate.getTime() - now.getTime()) / 60000,
         );
