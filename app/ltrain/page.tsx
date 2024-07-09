@@ -1,7 +1,6 @@
 "use client";
 import { format, parse } from "date-fns";
 import useLTrainTimes from "@/app/lib/useLTrainTimes";
-import Tooltip from "@mui/material/Tooltip";
 import styles from "./styles.module.css";
 
 export default function Page() {
@@ -19,7 +18,7 @@ export default function Page() {
         const minutesUntil = Math.round(
             (trainDate.getTime() - now.getTime()) / 60000,
         );
-        return { minutesUntil, trainDate };
+        return `~${minutesUntil} min`;
     };
 
     if (isLoading) {
@@ -36,27 +35,16 @@ export default function Page() {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-bold mb-6">L Train</h1>
-            <h2 className="text-2xl mb-6">Bedford Ave - Manhattan Bound</h2>
+            <h1 className="text-3xl font-bold mb-6">L Train Bedford N Times</h1>
             <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-                {lTrainTimes.map((time, i) => {
-                    const { minutesUntil, trainDate } =
-                        calculateTimeUntil(time);
-                    const fullTime = format(trainDate, "hh:mm:ss aa");
-                    const minTime = format(trainDate, "h:mm");
-                    return (
-                        <li
-                            key={i}
-                            className="border-b last:border-b-0 py-2 text-gray-800 text-center"
-                        >
-                            <Tooltip title={fullTime}>
-                                <span>
-                                    {minTime} (~{minutesUntil} min)
-                                </span>
-                            </Tooltip>
-                        </li>
-                    );
-                })}
+                {lTrainTimes.map((time, i) => (
+                    <li
+                        key={i}
+                        className="border-b last:border-b-0 py-2 text-gray-800 text-center"
+                    >
+                        {time} ({calculateTimeUntil(time)})
+                    </li>
+                ))}
             </ul>
         </div>
     );
