@@ -39,7 +39,7 @@ export default function Page() {
             <h1 className="text-3xl font-bold mb-6">L Train</h1>
             <h2 className="text-xl mb-6">Bedford Ave - Manhattan Bound</h2>
             <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-                {lTrainTimes.map((time, i) => {
+                {lTrainTimes.slice(0, 8).map((time, i) => {
                     const { minutesUntil, trainDatetime } =
                         calculateTimeUntil(time);
                     const fullTime = format(trainDatetime, "hh:mm:ss aa");
