@@ -1,7 +1,7 @@
 "use client";
 import { format, parse } from "date-fns";
 import useLTrainTimes from "@/app/lib/useLTrainTimes";
-import "./styles.css"; //
+import styles from "./styles.module.css";
 
 export default function Page() {
     const { lTrainTimes, error, isLoading } = useLTrainTimes();
@@ -28,7 +28,7 @@ export default function Page() {
     if (isLoading) {
         return (
             <div className="flex justify-center h-screen">
-                <div className="spinner"></div>
+                <div className={styles.spinner}></div>
             </div>
         );
     }
