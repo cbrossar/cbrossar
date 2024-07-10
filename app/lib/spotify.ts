@@ -32,8 +32,8 @@ interface Album {
 
 const searchAlbum = async (query: string): Promise<Album[]> => {
     const token = await getAccessToken();
-    
-    if(!token) {
+
+    if (!token) {
         return [];
     }
     const response = await fetch(
