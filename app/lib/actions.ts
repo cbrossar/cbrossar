@@ -3,6 +3,7 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { searchAlbum } from "./spotify";
 
 const FormSchema = z.object({
     id: z.string(),
@@ -22,7 +23,7 @@ const FormSchema = z.object({
     image_file: z.instanceof(File),
 });
 
-const CreateMusicReview = FormSchema.omit({ id: true });
+const CreateMusicReview = FormSchema.omit({ id: true, spotify_album_id: true });
 const UpdateMusicReview = FormSchema.omit({ id: true });
 
 export type State = {
@@ -70,11 +71,15 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     }
 
     // Get spotify album id
+    const spotifyResults = await searchAlbum(album);
+    const spotify_album_id = !!spotifyResults.length
+        ? spotifyResults[0].id
+        : "";
 
     try {
         const result = await sql`
-            INSERT INTO music_reviews (album, artist, rating, review, name, image_url)
-            VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${image_url})
+            INSERT INTO music_reviews (album, artist, rating, review, name, spotify_album_id, image_url)
+            VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${spotify_album_id}, ${image_url})
             RETURNING id
         `;
 
