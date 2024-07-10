@@ -16,7 +16,8 @@ const getAccessToken = async (): Promise<string> => {
     });
 
     if (!response.ok) {
-        throw new Error("Failed to fetch access token");
+        console.error("Failed to fetch access token");
+        return "";
     }
 
     const data = await response.json();
@@ -31,6 +32,10 @@ interface Album {
 
 const searchAlbum = async (query: string): Promise<Album[]> => {
     const token = await getAccessToken();
+    
+    if(!token) {
+        return [];
+    }
     const response = await fetch(
         `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=album`,
         {
@@ -41,7 +46,8 @@ const searchAlbum = async (query: string): Promise<Album[]> => {
     );
 
     if (!response.ok) {
-        throw new Error("Failed to search for albums");
+        console.error("Failed to search for albums");
+        return [];
     }
 
     const data = await response.json();
