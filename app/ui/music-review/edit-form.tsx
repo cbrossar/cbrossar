@@ -205,6 +205,7 @@ export default function EditMusicReviewForm({
                         placeholder="Enter Spotify Album ID"
                         className="block w-full rounded-md border border-gray-200 py-2 text-sm"
                         aria-describedby="spotify_album_id-error"
+                        defaultValue={musicReview.spotify_album_id}
                     />
                     <div
                         id="spotify_album_id-error"
