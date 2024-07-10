@@ -190,6 +190,41 @@ export default function EditMusicReviewForm({
                     </div>
                 </div>
 
+                {/* Spotify album id */}
+                <div className="mb-4">
+                    <label
+                        htmlFor="spotify_album_id"
+                        className="mb-2 block text-sm font-medium"
+                    >
+                        Spotify Album ID
+                    </label>
+                    <input
+                        id="spotify_album_id"
+                        name="spotify_album_id"
+                        type="text"
+                        placeholder="Enter Spotify Album ID"
+                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        aria-describedby="spotify_album_id-error"
+                    />
+                    <div
+                        id="spotify_album_id-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                        {state.errors?.spotify_album_id &&
+                            state.errors.spotify_album_id.map(
+                                (error: string) => (
+                                    <p
+                                        className="mt-2 text-sm text-red-500"
+                                        key={error}
+                                    >
+                                        {error}
+                                    </p>
+                                ),
+                            )}
+                    </div>
+                </div>
+
                 {/* Image file */}
                 <div className="mb-4">
                     <label

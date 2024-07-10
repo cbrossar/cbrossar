@@ -5,6 +5,7 @@ export type MusicReview = {
     rating: number;
     review: string;
     name: string;
+    spotify_album_id: string;
     image_url: string;
     created: string;
 };

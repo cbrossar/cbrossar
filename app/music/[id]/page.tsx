@@ -1,6 +1,7 @@
 import { fetchMusicReviewById } from "@/app/lib/data";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./styles.module.css";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -17,16 +18,20 @@ export default async function Page({ params }: { params: { id: string } }) {
         timeZone: "America/New_York",
     });
 
+    const spotify_album_link = "https://open.spotify.com/album/";
+
     return (
         <div>
             <div className={styles.wrapper}>
                 <div className={styles.image}>
-                    <Image
-                        src={review.image_url}
-                        width={500}
-                        height={500}
-                        alt={`Photo ${review.id}`}
-                    />
+                    <Link href={spotify_album_link + review.spotify_album_id}>
+                        <Image
+                            src={review.image_url}
+                            width={500}
+                            height={500}
+                            alt={`Photo ${review.id}`}
+                        />
+                    </Link>
                 </div>
                 <div className={styles.details}>
                     <h1 className={styles.album}>{review.album}</h1>

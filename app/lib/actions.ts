@@ -18,6 +18,7 @@ const FormSchema = z.object({
         }),
     review: z.string(),
     name: z.string(),
+    spotify_album_id: z.string(),
     image_file: z.instanceof(File),
 });
 
@@ -68,6 +69,8 @@ export async function createMusicReview(prevState: State, formData: FormData) {
         };
     }
 
+    // Get spotify album id
+
     try {
         const result = await sql`
             INSERT INTO music_reviews (album, artist, rating, review, name, image_url)
@@ -116,6 +119,7 @@ export async function updateMusicReview(
         rating: formData.get("rating"),
         review: formData.get("review"),
         name: formData.get("name"),
+        spotify_album_id: formData.get("spotify_album_id"),
         image_file: formData.get("image_file"),
     });
 
@@ -126,8 +130,15 @@ export async function updateMusicReview(
         };
     }
 
-    const { album, artist, rating, review, name, image_file } =
-        validatedFields.data;
+    const {
+        album,
+        artist,
+        rating,
+        review,
+        name,
+        spotify_album_id,
+        image_file,
+    } = validatedFields.data;
 
     let image_url = null;
 
@@ -145,13 +156,13 @@ export async function updateMusicReview(
         if (image_url === null) {
             await sql`
                 UPDATE music_reviews
-                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}
+                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}, spotify_album_id = ${spotify_album_id}
                 WHERE id = ${id}
             `;
         } else {
             await sql`
                 UPDATE music_reviews
-                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}, image_url = ${image_url}
+                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}, spotify_album_id = ${spotify_album_id}, image_url = ${image_url}
                 WHERE id = ${id}
             `;
         }
