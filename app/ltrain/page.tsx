@@ -1,5 +1,6 @@
 "use client";
 import { format, parse } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 import useLTrainTimes from "@/app/lib/useLTrainTimes";
 import Tooltip from "@mui/material/Tooltip";
 import styles from "./styles.module.css";
@@ -7,19 +8,24 @@ import styles from "./styles.module.css";
 export default function Page() {
     const { lTrainTimes, error, isLoading } = useLTrainTimes();
 
-    const calculateTimeUntil = (trainTime: string) => {
-        const now = new Date();
-        const today = format(now, "yyyy-MM-dd");
-        const trainDatetime = parse(
+    const calculateTimeUntil = (trainTime) => {
+        const nowEST = new Date();
+        formatInTimeZone(nowEST, "America/New_York", "yyyy-MM-dd h:mm:ss aa");
+        const today = format(nowEST, "yyyy-MM-dd");
+
+        // Parse train time as EST
+        const trainDatetimeEST = parse(
             `${today} ${trainTime}`,
             "yyyy-MM-dd h:mm:ss aa",
             new Date(),
         );
 
+        // Calculate minutes until train
         const minutesUntil = Math.round(
-            (trainDatetime.getTime() - now.getTime()) / 60000,
+            (trainDatetimeEST.getTime() - nowEST.getTime()) / 60000,
         );
-        return { minutesUntil, trainDatetime };
+
+        return { minutesUntil, trainDatetime: trainDatetimeEST };
     };
 
     if (isLoading) {
