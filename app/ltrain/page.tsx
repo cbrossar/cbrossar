@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 export default function Page() {
     const { lTrainTimes, error, isLoading } = useLTrainTimes();
 
-    const calculateTimeUntil = (trainTime) => {
+    const calculateTimeUntil = (trainTime: string) => {
         const nowEST = new Date();
         formatInTimeZone(nowEST, "America/New_York", "yyyy-MM-dd h:mm:ss aa");
         const today = format(nowEST, "yyyy-MM-dd");
