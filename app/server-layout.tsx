@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Head from "next/head";
 import Navbar from "./ui/navbar";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/registry";
@@ -18,10 +19,10 @@ export default function ServerLayout({
 }>) {
     return (
         <html lang="en">
-            <head>
+            <Head>
                 <title>{metadata.title}</title>
                 <meta name="description" content={metadata.description} />
-            </head>
+            </Head>
             <body className={inter.className}>
                 <StyledComponentsRegistry>
                     <Navbar />
