@@ -49,6 +49,7 @@ export default function Page() {
                 {lTrainTimes.slice(0, 8).map((time, i) => {
                     const { minutesUntil, trainDatetime } =
                         calculateTimeUntil(time);
+                    if (minutesUntil < 0) return null; // Skip times with negative minutesUntil
                     const fullTime = format(trainDatetime, "hh:mm:ss aa");
                     const minTime = format(trainDatetime, "h:mm");
                     return (
