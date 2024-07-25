@@ -9,16 +9,15 @@ export default function Page() {
     const { lTrainTimes, error, isLoading } = useLTrainTimes();
 
     const calculateTimeUntil = (trainTime: string) => {
-        const nowEST = new Date();
-        formatInTimeZone(nowEST, "America/New_York", "yyyy-MM-dd h:mm:ss aa");
-        const today = format(nowEST, "yyyy-MM-dd");
-
         // Parse train time as EST
         const trainDatetimeEST = parse(
-            `${today} ${trainTime}`,
-            "yyyy-MM-dd h:mm:ss aa",
+            trainTime,
+            "M/d/yyyy, h:mm:ss aa",
             new Date(),
         );
+
+        const nowEST = new Date();
+        formatInTimeZone(nowEST, "America/New_York", "yyyy-MM-dd h:mm:ss aa");
 
         // Calculate minutes until train
         const minutesUntil = Math.round(

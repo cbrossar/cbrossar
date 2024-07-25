@@ -31,11 +31,11 @@ export async function GET(request: Request) {
                             const departureTime = new Date(
                                 stopTimeUpdate.departure.time * 1000,
                             );
-                            const formattedTime =
-                                departureTime.toLocaleTimeString("en-US", {
+                            const formattedDateTime =
+                                departureTime.toLocaleString("en-US", {
                                     timeZone: "America/New_York",
                                 });
-                            bedfordNorthbound.push(formattedTime);
+                            bedfordNorthbound.push(formattedDateTime);
                         }
                     },
                 );
