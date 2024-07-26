@@ -42,7 +42,7 @@ export async function fetchTeams() {
     }
 }
 
-export async function fetchSpursMatches() {
+export async function fetchSpursMatches(count: number) {
     noStore();
 
     try {
@@ -50,7 +50,7 @@ export async function fetchSpursMatches() {
             SELECT * FROM matches
             WHERE home_team_id = (SELECT id FROM teams WHERE name = 'Tottenham Hotspur FC')
             OR away_team_id = (SELECT id FROM teams WHERE name = 'Tottenham Hotspur FC')
-            ORDER BY date DESC limit 5
+            ORDER BY date DESC limit ${count}
         `;
         return data.rows;
     } catch (error) {
@@ -59,7 +59,7 @@ export async function fetchSpursMatches() {
     }
 }
 
-export async function fetchMyMatches() {
+export async function fetchMyMatches(count: number) {
     noStore();
 
     try {
@@ -67,7 +67,7 @@ export async function fetchMyMatches() {
             SELECT * FROM matches
             WHERE home_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen' OR name = 'Brooklyn Hove Albion') 
             OR away_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen'  OR name = 'Brooklyn Hove Albion')
-            ORDER BY date DESC limit 5
+            ORDER BY date DESC limit ${count}
         `;
         return data.rows;
     } catch (error) {

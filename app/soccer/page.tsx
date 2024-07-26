@@ -20,9 +20,9 @@ export default async function Page() {
     const formTeams = formTeamNames.map((name) =>
         teams.find((team: Team) => team.name === name),
     );
-    const spursMatches = await fetchSpursMatches();
-    const myMatches = await fetchMyMatches();
-    const numMatches = myMatches.length;
+    const numMatches = 5;
+    const spursMatches = await fetchSpursMatches(numMatches);
+    const myMatches = await fetchMyMatches(numMatches);
 
     return (
         <div className={styles.centerContainer}>
