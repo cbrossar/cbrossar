@@ -21,13 +21,18 @@ export async function GET(request: Request) {
             bytes: String,
         });
 
-        const bedfordNorthbound: string[] = [];
+        const trainStopIds = ["L03N", "L03S", "L06N", "L06S", "L08N", "L08S"];
+
+        const trainTimes: { [key: string]: string[] } = {};
+        for (const stopId of trainStopIds) {
+            trainTimes[stopId] = [];
+        }
 
         object.entity.forEach((entity: any) => {
             if (entity.tripUpdate) {
                 entity.tripUpdate.stopTimeUpdate.forEach(
                     (stopTimeUpdate: any) => {
-                        if (stopTimeUpdate.stopId === "L08N") {
+                        if (trainStopIds.includes(stopTimeUpdate.stopId)) {
                             const departureTime = new Date(
                                 stopTimeUpdate.departure.time * 1000,
                             );
@@ -35,17 +40,16 @@ export async function GET(request: Request) {
                                 departureTime.toLocaleString("en-US", {
                                     timeZone: "America/New_York",
                                 });
-                            bedfordNorthbound.push(formattedDateTime);
+                            trainTimes[stopTimeUpdate.stopId].push(
+                                formattedDateTime,
+                            );
                         }
                     },
                 );
             }
         });
 
-        const responseDict = {
-            bedfordNorthbound,
-        };
-        return new Response(JSON.stringify(responseDict));
+        return new Response(JSON.stringify(trainTimes));
     } catch (error) {
         console.error("Failed to fetch MTA feed:", error);
         return new Response("Failed");

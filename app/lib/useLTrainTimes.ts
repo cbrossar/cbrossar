@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { fetchLTrainTimes } from "@/app/lib/data";
 
 const useLTrainTimes = () => {
-    const [lTrainTimes, setLTrainTimes] = useState<string[]>([]);
+    const [lTrainTimes, setLTrainTimes] = useState<{ [key: string]: string[] }>(
+        {},
+    );
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 

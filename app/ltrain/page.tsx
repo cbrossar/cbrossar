@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { format, parse } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import useLTrainTimes from "@/app/lib/useLTrainTimes";
@@ -7,6 +8,9 @@ import styles from "./styles.module.css";
 
 export default function Page() {
     const { lTrainTimes, error, isLoading } = useLTrainTimes();
+    const [selectedOption, setSelectedOption] = useState(
+        "Bedford Ave - Manhattan Bound",
+    );
 
     const calculateTimeUntil = (trainTime: string) => {
         // Parse train time as EST
@@ -39,14 +43,51 @@ export default function Page() {
         return <div className="text-red-500 text-center mt-10">{error}</div>;
     }
 
+    const getStationKey = (option: string) => {
+        switch (option) {
+            case "Bedford Ave - Manhattan Bound":
+                return "L08N";
+            case "Bedford Ave - Brooklyn Bound":
+                return "L08S";
+            case "Union Square - Manhattan Bound":
+                return "L06N";
+            case "Union Square - Brooklyn Bound":
+                return "L06S";
+            case "1st Ave - Manhattan Bound":
+                return "L03N";
+            case "1st Ave - Brooklyn Bound":
+                return "L03S";
+            default:
+                return "";
+        }
+    };
+
+    const stationKey = getStationKey(selectedOption);
+    const filteredTimes = lTrainTimes[stationKey] || [];
+
     return (
         <div className="flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-6">L Train</h1>
-            <h2 className="text-xl mb-6 text-center">
-                Bedford Ave - Manhattan Bound
-            </h2>
+            <select
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+                className="mb-6 p-2 border rounded"
+            >
+                <option value="Bedford Ave - Manhattan Bound">
+                    Bedford Ave - Manhattan Bound
+                </option>
+                <option value="Bedford Ave - Brooklyn Bound">
+                    Bedford Ave - Brooklyn Bound
+                </option>
+                <option value="Union Square - Manhattan Bound">
+                    Union Square - Manhattan Bound
+                </option>
+                <option value="Union Square - Brooklyn Bound">
+                    Union Square - Brooklyn Bound
+                </option>
+            </select>
             <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-                {lTrainTimes.slice(0, 8).map((time, i) => {
+                {filteredTimes.slice(0, 8).map((time, i) => {
                     const { minutesUntil, trainDatetime } =
                         calculateTimeUntil(time);
                     if (minutesUntil < 0) return null; // Skip times with negative minutesUntil

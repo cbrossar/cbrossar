@@ -152,12 +152,9 @@ export async function fetchBethpage() {
 
 export async function fetchLTrainTimes() {
     try {
-        console.log("fetching L train times");
         const response = await fetch("/api/ltrain");
-        console.log("response", response);
-
         const data = await response.json();
-        return data["bedfordNorthbound"];
+        return data;
     } catch (error) {
         console.error(error);
         throw new Error("Failed to fetch L train times data");
