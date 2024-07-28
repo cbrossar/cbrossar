@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { format, addDays } from "date-fns";
 import styled from "styled-components";
 
-import SuspenseBoundary from "./suspense"; // Update the path
+import SuspenseBoundary from "../lib/suspense"; // Update the path
 
-export default function Calculate() {
+export default function Page() {
     return (
         <SuspenseBoundary>
             <CalculateContent />

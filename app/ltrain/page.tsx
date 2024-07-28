@@ -1,16 +1,43 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format, parse } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import useLTrainTimes from "@/app/lib/useLTrainTimes";
 import Tooltip from "@mui/material/Tooltip";
 import styles from "./styles.module.css";
+import SuspenseBoundary from "../lib/suspense"; // Update the path
 
 export default function Page() {
-    const { lTrainTimes, error, isLoading } = useLTrainTimes();
-    const [selectedOption, setSelectedOption] = useState(
-        "Bedford Ave - Manhattan Bound",
+    return (
+        <SuspenseBoundary>
+            <LTrain />
+        </SuspenseBoundary>
     );
+}
+
+function LTrain() {
+    const { lTrainTimes, error, isLoading } = useLTrainTimes();
+    const [selectedOption, setSelectedOption] = useState("L08N");
+
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
+    const params = new URLSearchParams(searchParams);
+
+    useEffect(() => {
+        const stationParam = params.get("station");
+        if (stationParam) {
+            setSelectedOption(stationParam);
+        }
+    }, []);
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedOption(e.target.value);
+        params.set("station", e.target.value);
+        replace(`${pathname}?${params.toString()}`);
+    };
 
     const calculateTimeUntil = (trainTime: string) => {
         // Parse train time as EST
@@ -43,48 +70,30 @@ export default function Page() {
         return <div className="text-red-500 text-center mt-10">{error}</div>;
     }
 
-    const getStationKey = (option: string) => {
-        switch (option) {
-            case "Bedford Ave - Manhattan Bound":
-                return "L08N";
-            case "Bedford Ave - Brooklyn Bound":
-                return "L08S";
-            case "Union Square - Manhattan Bound":
-                return "L06N";
-            case "Union Square - Brooklyn Bound":
-                return "L06S";
-            case "1st Ave - Manhattan Bound":
-                return "L03N";
-            case "1st Ave - Brooklyn Bound":
-                return "L03S";
-            default:
-                return "";
-        }
+    const stationKeyToName: { [key: string]: string } = {
+        L08N: "Bedford Ave - Manhattan Bound",
+        L08S: "Bedford Ave - Brooklyn Bound",
+        L06N: "Union Square - Manhattan Bound",
+        L06S: "Union Square - Brooklyn Bound",
+        L03N: "1st Ave - Manhattan Bound",
+        L03S: "1st Ave - Brooklyn Bound",
     };
 
-    const stationKey = getStationKey(selectedOption);
-    const filteredTimes = lTrainTimes[stationKey] || [];
+    const filteredTimes = lTrainTimes[selectedOption] || [];
 
     return (
         <div className="flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-6">L Train</h1>
             <select
                 value={selectedOption}
-                onChange={(e) => setSelectedOption(e.target.value)}
+                onChange={handleSelectChange}
                 className="mb-6 p-2 border rounded"
             >
-                <option value="Bedford Ave - Manhattan Bound">
-                    Bedford Ave - Manhattan Bound
-                </option>
-                <option value="Bedford Ave - Brooklyn Bound">
-                    Bedford Ave - Brooklyn Bound
-                </option>
-                <option value="Union Square - Manhattan Bound">
-                    Union Square - Manhattan Bound
-                </option>
-                <option value="Union Square - Brooklyn Bound">
-                    Union Square - Brooklyn Bound
-                </option>
+                {Object.keys(stationKeyToName).map((stationKey) => (
+                    <option key={stationKey} value={stationKey}>
+                        {stationKeyToName[stationKey]}
+                    </option>
+                ))}
             </select>
             <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
                 {filteredTimes.slice(0, 8).map((time, i) => {
