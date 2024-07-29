@@ -6,6 +6,7 @@ import styles from "./styles.module.css";
 import { Team } from "../lib/definitions";
 
 const SPURS = "Tottenham Hotspur FC";
+const WERDER_BEERMEN = "Werder Beermen";
 
 export default async function Page() {
     const teams = await fetchTeams();
@@ -16,7 +17,7 @@ export default async function Page() {
         },
         {},
     );
-    const formTeamNames = ["Werder Beermen", SPURS];
+    const formTeamNames = [WERDER_BEERMEN, SPURS];
     const formTeams = formTeamNames.map((name) =>
         teams.find((team: Team) => team.name === name),
     );
@@ -181,7 +182,7 @@ export default async function Page() {
                                 src="/soccer/werder-beermen.png"
                                 width={200}
                                 height={200}
-                                alt="Werder Beermen"
+                                alt={WERDER_BEERMEN}
                             />
                         </div>
                     </Link>
