@@ -32,8 +32,10 @@ export async function GET(request: Request) {
             if (entity.tripUpdate) {
                 entity.tripUpdate.stopTimeUpdate.forEach(
                     (stopTimeUpdate: any) => {
-                        if (trainStopIds.includes(stopTimeUpdate.stopId) && stopTimeUpdate.departure) {
-
+                        if (
+                            trainStopIds.includes(stopTimeUpdate.stopId) &&
+                            stopTimeUpdate.departure
+                        ) {
                             const departureTime = new Date(
                                 stopTimeUpdate.departure.time * 1000,
                             );
