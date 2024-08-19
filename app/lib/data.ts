@@ -192,6 +192,11 @@ export async function createDoomsdayAttempt(
 
 export async function fetchDoomsdayStats() {
     try {
+
+        const currentStreak = await sql`
+            SELECT streak FROM doomsday_attempt ORDER BY created DESC LIMIT 1
+        `;
+
         const highestStreak = await sql`
             SELECT MAX(streak) as highest_streak FROM doomsday_attempt
         `;
@@ -209,6 +214,7 @@ export async function fetchDoomsdayStats() {
         `;
 
         return {
+            currentStreak: currentStreak.rows[0].streak,
             highestStreak: highestStreak.rows[0].highest_streak,
             fastestTime: fastestTime.rows[0].fastest_time,
             totalAttempts: totalAttempts.rows[0].total_attempts,

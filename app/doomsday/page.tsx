@@ -15,6 +15,7 @@ export default function Page() {
     const [date, setDate] = useState<Date | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
+    const [currentStreak, setCurrentStreak] = useState<number>(0);
     const [highestStreak, setHighestStreak] = useState<number>(0);
     const [fastestTime, setFastestTime] = useState<number>(0);
     const [totalAttempts, setTotalAttempts] = useState<number>(0);
@@ -41,6 +42,7 @@ export default function Page() {
         fetch("/api/doomsday")
             .then((res) => res.json())
             .then((data) => {
+                setCurrentStreak(data.currentStreak);
                 setHighestStreak(data.highestStreak);
                 setFastestTime(data.fastestTime);
                 setTotalAttempts(data.totalAttempts);
@@ -103,8 +105,9 @@ export default function Page() {
                 ))}
             </div>
             <div className={styles.highestStreak}>
+                <h2>Current Streak: {currentStreak}</h2>
                 <h2>Highest Streak: {highestStreak}</h2>
-                <h2>Fastest Time: {fastestTime / 1000}s</h2>
+                <h2>Fastest Time: {(fastestTime / 1000).toFixed(1)}s</h2>
                 <h2>Total Correct: {totalCorrect}</h2>
                 <h2>Total Attempts: {totalAttempts}</h2>
             </div>
