@@ -160,3 +160,62 @@ export async function fetchLTrainTimes() {
         throw new Error("Failed to fetch L train times data");
     }
 }
+
+export async function createDoomsdayAttempt(
+    correct: boolean,
+    time_taken_ms: number,
+) {
+    try {
+        // Get the most recent attempt
+        const mostRecentAttempt = await sql`
+            SELECT * FROM doomsday_attempt ORDER BY created DESC LIMIT 1
+        `;
+
+        let streak = 1;
+
+        if (mostRecentAttempt.rows.length > 0 && correct) {
+            const lastAttempt = mostRecentAttempt.rows[0];
+            streak = lastAttempt.streak + 1;
+        } else {
+            streak = 0;
+        }
+
+        await sql`
+            INSERT INTO doomsday_attempt (correct, time_taken_ms, streak)
+            VALUES (${correct}, ${time_taken_ms}, ${streak})
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create doomsday attempt.");
+    }
+}
+
+export async function fetchDoomsdayStats() {
+    try {
+        const highestStreak = await sql`
+            SELECT MAX(streak) as highest_streak FROM doomsday_attempt
+        `;
+
+        const fastestTime = await sql`
+            SELECT MIN(time_taken_ms) as fastest_time FROM doomsday_attempt WHERE correct = true
+        `;
+
+        const totalAttempts = await sql`
+            SELECT COUNT(*) as total_attempts FROM doomsday_attempt
+        `;
+
+        const totalCorrect = await sql`
+            SELECT COUNT(*) as total_correct FROM doomsday_attempt WHERE correct = true
+        `;
+
+        return {
+            highestStreak: highestStreak.rows[0].highest_streak,
+            fastestTime: fastestTime.rows[0].fastest_time,
+            totalAttempts: totalAttempts.rows[0].total_attempts,
+            totalCorrect: totalCorrect.rows[0].total_correct,
+        };
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch doomsday highest streak.");
+    }
+}

@@ -1,5 +1,22 @@
 const { db } = require("@vercel/postgres");
 
+async function main() {
+    const client = await db.connect();
+
+    await seedMusicReviews(client);
+    await seedDoomsdayAttempts(client);
+    // await seedSoccerStats(client);
+
+    await client.end();
+}
+
+main().catch((err) => {
+    console.error(
+        "An error occurred while attempting to seed the database:",
+        err,
+    );
+});
+
 async function seedMusicReviews(client) {
     try {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -178,18 +195,28 @@ async function seedSoccerStats(client) {
     }
 }
 
-async function main() {
-    const client = await db.connect();
+async function seedDoomsdayAttempts(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    await seedMusicReviews(client);
-    await seedSoccerStats(client);
+        // Create the "doomsday_attempt" table if it doesn't exist
+        const createDoomsdayTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS doomsday_attempt (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            correct BOOLEAN NOT NULL,
+            time_taken_ms FLOAT NOT NULL,
+            streak INT NOT NULL,
+            created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        `;
 
-    await client.end();
+        console.log(`Created "doomsday_attempt" table`);
+
+        return {
+            createDoomsdayTable,
+        };
+    } catch (error) {
+        console.error("Error seeding doomsday attempts:", error);
+        throw error;
+    }
 }
-
-main().catch((err) => {
-    console.error(
-        "An error occurred while attempting to seed the database:",
-        err,
-    );
-});

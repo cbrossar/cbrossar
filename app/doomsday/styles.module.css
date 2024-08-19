@@ -52,3 +52,7 @@
     grid-column: 2 / span 1; /* Center the Sunday button horizontally */
     grid-row: 3 / span 1;
 }
+
+.highestStreak {
+    margin-top: 50px;
+}
