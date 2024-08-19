@@ -15,6 +15,7 @@ export default function Page() {
     const [date, setDate] = useState<Date | null>(null);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [isCorrect, setIsCorrect] = useState<boolean>(false);
+    const [teams, setTeams] = useState<string[]>([]);
 
     const dateString = date && date.toISOString().split("T")[0];
     const correctDay =
@@ -32,6 +33,12 @@ export default function Page() {
 
     useEffect(() => {
         setDate(generateRandomDate());
+        fetch("/api/teams")
+            .then((res) => res.json())
+            .then((data) => {
+                const teamNames = data.map((team: any) => team.name);
+                setTeams(teamNames);
+            });
     }, []);
 
     const handleClick = (day: string) => {
