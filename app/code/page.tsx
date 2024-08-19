@@ -58,6 +58,19 @@ export default function Page() {
                 <div className={styles.caption}>L Train</div>
             </div>
             <div className={styles.item}>
+                <Link href="doomsday">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/doomsday.png"
+                            width={200}
+                            height={200}
+                            alt="Doomsday"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>Doomsday</div>
+            </div>
+            <div className={styles.item}>
                 <Link href="/code/maxaer.jar">
                     <div className={styles.imageWrapper}>
                         <Image
