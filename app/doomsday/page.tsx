@@ -51,7 +51,7 @@ export default function Page() {
     }, []);
 
     const handleClick = (day: string) => {
-        if (startTimeRef.current === null) return; // Prevent clicks before the timer starts
+        if (startTimeRef.current === null || selectedDay !== null) return; // Prevent clicks before the timer starts
 
         const endTime = performance.now(); // Get the end time
         const timeTakenMs = endTime - startTimeRef.current; // Calculate the time taken in milliseconds
@@ -60,7 +60,7 @@ export default function Page() {
         const isCorrect = day === correctDay;
         setIsCorrect(isCorrect);
 
-        fetch("/api/doomsday", {
+        const res = fetch("/api/doomsday", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -71,8 +71,24 @@ export default function Page() {
             }),
         });
 
-        // Update the timer for the next guess
-        startTimeRef.current = performance.now(); // Reset start time for the next guess
+        res.then((res) => {
+            if (res.ok) {
+                res.json().then((data) => {
+                    console.log(data);
+                    setCurrentStreak(data.streak);
+                    setTotalAttempts(totalAttempts + 1);
+                    if (data.streak > highestStreak) {
+                        setHighestStreak(data.streak);
+                    }
+                    if (data.time_taken_ms < fastestTime) {
+                        setFastestTime(data.time_taken_ms);
+                    }
+                    if (isCorrect) {
+                        setTotalCorrect(totalCorrect + 1);
+                    }
+                });
+            }
+        });
     };
 
     useEffect(() => {
@@ -96,6 +112,10 @@ export default function Page() {
                                 ? isCorrect
                                     ? styles.correct
                                     : styles.incorrect
+                                : ""
+                        } ${
+                            selectedDay !== null && day === correctDay
+                                ? styles.correct
                                 : ""
                         } ${day === "Sunday" ? styles.sunday : ""}`}
                         onClick={() => handleClick(day)}

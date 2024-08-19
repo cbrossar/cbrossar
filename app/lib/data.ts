@@ -97,7 +97,6 @@ export async function createMatch(
         console.log("Existing match:", existingMatch);
 
         if (existingMatch.rows.length === 0) {
-            console.log("Creating new match.");
             await sql`
                 INSERT INTO matches (home_team_id, away_team_id, home_score, away_score, date)
                 VALUES (
@@ -176,7 +175,7 @@ export async function createDoomsdayAttempt(
         if (mostRecentAttempt.rows.length > 0 && correct) {
             const lastAttempt = mostRecentAttempt.rows[0];
             streak = lastAttempt.streak + 1;
-        } else {
+        } else if (!correct) {
             streak = 0;
         }
 
@@ -184,6 +183,12 @@ export async function createDoomsdayAttempt(
             INSERT INTO doomsday_attempt (correct, time_taken_ms, streak)
             VALUES (${correct}, ${time_taken_ms}, ${streak})
         `;
+
+        return {
+            correct,
+            time_taken_ms,
+            streak,
+        };
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to create doomsday attempt.");
@@ -192,7 +197,6 @@ export async function createDoomsdayAttempt(
 
 export async function fetchDoomsdayStats() {
     try {
-
         const currentStreak = await sql`
             SELECT streak FROM doomsday_attempt ORDER BY created DESC LIMIT 1
         `;

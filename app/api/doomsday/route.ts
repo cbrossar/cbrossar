@@ -5,9 +5,13 @@ import { createDoomsdayAttempt, fetchDoomsdayStats } from "@/app/lib/data";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        await createDoomsdayAttempt(body.correct, body.time_taken_ms);
-        return new Response("Doomsday attempt created", {
-            headers: { "content-type": "text/plain" },
+        const attempt = await createDoomsdayAttempt(
+            body.correct,
+            body.time_taken_ms,
+        );
+        console.log(attempt);
+        return new Response(JSON.stringify(attempt), {
+            headers: { "content-type": "application/json" },
         });
     } catch (error) {
         return new Response("Failed to fetch teams", { status: 500 });
