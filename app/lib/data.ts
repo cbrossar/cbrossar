@@ -218,11 +218,11 @@ export async function fetchDoomsdayStats() {
         `;
 
         return {
-            currentStreak: currentStreak.rows[0].streak,
-            highestStreak: highestStreak.rows[0].highest_streak,
-            fastestTime: fastestTime.rows[0].fastest_time,
-            totalAttempts: totalAttempts.rows[0].total_attempts,
-            totalCorrect: totalCorrect.rows[0].total_correct,
+            currentStreak: Number(currentStreak.rows[0].streak),
+            highestStreak: Number(highestStreak.rows[0].highest_streak),
+            fastestTime: Number(fastestTime.rows[0].fastest_time),
+            totalAttempts: Number(totalAttempts.rows[0].total_attempts),
+            totalCorrect: Number(totalCorrect.rows[0].total_correct),
         };
     } catch (error) {
         console.error("Database Error:", error);

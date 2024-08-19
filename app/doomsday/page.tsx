@@ -74,17 +74,16 @@ export default function Page() {
         res.then((res) => {
             if (res.ok) {
                 res.json().then((data) => {
-                    console.log(data);
                     setCurrentStreak(data.streak);
                     setTotalAttempts(totalAttempts + 1);
-                    if (data.streak > highestStreak) {
-                        setHighestStreak(data.streak);
-                    }
-                    if (data.time_taken_ms < fastestTime) {
-                        setFastestTime(data.time_taken_ms);
-                    }
                     if (isCorrect) {
                         setTotalCorrect(totalCorrect + 1);
+                        if (data.streak > highestStreak) {
+                            setHighestStreak(data.streak);
+                        }
+                        if (data.time_taken_ms < fastestTime) {
+                            setFastestTime(data.time_taken_ms);
+                        }
                     }
                 });
             }
