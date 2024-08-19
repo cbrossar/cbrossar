@@ -13,8 +13,8 @@ export default function Page() {
     };
 
     const [date, setDate] = useState<Date | null>(null);
-    const [selectedDay, setSelectedDay] = useState(null);
-    const [isCorrect, setIsCorrect] = useState(null);
+    const [selectedDay, setSelectedDay] = useState<string | null>(null);
+    const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
     const dateString = date && date.toISOString().split("T")[0];
     const correctDay =
@@ -34,8 +34,7 @@ export default function Page() {
         setDate(generateRandomDate());
     }, []);
 
-    const handleClick = (day) => {
-        console.log(day, correctDay);
+    const handleClick = (day: string) => {
         setSelectedDay(day);
         setIsCorrect(day === correctDay);
     };
