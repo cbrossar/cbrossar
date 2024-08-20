@@ -20,8 +20,8 @@ export default function Page() {
     const [fastestTime, setFastestTime] = useState<number>(0);
     const [totalAttempts, setTotalAttempts] = useState<number>(0);
     const [totalCorrect, setTotalCorrect] = useState<number>(0);
-
-    const startTimeRef = useRef<number | null>(null); // Ref to store the start time of the guess
+    const [showStats, setShowStats] = useState<boolean>(false);
+    const stats = { currentStreak, highestStreak, fastestTime, totalCorrect, totalAttempts }; 
 
     const dateString = date && date.toISOString().split("T")[0];
     const correctDay =
@@ -36,6 +36,19 @@ export default function Page() {
         "Saturday",
         "Sunday",
     ];
+
+    const toggleStats = () => {
+        setShowStats(!showStats);
+    };
+
+    const handleContinue = () => {
+        setDate(generateRandomDate());
+        setSelectedDay(null);
+        setIsCorrect(false);
+        startTimeRef.current = null; // Reset the timer
+    };
+
+    const startTimeRef = useRef<number | null>(null); // Ref to store the start time of the guess
 
     useEffect(() => {
         setDate(generateRandomDate());
@@ -99,6 +112,8 @@ export default function Page() {
 
     return (
         <div className={styles.container}>
+            <div className={styles.highScore}>High Score: {highestStreak}</div>
+            <div className={styles.currentScore}>Score: {currentStreak}</div>
             <div className={styles.dateWrapper}>
                 <h1 className={styles.date}>{dateString}</h1>
             </div>
@@ -123,12 +138,51 @@ export default function Page() {
                     </div>
                 ))}
             </div>
-            <div className={styles.highestStreak}>
-                <h2>Current Streak: {currentStreak}</h2>
-                <h2>Highest Streak: {highestStreak}</h2>
-                <h2>Fastest Time: {(fastestTime / 1000).toFixed(1)}s</h2>
-                <h2>Total Correct: {totalCorrect}</h2>
-                <h2>Total Attempts: {totalAttempts}</h2>
+            <button
+                className={styles.statsButton}
+                onClick={() => setShowStats(true)}
+            >
+                Stats
+            </button>
+            <StatsModal
+                show={showStats}
+                onClose={() => setShowStats(false)}
+                stats={stats}
+            />
+            <button className={styles.continueButton} onClick={handleContinue}>
+                Continue
+            </button>
+        </div>
+    );
+}
+
+interface props {
+    show: boolean;
+    onClose: () => void;    
+    stats: {
+        currentStreak: number;
+        highestStreak: number;
+        fastestTime: number;
+        totalCorrect: number;
+        totalAttempts: number;
+    };
+}
+
+function StatsModal({ show, onClose, stats }: props) {
+    if (!show) return null;
+
+    return (
+        <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+                <button className={styles.closeButton} onClick={onClose}>
+                    &times;
+                </button>
+                <h2>Statistics</h2>
+                <h3>Current Streak: {stats.currentStreak}</h3>
+                <h3>Highest Streak: {stats.highestStreak}</h3>
+                <h3>Fastest Time: {(stats.fastestTime / 1000).toFixed(1)}s</h3>
+                <h3>Total Correct: {stats.totalCorrect}</h3>
+                <h3>Total Attempts: {stats.totalAttempts}</h3>
             </div>
         </div>
     );

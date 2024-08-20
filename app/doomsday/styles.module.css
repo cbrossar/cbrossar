@@ -1,12 +1,73 @@
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
 }
 
+.highScore, .currentScore {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.highScore {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.currentScore {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.statsButton {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.statsButton:hover {
+    background-color: #357abd;
+}
+
+.continueButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.continueButton:hover {
+    background-color: #218838;
+}
+
+.statsSection {
+    margin-top: 50px;
+    text-align: center;
+}
+
 .dateWrapper {
-    margin-bottom: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 .date {
@@ -21,6 +82,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 10px;
+    margin-bottom: 60px;
 }
 
 .button {
@@ -55,4 +117,52 @@
 
 .highestStreak {
     margin-top: 50px;
+}
+
+/* Modal styles */
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    position: relative;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    color: #c82333;
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+}
+
+.modal h3 {
+    margin-bottom: 10px;
 }
