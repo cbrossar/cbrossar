@@ -21,10 +21,12 @@ export default function Page() {
     const [totalAttempts, setTotalAttempts] = useState<number>(0);
     const [totalCorrect, setTotalCorrect] = useState<number>(0);
     const [under10s, setUnder10s] = useState<number>(0);
+    const [currentTime, setCurrentTime] = useState<number>(0);
     const [showStats, setShowStats] = useState<boolean>(false);
     const [message, setMessage] = useState<string | null>(null); // New state for the message
     const stats = {
         currentStreak,
+        currentTime,
         highestStreak,
         fastestTime,
         totalCorrect,
@@ -96,6 +98,7 @@ export default function Page() {
                 res.json().then((data) => {
                     setCurrentStreak(data.streak);
                     setTotalAttempts(totalAttempts + 1);
+                    setCurrentTime(data.time_taken_ms);
                     if (isCorrect) {
                         setTotalCorrect(totalCorrect + 1);
                         if (data.streak > highestStreak) {
@@ -171,6 +174,7 @@ interface Props {
     onClose: () => void;
     stats: {
         currentStreak: number;
+        currentTime: number;
         highestStreak: number;
         fastestTime: number;
         totalCorrect: number;
@@ -206,13 +210,22 @@ function StatsModal({ show, onClose, stats, message }: Props) {
                 <h2>Statistics</h2>
                 {message && <h3 className={styles.bold}>{message}</h3>}
                 <h3>Current Score: {stats.currentStreak}</h3>
+                <h3>Current Time: {(stats.currentTime / 1000).toFixed(1)}s</h3>
                 <h3>Highest Score: {stats.highestStreak}</h3>
                 <h3>Fastest Time: {(stats.fastestTime / 1000).toFixed(1)}s</h3>
-                <h3>Correct: {(stats.totalCorrect / stats.totalAttempts*100).toFixed(1)}%</h3>
-                <h3>Under 10s: {(stats.under10s / stats.totalCorrect*100).toFixed(1)}%</h3>
+                <h3>
+                    Correct:{" "}
+                    {((stats.totalCorrect / stats.totalAttempts) * 100).toFixed(
+                        1,
+                    )}
+                    %
+                </h3>
+                <h3>
+                    Under 10s:{" "}
+                    {((stats.under10s / stats.totalCorrect) * 100).toFixed(1)}%
+                </h3>
                 <h3>Total Attempts: {stats.totalAttempts}</h3>
             </div>
         </div>
     );
 }
-

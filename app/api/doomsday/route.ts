@@ -9,7 +9,6 @@ export async function POST(request: Request) {
             body.correct,
             body.time_taken_ms,
         );
-        console.log(attempt);
         return new Response(JSON.stringify(attempt), {
             headers: { "content-type": "application/json" },
         });
