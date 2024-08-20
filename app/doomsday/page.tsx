@@ -21,7 +21,13 @@ export default function Page() {
     const [totalAttempts, setTotalAttempts] = useState<number>(0);
     const [totalCorrect, setTotalCorrect] = useState<number>(0);
     const [showStats, setShowStats] = useState<boolean>(false);
-    const stats = { currentStreak, highestStreak, fastestTime, totalCorrect, totalAttempts }; 
+    const stats = {
+        currentStreak,
+        highestStreak,
+        fastestTime,
+        totalCorrect,
+        totalAttempts,
+    };
 
     const dateString = date && date.toISOString().split("T")[0];
     const correctDay =
@@ -36,10 +42,6 @@ export default function Page() {
         "Saturday",
         "Sunday",
     ];
-
-    const toggleStats = () => {
-        setShowStats(!showStats);
-    };
 
     const handleContinue = () => {
         setDate(generateRandomDate());
@@ -158,7 +160,7 @@ export default function Page() {
 
 interface props {
     show: boolean;
-    onClose: () => void;    
+    onClose: () => void;
     stats: {
         currentStreak: number;
         highestStreak: number;
@@ -169,6 +171,20 @@ interface props {
 }
 
 function StatsModal({ show, onClose, stats }: props) {
+    const handleClickOutside = (event: any) => {
+        if (event.target.className.includes(styles.modalOverlay)) {
+            onClose();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
     if (!show) return null;
 
     return (
@@ -178,8 +194,8 @@ function StatsModal({ show, onClose, stats }: props) {
                     &times;
                 </button>
                 <h2>Statistics</h2>
-                <h3>Current Streak: {stats.currentStreak}</h3>
-                <h3>Highest Streak: {stats.highestStreak}</h3>
+                <h3>Current Score: {stats.currentStreak}</h3>
+                <h3>Highest Score: {stats.highestStreak}</h3>
                 <h3>Fastest Time: {(stats.fastestTime / 1000).toFixed(1)}s</h3>
                 <h3>Total Correct: {stats.totalCorrect}</h3>
                 <h3>Total Attempts: {stats.totalAttempts}</h3>
