@@ -66,11 +66,6 @@
         color 0.3s ease;
 }
 
-.continueButton:hover {
-    background-color: #12293b;
-    color: #eef3f9;
-}
-
 .dateWrapper {
     margin-top: 40px;
     margin-bottom: 40px;
