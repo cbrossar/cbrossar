@@ -20,6 +20,7 @@ export default function Page() {
     const [fastestTime, setFastestTime] = useState<number>(0);
     const [totalAttempts, setTotalAttempts] = useState<number>(0);
     const [totalCorrect, setTotalCorrect] = useState<number>(0);
+    const [under10s, setUnder10s] = useState<number>(0);
     const [showStats, setShowStats] = useState<boolean>(false);
     const [message, setMessage] = useState<string | null>(null); // New state for the message
     const stats = {
@@ -28,6 +29,7 @@ export default function Page() {
         fastestTime,
         totalCorrect,
         totalAttempts,
+        under10s,
     };
 
     const dateString = date && date.toISOString().split("T")[0];
@@ -64,6 +66,7 @@ export default function Page() {
                 setFastestTime(data.fastestTime);
                 setTotalAttempts(data.totalAttempts);
                 setTotalCorrect(data.totalCorrect);
+                setUnder10s(data.under10s);
             });
     }, []);
 
@@ -172,6 +175,7 @@ interface Props {
         fastestTime: number;
         totalCorrect: number;
         totalAttempts: number;
+        under10s: number;
     };
     message: string | null;
 }
@@ -204,7 +208,8 @@ function StatsModal({ show, onClose, stats, message }: Props) {
                 <h3>Current Score: {stats.currentStreak}</h3>
                 <h3>Highest Score: {stats.highestStreak}</h3>
                 <h3>Fastest Time: {(stats.fastestTime / 1000).toFixed(1)}s</h3>
-                <h3>Total Correct: {stats.totalCorrect}</h3>
+                <h3>Correct: {(stats.totalCorrect / stats.totalAttempts*100).toFixed(1)}%</h3>
+                <h3>Under 10s: {(stats.under10s / stats.totalCorrect*100).toFixed(1)}%</h3>
                 <h3>Total Attempts: {stats.totalAttempts}</h3>
             </div>
         </div>

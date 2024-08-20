@@ -217,12 +217,17 @@ export async function fetchDoomsdayStats() {
             SELECT COUNT(*) as total_correct FROM doomsday_attempt WHERE correct = true
         `;
 
+        const under10s = await sql`
+            SELECT COUNT(*) as under_10s FROM doomsday_attempt WHERE time_taken_ms < 10000
+        `;
+
         return {
             currentStreak: Number(currentStreak.rows[0].streak),
             highestStreak: Number(highestStreak.rows[0].highest_streak),
             fastestTime: Number(fastestTime.rows[0].fastest_time),
             totalAttempts: Number(totalAttempts.rows[0].total_attempts),
             totalCorrect: Number(totalCorrect.rows[0].total_correct),
+            under10s: Number(under10s.rows[0].under_10s),
         };
     } catch (error) {
         console.error("Database Error:", error);
