@@ -124,7 +124,7 @@ export default function Page() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.highScore}>High Score: {highestStreak}</div>
+            <div className={styles.highScore}>Highscore: {highestStreak}</div>
             <div className={styles.currentScore}>Score: {currentStreak}</div>
             <div className={styles.dateWrapper}>
                 <h1 className={styles.date}>{dateString}</h1>
