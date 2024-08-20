@@ -163,7 +163,7 @@ export default function Page() {
                 message={message} // Pass the message to the modal
             />
             <button className={styles.continueButton} onClick={handleContinue}>
-                Continue
+                Next
             </button>
         </div>
     );
