@@ -21,6 +21,7 @@ export default function Page() {
     const [totalAttempts, setTotalAttempts] = useState<number>(0);
     const [totalCorrect, setTotalCorrect] = useState<number>(0);
     const [showStats, setShowStats] = useState<boolean>(false);
+    const [message, setMessage] = useState<string | null>(null); // New state for the message
     const stats = {
         currentStreak,
         highestStreak,
@@ -48,6 +49,7 @@ export default function Page() {
         setSelectedDay(null);
         setIsCorrect(false);
         startTimeRef.current = null; // Reset the timer
+        setMessage(null); // Reset the message when continuing
     };
 
     const startTimeRef = useRef<number | null>(null); // Ref to store the start time of the guess
@@ -98,6 +100,8 @@ export default function Page() {
                         }
                         if (data.time_taken_ms < fastestTime) {
                             setFastestTime(data.time_taken_ms);
+                            setMessage("New fastest time!"); // Set the message
+                            setShowStats(true); // Show the stats modal
                         }
                     }
                 });
@@ -150,6 +154,7 @@ export default function Page() {
                 show={showStats}
                 onClose={() => setShowStats(false)}
                 stats={stats}
+                message={message} // Pass the message to the modal
             />
             <button className={styles.continueButton} onClick={handleContinue}>
                 Continue
@@ -158,7 +163,7 @@ export default function Page() {
     );
 }
 
-interface props {
+interface Props {
     show: boolean;
     onClose: () => void;
     stats: {
@@ -168,9 +173,10 @@ interface props {
         totalCorrect: number;
         totalAttempts: number;
     };
+    message: string | null;
 }
 
-function StatsModal({ show, onClose, stats }: props) {
+function StatsModal({ show, onClose, stats, message }: Props) {
     const handleClickOutside = (event: any) => {
         if (event.target.className.includes(styles.modalOverlay)) {
             onClose();
@@ -194,6 +200,7 @@ function StatsModal({ show, onClose, stats }: props) {
                     &times;
                 </button>
                 <h2>Statistics</h2>
+                {message && <h3 className={styles.bold}>{message}</h3>}
                 <h3>Current Score: {stats.currentStreak}</h3>
                 <h3>Highest Score: {stats.highestStreak}</h3>
                 <h3>Fastest Time: {(stats.fastestTime / 1000).toFixed(1)}s</h3>
@@ -203,3 +210,4 @@ function StatsModal({ show, onClose, stats }: props) {
         </div>
     );
 }
+
