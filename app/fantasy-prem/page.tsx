@@ -3,8 +3,8 @@ import { FantasyPlayer, FantasyPosition } from "../lib/definitions";
 import { maximizeFantasyTeam } from "./utils";
 
 export default async function Page() {
-    const players: FantasyPlayer[] = await fetchFantasyPlayers();
-    const positions: FantasyPosition[] = await fetchFantasyPositions();
+    const players: FantasyPlayer[] = await fetchFantasyPlayers() as FantasyPlayer[];
+    const positions: FantasyPosition[] = await fetchFantasyPositions() as FantasyPosition[];
 
     const budget = 800;
     const formation = [1, 3, 5, 2]; // 1 goalie, 3 defenders, 5 midfielders, 2 forwards
