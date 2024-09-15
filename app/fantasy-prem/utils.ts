@@ -27,11 +27,6 @@ export function maximizeFantasyTeam(
     const midfielderCombinations = getCombinations(midfielders, formation[2]);
     const forwardCombinations = getCombinations(forwards, formation[3]);
 
-    console.log(goalieCombinations.length);
-    console.log(defenderCombinations.length);
-    console.log(midfielderCombinations.length);
-    console.log(forwardCombinations.length);
-
     const teamCombinations = [];
     for (const goalies of goalieCombinations) {
         for (const defenders of defenderCombinations) {
