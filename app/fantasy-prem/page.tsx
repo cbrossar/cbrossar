@@ -1,32 +1,34 @@
 import { fetchFantasyPlayers, fetchFantasyPositions } from "@/app/lib/data";
 import { FantasyPlayer, FantasyPosition } from "../lib/definitions";
-import { maximizeFantasyTeam } from "./utils"
-
+import { maximizeFantasyTeam } from "./utils";
 
 export default async function Page() {
-
     const players: FantasyPlayer[] = await fetchFantasyPlayers();
     const positions: FantasyPosition[] = await fetchFantasyPositions();
 
     const budget = 800;
     const formation = [1, 3, 5, 2]; // 1 goalie, 3 defenders, 5 midfielders, 2 forwards
 
-    const optimalTeam = maximizeFantasyTeam(players, positions, budget, formation);
-
+    const optimalTeam = maximizeFantasyTeam(
+        players,
+        positions,
+        budget,
+        formation,
+    );
 
     const goalkeepers = optimalTeam.team.filter(
-        (player) => player.element_type === 1
+        (player) => player.element_type === 1,
     );
 
     const defenders = optimalTeam.team.filter(
-        (player) => player.element_type === 2
+        (player) => player.element_type === 2,
     );
     const midfielders = optimalTeam.team.filter(
-        (player) => player.element_type === 3
+        (player) => player.element_type === 3,
     );
 
     const forwards = optimalTeam.team.filter(
-        (player) => player.element_type === 4
+        (player) => player.element_type === 4,
     );
 
     return (
@@ -38,28 +40,35 @@ export default async function Page() {
             <h3>Goalkeepers</h3>
             <ul>
                 {goalkeepers.map((player) => (
-                    <li key={player.id}>{player.first_name} {player.second_name}</li>
+                    <li key={player.id}>
+                        {player.first_name} {player.second_name}
+                    </li>
                 ))}
             </ul>
             <h3>Defenders</h3>
             <ul>
                 {defenders.map((player) => (
-                    <li key={player.id}>{player.first_name} {player.second_name}</li>
+                    <li key={player.id}>
+                        {player.first_name} {player.second_name}
+                    </li>
                 ))}
             </ul>
             <h3>Midfielders</h3>
             <ul>
                 {midfielders.map((player) => (
-                    <li key={player.id}>{player.first_name} {player.second_name}</li>
+                    <li key={player.id}>
+                        {player.first_name} {player.second_name}
+                    </li>
                 ))}
             </ul>
             <h3>Forwards</h3>
             <ul>
                 {forwards.map((player) => (
-                    <li key={player.id}>{player.first_name} {player.second_name}</li>
+                    <li key={player.id}>
+                        {player.first_name} {player.second_name}
+                    </li>
                 ))}
             </ul>
-            
         </div>
     );
 }
