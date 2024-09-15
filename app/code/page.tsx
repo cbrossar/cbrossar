@@ -45,6 +45,19 @@ export default function Page() {
                 <div className={styles.caption}>Bethpage</div>
             </div>
             <div className={styles.item}>
+                <Link href="fantasy-prem">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/fantasy-prem.png"
+                            width={200}
+                            height={200}
+                            alt="Fantasy Premier League"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>Fantasy Prem</div>
+            </div>
+            <div className={styles.item}>
                 <Link href="ltrain">
                     <div className={styles.imageWrapper}>
                         <Image
