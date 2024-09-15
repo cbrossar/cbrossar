@@ -39,7 +39,7 @@ export function maximizeFantasyTeam(
                         ...forwards,
                     ];
                     const totalCost = team.reduce(
-                        (acc, player) => acc + player.now_cost,
+                        (acc, player) => acc + player.now_cost - player.cost_change_start,
                         0,
                     );
                     if (totalCost <= budget) {

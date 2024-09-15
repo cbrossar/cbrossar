@@ -55,7 +55,7 @@ export default async function Page() {
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £
-                                        {(player.now_cost / 10).toFixed(1)}m
+                                        {((player.now_cost - player.cost_change_start) / 10).toFixed(1)}m
                                     </span>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@ export default async function Page() {
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £
-                                        {(player.now_cost / 10).toFixed(1)}m
+                                        {((player.now_cost - player.cost_change_start) / 10).toFixed(1)}m
                                     </span>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@ export default async function Page() {
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £
-                                        {(player.now_cost / 10).toFixed(1)}m
+                                        {((player.now_cost - player.cost_change_start) / 10).toFixed(1)}m
                                     </span>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@ export default async function Page() {
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £
-                                        {(player.now_cost / 10).toFixed(1)}m
+                                        {((player.now_cost - player.cost_change_start) / 10).toFixed(1)}m
                                     </span>
                                 </div>
                             </div>
