@@ -4,8 +4,9 @@ async function main() {
     const client = await db.connect();
 
     await seedMusicReviews(client);
-    await seedDoomsdayAttempts(client);
+    // await seedDoomsdayAttempts(client);
     // await seedSoccerStats(client);
+    await seedFantasyPremierLeagueStats(client);
 
     await client.end();
 }
@@ -217,6 +218,45 @@ async function seedDoomsdayAttempts(client) {
         };
     } catch (error) {
         console.error("Error seeding doomsday attempts:", error);
+        throw error;
+    }
+}
+
+async function seedFantasyPremierLeagueStats(client) {
+    try {
+        // Create the "fantasy_positions" table if it doesn't exist
+        const createFantasyPositionsTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS fantasy_positions (
+            id INT PRIMARY KEY,
+            singular_name VARCHAR(255) NOT NULL,
+            squad_min_play INT NOT NULL,
+            squad_max_play INT NOT NULL
+        );
+        `;
+        console.log(`Created "fantasy_positions" table`);
+
+        // Create the "fantasy_players" table if it doesn't exist
+        const createFantasyPlayersTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS fantasy_players (
+            id INT PRIMARY KEY,
+            first_name VARCHAR(255) NOT NULL,
+            second_name VARCHAR(255) NOT NULL,
+            element_type INT NOT NULL,
+            cost_change_start FLOAT NOT NULL,
+            now_cost FLOAT NOT NULL,
+            total_points INT NOT NULL,
+            event_points INT NOT NULL,
+            FOREIGN KEY (element_type) REFERENCES fantasy_positions(id)
+        );
+        `;
+        console.log(`Created "fantasy_players" table`);
+
+        return {
+            createFantasyPositionsTable,
+            createFantasyPlayersTable,
+        };
+    } catch (error) {
+        console.error("Error seeding fantasy premier league stats:", error);
         throw error;
     }
 }

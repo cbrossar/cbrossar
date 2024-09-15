@@ -1,5 +1,11 @@
 import { sql } from "@vercel/postgres";
-import { MusicReview, Match, Team } from "./definitions";
+import {
+    MusicReview,
+    Match,
+    Team,
+    FantasyPlayer,
+    FantasyPosition,
+} from "./definitions";
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchMusicReviews() {
@@ -232,5 +238,65 @@ export async function fetchDoomsdayStats() {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch doomsday highest streak.");
+    }
+}
+
+export async function upsertFantasyPlayer(player: FantasyPlayer) {
+    try {
+        await sql`
+            INSERT INTO fantasy_players (id, first_name, second_name, element_type, cost_change_start, now_cost, total_points, event_points)
+            VALUES (${player.id}, ${player.first_name}, ${player.second_name}, ${player.element_type}, ${player.cost_change_start}, ${player.now_cost}, ${player.total_points}, ${player.event_points})
+            ON CONFLICT (id) DO UPDATE SET
+                first_name = ${player.first_name},
+                second_name = ${player.second_name},
+                element_type = ${player.element_type},
+                cost_change_start = ${player.cost_change_start},
+                now_cost = ${player.now_cost},
+                total_points = ${player.total_points},
+                event_points = ${player.event_points}
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to upsert fantasy player.");
+    }
+}
+
+export async function upsertFantasyPosition(position: FantasyPosition) {
+    try {
+        await sql`
+            INSERT INTO fantasy_positions (id, singular_name, squad_min_play, squad_max_play)
+            VALUES (${position.id}, ${position.singular_name}, ${position.squad_min_play}, ${position.squad_max_play})
+            ON CONFLICT (id) DO UPDATE SET
+                singular_name = ${position.singular_name},
+                squad_min_play = ${position.squad_min_play},
+                squad_max_play = ${position.squad_max_play}
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to upsert fantasy position.");
+    }
+}
+
+export async function fetchFantasyPlayers() {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_players
+        `;
+        return response.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch fantasy players.");
+    }
+}
+
+export async function fetchFantasyPositions() {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_positions
+        `;
+        return response.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch fantasy positions.");
     }
 }
