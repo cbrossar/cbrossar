@@ -90,7 +90,7 @@ export function FormationSelect() {
             >
                 {formations.map((formation) => (
                     <option key={formation.value} value={formation.value}>
-                        Formation: {formation.label}
+                        {formation.label}
                     </option>
                 ))}
             </select>
