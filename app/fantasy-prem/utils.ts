@@ -6,6 +6,10 @@ export function maximizeFantasyTeam(
     budget: number,
     formation: number[],
 ): { team: FantasyPlayer[]; totalPoints: number; totalCost: number } {
+
+    // TODO: Can optimize by limmiting by position (fewer goalies, more mids)
+    // Also can query for this stuff directly 
+
     // Sort players by their position (element_type)
     const playersByPosition: Record<number, FantasyPlayer[]> = {};
     positions.forEach((pos) => {

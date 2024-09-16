@@ -41,7 +41,7 @@ export function BudgetSlider({ min, max }: { min: number; max: number }) {
                 onChange={(e) => setBudget(Number(e.target.value))}
                 className="budget-slider"
             />
-            <div className="budget-display">Budget £{budget}m</div>
+            <div className="budget-display">Budget: £{budget}m</div>
         </div>
     );
 }
@@ -90,7 +90,7 @@ export function FormationSelect() {
             >
                 {formations.map((formation) => (
                     <option key={formation.value} value={formation.value}>
-                        {formation.label}
+                        Formation: {formation.label}
                     </option>
                 ))}
             </select>
