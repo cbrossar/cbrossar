@@ -63,7 +63,7 @@ export function FormationSelect() {
     const initialFormation = searchParams.get("formation") || "1-3-5-2";
     const [formation, setFormation] = useState(initialFormation);
 
-    const handleFormationChange = (newFormation) => {
+    const handleFormationChange = (newFormation: string) => {
         const params = new URLSearchParams(searchParams);
         if (newFormation) {
             params.set("formation", newFormation);
