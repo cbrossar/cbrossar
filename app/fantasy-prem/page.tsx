@@ -2,13 +2,14 @@ import { fetchFantasyPlayers, fetchFantasyPositions } from "@/app/lib/data";
 import { FantasyPlayer, FantasyPosition } from "../lib/definitions";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
-import BudgetSlider from "./configs";
+import { BudgetSlider, FormationSelect } from "./configs";
 
 export default async function Page({
     searchParams,
 }: {
     searchParams?: {
         budget?: string;
+        formation?: string;
     };
 }) {
     const players: FantasyPlayer[] =
@@ -18,13 +19,15 @@ export default async function Page({
 
     const budget = Number(searchParams?.budget || "80") * 10;
 
-    const formation = [1, 3, 5, 2]; // 1 goalie, 3 defenders, 5 midfielders, 2 forwards
+    const formation = searchParams?.formation || "1-3-5-2"; // 1 goalie, 3 defenders, 5 midfielders, 2 forwards
+
+    const formationArray = formation.split("-").map(Number);
 
     const optimalTeam = maximizeFantasyTeam(
         players,
         positions,
         budget,
-        formation,
+        formationArray,
     );
 
     const goalkeepers = optimalTeam.team.filter(
@@ -43,6 +46,7 @@ export default async function Page({
     return (
         <div className={styles.container}>
             <BudgetSlider min={0} max={100} />
+            <FormationSelect />
             {/* <h1 className={styles.title}>Fantasy Premier League</h1> */}
             {/* <h2 className={styles.subtitle}>Optimal Team</h2> */}
             <div className={styles.stats}>
