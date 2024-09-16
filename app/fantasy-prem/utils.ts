@@ -39,7 +39,8 @@ export function maximizeFantasyTeam(
                         ...forwards,
                     ];
                     const totalCost = team.reduce(
-                        (acc, player) => acc + player.now_cost - player.cost_change_start,
+                        (acc, player) =>
+                            acc + player.now_cost - player.cost_change_start,
                         0,
                     );
                     if (totalCost <= budget) {
@@ -52,6 +53,10 @@ export function maximizeFantasyTeam(
                 }
             }
         }
+    }
+
+    if (teamCombinations.length == 0) {
+        return { team: [], totalPoints: 0, totalCost: 0 };
     }
 
     teamCombinations.sort((a, b) => b.totalPoints - a.totalPoints);
