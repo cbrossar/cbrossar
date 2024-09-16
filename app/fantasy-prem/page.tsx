@@ -34,8 +34,8 @@ export default async function Page() {
 
     return (
         <div className={styles.container}>
-            {/* <h1 className={styles.title}>Fantasy Premier League</h1>
-            <h2 className={styles.subtitle}>Optimal Team</h2> */}
+            {/* <h1 className={styles.title}>Fantasy Premier League</h1> */}
+            {/* <h2 className={styles.subtitle}>Optimal Team</h2> */}
             <div className={styles.stats}>
                 <h3>Total Points: {optimalTeam.totalPoints}</h3>
                 <h3>Total Cost: £{(optimalTeam.totalCost / 10).toFixed(1)}m</h3>
