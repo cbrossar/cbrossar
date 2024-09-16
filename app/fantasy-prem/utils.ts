@@ -12,7 +12,7 @@ export function maximizeFantasyTeam(
         playersByPosition[pos.id] = players
             .filter((p) => p.element_type === pos.id)
             .sort((a, b) => b.total_points - a.total_points) // Sort by total points, descending
-            .slice(0, 10); // Limit to top 10 players per position
+            .slice(0, 5); // Limit to top 10 players per position
     });
 
     // Define the specific formation
