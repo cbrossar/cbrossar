@@ -2,8 +2,7 @@ import { fetchFantasyPlayers, fetchFantasyPositions } from "@/app/lib/data";
 import { FantasyPlayer, FantasyPosition } from "../lib/definitions";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
-import { BudgetSlider, FormationSelect } from "./configs";
-import CostToggle from "./cost-toggle";
+import SettingsModal from "./settings-modal"; // Import the modal component
 
 export default async function Page({
     searchParams,
@@ -50,9 +49,7 @@ export default async function Page({
 
     return (
         <div className={styles.container}>
-            <BudgetSlider min={0} max={100} />
-            <FormationSelect />
-            <CostToggle />
+            <SettingsModal />
             <div className={styles.stats}>
                 <h3>Total Points: {optimalTeam.totalPoints}</h3>
                 <h3>Total Cost: £{(optimalTeam.totalCost / 10).toFixed(1)}m</h3>
