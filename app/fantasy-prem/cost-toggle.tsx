@@ -33,7 +33,7 @@ export default function CostToggle() {
                 <span className="slider"></span>
             </label>
             <div className="cost-display">
-                {isNowCost ? "Showing Now Cost" : "Showing Original Cost"}
+                {isNowCost ? "Using Now Cost" : "Using Original Cost"}
             </div>
             <style jsx>{`
                 .cost-toggle-container {
