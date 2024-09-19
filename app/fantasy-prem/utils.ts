@@ -5,10 +5,10 @@ export function maximizeFantasyTeam(
     positions: FantasyPosition[],
     budget: number,
     formation: number[],
+    isNowCost: boolean,
 ): { team: FantasyPlayer[]; totalPoints: number; totalCost: number } {
-
     // TODO: Can optimize by limmiting by position (fewer goalies, more mids)
-    // Also can query for this stuff directly 
+    // Also can query for this stuff directly
 
     // Sort players by their position (element_type)
     const playersByPosition: Record<number, FantasyPlayer[]> = {};
@@ -44,7 +44,10 @@ export function maximizeFantasyTeam(
                     ];
                     const totalCost = team.reduce(
                         (acc, player) =>
-                            acc + player.now_cost - player.cost_change_start,
+                            acc +
+                            (isNowCost
+                                ? player.now_cost
+                                : player.now_cost - player.cost_change_start),
                         0,
                     );
                     if (totalCost <= budget) {

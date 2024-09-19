@@ -3,6 +3,7 @@ import { FantasyPlayer, FantasyPosition } from "../lib/definitions";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
 import { BudgetSlider, FormationSelect } from "./configs";
+import CostToggle from "./cost-toggle";
 
 export default async function Page({
     searchParams,
@@ -10,6 +11,7 @@ export default async function Page({
     searchParams?: {
         budget?: string;
         formation?: string;
+        isNowCost?: string;
     };
 }) {
     const players: FantasyPlayer[] =
@@ -23,11 +25,14 @@ export default async function Page({
 
     const formationArray = formation.split("-").map(Number);
 
+    const isNowCost = searchParams?.isNowCost === "true" || false;
+
     const optimalTeam = maximizeFantasyTeam(
         players,
         positions,
         budget,
         formationArray,
+        isNowCost,
     );
 
     const goalkeepers = optimalTeam.team.filter(
@@ -47,8 +52,7 @@ export default async function Page({
         <div className={styles.container}>
             <BudgetSlider min={0} max={100} />
             <FormationSelect />
-            {/* <h1 className={styles.title}>Fantasy Premier League</h1> */}
-            {/* <h2 className={styles.subtitle}>Optimal Team</h2> */}
+            <CostToggle />
             <div className={styles.stats}>
                 <h3>Total Points: {optimalTeam.totalPoints}</h3>
                 <h3>Total Cost: £{(optimalTeam.totalCost / 10).toFixed(1)}m</h3>
@@ -69,9 +73,10 @@ export default async function Page({
                                     <span className={styles.cost}>
                                         Cost: £
                                         {(
-                                            (player.now_cost -
-                                                player.cost_change_start) /
-                                            10
+                                            (isNowCost
+                                                ? player.now_cost
+                                                : player.now_cost -
+                                                  player.cost_change_start) / 10
                                         ).toFixed(1)}
                                         m
                                     </span>
@@ -95,9 +100,10 @@ export default async function Page({
                                     <span className={styles.cost}>
                                         Cost: £
                                         {(
-                                            (player.now_cost -
-                                                player.cost_change_start) /
-                                            10
+                                            (isNowCost
+                                                ? player.now_cost
+                                                : player.now_cost -
+                                                  player.cost_change_start) / 10
                                         ).toFixed(1)}
                                         m
                                     </span>
@@ -121,9 +127,10 @@ export default async function Page({
                                     <span className={styles.cost}>
                                         Cost: £
                                         {(
-                                            (player.now_cost -
-                                                player.cost_change_start) /
-                                            10
+                                            (isNowCost
+                                                ? player.now_cost
+                                                : player.now_cost -
+                                                  player.cost_change_start) / 10
                                         ).toFixed(1)}
                                         m
                                     </span>
@@ -147,9 +154,10 @@ export default async function Page({
                                     <span className={styles.cost}>
                                         Cost: £
                                         {(
-                                            (player.now_cost -
-                                                player.cost_change_start) /
-                                            10
+                                            (isNowCost
+                                                ? player.now_cost
+                                                : player.now_cost -
+                                                  player.cost_change_start) / 10
                                         ).toFixed(1)}
                                         m
                                     </span>
