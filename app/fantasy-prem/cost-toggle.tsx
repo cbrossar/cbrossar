@@ -9,7 +9,7 @@ export default function CostToggle() {
     const { replace } = useRouter();
 
     // Get initial isNowCost state from URL or default to false (original cost)
-    const isNowCostParam = searchParams.get("is-now-cost") === "true";
+    const isNowCostParam = searchParams.get("isNowCost") === "true";
     const [isNowCost, setIsNowCost] = useState(isNowCostParam);
 
     const handleToggle = () => {
