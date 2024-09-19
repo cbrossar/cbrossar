@@ -11,6 +11,7 @@ export default async function Page({
         budget?: string;
         formation?: string;
         isNowCost?: string;
+        isCurrentGameweek?: string;
     };
 }) {
     const players: FantasyPlayer[] =
@@ -26,12 +27,16 @@ export default async function Page({
 
     const isNowCost = searchParams?.isNowCost === "true" || false;
 
+    const isCurrentGameweek =
+        searchParams?.isCurrentGameweek === "true" || false;
+
     const optimalTeam = maximizeFantasyTeam(
         players,
         positions,
         budget,
         formationArray,
         isNowCost,
+        isCurrentGameweek,
     );
 
     const goalkeepers = optimalTeam.team.filter(
@@ -65,7 +70,10 @@ export default async function Page({
                                         {player.first_name} {player.second_name}
                                     </span>
                                     <span className={styles.points}>
-                                        Points: {player.total_points}
+                                        Points:{" "}
+                                        {isCurrentGameweek
+                                            ? player.event_points
+                                            : player.total_points}
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £
@@ -92,7 +100,10 @@ export default async function Page({
                                         {player.first_name} {player.second_name}
                                     </span>
                                     <span className={styles.points}>
-                                        Points: {player.total_points}
+                                        Points:{" "}
+                                        {isCurrentGameweek
+                                            ? player.event_points
+                                            : player.total_points}
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £
@@ -119,7 +130,10 @@ export default async function Page({
                                         {player.first_name} {player.second_name}
                                     </span>
                                     <span className={styles.points}>
-                                        Points: {player.total_points}
+                                        Points:{" "}
+                                        {isCurrentGameweek
+                                            ? player.event_points
+                                            : player.total_points}
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £
@@ -146,7 +160,10 @@ export default async function Page({
                                         {player.first_name} {player.second_name}
                                     </span>
                                     <span className={styles.points}>
-                                        Points: {player.total_points}
+                                        Points:{" "}
+                                        {isCurrentGameweek
+                                            ? player.event_points
+                                            : player.total_points}
                                     </span>
                                     <span className={styles.cost}>
                                         Cost: £

@@ -6,6 +6,7 @@ import { FaCog } from "react-icons/fa"; // Import the gear icon from react-icons
 import BudgetSlider from "./budget-slider";
 import FormationSelect from "./formation-select";
 import CostToggle from "./cost-toggle";
+import GameweekToggle from "./gameweek-toggle";
 import styles from "./modal.module.css"; // Add your modal styles here
 
 export default function SettingsModal() {
@@ -55,6 +56,9 @@ export default function SettingsModal() {
                         </div>
                         <div className={styles.config}>
                             <CostToggle />
+                        </div>
+                        <div className={styles.config}>
+                            <GameweekToggle />
                         </div>
                     </div>
                 </div>

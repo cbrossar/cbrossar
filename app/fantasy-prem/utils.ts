@@ -6,6 +6,7 @@ export function maximizeFantasyTeam(
     budget: number,
     formation: number[],
     isNowCost: boolean,
+    isCurrentGameweek: boolean,
 ): { team: FantasyPlayer[]; totalPoints: number; totalCost: number } {
     // TODO: Can optimize by limmiting by position (fewer goalies, more mids)
     // Also can query for this stuff directly
@@ -15,7 +16,11 @@ export function maximizeFantasyTeam(
     positions.forEach((pos) => {
         playersByPosition[pos.id] = players
             .filter((p) => p.element_type === pos.id)
-            .sort((a, b) => b.total_points - a.total_points) // Sort by total points, descending
+            .sort((a, b) =>
+                isCurrentGameweek
+                    ? b.event_points - a.event_points
+                    : b.total_points - a.total_points,
+            ) // Sort by total points, descending
             .slice(0, 8); // Limit to top 8 players per position
     });
 
@@ -52,7 +57,11 @@ export function maximizeFantasyTeam(
                     );
                     if (totalCost <= budget) {
                         const totalPoints = team.reduce(
-                            (acc, player) => acc + player.total_points,
+                            (acc, player) =>
+                                acc +
+                                (isCurrentGameweek
+                                    ? player.event_points
+                                    : player.total_points),
                             0,
                         );
                         teamCombinations.push({ team, totalPoints, totalCost });

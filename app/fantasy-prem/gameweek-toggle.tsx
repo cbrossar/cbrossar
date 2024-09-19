@@ -3,22 +3,25 @@
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function CostToggle() {
+export default function GameweekToggle() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
 
     // Get initial isNowCost state from URL or default to false (original cost)
-    const isNowCostParam = searchParams.get("isNowCost") === "true";
-    const [isNowCost, setIsNowCost] = useState(isNowCostParam);
+    const isCurrentGameweekParam =
+        searchParams.get("isCurrentGameweek") === "true";
+    const [isCurrentGameweek, setIsCurrentGameweek] = useState(
+        isCurrentGameweekParam,
+    );
 
     const handleToggle = () => {
-        const newIsNowCost = !isNowCost;
-        setIsNowCost(newIsNowCost);
+        const newIsCurrentGameweek = !isCurrentGameweek;
+        setIsCurrentGameweek(newIsCurrentGameweek);
 
         // Update the URL param when the toggle state changes
         const params = new URLSearchParams(searchParams);
-        params.set("isNowCost", newIsNowCost.toString());
+        params.set("isCurrentGameweek", newIsCurrentGameweek.toString());
         replace(`${pathname}?${params.toString()}`);
     };
 
@@ -27,13 +30,13 @@ export default function CostToggle() {
             <label className="switch">
                 <input
                     type="checkbox"
-                    checked={isNowCost}
+                    checked={isCurrentGameweek}
                     onChange={handleToggle}
                 />
                 <span className="slider"></span>
             </label>
             <div className="cost-display">
-                {isNowCost ? "Now Cost" : "Original Cost"}
+                {isCurrentGameweek ? "Current Gameweek" : "All Gameweeks"}
             </div>
             <style jsx>{`
                 .cost-toggle-container {
