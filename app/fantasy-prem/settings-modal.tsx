@@ -18,6 +18,21 @@ export default function SettingsModal() {
     const isModalOpenParam = searchParams.get("modalOpen") === "true";
     const [isModalOpen, setIsModalOpen] = useState(isModalOpenParam);
 
+    const budgetParam = Number(searchParams.get("budget")) || 80;
+    const [budget, setBudget] = useState(budgetParam);
+
+    const formationParam = searchParams.get("formation") || "1-3-5-2";
+    const [formation, setFormation] = useState(formationParam);
+
+    const isCurrentGameweekParam =
+        searchParams.get("isCurrentGameweek") === "true";
+    const [isCurrentGameweek, setIsCurrentGameweek] = useState(
+        isCurrentGameweekParam,
+    );
+
+    const isNowCostParam = searchParams.get("isNowCost") === "true";
+    const [isNowCost, setIsNowCost] = useState(isNowCostParam);
+
     // Update the URL param when modal state changes
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
@@ -26,8 +41,35 @@ export default function SettingsModal() {
         } else {
             params.delete("modalOpen");
         }
+        if (budget) {
+            params.set("budget", budget.toString());
+        } else {
+            params.delete("budget");
+        }
+        if (formation) {
+            params.set("formation", formation);
+        } else {
+            params.delete("formation");
+        }
+        if (isCurrentGameweek) {
+            params.set("isCurrentGameweek", "true");
+        } else {
+            params.delete("isCurrentGameweek");
+        }
+        if (isNowCost) {
+            params.set("isNowCost", "true");
+        } else {
+            params.delete("isNowCost");
+        }
         router.replace(`${pathname}?${params.toString()}`);
-    }, [isModalOpen, searchParams, pathname, router]);
+    }, [
+        isModalOpen,
+        isCurrentGameweek,
+        isNowCost,
+        searchParams,
+        pathname,
+        router,
+    ]);
 
     return (
         <>
@@ -49,16 +91,30 @@ export default function SettingsModal() {
                             ✖️
                         </button>
                         <div className={styles.config}>
-                            <BudgetSlider min={0} max={100} />
+                            <BudgetSlider
+                                min={0}
+                                max={100}
+                                budget={budget}
+                                setBudget={setBudget}
+                            />
                         </div>
                         <div className={styles.config}>
-                            <FormationSelect />
+                            <FormationSelect
+                                formation={formation}
+                                setFormation={setFormation}
+                            />
                         </div>
                         <div className={styles.config}>
-                            <CostToggle />
+                            <CostToggle
+                                isNowCost={isNowCost}
+                                setIsNowCost={setIsNowCost}
+                            />
                         </div>
                         <div className={styles.config}>
-                            <GameweekToggle />
+                            <GameweekToggle
+                                isCurrentGameweek={isCurrentGameweek}
+                                setIsCurrentGameweek={setIsCurrentGameweek}
+                            />
                         </div>
                     </div>
                 </div>

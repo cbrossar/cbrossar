@@ -1,13 +1,12 @@
 "use client";
 
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-
-export default function FormationSelect() {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const { replace } = useRouter();
-
+export default function FormationSelect({
+    formation,
+    setFormation,
+}: {
+    formation: string;
+    setFormation: (formation: string) => void;
+}) {
     // Define available formations
     const formations = [
         { label: "1-3-5-2", value: "1-3-5-2" },
@@ -15,24 +14,6 @@ export default function FormationSelect() {
         { label: "1-3-4-3", value: "1-3-4-3" },
         { label: "2-5-5-3", value: "2-5-5-3" },
     ];
-
-    // Get initial formation from the URL or fallback to a default value (e.g., "1-3-5-2")
-    const initialFormation = searchParams.get("formation") || "1-3-5-2";
-    const [formation, setFormation] = useState(initialFormation);
-
-    const handleFormationChange = (newFormation: string) => {
-        const params = new URLSearchParams(searchParams);
-        if (newFormation) {
-            params.set("formation", newFormation);
-        } else {
-            params.delete("formation");
-        }
-        replace(`${pathname}?${params.toString()}`);
-    };
-
-    useEffect(() => {
-        handleFormationChange(formation); // Update URL params when formation changes
-    }, [formation]);
 
     return (
         <div className="formation-select-container">

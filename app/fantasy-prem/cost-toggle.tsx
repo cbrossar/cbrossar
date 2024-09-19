@@ -1,25 +1,14 @@
 "use client";
 
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-
-export default function CostToggle() {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const { replace } = useRouter();
-
-    // Get initial isNowCost state from URL or default to false (original cost)
-    const isNowCostParam = searchParams.get("isNowCost") === "true";
-    const [isNowCost, setIsNowCost] = useState(isNowCostParam);
-
+export default function CostToggle({
+    isNowCost,
+    setIsNowCost,
+}: {
+    isNowCost: boolean;
+    setIsNowCost: (isNowCost: boolean) => void;
+}) {
     const handleToggle = () => {
-        const newIsNowCost = !isNowCost;
-        setIsNowCost(newIsNowCost);
-
-        // Update the URL param when the toggle state changes
-        const params = new URLSearchParams(searchParams);
-        params.set("isNowCost", newIsNowCost.toString());
-        replace(`${pathname}?${params.toString()}`);
+        setIsNowCost(!isNowCost);
     };
 
     return (

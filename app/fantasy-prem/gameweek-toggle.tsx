@@ -1,28 +1,14 @@
 "use client";
 
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-
-export default function GameweekToggle() {
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
-    const { replace } = useRouter();
-
-    // Get initial isNowCost state from URL or default to false (original cost)
-    const isCurrentGameweekParam =
-        searchParams.get("isCurrentGameweek") === "true";
-    const [isCurrentGameweek, setIsCurrentGameweek] = useState(
-        isCurrentGameweekParam,
-    );
-
+export default function GameweekToggle({
+    isCurrentGameweek,
+    setIsCurrentGameweek,
+}: {
+    isCurrentGameweek: boolean;
+    setIsCurrentGameweek: (isCurrentGameweek: boolean) => void;
+}) {
     const handleToggle = () => {
-        const newIsCurrentGameweek = !isCurrentGameweek;
-        setIsCurrentGameweek(newIsCurrentGameweek);
-
-        // Update the URL param when the toggle state changes
-        const params = new URLSearchParams(searchParams);
-        params.set("isCurrentGameweek", newIsCurrentGameweek.toString());
-        replace(`${pathname}?${params.toString()}`);
+        setIsCurrentGameweek(!isCurrentGameweek);
     };
 
     return (
