@@ -12,7 +12,7 @@ export default function SettingsModal() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
-    
+
     // Modal state based on URL parameter
     const isModalOpenParam = searchParams.get("modalOpen") === "true";
     const [isModalOpen, setIsModalOpen] = useState(isModalOpenParam);
