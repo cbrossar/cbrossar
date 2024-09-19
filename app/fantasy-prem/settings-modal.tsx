@@ -64,7 +64,6 @@ export default function SettingsModal() {
         router.replace(`${pathname}?${params.toString()}`);
     }, [
         isModalOpen,
-        ,
         budget,
         formation,
         isNowCost,
