@@ -1,5 +1,8 @@
-import { fetchFantasyPlayers, fetchFantasyPositions } from "@/app/lib/data";
-import { FantasyPlayer, FantasyPosition } from "../lib/definitions";
+import {
+    fetchPlayersByPositionAll,
+    fetchPlayersByPositionCurrent,
+} from "@/app/lib/data";
+import { FantasyPlayer } from "../lib/definitions";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
 import SettingsModal from "./settings-modal"; // Import the modal component
@@ -14,11 +17,6 @@ export default async function Page({
         isCurrentGameweek?: string;
     };
 }) {
-    const players: FantasyPlayer[] =
-        (await fetchFantasyPlayers()) as FantasyPlayer[];
-    const positions: FantasyPosition[] =
-        (await fetchFantasyPositions()) as FantasyPosition[];
-
     const budget = Number(searchParams?.budget || "80") * 10;
 
     const formation = searchParams?.formation || "1-3-5-2"; // 1 goalie, 3 defenders, 5 midfielders, 2 forwards
@@ -30,9 +28,31 @@ export default async function Page({
     const isCurrentGameweek =
         searchParams?.isCurrentGameweek === "true" || false;
 
+    const numGoalies = 4;
+    const numDefenders = 8;
+    const numMidfielders = 9;
+    const numForwards = 7;
+
+    const playersByPositionAll = await fetchPlayersByPositionAll(
+        numGoalies,
+        numDefenders,
+        numMidfielders,
+        numForwards,
+    );
+
+    const playersByPositionCurrent = await fetchPlayersByPositionCurrent(
+        numGoalies,
+        numDefenders,
+        numMidfielders,
+        numForwards,
+    );
+
+    const playersByPosition = isCurrentGameweek
+        ? playersByPositionCurrent
+        : playersByPositionAll;
+
     const optimalTeam = maximizeFantasyTeam(
-        players,
-        positions,
+        playersByPosition,
         budget,
         formationArray,
         isNowCost,

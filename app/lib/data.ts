@@ -300,3 +300,73 @@ export async function fetchFantasyPositions() {
         throw new Error("Failed to fetch fantasy positions.");
     }
 }
+
+export async function fetchPlayersByPositionAll(
+    numGoalies: number,
+    numDefenders: number,
+    numMidfielders: number,
+    numForwards: number,
+) {
+    try {
+        const goalkeepers = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY total_points DESC LIMIT ${numGoalies}
+        `;
+
+        const defenders = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 2 ORDER BY total_points DESC LIMIT ${numDefenders}
+        `;
+
+        const midfielders = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 3 ORDER BY total_points DESC LIMIT ${numMidfielders}
+        `;
+
+        const forwards = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 4 ORDER BY total_points DESC LIMIT ${numForwards}
+        `;
+
+        return {
+            1: goalkeepers.rows as FantasyPlayer[],
+            2: defenders.rows as FantasyPlayer[],
+            3: midfielders.rows as FantasyPlayer[],
+            4: forwards.rows as FantasyPlayer[],
+        };
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch players by position.");
+    }
+}
+
+export async function fetchPlayersByPositionCurrent(
+    numGoalies: number,
+    numDefenders: number,
+    numMidfielders: number,
+    numForwards: number,
+) {
+    try {
+        const goalkeepers = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY event_points DESC LIMIT ${numGoalies}
+        `;
+
+        const defenders = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 2 ORDER BY event_points DESC LIMIT ${numDefenders}
+        `;
+
+        const midfielders = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 3 ORDER BY event_points DESC LIMIT ${numMidfielders}
+        `;
+
+        const forwards = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 4 ORDER BY event_points DESC LIMIT ${numForwards}
+        `;
+
+        return {
+            1: goalkeepers.rows as FantasyPlayer[],
+            2: defenders.rows as FantasyPlayer[],
+            3: midfielders.rows as FantasyPlayer[],
+            4: forwards.rows as FantasyPlayer[],
+        };
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch players by position.");
+    }
+}
