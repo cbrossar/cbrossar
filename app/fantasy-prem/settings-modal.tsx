@@ -2,6 +2,7 @@
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FaCog } from "react-icons/fa"; // Import the gear icon from react-icons
 import BudgetSlider from "./budget-slider";
 import FormationSelect from "./formation-select";
 import CostToggle from "./cost-toggle";
@@ -11,7 +12,7 @@ export default function SettingsModal() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const router = useRouter();
-
+    
     // Modal state based on URL parameter
     const isModalOpenParam = searchParams.get("modalOpen") === "true";
     const [isModalOpen, setIsModalOpen] = useState(isModalOpenParam);
@@ -34,7 +35,7 @@ export default function SettingsModal() {
                 className={styles.gearButton}
                 onClick={() => setIsModalOpen(true)}
             >
-                ⚙️
+                <FaCog size={24} />
             </button>
 
             {isModalOpen && (

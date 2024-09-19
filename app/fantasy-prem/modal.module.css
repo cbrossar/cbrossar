@@ -4,8 +4,14 @@
     right: 10px;
     background: none;
     border: none;
-    font-size: 24px;
     cursor: pointer;
+    font-size: 24px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.gearButton:hover {
+    color: #0070f3; /* Change color on hover */
 }
 
 .modal {
