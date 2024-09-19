@@ -2,7 +2,6 @@ import {
     fetchPlayersByPositionAll,
     fetchPlayersByPositionCurrent,
 } from "@/app/lib/data";
-import { FantasyPlayer } from "../lib/definitions";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
 import SettingsModal from "./settings-modal"; // Import the modal component
