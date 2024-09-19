@@ -51,21 +51,24 @@ export default function SettingsModal() {
         } else {
             params.delete("formation");
         }
-        if (isCurrentGameweek) {
-            params.set("isCurrentGameweek", "true");
-        } else {
-            params.delete("isCurrentGameweek");
-        }
         if (isNowCost) {
             params.set("isNowCost", "true");
         } else {
             params.delete("isNowCost");
         }
+        if (isCurrentGameweek) {
+            params.set("isCurrentGameweek", "true");
+        } else {
+            params.delete("isCurrentGameweek");
+        }
         router.replace(`${pathname}?${params.toString()}`);
     }, [
         isModalOpen,
-        isCurrentGameweek,
+        ,
+        budget,
+        formation,
         isNowCost,
+        isCurrentGameweek,
         searchParams,
         pathname,
         router,
