@@ -47,9 +47,15 @@ export default function SettingsModal() {
                         >
                             ✖️
                         </button>
-                        <BudgetSlider min={0} max={100} />
-                        <FormationSelect />
-                        <CostToggle />
+                        <div className={styles.config}>
+                            <BudgetSlider min={0} max={100} />
+                        </div>
+                        <div className={styles.config}>
+                            <FormationSelect />
+                        </div>
+                        <div className={styles.config}>
+                            <CostToggle />
+                        </div>
                     </div>
                 </div>
             )}

@@ -36,9 +36,7 @@ export default function FormationSelect() {
 
     return (
         <div className="formation-select-container">
-            <label htmlFor="formation-select" className="sr-only">
-                Formation
-            </label>
+            <label htmlFor="formation-select">Formation:</label>
             <select
                 id="formation-select"
                 value={formation}
