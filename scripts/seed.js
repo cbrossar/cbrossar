@@ -246,6 +246,14 @@ async function seedFantasyPremierLeagueStats(client) {
             now_cost FLOAT NOT NULL,
             total_points INT NOT NULL,
             event_points INT NOT NULL,
+            minutes INT NOT NULL,
+            goals_scored INT NOT NULL,
+            assists INT NOT NULL,
+            clean_sheets INT NOT NULL,
+            expected_goals FLOAT NOT NULL,
+            expected_assists FLOAT NOT NULL,
+            transfers_in INT NOT NULL,
+            transfers_in_event INT NOT NULL,
             FOREIGN KEY (element_type) REFERENCES fantasy_positions(id)
         );
         `;

@@ -44,6 +44,14 @@ export async function GET(request: Request) {
                 now_cost: element.now_cost,
                 total_points: element.total_points,
                 event_points: element.event_points,
+                minutes: element.minutes,
+                goals_scored: element.goals_scored,
+                assists: element.assists,
+                clean_sheets: element.clean_sheets,
+                expected_goals: element.expected_goals,
+                expected_assists: element.expected_assists,
+                transfers_in: element.transfers_in,
+                transfers_in_event: element.transfers_in_event,
             };
 
             upsertFantasyPlayer(player);

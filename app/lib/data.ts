@@ -244,8 +244,8 @@ export async function fetchDoomsdayStats() {
 export async function upsertFantasyPlayer(player: FantasyPlayer) {
     try {
         await sql`
-            INSERT INTO fantasy_players (id, first_name, second_name, element_type, cost_change_start, now_cost, total_points, event_points)
-            VALUES (${player.id}, ${player.first_name}, ${player.second_name}, ${player.element_type}, ${player.cost_change_start}, ${player.now_cost}, ${player.total_points}, ${player.event_points})
+            INSERT INTO fantasy_players (id, first_name, second_name, element_type, cost_change_start, now_cost, total_points, event_points, minutes, goals_scored, assists, clean_sheets, expected_goals, expected_assists, transfers_in, transfers_in_event)
+            VALUES (${player.id}, ${player.first_name}, ${player.second_name}, ${player.element_type}, ${player.cost_change_start}, ${player.now_cost}, ${player.total_points}, ${player.event_points}, ${player.minutes}, ${player.goals_scored}, ${player.assists}, ${player.clean_sheets}, ${player.expected_goals}, ${player.expected_assists}, ${player.transfers_in}, ${player.transfers_in_event})
             ON CONFLICT (id) DO UPDATE SET
                 first_name = ${player.first_name},
                 second_name = ${player.second_name},
@@ -253,7 +253,15 @@ export async function upsertFantasyPlayer(player: FantasyPlayer) {
                 cost_change_start = ${player.cost_change_start},
                 now_cost = ${player.now_cost},
                 total_points = ${player.total_points},
-                event_points = ${player.event_points}
+                event_points = ${player.event_points},
+                minutes = ${player.minutes},
+                goals_scored = ${player.goals_scored},
+                assists = ${player.assists},
+                clean_sheets = ${player.clean_sheets},
+                expected_goals = ${player.expected_goals},
+                expected_assists = ${player.expected_assists},
+                transfers_in = ${player.transfers_in},
+                transfers_in_event = ${player.transfers_in_event}
         `;
     } catch (error) {
         console.error("Database Error:", error);
@@ -368,5 +376,20 @@ export async function fetchPlayersByPositionCurrent(
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch players by position.");
+    }
+}
+
+
+export async function fetchTopTranfersIn(
+    numPlayers: number,
+) {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_players ORDER BY transfers_in_event DESC LIMIT ${numPlayers}
+        `;
+        return response.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch top transfers in.");
     }
 }
