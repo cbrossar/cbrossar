@@ -14,3 +14,10 @@
     margin-right: 10px;
     transition: color 0.3s ease;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

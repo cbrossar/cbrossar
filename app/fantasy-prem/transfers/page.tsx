@@ -6,16 +6,22 @@ import {
 import { FantasyPlayer, FantasyPosition } from "@/app/lib/definitions";
 import Link from "next/link";
 import Pagination from "./pagination";
+import Search from "@/app/ui/search";
 import styles from "./styles.module.css";
 import { calculateTransferIndex } from "./utils";
 
 export default async function Page({
     searchParams,
 }: {
-    searchParams?: { page?: string };
+    searchParams?: {
+        query?: string;
+        page?: string;
+    };
 }) {
+    const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
     const topTransfers = (await fetchTopTranfersIn(
+        query,
         currentPage,
     )) as FantasyPlayer[];
     const totalPages = await fetchPlayersCount();
@@ -52,7 +58,9 @@ export default async function Page({
     return (
         <div>
             <div className={styles.header}>
-                <h1>Top Transfers</h1>
+                <div>
+                    <Search placeholder="Top Transfers" />
+                </div>
                 <div className={styles.optimalTeamButton}>
                     <Link href="/fantasy-prem">Optimal Team</Link>
                 </div>
@@ -105,7 +113,9 @@ export default async function Page({
                     </tbody>
                 </table>
             </div>
-            <Pagination totalPages={totalPages} />
+            <div className={styles.pagination}>
+                <Pagination totalPages={totalPages} />
+            </div>
         </div>
     );
 }

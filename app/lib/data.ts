@@ -396,12 +396,16 @@ export async function fetchPlayersCount() {
     }
 }
 
-export async function fetchTopTranfersIn(currentPage: number) {
+export async function fetchTopTranfersIn(query: string, currentPage: number) {
     try {
         noStore();
         const offset = (currentPage - 1) * ITEMS_PER_PAGE;
         const response = await sql`
-            SELECT * FROM fantasy_players ORDER BY transfers_in_event DESC
+            SELECT * FROM fantasy_players 
+            WHERE
+                first_name ILIKE ${`%${query}%`} OR
+                second_name ILIKE ${`%${query}%`}
+            ORDER BY transfers_in_event DESC
             LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
         return response.rows;
