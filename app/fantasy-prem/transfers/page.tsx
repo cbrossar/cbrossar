@@ -24,7 +24,7 @@ export default async function Page({
         query,
         currentPage,
     )) as FantasyPlayer[];
-    const totalPages = await fetchPlayersCount();
+    const totalPages = await fetchPlayersCount(query);
     const positions = (await fetchFantasyPositions()) as FantasyPosition[];
 
     const positionNameMap = positions.reduce(
