@@ -28,6 +28,8 @@ export default async function Page({
         {} as Record<number, string>,
     );
 
+    console.log(topTransfers[0])
+
     return (
         <div>
             <div className={styles.header}>
@@ -44,16 +46,16 @@ export default async function Page({
                         <tr>
                             <th>Player</th>
                             <th>Position</th>
-                            <th>Now Cost</th>
-                            <th>Total Points</th>
-                            <th>Minutes</th>
-                            <th>Goals Scored</th>
+                            <th>Cost</th>
+                            <th>Points</th>
+                            <th>Mins</th>
+                            <th>Goals</th>
                             <th>Assists</th>
-                            <th>Clean Sheets</th>
-                            <th>Expected Goals</th>
-                            <th>Expected Assists</th>
-                            <th>Transfers In</th>
-                            <th>Transfers In (Rd)</th>
+                            <th>Clean</th>
+                            <th>xG</th>
+                            <th>xA</th>
+                            <th>Next 5 FDR</th>
+                            <th>Transfer In Rd</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,7 +73,7 @@ export default async function Page({
                                 <td>{player.clean_sheets}</td>
                                 <td>{player.expected_goals}</td>
                                 <td>{player.expected_assists}</td>
-                                <td>{player.transfers_in}</td>
+                                <td>0</td>
                                 <td>{player.transfers_in_event}</td>
                             </tr>
                         ))}
