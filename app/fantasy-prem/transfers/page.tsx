@@ -7,6 +7,7 @@ import { FantasyPlayer, FantasyPosition } from "@/app/lib/definitions";
 import Link from "next/link";
 import Pagination from "./pagination";
 import styles from "./styles.module.css";
+import { calculateTransferIndex } from "./utils";
 
 export default async function Page({
     searchParams,
@@ -38,7 +39,14 @@ export default async function Page({
             .slice(0, 5)
             .map((fixture: any) => fixture.difficulty)
             .reduce((a: any, b: any) => a + b, 0);
-        playerDataMap.set(player.id, next5FDR);
+        const transferIndex = calculateTransferIndex(player, {
+            FDR5: next5FDR,
+        });
+
+        playerDataMap.set(player.id, {
+            "FDR-5": next5FDR,
+            transferIndex: transferIndex,
+        });
     }
 
     return (
@@ -65,6 +73,7 @@ export default async function Page({
                             <th>xA</th>
                             <th>FDR-5</th>
                             <th>Transfer In Rd</th>
+                            <th>Transfer Index</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,8 +91,15 @@ export default async function Page({
                                 <td>{player.clean_sheets}</td>
                                 <td>{player.expected_goals}</td>
                                 <td>{player.expected_assists}</td>
-                                <td>{playerDataMap.get(player.id)}</td>
+                                <td>{playerDataMap.get(player.id)["FDR-5"]}</td>
                                 <td>{player.transfers_in_event}</td>
+                                <td>
+                                    {(
+                                        playerDataMap.get(player.id)[
+                                            "transferIndex"
+                                        ] * 100
+                                    ).toFixed(1)}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
