@@ -381,10 +381,13 @@ export async function fetchPlayersByPositionCurrent(
 
 const ITEMS_PER_PAGE = 10;
 
-export async function fetchPlayersCount() {
+export async function fetchPlayersCount(query: string) {
     try {
         const count = await sql`
             SELECT COUNT(*) FROM fantasy_players
+            WHERE
+                first_name ILIKE ${`%${query}%`} OR
+                second_name ILIKE ${`%${query}%`}
         `;
         const totalPages = Math.ceil(
             Number(count.rows[0].count) / ITEMS_PER_PAGE,
