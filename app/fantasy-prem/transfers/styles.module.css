@@ -1,0 +1,16 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.optimalTeamButton {
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #0070f3;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}

@@ -2,6 +2,7 @@ import {
     fetchPlayersByPositionAll,
     fetchPlayersByPositionCurrent,
 } from "@/app/lib/data";
+import Link from "next/link";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
 import SettingsModal from "./settings-modal"; // Import the modal component
@@ -73,10 +74,21 @@ export default async function Page({
 
     return (
         <div className={styles.container}>
-            <SettingsModal />
-            <div className={styles.stats}>
-                <h3>Total Points: {optimalTeam.totalPoints}</h3>
-                <h3>Total Cost: £{(optimalTeam.totalCost / 10).toFixed(1)}m</h3>
+            <div className={styles.header}>
+                <div className={styles.stats}>
+                    <h3>Total Points: {optimalTeam.totalPoints}</h3>
+                    <h3>
+                        Total Cost: £{(optimalTeam.totalCost / 10).toFixed(1)}m
+                    </h3>
+                </div>
+                <div className={styles.topRightCorner}>
+                    <div className={styles.topTransfersButton}>
+                        <Link href="/fantasy-prem/transfers">
+                            Top Transfers
+                        </Link>
+                    </div>
+                    <SettingsModal />
+                </div>
             </div>
             <div className={styles.lineup}>
                 <div className={styles.row}>

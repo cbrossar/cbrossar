@@ -4,14 +4,14 @@ import {
     fetchPlayersCount,
 } from "@/app/lib/data";
 import { FantasyPlayer, FantasyPosition } from "@/app/lib/definitions";
+import Link from "next/link";
 import Pagination from "./pagination";
+import styles from "./styles.module.css";
 
 export default async function Page({
     searchParams,
 }: {
-    searchParams?: {
-        page?: string;
-    };
+    searchParams?: { page?: string };
 }) {
     const currentPage = Number(searchParams?.page) || 1;
     const topTransfers = (await fetchTopTranfersIn(
@@ -30,45 +30,54 @@ export default async function Page({
 
     return (
         <div>
-            <h1>Top Transfers</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Position</th>
-                        <th>Now Cost</th>
-                        <th>Total Points</th>
-                        <th>Minutes</th>
-                        <th>Goals Scored</th>
-                        <th>Assists</th>
-                        <th>Clean Sheets</th>
-                        <th>Expected Goals</th>
-                        <th>Expected Assists</th>
-                        <th>Transfers In</th>
-                        <th>Transfers In (Round)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {topTransfers.map((player, index) => (
-                        <tr key={index}>
-                            <td>
-                                {player.first_name} {player.second_name}
-                            </td>
-                            <td>{positionNameMap[player.element_type]}</td>
-                            <td>{(player.now_cost / 10).toFixed(1)}m</td>
-                            <td>{player.total_points}</td>
-                            <td>{player.minutes}</td>
-                            <td>{player.goals_scored}</td>
-                            <td>{player.assists}</td>
-                            <td>{player.clean_sheets}</td>
-                            <td>{player.expected_goals}</td>
-                            <td>{player.expected_assists}</td>
-                            <td>{player.transfers_in}</td>
-                            <td>{player.transfers_in_event}</td>
+            <div className={styles.header}>
+                <h1>Top Transfers</h1>
+                <div className={styles.optimalTeamButton}>
+                <Link href="/fantasy-prem">
+                    Optimal Team
+                </Link>
+            </div>
+        </div>
+            <div style={{ overflowX: "auto" }}>
+                <table style={{ minWidth: "1000px" }}>
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Position</th>
+                            <th>Now Cost</th>
+                            <th>Total Points</th>
+                            <th>Minutes</th>
+                            <th>Goals Scored</th>
+                            <th>Assists</th>
+                            <th>Clean Sheets</th>
+                            <th>Expected Goals</th>
+                            <th>Expected Assists</th>
+                            <th>Transfers In</th>
+                            <th>Transfers In (Rd)</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {topTransfers.map((player, index) => (
+                            <tr key={index}>
+                                <td>
+                                    {player.first_name} {player.second_name}
+                                </td>
+                                <td>{positionNameMap[player.element_type]}</td>
+                                <td>{(player.now_cost / 10).toFixed(1)}m</td>
+                                <td>{player.total_points}</td>
+                                <td>{player.minutes}</td>
+                                <td>{player.goals_scored}</td>
+                                <td>{player.assists}</td>
+                                <td>{player.clean_sheets}</td>
+                                <td>{player.expected_goals}</td>
+                                <td>{player.expected_assists}</td>
+                                <td>{player.transfers_in}</td>
+                                <td>{player.transfers_in_event}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             <Pagination totalPages={totalPages} />
         </div>
     );

@@ -1,13 +1,12 @@
 .gearButton {
-    position: absolute;
-    top: 30px;
-    right: 10px;
     background: none;
     border: none;
     cursor: pointer;
     font-size: 24px;
     color: #333;
     transition: color 0.3s ease;
+    width: 24px;
+    height: 24px;
 }
 
 .gearButton:hover {

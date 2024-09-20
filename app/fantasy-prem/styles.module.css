@@ -114,3 +114,21 @@
     border-radius: 5px;
     background-color: #f9f9f9;
 }
+
+.header {
+    display: flex;
+}
+
+.topRightCorner {
+    margin-left: auto;
+    display: flex;
+}
+
+.topTransfersButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #0070f3;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
