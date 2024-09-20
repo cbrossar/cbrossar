@@ -28,18 +28,27 @@ export default async function Page({
         {} as Record<number, string>,
     );
 
-    console.log(topTransfers[0])
+    let playerDataMap = new Map();
+    for (const player of topTransfers) {
+        const res = await fetch(
+            `https://fantasy.premierleague.com/api/element-summary/${player.id}/`,
+        );
+        const playerData = await res.json();
+        const next5FDR = playerData.fixtures
+            .slice(0, 5)
+            .map((fixture: any) => fixture.difficulty)
+            .reduce((a: any, b: any) => a + b, 0);
+        playerDataMap.set(player.id, next5FDR);
+    }
 
     return (
         <div>
             <div className={styles.header}>
                 <h1>Top Transfers</h1>
                 <div className={styles.optimalTeamButton}>
-                <Link href="/fantasy-prem">
-                    Optimal Team
-                </Link>
+                    <Link href="/fantasy-prem">Optimal Team</Link>
+                </div>
             </div>
-        </div>
             <div style={{ overflowX: "auto" }}>
                 <table style={{ minWidth: "1000px" }}>
                     <thead>
@@ -54,7 +63,7 @@ export default async function Page({
                             <th>Clean</th>
                             <th>xG</th>
                             <th>xA</th>
-                            <th>Next 5 FDR</th>
+                            <th>FDR-5</th>
                             <th>Transfer In Rd</th>
                         </tr>
                     </thead>
@@ -73,7 +82,7 @@ export default async function Page({
                                 <td>{player.clean_sheets}</td>
                                 <td>{player.expected_goals}</td>
                                 <td>{player.expected_assists}</td>
-                                <td>0</td>
+                                <td>{playerDataMap.get(player.id)}</td>
                                 <td>{player.transfers_in_event}</td>
                             </tr>
                         ))}
