@@ -79,7 +79,7 @@ export default async function Page({
                             <th>xG</th>
                             <th>xA</th>
                             <th>FDR-5</th>
-                            <th>Transfer In Rd</th>
+                            <th>Transfer In Rd ↓</th>
                             <th>Transfer Index</th>
                         </tr>
                     </thead>
