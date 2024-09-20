@@ -379,13 +379,30 @@ export async function fetchPlayersByPositionCurrent(
     }
 }
 
+const ITEMS_PER_PAGE = 10;
 
-export async function fetchTopTranfersIn(
-    numPlayers: number,
-) {
+export async function fetchPlayersCount() {
     try {
+        const count = await sql`
+            SELECT COUNT(*) FROM fantasy_players
+        `;
+        const totalPages = Math.ceil(
+            Number(count.rows[0].count) / ITEMS_PER_PAGE,
+        );
+        return totalPages;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch top transfers in.");
+    }
+}
+
+export async function fetchTopTranfersIn(currentPage: number) {
+    try {
+        noStore();
+        const offset = (currentPage - 1) * ITEMS_PER_PAGE;
         const response = await sql`
-            SELECT * FROM fantasy_players ORDER BY transfers_in_event DESC LIMIT ${numPlayers}
+            SELECT * FROM fantasy_players ORDER BY transfers_in_event DESC
+            LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
         return response.rows;
     } catch (error) {

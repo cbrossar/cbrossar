@@ -3,5 +3,5 @@ export default async function Page() {
         <div>
             <h1>Hello, World!</h1>
         </div>
-    )
+    );
 }
