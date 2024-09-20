@@ -70,7 +70,6 @@ export default async function Page({
                     <thead>
                         <tr>
                             <th>Player</th>
-                            <th>Position</th>
                             <th>Cost</th>
                             <th>Points</th>
                             <th>Mins</th>
@@ -88,9 +87,9 @@ export default async function Page({
                         {topTransfers.map((player, index) => (
                             <tr key={index}>
                                 <td>
-                                    {player.first_name} {player.second_name}
+                                    {player.first_name} {player.second_name} (
+                                    {positionNameMap[player.element_type][0]})
                                 </td>
-                                <td>{positionNameMap[player.element_type]}</td>
                                 <td>{(player.now_cost / 10).toFixed(1)}m</td>
                                 <td>{player.total_points}</td>
                                 <td>{player.minutes}</td>
