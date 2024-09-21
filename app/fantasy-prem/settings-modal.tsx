@@ -75,7 +75,6 @@ export default function SettingsModal() {
 
     return (
         <>
-            {/* Gear icon to trigger the modal */}
             <button
                 className={styles.gearButton}
                 onClick={() => setIsModalOpen(true)}

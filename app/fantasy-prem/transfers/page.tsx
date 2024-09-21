@@ -5,10 +5,12 @@ import {
 } from "@/app/lib/data";
 import { FantasyPlayer, FantasyPosition } from "@/app/lib/definitions";
 import Link from "next/link";
+import { FaCog } from "react-icons/fa"; // Import the gear icon from react-icons
 import Pagination from "./pagination";
 import Search from "@/app/ui/search";
 import styles from "./styles.module.css";
 import { calculateTransferIndex } from "./utils";
+import RefreshButton from "./refresh-button";
 
 export default async function Page({
     searchParams,
@@ -61,9 +63,13 @@ export default async function Page({
                 <div>
                     <Search placeholder="Top Transfers" />
                 </div>
-                <div className={styles.optimalTeamButton}>
-                    <Link href="/fantasy-prem">Optimal Team</Link>
+                <div className={styles.topRightCorner}>
+                    <div className={styles.optimalTeamButton}>
+                        <Link href="/fantasy-prem">Optimal Team</Link>
+                    </div>
+                    <RefreshButton />
                 </div>
+
             </div>
             <div style={{ overflowX: "auto" }}>
                 <table style={{ minWidth: "1000px" }}>

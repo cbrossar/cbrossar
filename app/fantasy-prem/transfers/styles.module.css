@@ -21,3 +21,8 @@
     align-items: center;
     margin-top: 20px;
 }
+
+.topRightCorner {
+    margin-left: auto;
+    display: flex;
+}
