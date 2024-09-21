@@ -8,6 +8,7 @@ export default function RefreshButton() {
                 method: "GET",
             });
             if (response.ok) {
+                // TODO: is this necessary?
                 window.location.reload();
             } else {
                 console.error("Failed to refresh data");
