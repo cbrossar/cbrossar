@@ -1,12 +1,10 @@
-export const dynamic = "force-dynamic"; // static by default, unless reading the request
-
 import axios from "axios";
 import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
 
 const API_KEY = process.env.FOOTBALL_DATA_API_KEY;
 const TEAM_ID = "73"; // Tottenham Hotspur's team ID in Football-Data.org
 
-export async function GET(request: Request) {
+export async function updateHotspurMatches() {
     try {
         // 3 weeks ago
         const dateFrom = new Date();

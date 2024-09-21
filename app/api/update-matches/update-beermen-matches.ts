@@ -1,10 +1,8 @@
-export const dynamic = "force-dynamic"; // static by default, unless reading the request
-
 import axios from "axios";
 import cheerio from "cheerio";
 import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
 
-export async function GET(request: Request) {
+export default async function updateBeermenMatches() {
     try {
         const url =
             "https://register.ilovenysoccer.com/team/342/werder-beermen";
@@ -60,8 +58,6 @@ export async function GET(request: Request) {
 
         await createMatchUpdate(true);
 
-        // Send back the extracted data as a response
-        return new Response("Successfully crawled the webpage.");
     } catch (error) {
         await createMatchUpdate(false);
         return new Response("Failed to crawl the webpage.", { status: 500 });
