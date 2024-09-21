@@ -286,6 +286,7 @@ export async function upsertFantasyPosition(position: FantasyPosition) {
 }
 
 export async function fetchFantasyPlayers() {
+    noStore();
     try {
         const response = await sql`
             SELECT * FROM fantasy_players
@@ -315,6 +316,7 @@ export async function fetchPlayersByPositionAll(
     numMidfielders: number,
     numForwards: number,
 ) {
+    noStore();
     try {
         const goalkeepers = await sql`
             SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY total_points DESC LIMIT ${numGoalies}
@@ -350,6 +352,7 @@ export async function fetchPlayersByPositionCurrent(
     numMidfielders: number,
     numForwards: number,
 ) {
+    noStore();
     try {
         const goalkeepers = await sql`
             SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY event_points DESC LIMIT ${numGoalies}
@@ -383,6 +386,7 @@ const ITEMS_PER_PAGE = 10;
 
 export async function fetchPlayersCount(query: string) {
     try {
+        noStore();
         const count = await sql`
             SELECT COUNT(*) FROM fantasy_players
             WHERE
