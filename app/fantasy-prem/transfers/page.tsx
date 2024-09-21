@@ -69,7 +69,6 @@ export default async function Page({
                     </div>
                     <RefreshButton />
                 </div>
-
             </div>
             <div style={{ overflowX: "auto" }}>
                 <table style={{ minWidth: "1000px" }}>
