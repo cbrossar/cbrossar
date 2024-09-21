@@ -16,7 +16,6 @@ export default function RefreshButton() {
         } catch (error) {
             console.error('Error refreshing data:', error);
         }
-        console.log('Refresh button clicked');
     };
 
     return (
