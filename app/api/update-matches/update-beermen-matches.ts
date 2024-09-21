@@ -57,7 +57,6 @@ export default async function updateBeermenMatches() {
         }
 
         await createMatchUpdate(true);
-
     } catch (error) {
         await createMatchUpdate(false);
         return new Response("Failed to crawl the webpage.", { status: 500 });
