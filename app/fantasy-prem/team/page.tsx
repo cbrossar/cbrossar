@@ -83,9 +83,7 @@ export default async function Page({
                 </div>
                 <div className={styles.topRightCorner}>
                     <div className={styles.topTransfersButton}>
-                        <Link href="/fantasy-prem/transfers">
-                            Top Transfers
-                        </Link>
+                        <Link href="/fantasy-prem/players">Players</Link>
                     </div>
                     <SettingsModal />
                 </div>

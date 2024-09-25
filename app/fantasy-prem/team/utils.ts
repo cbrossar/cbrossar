@@ -1,4 +1,4 @@
-import { FantasyPlayer, FantasyPosition } from "../lib/definitions";
+import { FantasyPlayer } from "@/app/lib/definitions";
 
 export function maximizeFantasyTeam(
     playersByPosition: Record<number, FantasyPlayer[]>,
@@ -7,7 +7,6 @@ export function maximizeFantasyTeam(
     isNowCost: boolean,
     isCurrentGameweek: boolean,
 ): { team: FantasyPlayer[]; totalPoints: number; totalCost: number } {
-    // Define the specific formation
 
     const goalies = playersByPosition[1];
     const defenders = playersByPosition[2];

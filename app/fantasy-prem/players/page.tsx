@@ -68,11 +68,11 @@ export default async function Page({
         <div>
             <div className={styles.header}>
                 <div>
-                    <Search placeholder="Top Transfers" />
+                    <Search placeholder="Search Players" />
                 </div>
                 <div className={styles.topRightCorner}>
                     <div className={styles.optimalTeamButton}>
-                        <Link href="/fantasy-prem">Optimal Team</Link>
+                        <Link href="/fantasy-prem/team">Team</Link>
                     </div>
                     <RefreshButton />
                 </div>
