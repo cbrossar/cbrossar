@@ -7,7 +7,6 @@ export function maximizeFantasyTeam(
     isNowCost: boolean,
     isCurrentGameweek: boolean,
 ): { team: FantasyPlayer[]; totalPoints: number; totalCost: number } {
-
     const goalies = playersByPosition[1];
     const defenders = playersByPosition[2];
     const midfielders = playersByPosition[3];

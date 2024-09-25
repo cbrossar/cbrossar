@@ -1,5 +1,5 @@
 import {
-    fetchTopTransfersIn,
+    fetchFantasyPlayersFiltered,
     fetchFantasyPositions,
     fetchPlayersCount,
 } from "@/app/lib/data";
@@ -9,7 +9,6 @@ import Pagination from "./pagination";
 import Search from "@/app/ui/search";
 import TableHeader from "./table-header";
 import styles from "./styles.module.css";
-import { calculateTransferIndex } from "./utils";
 import RefreshButton from "./refresh-button";
 
 export default async function Page({
@@ -23,11 +22,11 @@ export default async function Page({
 }) {
     const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
-    const sortBy = searchParams?.sortby || "transfers_in_event"; // Default sort
+    const sortBy = searchParams?.sortby || "transfer_index"; // Default sort
     const sortOrder = sortBy.startsWith("-") ? "ASC" : "DESC";
     const sortByColumn = sortBy.replace("-", "");
 
-    const topTransfers = (await fetchTopTransfersIn(
+    const topTransfers = (await fetchFantasyPlayersFiltered(
         query,
         currentPage,
         sortByColumn,
@@ -43,26 +42,6 @@ export default async function Page({
         },
         {} as Record<number, string>,
     );
-
-    let playerDataMap = new Map();
-    for (const player of topTransfers) {
-        const res = await fetch(
-            `https://fantasy.premierleague.com/api/element-summary/${player.id}/`,
-        );
-        const playerData = await res.json();
-        const next5FDR = playerData.fixtures
-            .slice(0, 5)
-            .map((fixture: any) => fixture.difficulty)
-            .reduce((a: any, b: any) => a + b, 0);
-        const transferIndex = calculateTransferIndex(player, {
-            FDR5: next5FDR,
-        });
-
-        playerDataMap.set(player.id, {
-            "FDR-5": next5FDR,
-            transferIndex: transferIndex,
-        });
-    }
 
     return (
         <div>
@@ -111,13 +90,11 @@ export default async function Page({
                                 <td>{player.clean_sheets}</td>
                                 <td>{player.expected_goals}</td>
                                 <td>{player.expected_assists}</td>
-                                <td>{playerDataMap.get(player.id)["FDR-5"]}</td>
+                                <td>{player.fdr_5}</td>
                                 <td>{player.transfers_in_event}</td>
                                 <td>
                                     {(
-                                        playerDataMap.get(player.id)[
-                                            "transferIndex"
-                                        ] * 100
+                                        (player.transfer_index || 0) * 100
                                     ).toFixed(1)}
                                 </td>
                             </tr>

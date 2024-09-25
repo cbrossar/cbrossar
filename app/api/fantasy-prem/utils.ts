@@ -13,7 +13,7 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         xG: { min: 0, max: 20 },
         xA: { min: 0, max: 20 },
         mins: { min: 0, max: 900 },
-        FDR5: { min: 0, max: 20 },
+        fdr_5: { min: 0, max: 20 },
     };
 
     const weights = {
@@ -24,7 +24,7 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         xG: 0.1,
         xA: 0.05,
         mins: 0.05,
-        FDR5: 0.1,
+        fdr_5: 0.1,
     };
 
     // Normalize each stat
@@ -63,10 +63,10 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         minMaxValues.mins.min,
         minMaxValues.mins.max,
     );
-    const normFDR5 = normalize(
-        minMaxValues.FDR5.max - stats.FDR5,
-        minMaxValues.FDR5.min,
-        minMaxValues.FDR5.max,
+    const normfdr_5 = normalize(
+        minMaxValues.fdr_5.max - stats.fdr_5,
+        minMaxValues.fdr_5.min,
+        minMaxValues.fdr_5.max,
     );
 
     // Calculate transfer index
@@ -78,7 +78,7 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         weights.xG * normXG +
         weights.xA * normXA +
         weights.mins * normMins +
-        weights.FDR5 * normFDR5;
+        weights.fdr_5 * normfdr_5;
 
     return transferIndex;
 }

@@ -254,6 +254,8 @@ async function seedFantasyPremierLeagueStats(client) {
             expected_assists FLOAT NOT NULL,
             transfers_in INT NOT NULL,
             transfers_in_event INT NOT NULL,
+            fdr_5 INT,
+            transfer_index FLOAT,
             FOREIGN KEY (element_type) REFERENCES fantasy_positions(id)
         );
         `;

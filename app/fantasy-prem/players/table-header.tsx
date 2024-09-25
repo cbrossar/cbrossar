@@ -17,9 +17,9 @@ export const headerToColumnMap: Record<string, string | null> = {
     Cleans: "clean_sheets",
     xG: "expected_goals",
     xA: "expected_assists",
-    "FDR-5": null,
+    "FDR-5": "fdr_5",
     "Transfer In Rd": "transfers_in_event",
-    "Transfer Index": null,
+    "Transfer Index": "transfer_index",
 };
 
 export default function TableHeader({ headers, sortBy }: TableHeaderProps) {

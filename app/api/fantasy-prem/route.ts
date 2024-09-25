@@ -1,5 +1,10 @@
-import { upsertFantasyPlayer, upsertFantasyPosition } from "@/app/lib/data";
+import {
+    upsertFantasyPlayer,
+    upsertFantasyPosition,
+    updateFantasyPlayerData,
+} from "@/app/lib/data";
 import { FantasyPlayer, FantasyPosition } from "@/app/lib/definitions";
+import { calculateTransferIndex } from "./utils";
 
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
@@ -56,6 +61,22 @@ export async function GET(request: Request) {
 
             upsertFantasyPlayer(player);
         });
+
+        for (const player of players) {
+            const res = await fetch(
+                `https://fantasy.premierleague.com/api/element-summary/${player.id}/`,
+            );
+            const playerData = await res.json();
+            const fdr_5 = playerData.fixtures
+                .slice(0, 5)
+                .map((fixture: any) => fixture.difficulty)
+                .reduce((a: any, b: any) => a + b, 0);
+            const transferIndex = calculateTransferIndex(player, {
+                fdr_5: fdr_5,
+            });
+
+            updateFantasyPlayerData(player.id, fdr_5, transferIndex);
+        }
 
         return new Response(
             "Fantasy data updated for gameweek " + currentWeek,

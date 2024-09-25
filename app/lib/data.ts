@@ -403,7 +403,7 @@ export async function fetchPlayersCount(query: string) {
     }
 }
 
-export async function fetchTopTransfersIn(
+export async function fetchFantasyPlayersFiltered(
     query: string,
     currentPage: number,
     sortBy: string,
@@ -426,5 +426,22 @@ export async function fetchTopTransfersIn(
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch top transfers in.");
+    }
+}
+
+export async function updateFantasyPlayerData(
+    id: number,
+    fdr_5: number,
+    transferIndex: number,
+) {
+    try {
+        await sql`
+            UPDATE fantasy_players
+            SET fdr_5 = ${fdr_5}, transfer_index = ${transferIndex}
+            WHERE id = ${id}
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to update player data.");
     }
 }
