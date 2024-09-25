@@ -413,7 +413,7 @@ export async function fetchTopTransfersIn(query: string, currentPage: number, so
             WHERE
                 first_name ILIKE '%${query}%' OR
                 second_name ILIKE '%${query}%'
-            ORDER BY transfers_in_event DESC
+            ORDER BY ${sortBy} ${sortOrder}
             LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `);
 
