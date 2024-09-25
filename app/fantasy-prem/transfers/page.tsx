@@ -87,7 +87,7 @@ export default async function Page({
                             "Mins",
                             "Goals",
                             "Assists",
-                            "Clean",
+                            "Cleans",
                             "xG",
                             "xA",
                             "FDR-5",

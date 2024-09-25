@@ -14,7 +14,7 @@ export const headerToColumnMap: Record<string, string | null> = {
     Mins: "minutes",
     Goals: "goals_scored",
     Assists: "assists",
-    Clean: "clean_sheets",
+    Cleans: "clean_sheets",
     xG: "expected_goals",
     xA: "expected_assists",
     "FDR-5": null,
