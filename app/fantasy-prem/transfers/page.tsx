@@ -1,13 +1,13 @@
 import {
-    fetchTopTranfersIn,
+    fetchTopTransfersIn,
     fetchFantasyPositions,
     fetchPlayersCount,
 } from "@/app/lib/data";
 import { FantasyPlayer, FantasyPosition } from "@/app/lib/definitions";
 import Link from "next/link";
-import { FaCog } from "react-icons/fa"; // Import the gear icon from react-icons
 import Pagination from "./pagination";
 import Search from "@/app/ui/search";
+import TableHeader from "./table-header";
 import styles from "./styles.module.css";
 import { calculateTransferIndex } from "./utils";
 import RefreshButton from "./refresh-button";
@@ -18,13 +18,20 @@ export default async function Page({
     searchParams?: {
         query?: string;
         page?: string;
+        sortby?: string;
     };
 }) {
     const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
-    const topTransfers = (await fetchTopTranfersIn(
+    const sortBy = searchParams?.sortby || "transfers_in_event"; // Default sort
+    const sortOrder = sortBy.startsWith("-") ? "ASC" : "DESC";
+    const sortByColumn = sortBy.replace("-", "");
+
+    const topTransfers = (await fetchTopTransfersIn(
         query,
         currentPage,
+        sortByColumn,
+        sortOrder,
     )) as FantasyPlayer[];
     const totalPages = await fetchPlayersCount(query);
     const positions = (await fetchFantasyPositions()) as FantasyPosition[];
@@ -72,22 +79,23 @@ export default async function Page({
             </div>
             <div style={{ overflowX: "auto" }}>
                 <table style={{ minWidth: "1000px" }}>
-                    <thead>
-                        <tr>
-                            <th>Player</th>
-                            <th>Cost</th>
-                            <th>Points</th>
-                            <th>Mins</th>
-                            <th>Goals</th>
-                            <th>Assists</th>
-                            <th>Clean</th>
-                            <th>xG</th>
-                            <th>xA</th>
-                            <th>FDR-5</th>
-                            <th>Transfer In Rd ↓</th>
-                            <th>Transfer Index</th>
-                        </tr>
-                    </thead>
+                    <TableHeader
+                        headers={[
+                            "Player",
+                            "Cost",
+                            "Points",
+                            "Mins",
+                            "Goals",
+                            "Assists",
+                            "Clean",
+                            "xG",
+                            "xA",
+                            "FDR-5",
+                            "Transfer In Rd",
+                            "Transfer Index",
+                        ]}
+                        sortBy={sortBy} // Pass the current sortBy param
+                    />
                     <tbody>
                         {topTransfers.map((player, index) => (
                             <tr key={index}>

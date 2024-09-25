@@ -403,18 +403,25 @@ export async function fetchPlayersCount(query: string) {
     }
 }
 
-export async function fetchTopTranfersIn(query: string, currentPage: number) {
+export async function fetchTopTransfersIn(
+    query: string,
+    currentPage: number,
+    sortBy: string,
+    sortOrder: string,
+) {
     try {
         noStore();
         const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-        const response = await sql`
+
+        const response = await sql.query(`
             SELECT * FROM fantasy_players 
             WHERE
-                first_name ILIKE ${`%${query}%`} OR
-                second_name ILIKE ${`%${query}%`}
-            ORDER BY transfers_in_event DESC
+                first_name ILIKE '%${query}%' OR
+                second_name ILIKE '%${query}%'
+            ORDER BY ${sortBy} ${sortOrder}
             LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-        `;
+        `);
+
         return response.rows;
     } catch (error) {
         console.error("Database Error:", error);
