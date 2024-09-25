@@ -403,9 +403,14 @@ export async function fetchPlayersCount(query: string) {
     }
 }
 
-export async function fetchTopTransfersIn(query: string, currentPage: number, sortBy: string, sortOrder: string) {
+export async function fetchTopTransfersIn(
+    query: string,
+    currentPage: number,
+    sortBy: string,
+    sortOrder: string,
+) {
     try {
-        noStore(); 
+        noStore();
         const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
         const response = await sql.query(`

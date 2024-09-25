@@ -1,6 +1,6 @@
 "use client";
-
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa"; // Import arrow icons
 
 interface TableHeaderProps {
     headers: string[];
@@ -32,16 +32,29 @@ export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
         params.set("page", "1"); // Reset to page 1 when sorting
 
         const column = headerToColumnMap[header];
-        console.log(header, column);
         if (!column) {
             return;
         }
+
         if (sortBy === column) {
-            params.set("sortby", `-${column}`); // Toggle between ascending and descending
+            params.set("sortby", `-${column}`); // Toggle to descending if already sorted ascending
         } else {
             params.set("sortby", column); // Set ascending order
         }
         replace(`${pathname}?${params.toString()}`);
+    };
+
+    const getSortIcon = (header: string) => {
+        const column = headerToColumnMap[header];
+        if (!column || !sortBy) return null;
+
+        // Check if current column is being sorted
+        if (sortBy === column) {
+            return <FaArrowDown />; // Ascending sort
+        } else if (sortBy === `-${column}`) {
+            return <FaArrowUp />; // Descending sort
+        }
+        return null;
     };
 
     return (
@@ -53,7 +66,15 @@ export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
                         onClick={() => handleSort(header)}
                         style={{ cursor: "pointer" }}
                     >
-                        {header}
+                        <div
+                            className="header-container"
+                            style={{ display: "flex", alignItems: "center" }}
+                        >
+                            <span>{header}</span>
+                            <span style={{ marginLeft: "5px" }}>
+                                {getSortIcon(header)}
+                            </span>
+                        </div>
                     </th>
                 ))}
             </tr>
