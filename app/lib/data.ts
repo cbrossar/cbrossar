@@ -244,8 +244,8 @@ export async function fetchDoomsdayStats() {
 export async function upsertFantasyPlayer(player: FantasyPlayer) {
     try {
         await sql`
-            INSERT INTO fantasy_players (id, first_name, second_name, element_type, cost_change_start, now_cost, total_points, event_points, minutes, goals_scored, assists, clean_sheets, expected_goals, expected_assists, transfers_in, transfers_in_event)
-            VALUES (${player.id}, ${player.first_name}, ${player.second_name}, ${player.element_type}, ${player.cost_change_start}, ${player.now_cost}, ${player.total_points}, ${player.event_points}, ${player.minutes}, ${player.goals_scored}, ${player.assists}, ${player.clean_sheets}, ${player.expected_goals}, ${player.expected_assists}, ${player.transfers_in}, ${player.transfers_in_event})
+            INSERT INTO fantasy_players (id, first_name, second_name, element_type, cost_change_start, now_cost, total_points, event_points, minutes, goals_scored, assists, clean_sheets, expected_goals, expected_assists, transfers_in, transfers_in_event, fdr_5, transfer_index)
+            VALUES (${player.id}, ${player.first_name}, ${player.second_name}, ${player.element_type}, ${player.cost_change_start}, ${player.now_cost}, ${player.total_points}, ${player.event_points}, ${player.minutes}, ${player.goals_scored}, ${player.assists}, ${player.clean_sheets}, ${player.expected_goals}, ${player.expected_assists}, ${player.transfers_in}, ${player.transfers_in_event}, ${player.fdr_5}, ${player.transfer_index})
             ON CONFLICT (id) DO UPDATE SET
                 first_name = ${player.first_name},
                 second_name = ${player.second_name},
@@ -261,7 +261,9 @@ export async function upsertFantasyPlayer(player: FantasyPlayer) {
                 expected_goals = ${player.expected_goals},
                 expected_assists = ${player.expected_assists},
                 transfers_in = ${player.transfers_in},
-                transfers_in_event = ${player.transfers_in_event}
+                transfers_in_event = ${player.transfers_in_event},
+                fdr_5 = ${player.fdr_5},
+                transfer_index = ${player.transfer_index}
         `;
     } catch (error) {
         console.error("Database Error:", error);
