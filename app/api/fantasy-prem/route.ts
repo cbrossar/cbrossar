@@ -13,6 +13,17 @@ export async function GET(request: Request) {
         const res = await fetch(
             "https://fantasy.premierleague.com/api/bootstrap-static/",
         );
+
+        if (!res.ok) {
+            console.error(
+                `Error fetching bootstrap-static data: ${res.statusText}`,
+            );
+            return new Response(
+                `Error fetching bootstrap-static data: ${res.statusText}`,
+                { status: 500 },
+            );
+        }
+
         const data = await res.json();
 
         let currentWeek = 1;
