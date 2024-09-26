@@ -1,6 +1,4 @@
-import {
-    upsertFantasyPlayer,
-} from "@/app/lib/data";
+import { upsertFantasyPlayer } from "@/app/lib/data";
 import { FantasyPlayer } from "@/app/lib/definitions";
 import { calculateTransferIndex } from "./utils";
 
@@ -13,7 +11,7 @@ function delay(ms: number) {
 export async function GET(request: Request) {
     try {
         const res = await fetch(
-            "https://fantasy.premierleague.com/api/bootstrap-static/"
+            "https://fantasy.premierleague.com/api/bootstrap-static/",
         );
         const data = await res.json();
 
@@ -33,20 +31,20 @@ export async function GET(request: Request) {
 
             try {
                 const playerRes = await fetch(
-                    `https://fantasy.premierleague.com/api/element-summary/${element.id}/`
+                    `https://fantasy.premierleague.com/api/element-summary/${element.id}/`,
                 );
 
                 // Check if the response is not ok (non-200 status)
                 if (!playerRes.ok) {
                     console.error(
-                        `Error fetching player data for ${element.id}: ${playerRes.statusText}`
+                        `Error fetching player data for ${element.id}: ${playerRes.statusText}`,
                     );
                     continue; // Skip to the next player if there's an error
                 }
 
                 // Parse player data as JSON
                 const playerData = await playerRes.json();
-                
+
                 // Process player data
                 const fdr_5 = playerData.fixtures
                     .slice(0, 5)
@@ -80,11 +78,10 @@ export async function GET(request: Request) {
 
                 // Upsert player data
                 upsertFantasyPlayer(player);
-
             } catch (error) {
                 console.error(
                     `Error processing player with ID ${element.id}:`,
-                    error
+                    error,
                 );
                 continue; // Skip to the next player
             }
@@ -97,7 +94,7 @@ export async function GET(request: Request) {
 
         return new Response(
             "Fantasy data updated for gameweek " + currentWeek,
-            { status: 200 }
+            { status: 200 },
         );
     } catch (error) {
         console.error("Error fetching bootstrap-static data:", error);
