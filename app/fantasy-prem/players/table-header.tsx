@@ -1,13 +1,14 @@
 "use client";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa"; // Import arrow icons
+import Tooltip from "@mui/material/Tooltip";
 
 interface TableHeaderProps {
     headers: string[];
     sortBy: string;
 }
 
-export const headerToColumnMap: Record<string, string | null> = {
+export const headerToColumnMap: Record<string, string> = {
     Player: "second_name",
     Cost: "now_cost",
     Points: "total_points",
@@ -20,6 +21,12 @@ export const headerToColumnMap: Record<string, string | null> = {
     "FDR-5": "fdr_5",
     "Transfer In Rd": "transfers_in_event",
     "Transfer Index": "transfer_index",
+};
+
+export const headerToTooltipMap: Record<string, string> = {
+    "FDR-5": "The sum Fixture Difficulty Rating for the next 5 games",
+    "Transfer In Rd": "The number of transfers in for the current round",
+    "Transfer Index": "Weighted alculation of columns in this table",
 };
 
 export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
@@ -64,17 +71,26 @@ export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
                     <th
                         key={header}
                         onClick={() => handleSort(header)}
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", position: "relative" }}
                     >
-                        <div
-                            className="header-container"
-                            style={{ display: "flex", alignItems: "center" }}
+                        <Tooltip
+                            title={headerToTooltipMap[header] || ""}
+                            enterTouchDelay={0} // Show tooltip immediately on touch
+                            leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
                         >
-                            <span>{header}</span>
-                            <span style={{ marginLeft: "5px" }}>
-                                {getSortIcon(header)}
-                            </span>
-                        </div>
+                            <div
+                                className="header-container"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <span>{header}</span>
+                                <span style={{ marginLeft: "5px" }}>
+                                    {getSortIcon(header)}
+                                </span>
+                            </div>
+                        </Tooltip>
                     </th>
                 ))}
             </tr>
