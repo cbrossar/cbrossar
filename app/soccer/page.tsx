@@ -50,17 +50,17 @@ export default async function Page() {
                     <div className={styles.caption}>Werder Beermen</div>
                 </div>
                 <div className={styles.item}>
-                    <Link href="https://gothamsoccer.com/newyorkcity">
+                    <Link href="fantasy-prem/players">
                         <div className={styles.imageWrapper}>
                             <Image
-                                src="/soccer/gotham.png"
+                                src="/code/fantasy-prem.png"
                                 width={200}
                                 height={200}
-                                alt="Gotham"
+                                alt="Fantasy Premier League"
                             />
                         </div>
                     </Link>
-                    <div className={styles.caption}>Brooklyn Hove Albion</div>
+                    <div className={styles.caption}>Fantasy Prem</div>
                 </div>
                 <div className={styles.item}>
                     <Link href="https://sfelitemetro.com/">
