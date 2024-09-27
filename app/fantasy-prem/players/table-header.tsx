@@ -26,7 +26,7 @@ export const headerToColumnMap: Record<string, string> = {
 export const headerToTooltipMap: Record<string, string> = {
     "FDR-5": "The sum Fixture Difficulty Rating for the next 5 games",
     "Transfer In Rd": "The number of transfers in for the current round",
-    "Transfer Index": "Weighted alculation of columns in this table",
+    "Transfer Index": "Weighted score of data in this table",
 };
 
 export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
