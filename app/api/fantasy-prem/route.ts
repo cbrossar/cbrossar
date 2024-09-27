@@ -1,4 +1,4 @@
-import { upsertFantasyPlayer } from "@/app/lib/data";
+import { upsertFantasyPlayer, fetchFantasyMaxStats } from "@/app/lib/data";
 import { FantasyPlayer } from "@/app/lib/definitions";
 import { calculateTransferIndex } from "./utils";
 
@@ -35,6 +35,8 @@ export async function GET(request: Request) {
             }
         });
 
+        const maxStats = await fetchFantasyMaxStats();
+
         // upsert all player data using upsertFantasyPlayer
         let players = data.elements;
         for (let i = 0; i < players.length; i++) {
@@ -64,6 +66,7 @@ export async function GET(request: Request) {
 
                 const transferIndex = calculateTransferIndex(element, {
                     fdr_5: fdr_5,
+                    maxStats: maxStats,
                 });
 
                 let player: FantasyPlayer = {

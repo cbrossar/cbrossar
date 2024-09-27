@@ -1,5 +1,4 @@
 import { FantasyPlayer } from "@/app/lib/definitions";
-import { min } from "date-fns";
 
 export function normalize(value: number, min: number, max: number): number {
     return (value - min) / (max - min);
@@ -7,15 +6,15 @@ export function normalize(value: number, min: number, max: number): number {
 
 export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
     const minMaxValues = {
-        points: { min: 0, max: 200 },
-        cost: { min: 40, max: 160 },
-        goals: { min: 0, max: 20 },
-        assists: { min: 0, max: 20 },
-        clean: { min: 0, max: 20 },
-        xG: { min: 0, max: 20 },
-        xA: { min: 0, max: 20 },
-        mins: { min: 0, max: 900 },
-        fdr_5: { min: 5, max: 25 },
+        points: { min: 0, max: stats.maxStats.points_max },
+        cost: { min: 0, max: stats.maxStats.cost_max },
+        goals: { min: 0, max: stats.maxStats.goals_max },
+        assists: { min: 0, max: stats.maxStats.assists_max },
+        clean: { min: 0, max: stats.maxStats.clean_max },
+        xG: { min: 0, max: stats.maxStats.xg_max },
+        xA: { min: 0, max: stats.maxStats.xa_max },
+        mins: { min: 0, max: stats.maxStats.mins_max },
+        fdr_5: { min: 0, max: stats.maxStats.fdr_5_max },
     };
 
     const weights = {
@@ -37,7 +36,7 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         minMaxValues.points.max,
     );
     const normCost = normalize(
-        minMaxValues.cost.max - player.now_cost + minMaxValues.cost.min,
+        minMaxValues.cost.max - player.now_cost,
         minMaxValues.cost.min,
         minMaxValues.cost.max,
     );
@@ -72,7 +71,7 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         minMaxValues.mins.max,
     );
     const normfdr_5 = normalize(
-        minMaxValues.fdr_5.max - stats.fdr_5 + minMaxValues.fdr_5.min,
+        minMaxValues.fdr_5.max - stats.fdr_5,
         minMaxValues.fdr_5.min,
         minMaxValues.fdr_5.max,
     );

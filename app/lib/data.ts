@@ -312,6 +312,28 @@ export async function fetchFantasyPositions() {
     }
 }
 
+export async function fetchFantasyMaxStats() {
+    try {
+        const response = await sql`
+            SELECT
+                MAX(total_points) as points_max,
+                MAX(now_cost) as cost_max,
+                MAX(goals_scored) as goals_max,
+                MAX(assists) as assists_max,
+                MAX(clean_sheets) as clean_max,
+                MAX(expected_goals) as xG_max,
+                MAX(expected_assists) as xA_max,
+                MAX(minutes) as mins_max,
+                MAX(fdr_5) as fdr_5_max
+            FROM fantasy_players
+        `;
+        return response.rows[0];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch fantasy max stats.");
+    }
+}
+
 export async function fetchPlayersByPositionAll(
     numGoalies: number,
     numDefenders: number,
@@ -447,3 +469,4 @@ export async function updateFantasyPlayerData(
         throw new Error("Failed to update player data.");
     }
 }
+
