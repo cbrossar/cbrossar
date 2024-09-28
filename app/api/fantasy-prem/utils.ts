@@ -22,17 +22,74 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         fdr_5: { min: 0, max: stats.maxStats.fdr_5_max },
     };
 
-    const weights = {
-        points: 0.3,
-        cost: 0.1,
-        goals: 0.1,
-        assists: 0.1,
-        clean: 0.1,
-        xG: 0.05,
-        xA: 0.05,
-        mins: 0.05,
-        fdr_5: 0.15,
-    };
+    // Set position-specific weights
+    let weights;
+    switch (player.element_type) {
+        case 1: // Goalkeepers
+            weights = {
+                points: 0.3,
+                cost: 0.15,
+                clean: 0.25,
+                mins: 0.1,
+                fdr_5: 0.1,
+                goals: 0.0,
+                assists: 0.1,
+                xG: 0.00,
+                xA: 0.00,
+            };
+            break;
+        case 2: // Defenders
+            weights = {
+                points: 0.3,
+                cost: 0.1,
+                clean: 0.2,
+                goals: 0.1,
+                assists: 0.1,
+                xG: 0.05,
+                xA: 0.05,
+                mins: 0.1,
+                fdr_5: 0.1,
+            };
+            break;
+        case 3: // Midfielders
+            weights = {
+                points: 0.3,
+                cost: 0.1,
+                goals: 0.2,
+                assists: 0.15,
+                xG: 0.05,
+                xA: 0.05,
+                mins: 0.05,
+                clean: 0.0,
+                fdr_5: 0.1,
+            };
+            break;
+        case 4: // Forwards
+            weights = {
+                points: 0.3,
+                cost: 0.1,
+                goals: 0.2,
+                assists: 0.1,
+                xG: 0.1,
+                xA: 0.05,
+                mins: 0.05,
+                clean: 0.0,
+                fdr_5: 0.1,
+            };
+            break;
+        default:
+            weights = {
+                points: 0.3,
+                cost: 0.1,
+                goals: 0.15,
+                assists: 0.1,
+                clean: 0.1,
+                xG: 0.05,
+                xA: 0.05,
+                mins: 0.05,
+                fdr_5: 0.1,
+            };
+    }
 
     // Normalize each stat
     const normPoints = normalize(
