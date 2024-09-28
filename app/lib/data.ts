@@ -437,22 +437,63 @@ export async function fetchPlayersByPositionCurrent(
 
 const ITEMS_PER_PAGE = 10;
 
-export async function fetchPlayersCount(query: string) {
+export async function fetchPlayersCount(
+    query: string,
+    currentTeamId: string,
+    currentPosId: string,
+) {
     try {
         noStore();
-        const count = await sql`
+
+        // Initialize arrays for dynamic query construction
+        let whereClauses = [];
+        let queryParams: (string | number)[] = [];
+        let paramIndex = 1;
+
+        // Add search conditions for player names
+        if (query) {
+            whereClauses.push(
+                `(first_name ILIKE $${paramIndex} OR second_name ILIKE $${paramIndex})`,
+            );
+            queryParams.push(`%${query}%`);
+            paramIndex++;
+        }
+
+        // Add filter condition for team ID
+        if (currentTeamId) {
+            whereClauses.push(`team = $${paramIndex}`);
+            queryParams.push(Number(currentTeamId));
+            paramIndex++;
+        }
+
+        // Add filter condition for position ID
+        if (currentPosId) {
+            whereClauses.push(`element_type = $${paramIndex}`);
+            queryParams.push(Number(currentPosId));
+            paramIndex++;
+        }
+
+        // Construct the WHERE clause
+        let whereClause = "";
+        if (whereClauses.length > 0) {
+            whereClause = `WHERE ${whereClauses.join(" AND ")}`;
+        }
+
+        // Final SQL query
+        const sqlQuery = `
             SELECT COUNT(*) FROM fantasy_players
-            WHERE
-                first_name ILIKE ${`%${query}%`} OR
-                second_name ILIKE ${`%${query}%`}
+            ${whereClause}
         `;
-        const totalPages = Math.ceil(
-            Number(count.rows[0].count) / ITEMS_PER_PAGE,
-        );
+
+        // Execute the query with parameterized values
+        const result = await sql.query(sqlQuery, queryParams);
+
+        const totalCount = Number(result.rows[0].count);
+        const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
         return totalPages;
     } catch (error) {
         console.error("Database Error:", error);
-        throw new Error("Failed to fetch top transfers in.");
+        throw new Error("Failed to fetch player count.");
     }
 }
 
