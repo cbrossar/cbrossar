@@ -1,11 +1,14 @@
 import {
+    fetchFantasyTeams,
     fetchPlayersByPositionAll,
     fetchPlayersByPositionCurrent,
 } from "@/app/lib/data";
 import Link from "next/link";
+import Image from "next/image";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
 import SettingsModal from "./settings-modal"; // Import the modal component
+import { FantasyTeam } from "@/app/lib/definitions";
 
 export default async function Page({
     searchParams,
@@ -72,6 +75,19 @@ export default async function Page({
         (player) => player.element_type === 4,
     );
 
+    const teams = (await fetchFantasyTeams()) as FantasyTeam[];
+
+    const teamsById = teams.reduce(
+        (acc, team) => {
+            acc[team.id] = {
+                name: team.name,
+                image_filename: team.image_filename || "",
+            };
+            return acc;
+        },
+        {} as Record<number, { name: string; image_filename: string }>,
+    );
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -89,15 +105,26 @@ export default async function Page({
                 </div>
             </div>
             <div className={styles.lineup}>
+                {/* Goalkeepers */}
                 <div className={styles.row}>
                     <h3>Goalkeeper</h3>
                     <div className={styles.players}>
                         {goalkeepers.map((player) => (
                             <div key={player.id} className={styles.player}>
                                 <div className={styles.playerInfo}>
-                                    <span>
-                                        {player.first_name} {player.second_name}
-                                    </span>
+                                    <div className={styles.playerNameLogo}>
+                                        <span className={styles.playerName}>
+                                            {player.first_name}{" "}
+                                            {player.second_name}
+                                        </span>
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={30}
+                                            height={30}
+                                            style={{ objectFit: "contain" }}
+                                        />
+                                    </div>
                                     <span className={styles.points}>
                                         Points:{" "}
                                         {isCurrentGameweek
@@ -119,15 +146,27 @@ export default async function Page({
                         ))}
                     </div>
                 </div>
+
+                {/* Defenders */}
                 <div className={styles.row}>
                     <h3>Defenders</h3>
                     <div className={styles.players}>
                         {defenders.map((player) => (
                             <div key={player.id} className={styles.player}>
                                 <div className={styles.playerInfo}>
-                                    <span>
-                                        {player.first_name} {player.second_name}
-                                    </span>
+                                    <div className={styles.playerNameLogo}>
+                                        <span className={styles.playerName}>
+                                            {player.first_name}{" "}
+                                            {player.second_name}
+                                        </span>
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={30}
+                                            height={30}
+                                            style={{ objectFit: "contain" }}
+                                        />
+                                    </div>
                                     <span className={styles.points}>
                                         Points:{" "}
                                         {isCurrentGameweek
@@ -149,15 +188,27 @@ export default async function Page({
                         ))}
                     </div>
                 </div>
+
+                {/* Midfielders */}
                 <div className={styles.row}>
                     <h3>Midfielders</h3>
                     <div className={styles.players}>
                         {midfielders.map((player) => (
                             <div key={player.id} className={styles.player}>
                                 <div className={styles.playerInfo}>
-                                    <span>
-                                        {player.first_name} {player.second_name}
-                                    </span>
+                                    <div className={styles.playerNameLogo}>
+                                        <span className={styles.playerName}>
+                                            {player.first_name}{" "}
+                                            {player.second_name}
+                                        </span>
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={30}
+                                            height={30}
+                                            style={{ objectFit: "contain" }}
+                                        />
+                                    </div>
                                     <span className={styles.points}>
                                         Points:{" "}
                                         {isCurrentGameweek
@@ -179,15 +230,27 @@ export default async function Page({
                         ))}
                     </div>
                 </div>
+
+                {/* Forwards */}
                 <div className={styles.row}>
                     <h3>Forwards</h3>
                     <div className={styles.players}>
                         {forwards.map((player) => (
                             <div key={player.id} className={styles.player}>
                                 <div className={styles.playerInfo}>
-                                    <span>
-                                        {player.first_name} {player.second_name}
-                                    </span>
+                                    <div className={styles.playerNameLogo}>
+                                        <span className={styles.playerName}>
+                                            {player.first_name}{" "}
+                                            {player.second_name}
+                                        </span>
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={30}
+                                            height={30}
+                                            style={{ objectFit: "contain" }}
+                                        />
+                                    </div>
                                     <span className={styles.points}>
                                         Points:{" "}
                                         {isCurrentGameweek

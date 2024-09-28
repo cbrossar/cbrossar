@@ -1,127 +1,29 @@
 .container {
-    padding: 20px;
+    padding: 10px;
     font-family: Arial, sans-serif;
     position: relative;
 }
 
-.title {
-    font-size: 2em;
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    font-size: 1.5em;
+.header {
+    display: flex;
+    align-items: center;
     margin-bottom: 20px;
 }
 
 .stats {
-    margin-bottom: 20px;
-}
-
-.lineup {
     display: flex;
-    flex-direction: column;
     gap: 20px;
 }
 
-.row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.row h3 {
-    margin-top: 0;
-    font-size: 1.2em;
-}
-
-.players {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    .container {
-        padding: 20px;
-        font-family: Arial, sans-serif;
-    }
-
-    .title {
-        font-size: 2em;
-        margin-bottom: 10px;
-    }
-
-    .subtitle {
-        font-size: 1.5em;
-        margin-bottom: 20px;
-    }
-
-    .stats {
-        margin-bottom: 20px;
-    }
-
-    .lineup {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .row {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .row h3 {
-        margin-top: 0;
-        font-size: 1.2em;
-    }
-
-    .players {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .player {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        min-width: 150px; /* Adjust width as needed */
-    }
-
-    .playerInfo {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .points,
-    .cost {
-        font-size: 0.9em;
-        color: #666;
-    }
-}
-
-.player {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.header {
-    display: flex;
+.stats h3 {
+    margin: 0;
+    color: #333;
 }
 
 .topRightCorner {
     margin-left: auto;
     display: flex;
+    align-items: center;
 }
 
 .topTransfersButton {
@@ -131,4 +33,76 @@
     color: #0070f3;
     margin-right: 10px;
     transition: color 0.3s ease;
+}
+
+.topTransfersButton:hover {
+    color: #005bb5;
+}
+
+.lineup {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.row h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.players {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.player {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    min-width: 130px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.player:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.playerInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.playerNameLogo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.playerName {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.points,
+.cost {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.points {
+    margin-bottom: 4px;
 }
