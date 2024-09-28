@@ -16,7 +16,7 @@ export default function RefreshButton() {
             if (response.ok) {
                 window.location.reload();
             } else {
-                console.error("Failed to refresh data");
+                console.error("Failed to refresh data", response.statusText);
             }
         } catch (error) {
             console.error("Error refreshing data:", error);
