@@ -34,8 +34,8 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
                 fdr_5: 0.1,
                 goals: 0.0,
                 assists: 0.1,
-                xG: 0.00,
-                xA: 0.00,
+                xG: 0.0,
+                xA: 0.0,
             };
             break;
         case 2: // Defenders
