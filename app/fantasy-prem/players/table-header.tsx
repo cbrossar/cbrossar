@@ -10,6 +10,8 @@ interface TableHeaderProps {
 
 export const headerToColumnMap: Record<string, string> = {
     Player: "second_name",
+    Team: "team",
+    Pos: "element_type",
     Cost: "now_cost",
     Points: "total_points",
     Mins: "minutes",
@@ -19,14 +21,14 @@ export const headerToColumnMap: Record<string, string> = {
     xG: "expected_goals",
     xA: "expected_assists",
     "FDR-5": "fdr_5",
-    "Transfer In Rd": "transfers_in_event",
-    "Transfer Index": "transfer_index",
+    "TF Gw": "transfers_in_event",
+    "TF Idx": "transfer_index",
 };
 
 export const headerToTooltipMap: Record<string, string> = {
     "FDR-5": "The sum Fixture Difficulty Rating for the next 5 games",
-    "Transfer In Rd": "The number of transfers in for the current round",
-    "Transfer Index": "Weighted score of data in this table",
+    "TF Gw": "The number of transfers in for the current gameweek",
+    "TF Idx": "Weighted score of data in this table",
 };
 
 export default function TableHeader({ headers, sortBy }: TableHeaderProps) {

@@ -5,6 +5,7 @@ import {
     Team,
     FantasyPlayer,
     FantasyPosition,
+    FantasyTeam,
 } from "./definitions";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -244,11 +245,12 @@ export async function fetchDoomsdayStats() {
 export async function upsertFantasyPlayer(player: FantasyPlayer) {
     try {
         await sql`
-            INSERT INTO fantasy_players (id, first_name, second_name, element_type, cost_change_start, now_cost, total_points, event_points, minutes, goals_scored, assists, clean_sheets, expected_goals, expected_assists, transfers_in, transfers_in_event, fdr_5, transfer_index)
-            VALUES (${player.id}, ${player.first_name}, ${player.second_name}, ${player.element_type}, ${player.cost_change_start}, ${player.now_cost}, ${player.total_points}, ${player.event_points}, ${player.minutes}, ${player.goals_scored}, ${player.assists}, ${player.clean_sheets}, ${player.expected_goals}, ${player.expected_assists}, ${player.transfers_in}, ${player.transfers_in_event}, ${player.fdr_5}, ${player.transfer_index})
+            INSERT INTO fantasy_players (id, first_name, second_name, team, element_type, cost_change_start, now_cost, total_points, event_points, minutes, goals_scored, assists, clean_sheets, expected_goals, expected_assists, transfers_in, transfers_in_event, fdr_5, transfer_index)
+            VALUES (${player.id}, ${player.first_name}, ${player.second_name}, ${player.team}, ${player.element_type}, ${player.cost_change_start}, ${player.now_cost}, ${player.total_points}, ${player.event_points}, ${player.minutes}, ${player.goals_scored}, ${player.assists}, ${player.clean_sheets}, ${player.expected_goals}, ${player.expected_assists}, ${player.transfers_in}, ${player.transfers_in_event}, ${player.fdr_5}, ${player.transfer_index})
             ON CONFLICT (id) DO UPDATE SET
                 first_name = ${player.first_name},
                 second_name = ${player.second_name},
+                team = ${player.team},
                 element_type = ${player.element_type},
                 cost_change_start = ${player.cost_change_start},
                 now_cost = ${player.now_cost},
@@ -287,6 +289,20 @@ export async function upsertFantasyPosition(position: FantasyPosition) {
     }
 }
 
+export async function upsertFantasyTeam(team: FantasyTeam) {
+    try {
+        await sql`
+            INSERT INTO fantasy_teams (id, name)
+            VALUES (${team.id}, ${team.name})
+            ON CONFLICT (id) DO UPDATE SET
+                name = ${team.name}
+        `;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to upsert fantasy team.");
+    }
+}
+
 export async function fetchFantasyPlayers() {
     noStore();
     try {
@@ -309,6 +325,18 @@ export async function fetchFantasyPositions() {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch fantasy positions.");
+    }
+}
+
+export async function fetchFantasyTeams() {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_teams
+        `;
+        return response.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch fantasy teams.");
     }
 }
 

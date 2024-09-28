@@ -39,6 +39,7 @@ export interface FantasyPlayer {
     id: number;
     first_name: string;
     second_name: string;
+    team: number;
     element_type: number;
     cost_change_start: number;
     now_cost: number;
@@ -61,4 +62,10 @@ export interface FantasyPosition {
     singular_name: string;
     squad_min_play: number;
     squad_max_play: number;
+}
+
+export interface FantasyTeam {
+    id: number;
+    name: string;
+    image_filename?: string;
 }

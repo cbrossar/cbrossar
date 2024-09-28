@@ -3,7 +3,7 @@ const { db } = require("@vercel/postgres");
 async function main() {
     const client = await db.connect();
 
-    await seedMusicReviews(client);
+    // await seedMusicReviews(client);
     // await seedDoomsdayAttempts(client);
     // await seedSoccerStats(client);
     await seedFantasyPremierLeagueStats(client);
@@ -235,12 +235,24 @@ async function seedFantasyPremierLeagueStats(client) {
         `;
         console.log(`Created "fantasy_positions" table`);
 
+        // Create the "fantasy_teams" table if it doesn't exist
+        const createFantasyTeamsTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS fantasy_teams (
+            id INT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            image_filename VARCHAR(255)
+        );
+        `;
+
+        console.log(`Created "fantasy_teams" table`);
+
         // Create the "fantasy_players" table if it doesn't exist
         const createFantasyPlayersTable = await client.sql`
             CREATE TABLE IF NOT EXISTS fantasy_players (
             id INT PRIMARY KEY,
             first_name VARCHAR(255) NOT NULL,
             second_name VARCHAR(255) NOT NULL,
+            team INT NOT NULL,
             element_type INT NOT NULL,
             cost_change_start FLOAT NOT NULL,
             now_cost FLOAT NOT NULL,
@@ -256,13 +268,15 @@ async function seedFantasyPremierLeagueStats(client) {
             transfers_in_event INT NOT NULL,
             fdr_5 INT,
             transfer_index FLOAT,
-            FOREIGN KEY (element_type) REFERENCES fantasy_positions(id)
+            FOREIGN KEY (element_type) REFERENCES fantasy_positions(id),
+            FOREIGN KEY (team) REFERENCES fantasy_teams(id)
         );
         `;
         console.log(`Created "fantasy_players" table`);
 
         return {
             createFantasyPositionsTable,
+            createFantasyTeamsTable,
             createFantasyPlayersTable,
         };
     } catch (error) {

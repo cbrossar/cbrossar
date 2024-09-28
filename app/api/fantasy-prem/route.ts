@@ -1,6 +1,6 @@
 import { upsertFantasyPlayer, fetchFantasyMaxStats } from "@/app/lib/data";
 import { FantasyPlayer } from "@/app/lib/definitions";
-import { calculateTransferIndex } from "./utils";
+import { calculateTransferIndex, upsertFantasyTeams } from "./utils";
 
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
@@ -73,6 +73,7 @@ export async function GET(request: Request) {
                     id: element.id,
                     first_name: element.first_name,
                     second_name: element.second_name,
+                    team: element.team,
                     element_type: element.element_type,
                     cost_change_start: element.cost_change_start,
                     now_cost: element.now_cost,

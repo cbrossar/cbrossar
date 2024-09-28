@@ -1,10 +1,16 @@
 import {
     fetchFantasyPlayersFiltered,
     fetchFantasyPositions,
+    fetchFantasyTeams,
     fetchPlayersCount,
 } from "@/app/lib/data";
-import { FantasyPlayer, FantasyPosition } from "@/app/lib/definitions";
+import {
+    FantasyPlayer,
+    FantasyPosition,
+    FantasyTeam,
+} from "@/app/lib/definitions";
 import Link from "next/link";
+import Image from "next/image";
 import Pagination from "./pagination";
 import Search from "@/app/ui/search";
 import TableHeader from "./table-header";
@@ -34,6 +40,18 @@ export default async function Page({
     )) as FantasyPlayer[];
     const totalPages = await fetchPlayersCount(query);
     const positions = (await fetchFantasyPositions()) as FantasyPosition[];
+    const teams = (await fetchFantasyTeams()) as FantasyTeam[];
+
+    const teamsById = teams.reduce(
+        (acc, team) => {
+            acc[team.id] = {
+                name: team.name,
+                image_filename: team.image_filename || "",
+            };
+            return acc;
+        },
+        {} as Record<number, { name: string; image_filename: string }>,
+    );
 
     const positionNameMap = positions.reduce(
         (acc, position) => {
@@ -57,22 +75,23 @@ export default async function Page({
                 </div>
             </div>
             <div style={{ overflowX: "auto" }}>
-                <table style={{ minWidth: "1000px" }}>
+                <table style={{ minWidth: "900px" }}>
                     <TableHeader
                         headers={[
                             "Player",
+                            "Team",
                             "Pos",
                             "Cost",
-                            "Points",
-                            "Mins",
-                            "Goals",
-                            "Assists",
-                            "Cleans",
+                            "Point",
+                            "Min",
+                            "Goal",
+                            "Assist",
+                            "Clean",
                             "xG",
                             "xA",
                             "FDR-5",
-                            "Transfer In Rd",
-                            "Transfer Index",
+                            "TF Gw",
+                            "TF Idx",
                         ]}
                         sortBy={sortBy} // Pass the current sortBy param
                     />
@@ -82,7 +101,18 @@ export default async function Page({
                                 <td>
                                     {player.first_name} {player.second_name}
                                 </td>
-                                <td>{positionNameMap[player.element_type][0]}</td>
+                                <td>
+                                    <Image
+                                        src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                        alt={teamsById[player.team].name}
+                                        width={30} // Adjust width
+                                        height={30} // Adjust height
+                                        style={{ objectFit: "contain" }} // Ensure it fits nicely
+                                    />
+                                </td>
+                                <td>
+                                    {positionNameMap[player.element_type][0]}
+                                </td>
                                 <td>{(player.now_cost / 10).toFixed(1)}</td>
                                 <td>{player.total_points}</td>
                                 <td>{player.minutes}</td>
