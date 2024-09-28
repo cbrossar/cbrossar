@@ -470,14 +470,14 @@ export async function fetchFantasyPlayersFiltered(
             WHERE
                 first_name ILIKE '%${query}%' OR
                 second_name ILIKE '%${query}%'
-            ORDER BY ${sortBy} ${sortOrder}
+            ORDER BY ${sortBy} ${sortOrder}, transfer_index ${sortOrder}
             LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `);
 
         return response.rows;
     } catch (error) {
         console.error("Database Error:", error);
-        throw new Error("Failed to fetch top transfers in.");
+        throw new Error("Failed to fetch fantasy players.");
     }
 }
 
