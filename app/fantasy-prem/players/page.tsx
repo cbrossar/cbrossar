@@ -75,7 +75,7 @@ export default async function Page({
         <div>
             <div className={styles.header}>
                 <div>
-                    <Search placeholder="Search Players" />
+                    <Search placeholder="Search Players" query={query} />
                 </div>
                 <div className={styles.topRightCorner}>
                     <div className={styles.optimalTeamButton}>
@@ -111,7 +111,14 @@ export default async function Page({
                         {topTransfers.map((player, index) => (
                             <tr key={index}>
                                 <td>
-                                    {player.first_name} {player.second_name}
+                                    <Link
+                                        key={player.id}
+                                        href={`/fantasy-prem/players?query=${encodeURIComponent(
+                                            player.second_name,
+                                        )}`}
+                                    >
+                                        {player.first_name} {player.second_name}
+                                    </Link>
                                 </td>
                                 <td>
                                     <Image

@@ -3,15 +3,24 @@
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function Search({ placeholder }: { placeholder: string }) {
+export default function Search({
+    placeholder,
+    query,
+}: {
+    placeholder: string;
+    query: string;
+}) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
-    const [searchTerm, setSearchTerm] = useState(
-        searchParams.get("query") || "",
-    );
+
+    const [searchTerm, setSearchTerm] = useState(query);
+
+    useEffect(() => {
+        setSearchTerm(query);
+    }, [query]);
 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
