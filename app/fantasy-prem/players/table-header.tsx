@@ -110,6 +110,28 @@ export default function TableHeader({
     const currentTeamId = searchParams.get("team") || "";
     const currentPosId = searchParams.get("pos") || "";
 
+    // Define a fixed height for the table header cells
+    const thStyle = { height: "50px", verticalAlign: "middle" };
+
+    // Define styles for the Select components to prevent height change
+    const selectStyle = {
+        width: "100%",
+        "& .MuiSelect-select": {
+            padding: "0 !important",
+            minHeight: "unset",
+            display: "flex",
+            alignItems: "center",
+        },
+        "& .MuiInputBase-root": {
+            padding: "0",
+        },
+        "& .MuiSelect-icon": {
+            display: "none",
+        },
+        fontSize: "inherit",
+        lineHeight: "normal",
+    };
+
     return (
         <thead>
             <tr>
@@ -119,6 +141,7 @@ export default function TableHeader({
                             <th
                                 key={header}
                                 style={{
+                                    ...thStyle,
                                     cursor: "pointer",
                                     position: "relative",
                                 }}
@@ -134,11 +157,21 @@ export default function TableHeader({
                                         onClose={() =>
                                             setIsTeamSelectOpen(false)
                                         }
-                                        onBlur={() =>
-                                            setIsTeamSelectOpen(false)
-                                        }
                                         open={isTeamSelectOpen}
                                         autoFocus
+                                        variant="standard"
+                                        sx={selectStyle}
+                                        MenuProps={{
+                                            anchorOrigin: {
+                                                vertical: "bottom",
+                                                horizontal: "left",
+                                            },
+                                            transformOrigin: {
+                                                vertical: "top",
+                                                horizontal: "left",
+                                            },
+                                            getContentAnchorEl: null,
+                                        }}
                                     >
                                         <MenuItem value="">
                                             <em>All Teams</em>
@@ -157,6 +190,7 @@ export default function TableHeader({
                                         style={{
                                             display: "flex",
                                             alignItems: "center",
+                                            height: "100%",
                                         }}
                                     >
                                         <Tooltip
@@ -180,6 +214,7 @@ export default function TableHeader({
                             <th
                                 key={header}
                                 style={{
+                                    ...thStyle,
                                     cursor: "pointer",
                                     position: "relative",
                                 }}
@@ -195,9 +230,21 @@ export default function TableHeader({
                                         onClose={() =>
                                             setIsPosSelectOpen(false)
                                         }
-                                        onBlur={() => setIsPosSelectOpen(false)}
                                         open={isPosSelectOpen}
                                         autoFocus
+                                        variant="standard"
+                                        sx={selectStyle}
+                                        MenuProps={{
+                                            anchorOrigin: {
+                                                vertical: "bottom",
+                                                horizontal: "left",
+                                            },
+                                            transformOrigin: {
+                                                vertical: "top",
+                                                horizontal: "left",
+                                            },
+                                            getContentAnchorEl: null,
+                                        }}
                                     >
                                         <MenuItem value="">
                                             <em>All Positions</em>
@@ -216,6 +263,7 @@ export default function TableHeader({
                                         style={{
                                             display: "flex",
                                             alignItems: "center",
+                                            height: "100%",
                                         }}
                                     >
                                         <Tooltip
@@ -240,6 +288,7 @@ export default function TableHeader({
                                 key={header}
                                 onClick={() => handleSort(header)}
                                 style={{
+                                    ...thStyle,
                                     cursor: "pointer",
                                     position: "relative",
                                 }}
