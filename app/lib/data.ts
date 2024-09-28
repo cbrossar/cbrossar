@@ -504,8 +504,6 @@ export async function fetchFantasyPlayersFiltered(
         // Sanitize sortBy and sortOrder to prevent SQL injection
         const allowedSortColumns = [
             "second_name",
-            "team",
-            "element_type",
             "now_cost",
             "total_points",
             "minutes",

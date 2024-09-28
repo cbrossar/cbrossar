@@ -170,7 +170,6 @@ export default function TableHeader({
                                                 vertical: "top",
                                                 horizontal: "left",
                                             },
-                                            getContentAnchorEl: null,
                                         }}
                                     >
                                         <MenuItem value="">
@@ -243,7 +242,6 @@ export default function TableHeader({
                                                 vertical: "top",
                                                 horizontal: "left",
                                             },
-                                            getContentAnchorEl: null,
                                         }}
                                     >
                                         <MenuItem value="">
