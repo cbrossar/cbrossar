@@ -1,4 +1,3 @@
-// Page.tsx
 import {
     fetchFantasyTeams,
     fetchPlayersByPositionAll,
