@@ -469,4 +469,3 @@ export async function updateFantasyPlayerData(
         throw new Error("Failed to update player data.");
     }
 }
-
