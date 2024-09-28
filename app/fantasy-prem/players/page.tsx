@@ -61,6 +61,7 @@ export default async function Page({
                     <TableHeader
                         headers={[
                             "Player",
+                            "Pos",
                             "Cost",
                             "Points",
                             "Mins",
@@ -79,10 +80,10 @@ export default async function Page({
                         {topTransfers.map((player, index) => (
                             <tr key={index}>
                                 <td>
-                                    {player.first_name} {player.second_name} (
-                                    {positionNameMap[player.element_type][0]})
+                                    {player.first_name} {player.second_name}
                                 </td>
-                                <td>{(player.now_cost / 10).toFixed(1)}m</td>
+                                <td>{positionNameMap[player.element_type][0]}</td>
+                                <td>{(player.now_cost / 10).toFixed(1)}</td>
                                 <td>{player.total_points}</td>
                                 <td>{player.minutes}</td>
                                 <td>{player.goals_scored}</td>
