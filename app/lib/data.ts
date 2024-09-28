@@ -332,6 +332,7 @@ export async function fetchFantasyTeams() {
     try {
         const response = await sql`
             SELECT * FROM fantasy_teams
+            ORDER BY name
         `;
         return response.rows;
     } catch (error) {
