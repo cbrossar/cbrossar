@@ -1,11 +1,17 @@
 "use client";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa"; // Import arrow icons
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Tooltip from "@mui/material/Tooltip";
+import { useState } from "react";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { FantasyPosition, FantasyTeam } from "@/app/lib/definitions";
 
 interface TableHeaderProps {
     headers: string[];
     sortBy: string;
+    teams: FantasyTeam[];
+    positions: FantasyPosition[];
 }
 
 export const headerToColumnMap: Record<string, string> = {
@@ -31,14 +37,23 @@ export const headerToTooltipMap: Record<string, string> = {
     "TF Idx": "Weighted score of data in this table",
 };
 
-export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
+export default function TableHeader({
+    headers,
+    sortBy,
+    teams,
+    positions,
+}: TableHeaderProps) {
+    // State for team and position selects
+    const [isTeamSelectOpen, setIsTeamSelectOpen] = useState(false);
+    const [isPosSelectOpen, setIsPosSelectOpen] = useState(false);
+
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
 
     const handleSort = (header: string) => {
         const params = new URLSearchParams(searchParams as any);
-        params.set("page", "1"); // Reset to page 1 when sorting
+        params.set("page", "1");
 
         const column = headerToColumnMap[header];
         if (!column) {
@@ -46,55 +61,211 @@ export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
         }
 
         if (sortBy === column) {
-            params.set("sortby", `-${column}`); // Toggle to descending if already sorted ascending
+            params.set("sortby", `-${column}`);
         } else {
-            params.set("sortby", column); // Set ascending order
+            params.set("sortby", column);
         }
         replace(`${pathname}?${params.toString()}`);
+    };
+
+    // Handle team selection
+    const handleTeamSelect = (teamId: string) => {
+        const params = new URLSearchParams(searchParams as any);
+        params.set("page", "1");
+        if (teamId) {
+            params.set("team", teamId);
+        } else {
+            params.delete("team");
+        }
+        replace(`${pathname}?${params.toString()}`);
+        setIsTeamSelectOpen(false);
+    };
+
+    // Handle position selection
+    const handlePosSelect = (posId: string) => {
+        const params = new URLSearchParams(searchParams as any);
+        params.set("page", "1");
+        if (posId) {
+            params.set("pos", posId);
+        } else {
+            params.delete("pos");
+        }
+        replace(`${pathname}?${params.toString()}`);
+        setIsPosSelectOpen(false);
     };
 
     const getSortIcon = (header: string) => {
         const column = headerToColumnMap[header];
         if (!column || !sortBy) return null;
 
-        // Check if current column is being sorted
         if (sortBy === column) {
-            return <FaArrowDown />; // Ascending sort
+            return <FaArrowDown />;
         } else if (sortBy === `-${column}`) {
-            return <FaArrowUp />; // Descending sort
+            return <FaArrowUp />;
         }
         return null;
     };
 
+    // Get current team and position IDs from URL parameters
+    const currentTeamId = searchParams.get("team") || "";
+    const currentPosId = searchParams.get("pos") || "";
+
     return (
         <thead>
             <tr>
-                {headers.map((header) => (
-                    <th
-                        key={header}
-                        onClick={() => handleSort(header)}
-                        style={{ cursor: "pointer", position: "relative" }}
-                    >
-                        <Tooltip
-                            title={headerToTooltipMap[header] || ""}
-                            enterTouchDelay={0} // Show tooltip immediately on touch
-                            leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
-                        >
-                            <div
-                                className="header-container"
+                {headers.map((header) => {
+                    if (header === "Team") {
+                        return (
+                            <th
+                                key={header}
                                 style={{
-                                    display: "flex",
-                                    alignItems: "center",
+                                    cursor: "pointer",
+                                    position: "relative",
                                 }}
                             >
-                                <span>{header}</span>
-                                <span style={{ marginLeft: "5px" }}>
-                                    {getSortIcon(header)}
-                                </span>
-                            </div>
-                        </Tooltip>
-                    </th>
-                ))}
+                                {isTeamSelectOpen ? (
+                                    <Select
+                                        value={currentTeamId}
+                                        onChange={(e) =>
+                                            handleTeamSelect(
+                                                e.target.value as string,
+                                            )
+                                        }
+                                        onClose={() =>
+                                            setIsTeamSelectOpen(false)
+                                        }
+                                        onBlur={() =>
+                                            setIsTeamSelectOpen(false)
+                                        }
+                                        open={isTeamSelectOpen}
+                                        autoFocus
+                                    >
+                                        <MenuItem value="">
+                                            <em>All Teams</em>
+                                        </MenuItem>
+                                        {teams.map((team) => (
+                                            <MenuItem
+                                                key={team.id}
+                                                value={team.id.toString()}
+                                            >
+                                                {team.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                ) : (
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Tooltip
+                                            onClick={() =>
+                                                setIsTeamSelectOpen(true)
+                                            }
+                                            title={
+                                                headerToTooltipMap[header] || ""
+                                            }
+                                            enterTouchDelay={0}
+                                            leaveTouchDelay={1500}
+                                        >
+                                            <span>{header}</span>
+                                        </Tooltip>
+                                    </div>
+                                )}
+                            </th>
+                        );
+                    } else if (header === "Pos") {
+                        return (
+                            <th
+                                key={header}
+                                style={{
+                                    cursor: "pointer",
+                                    position: "relative",
+                                }}
+                            >
+                                {isPosSelectOpen ? (
+                                    <Select
+                                        value={currentPosId}
+                                        onChange={(e) =>
+                                            handlePosSelect(
+                                                e.target.value as string,
+                                            )
+                                        }
+                                        onClose={() =>
+                                            setIsPosSelectOpen(false)
+                                        }
+                                        onBlur={() => setIsPosSelectOpen(false)}
+                                        open={isPosSelectOpen}
+                                        autoFocus
+                                    >
+                                        <MenuItem value="">
+                                            <em>All Positions</em>
+                                        </MenuItem>
+                                        {positions.map((pos) => (
+                                            <MenuItem
+                                                key={pos.id}
+                                                value={pos.id}
+                                            >
+                                                {pos.singular_name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                ) : (
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Tooltip
+                                            onClick={() =>
+                                                setIsPosSelectOpen(true)
+                                            }
+                                            title={
+                                                headerToTooltipMap[header] || ""
+                                            }
+                                            enterTouchDelay={0}
+                                            leaveTouchDelay={1500}
+                                        >
+                                            <span>{header}</span>
+                                        </Tooltip>
+                                    </div>
+                                )}
+                            </th>
+                        );
+                    } else {
+                        return (
+                            <th
+                                key={header}
+                                onClick={() => handleSort(header)}
+                                style={{
+                                    cursor: "pointer",
+                                    position: "relative",
+                                }}
+                            >
+                                <Tooltip
+                                    title={headerToTooltipMap[header] || ""}
+                                    enterTouchDelay={0}
+                                    leaveTouchDelay={1500}
+                                >
+                                    <div
+                                        className="header-container"
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <span>{header}</span>
+                                        <span style={{ marginLeft: "5px" }}>
+                                            {getSortIcon(header)}
+                                        </span>
+                                    </div>
+                                </Tooltip>
+                            </th>
+                        );
+                    }
+                })}
             </tr>
         </thead>
     );

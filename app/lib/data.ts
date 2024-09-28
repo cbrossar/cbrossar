@@ -460,19 +460,87 @@ export async function fetchFantasyPlayersFiltered(
     currentPage: number,
     sortBy: string,
     sortOrder: string,
+    currentTeamId: string,
+    currentPosId: string, // Added currentPosId parameter
 ) {
     try {
         noStore();
         const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-        const response = await sql.query(`
-            SELECT * FROM fantasy_players 
-            WHERE
-                first_name ILIKE '%${query}%' OR
-                second_name ILIKE '%${query}%'
-            ORDER BY ${sortBy} ${sortOrder}, transfer_index ${sortOrder}
+        // Initialize arrays for dynamic query construction
+        let whereClauses = [];
+        let queryParams: (string | number)[] = [];
+        let paramIndex = 1;
+
+        // Add search conditions for player names
+        if (query) {
+            whereClauses.push(
+                `(first_name ILIKE $${paramIndex} OR second_name ILIKE $${paramIndex})`,
+            );
+            queryParams.push(`%${query}%`);
+            paramIndex++;
+        }
+
+        // Add filter condition for team ID
+        if (currentTeamId) {
+            whereClauses.push(`team = $${paramIndex}`);
+            queryParams.push(Number(currentTeamId));
+            paramIndex++;
+        }
+
+        // Add filter condition for position ID
+        if (currentPosId) {
+            whereClauses.push(`element_type = $${paramIndex}`);
+            queryParams.push(Number(currentPosId));
+            paramIndex++;
+        }
+
+        // Construct the WHERE clause
+        let whereClause = "";
+        if (whereClauses.length > 0) {
+            whereClause = `WHERE ${whereClauses.join(" AND ")}`;
+        }
+
+        // Sanitize sortBy and sortOrder to prevent SQL injection
+        const allowedSortColumns = [
+            "second_name",
+            "team",
+            "element_type",
+            "now_cost",
+            "total_points",
+            "minutes",
+            "goals_scored",
+            "assists",
+            "clean_sheets",
+            "expected_goals",
+            "expected_assists",
+            "fdr_5",
+            "transfers_in_event",
+            "transfer_index",
+        ];
+        const allowedSortOrders = ["ASC", "DESC"];
+
+        if (!allowedSortColumns.includes(sortBy)) {
+            throw new Error("Invalid sortBy column");
+        }
+
+        if (!allowedSortOrders.includes(sortOrder.toUpperCase())) {
+            throw new Error("Invalid sortOrder");
+        }
+
+        // Construct the ORDER BY clause
+        const orderByClause = `${sortBy} ${sortOrder.toUpperCase()}, transfer_index ${sortOrder.toUpperCase()}`;
+
+        // Final SQL query
+        const sqlQuery = `
+            SELECT * FROM fantasy_players
+            ${whereClause}
+            ORDER BY ${orderByClause}
             LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-        `);
+        `;
+
+        // Execute the query with parameterized values
+        const response = await sql.query(sqlQuery, queryParams);
 
         return response.rows;
     } catch (error) {

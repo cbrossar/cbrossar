@@ -24,6 +24,8 @@ export default async function Page({
         query?: string;
         page?: string;
         sortby?: string;
+        team?: string;
+        pos?: string;
     };
 }) {
     const query = searchParams?.query || "";
@@ -31,12 +33,16 @@ export default async function Page({
     const sortBy = searchParams?.sortby || "transfer_index"; // Default sort
     const sortOrder = sortBy.startsWith("-") ? "ASC" : "DESC";
     const sortByColumn = sortBy.replace("-", "");
+    const currentTeamId = searchParams?.team || "";
+    const currentPosId = searchParams?.pos || "";
 
     const topTransfers = (await fetchFantasyPlayersFiltered(
         query,
         currentPage,
         sortByColumn,
         sortOrder,
+        currentTeamId,
+        currentPosId,
     )) as FantasyPlayer[];
     const totalPages = await fetchPlayersCount(query);
     const positions = (await fetchFantasyPositions()) as FantasyPosition[];
@@ -93,7 +99,9 @@ export default async function Page({
                             "TF Gw",
                             "TF Idx",
                         ]}
-                        sortBy={sortBy} // Pass the current sortBy param
+                        sortBy={sortBy}
+                        teams={teams}
+                        positions={positions}
                     />
                     <tbody>
                         {topTransfers.map((player, index) => (
