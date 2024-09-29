@@ -32,19 +32,6 @@ export default function Page() {
                 <div className={styles.caption}>Remesh</div>
             </div>
             <div className={styles.item}>
-                <Link href="bethpage">
-                    <div className={styles.imageWrapper}>
-                        <Image
-                            src="/code/bethpage.jpeg"
-                            width={200}
-                            height={200}
-                            alt="bethpage"
-                        />
-                    </div>
-                </Link>
-                <div className={styles.caption}>Bethpage</div>
-            </div>
-            <div className={styles.item}>
                 <Link href="fantasy-prem/players">
                     <div className={styles.imageWrapper}>
                         <Image
@@ -56,6 +43,19 @@ export default function Page() {
                     </div>
                 </Link>
                 <div className={styles.caption}>Fantasy Prem</div>
+            </div>
+            <div className={styles.item}>
+                <Link href="bethpage">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/bethpage.jpeg"
+                            width={200}
+                            height={200}
+                            alt="bethpage"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>Bethpage</div>
             </div>
             <div className={styles.item}>
                 <Link href="ltrain">
@@ -71,17 +71,17 @@ export default function Page() {
                 <div className={styles.caption}>L Train</div>
             </div>
             <div className={styles.item}>
-                <Link href="doomsday">
+                <Link href="10k">
                     <div className={styles.imageWrapper}>
                         <Image
-                            src="/code/doomsday.png"
+                            src="/code/10k.jpeg"
                             width={200}
                             height={200}
-                            alt="Doomsday"
+                            alt="10k"
                         />
                     </div>
                 </Link>
-                <div className={styles.caption}>Doomsday</div>
+                <div className={styles.caption}>10,000th Day</div>
             </div>
             <div className={styles.item}>
                 <Link href="/code/maxaer.jar">
@@ -110,17 +110,17 @@ export default function Page() {
                 <div className={styles.caption}>Bracket Game</div>
             </div>
             <div className={styles.item}>
-                <Link href="10k">
+                <Link href="doomsday">
                     <div className={styles.imageWrapper}>
                         <Image
-                            src="/code/10k.jpeg"
+                            src="/code/doomsday.png"
                             width={200}
                             height={200}
-                            alt="10k"
+                            alt="Doomsday"
                         />
                     </div>
                 </Link>
-                <div className={styles.caption}>10,000th Day</div>
+                <div className={styles.caption}>Doomsday</div>
             </div>
         </div>
     );
