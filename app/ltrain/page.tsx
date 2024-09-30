@@ -95,34 +95,52 @@ function LTrain() {
                     </option>
                 ))}
             </select>
-            <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
-                {filteredTimes.slice(0, 8).map((time, i) => {
-                    const { minutesUntil, trainDatetime } =
-                        calculateTimeUntil(time);
-                    if (minutesUntil < 0) return null; // Skip times with negative minutesUntil
-                    const fullTime = format(trainDatetime, "hh:mm:ss aa");
-                    const minTime = format(trainDatetime, "h:mm");
-                    return (
-                        <li
-                            key={i}
-                            className="border-b last:border-b-0 py-2 text-gray-800 text-center"
-                        >
-                            <Tooltip
-                                title={fullTime}
-                                enterTouchDelay={0} // Show tooltip immediately on touch
-                                leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
-                            >
-                                <span>
-                                    {minTime} (~{minutesUntil} min)
-                                </span>
-                            </Tooltip>
-                        </li>
-                    );
-                })}
-            </ul>
-            <p className="text-gray-500 text-sm mt-4">
-                Tap or hover to see the time in seconds.
-            </p>
+
+            {/* Check if filteredTimes is empty */}
+            {filteredTimes.length === 0 ? (
+                <div className="bg-red-100 text-red-700 p-4 rounded-lg w-full max-w-md text-center">
+                    <h2 className="text-xl font-semibold mb-2">
+                        Service Alert
+                    </h2>
+                    <p>
+                        The L Train is currently down. Please check back later.
+                    </p>
+                </div>
+            ) : (
+                <>
+                    <ul className="bg-white shadow-md rounded-lg p-4 w-full max-w-md">
+                        {filteredTimes.slice(0, 8).map((time, i) => {
+                            const { minutesUntil, trainDatetime } =
+                                calculateTimeUntil(time);
+                            if (minutesUntil < 0) return null; // Skip times with negative minutesUntil
+                            const fullTime = format(
+                                trainDatetime,
+                                "hh:mm:ss aa",
+                            );
+                            const minTime = format(trainDatetime, "h:mm");
+                            return (
+                                <li
+                                    key={i}
+                                    className="border-b last:border-b-0 py-2 text-gray-800 text-center"
+                                >
+                                    <Tooltip
+                                        title={fullTime}
+                                        enterTouchDelay={0} // Show tooltip immediately on touch
+                                        leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
+                                    >
+                                        <span>
+                                            {minTime} (~{minutesUntil} min)
+                                        </span>
+                                    </Tooltip>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    <p className="text-gray-500 text-sm mt-4">
+                        Tap or hover to see the time in seconds.
+                    </p>
+                </>
+            )}
         </div>
     );
 }
