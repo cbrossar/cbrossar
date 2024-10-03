@@ -6,6 +6,7 @@ const TEAM_ID = "73"; // Tottenham Hotspur's team ID in Football-Data.org
 
 export async function updateHotspurMatches() {
     try {
+        console.log("Updating Hotspur matches...");
         // 3 weeks ago
         const dateFrom = new Date();
         dateFrom.setDate(dateFrom.getDate() - 21);

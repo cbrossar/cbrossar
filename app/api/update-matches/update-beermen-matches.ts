@@ -4,6 +4,7 @@ import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
 
 export default async function updateBeermenMatches() {
     try {
+        console.log("Updating Beermen matches...");
         const url =
             "https://register.ilovenysoccer.com/team/342/werder-beermen";
 
