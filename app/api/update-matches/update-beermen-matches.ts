@@ -11,6 +11,8 @@ export default async function updateBeermenMatches() {
         // Make a GET request to the specified URL
         const response = await axios.get(url);
 
+        console.log("After response");
+
         // Load the HTML content into Cheerio
         const $ = cheerio.load(response.data);
 
@@ -19,6 +21,8 @@ export default async function updateBeermenMatches() {
         }
 
         const scheduleMatches = $(".schedule-match").toArray();
+
+        console.log("Schedule matches length", scheduleMatches.length);
 
         for (const element of scheduleMatches) {
             const matchDate = $(element).attr("data-date") ?? "";
@@ -60,6 +64,6 @@ export default async function updateBeermenMatches() {
         await createMatchUpdate(true);
     } catch (error) {
         await createMatchUpdate(false);
-        return new Response("Failed to crawl the webpage.", { status: 500 });
+        console.error("Failed to fetch beermen matches", error);
     }
 }

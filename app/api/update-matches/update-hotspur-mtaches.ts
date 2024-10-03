@@ -4,7 +4,7 @@ import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
 const API_KEY = process.env.FOOTBALL_DATA_API_KEY;
 const TEAM_ID = "73"; // Tottenham Hotspur's team ID in Football-Data.org
 
-export async function updateHotspurMatches() {
+export default async function updateHotspurMatches() {
     try {
         console.log("Updating Hotspur matches...");
         // 3 weeks ago
@@ -25,10 +25,13 @@ export async function updateHotspurMatches() {
             },
         );
 
+        console.log("After response");
+
         const fixtures = response.data.matches;
 
+        console.log("Fixture length", fixtures.length);
+
         for (const fixture of fixtures) {
-            console.log(fixture);
             const homeTeamName = fixture.homeTeam.name;
             const awayTeamName = fixture.awayTeam.name;
             const awayScore = fixture.score.fullTime.away;
@@ -55,11 +58,8 @@ export async function updateHotspurMatches() {
         }
 
         await createMatchUpdate(true);
-
-        // Send back the extracted data as a response
-        return new Response("Successfully fetched spurs matches.");
     } catch (error) {
         await createMatchUpdate(false);
-        return new Response("Failed to fetch spurs matches.", { status: 500 });
+        console.error("Failed to update Hotspur matches", error);
     }
 }
