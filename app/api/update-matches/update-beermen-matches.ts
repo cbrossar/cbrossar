@@ -4,14 +4,11 @@ import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
 
 export default async function updateBeermenMatches() {
     try {
-        console.log("Updating Beermen matches...");
         const url =
             "https://register.ilovenysoccer.com/team/342/werder-beermen";
 
         // Make a GET request to the specified URL
         const response = await axios.get(url);
-
-        console.log("After response");
 
         // Load the HTML content into Cheerio
         const $ = cheerio.load(response.data);
@@ -21,8 +18,6 @@ export default async function updateBeermenMatches() {
         }
 
         const scheduleMatches = $(".schedule-match").toArray();
-
-        console.log("Schedule matches length", scheduleMatches.length);
 
         for (const element of scheduleMatches) {
             const matchDate = $(element).attr("data-date") ?? "";

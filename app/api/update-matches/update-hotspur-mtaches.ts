@@ -25,11 +25,7 @@ export default async function updateHotspurMatches() {
             },
         );
 
-        console.log("After response");
-
         const fixtures = response.data.matches;
-
-        console.log("Fixture length", fixtures.length);
 
         for (const fixture of fixtures) {
             const homeTeamName = fixture.homeTeam.name;
