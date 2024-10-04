@@ -121,7 +121,3 @@
     justify-content: center;
     cursor: pointer;
 }
-
-.addButton:hover {
-    background-color: #f0f0f0;
-}
