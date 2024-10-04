@@ -1,25 +1,46 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import styled from "styled-components";
 import { Colors, MobileWidth } from "@/app/lib/constants";
 
 export default function Navbar() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
         <Header>
             <NavbarWrapper>
+                <MenuButton onClick={toggleMenu} isOpen={isMenuOpen}>
+                    <span />
+                    <span />
+                </MenuButton>
                 <NavLink href="/music">Music</NavLink>
                 <NavLink href="/soccer">Soccer</NavLink>
                 <HomeLink href="/">Cole</HomeLink>
                 <NavLink href="/code">Code</NavLink>
                 <NavLink href="/photos">Photos</NavLink>
             </NavbarWrapper>
+            <SideMenu isOpen={isMenuOpen}>
+                <CloseButton onClick={toggleMenu}>✕</CloseButton>
+                <SideNavLink href="/music" onClick={toggleMenu}>Music</SideNavLink>
+                <SideNavLink href="/soccer" onClick={toggleMenu}>Soccer</SideNavLink>
+                <SideNavLink href="/fantasy-prem/players" onClick={toggleMenu}>Fantasy Players</SideNavLink>
+                <SideNavLink href="/fantasy-prem/team" onClick={toggleMenu}>Fantasy Team</SideNavLink>
+                <SideNavLink href="/ltrain" onClick={toggleMenu}>L Train</SideNavLink>
+                <SideNavLink href="/code" onClick={toggleMenu}>Code</SideNavLink>
+                <SideNavLink href="/photos" onClick={toggleMenu}>Photos</SideNavLink>
+            </SideMenu>
         </Header>
     );
 }
 
 const Header = styled.header`
-    padding: 30px 60px;
+    padding: 30px 20px;
     background-color: #fff;
     left: 0;
     position: fixed;
@@ -36,7 +57,8 @@ const NavbarWrapper = styled.div`
     margin: 0 auto;
 
     @media (max-width: ${MobileWidth}) {
-        justify-content: center;
+        justify-content: space-between;
+        width: 100%;
     }
 `;
 
@@ -58,13 +80,6 @@ const NavLink = styled(Link)`
             color: ${Colors.yellow};
         }
     }
-
-    @media (max-width: ${MobileWidth}) {
-        &:active {
-            background-color: black;
-            color: ${Colors.yellow};
-        }
-    }
 `;
 
 const HomeLink = styled(NavLink)`
@@ -77,4 +92,78 @@ const HomeLink = styled(NavLink)`
     align-items: center;
     justify-content: center;
     letter-spacing: 1px;
+
+    @media (max-width: ${MobileWidth}) {
+        margin: 0 auto;
+        position: relative;
+    }
+`;
+
+const MenuButton = styled.div<{ isOpen: boolean }>`
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    width: 30px;
+    height: 15px;
+
+    @media (max-width: ${MobileWidth}) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    span {
+        width: 100%;
+        height: 4px;
+        background-color: ${Colors.black};
+        transition: all 0.3s;
+
+        &:nth-child(1) {
+            transform: ${({ isOpen }) => (isOpen ? "rotate(45deg) translateY(10px)" : "none")};
+        }
+
+        &:nth-child(2) {
+            transform: ${({ isOpen }) => (isOpen ? "rotate(-45deg) translateY(-10px)" : "none")};
+        }
+    }
+`;
+
+const SideMenu = styled.div<{ isOpen: boolean }>`
+    position: fixed;
+    top: 0;
+    left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
+    width: 100%;
+    height: 100%;
+    background-color: ${Colors.white};
+    padding: 90px 20px;
+    transition: left 0.3s;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+`;
+
+const SideNavLink = styled(Link)`
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 900;
+    color: ${Colors.black};
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-bottom: 15px;
+`;
+
+const CloseButton = styled.button`
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    color: ${Colors.black};
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+        color: ${Colors.yellow};
+    }
 `;

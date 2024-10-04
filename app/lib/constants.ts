@@ -1,5 +1,7 @@
 export const Colors = {
     yellow: "#fed925",
+    black: "#000000",
+    white: "#ffffff",
 };
 
 export const MobileWidth = "900px";
