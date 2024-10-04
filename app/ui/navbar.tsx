@@ -15,7 +15,7 @@ export default function Navbar() {
     return (
         <Header>
             <NavbarWrapper>
-                <MenuButton onClick={toggleMenu} isopen={isMenuOpen}>
+                <MenuButton onClick={toggleMenu} $isopen={isMenuOpen}>
                     <span />
                     <span />
                 </MenuButton>
@@ -25,7 +25,7 @@ export default function Navbar() {
                 <NavLink href="/code">Code</NavLink>
                 <NavLink href="/photos">Photos</NavLink>
             </NavbarWrapper>
-            <SideMenu isopen={isMenuOpen}>
+            <SideMenu $isopen={isMenuOpen}>
                 <CloseButton onClick={toggleMenu}>✕</CloseButton>
                 <SideNavLink href="/music" onClick={toggleMenu}>
                     Music
@@ -113,7 +113,7 @@ const HomeLink = styled(NavLink)`
     }
 `;
 
-const MenuButton = styled.div<{ isopen: boolean }>`
+const MenuButton = styled.div<{ $isopen: boolean }>`
     display: none;
     cursor: pointer;
     position: absolute;
@@ -133,21 +133,21 @@ const MenuButton = styled.div<{ isopen: boolean }>`
         transition: all 0.3s;
 
         &:nth-child(1) {
-            transform: ${({ isopen }) =>
-                isopen ? "rotate(45deg) translateY(10px)" : "none"};
+            transform: ${({ $isopen }) =>
+                $isopen ? "rotate(45deg) translateY(10px)" : "none"};
         }
 
         &:nth-child(2) {
-            transform: ${({ isopen }) =>
-                isopen ? "rotate(-45deg) translateY(-10px)" : "none"};
+            transform: ${({ $isopen }) =>
+                $isopen ? "rotate(-45deg) translateY(-10px)" : "none"};
         }
     }
 `;
 
-const SideMenu = styled.div<{ isopen: boolean }>`
+const SideMenu = styled.div<{ $isopen: boolean }>`
     position: fixed;
     top: 0;
-    left: ${({ isopen }) => (isopen ? "0" : "-100%")};
+    left: ${({ $isopen }) => ($isopen ? "0" : "-100%")};
     width: 100%;
     height: 100%;
     background-color: ${Colors.white};
