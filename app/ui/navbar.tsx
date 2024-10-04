@@ -27,6 +27,9 @@ export default function Navbar() {
             </NavbarWrapper>
             <SideMenu $isopen={isMenuOpen}>
                 <CloseButton onClick={toggleMenu}>✕</CloseButton>
+                <SideNavLink href="/" onClick={toggleMenu}>
+                    Home
+                </SideNavLink>
                 <SideNavLink href="/music" onClick={toggleMenu}>
                     Music
                 </SideNavLink>
