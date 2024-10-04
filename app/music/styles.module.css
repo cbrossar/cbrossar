@@ -93,21 +93,23 @@
     }
 }
 
-.search {
-    flex-grow: 1;
-    max-width: 400px;
-    margin: 0 auto;
+.topBar {
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center;
+    position: relative;
+    padding: 0 40px; /* Optional: adds padding around the search bar and button */
 }
 
-.topBar {
-    position: relative;
-    display: flex;
-    align-items: center;
+.search {
+    flex-grow: 1;
+    max-width: 400px; /* Limit the search bar's width */
+    text-align: center; /* Center the content inside the search bar */
 }
 
 .addButton {
     position: absolute;
-    right: 0;
+    right: 0; /* Align the button to the right */
     font-size: 2rem;
     text-decoration: none;
     color: black;
