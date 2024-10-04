@@ -10,20 +10,30 @@ import {
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchMusicReviews(query: string) {
-    // Add noStore() here to prevent the response from being cached.
-    // This is equivalent to in fetch(..., {cache: 'no-store'}).
+    // Prevent the response from being cached
     noStore();
 
     try {
-        const data =
-            await sql<MusicReview>`SELECT * FROM music_reviews ORDER BY created DESC`;
+        // Build the SQL query dynamically based on the existence of a query
+        const data = query
+            ? await sql<MusicReview>`
+                    SELECT * FROM music_reviews
+                    WHERE artist ILIKE '%' || ${query} || '%'
+                    OR album ILIKE '%' || ${query} || '%'
+                    OR name ILIKE '%' || ${query} || '%'
+                    ORDER BY created DESC
+                `
+            : await sql<MusicReview>`
+                    SELECT * FROM music_reviews
+                    ORDER BY created DESC
+                `;
+
         return data.rows;
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch music reviews data.");
     }
 }
-
 export async function fetchMusicReviewById(id: string) {
     noStore();
 
