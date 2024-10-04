@@ -98,7 +98,7 @@
     justify-content: center; /* Center content horizontally */
     align-items: center;
     position: relative;
-    padding: 2px 40px; /* Optional: adds padding around the search bar and button */
+    padding: 4px 40px; /* Optional: adds padding around the search bar and button */
 }
 
 .search {
