@@ -20,7 +20,6 @@ export async function fetchMusicReviews(query: string) {
                     SELECT * FROM music_reviews
                     WHERE artist ILIKE '%' || ${query} || '%'
                     OR album ILIKE '%' || ${query} || '%'
-                    OR name ILIKE '%' || ${query} || '%'
                     ORDER BY created DESC
                 `
             : await sql<MusicReview>`
