@@ -15,7 +15,7 @@ export default function Navbar() {
     return (
         <Header>
             <NavbarWrapper>
-                <MenuButton onClick={toggleMenu} isOpen={isMenuOpen}>
+                <MenuButton onClick={toggleMenu} isopen={isMenuOpen}>
                     <span />
                     <span />
                 </MenuButton>
@@ -25,15 +25,29 @@ export default function Navbar() {
                 <NavLink href="/code">Code</NavLink>
                 <NavLink href="/photos">Photos</NavLink>
             </NavbarWrapper>
-            <SideMenu isOpen={isMenuOpen}>
+            <SideMenu isopen={isMenuOpen}>
                 <CloseButton onClick={toggleMenu}>✕</CloseButton>
-                <SideNavLink href="/music" onClick={toggleMenu}>Music</SideNavLink>
-                <SideNavLink href="/soccer" onClick={toggleMenu}>Soccer</SideNavLink>
-                <SideNavLink href="/fantasy-prem/players" onClick={toggleMenu}>Fantasy Players</SideNavLink>
-                <SideNavLink href="/fantasy-prem/team" onClick={toggleMenu}>Fantasy Team</SideNavLink>
-                <SideNavLink href="/ltrain" onClick={toggleMenu}>L Train</SideNavLink>
-                <SideNavLink href="/code" onClick={toggleMenu}>Code</SideNavLink>
-                <SideNavLink href="/photos" onClick={toggleMenu}>Photos</SideNavLink>
+                <SideNavLink href="/music" onClick={toggleMenu}>
+                    Music
+                </SideNavLink>
+                <SideNavLink href="/soccer" onClick={toggleMenu}>
+                    Soccer
+                </SideNavLink>
+                <SideNavLink href="/fantasy-prem/players" onClick={toggleMenu}>
+                    Fantasy Players
+                </SideNavLink>
+                <SideNavLink href="/fantasy-prem/team" onClick={toggleMenu}>
+                    Fantasy Team
+                </SideNavLink>
+                <SideNavLink href="/ltrain" onClick={toggleMenu}>
+                    L Train
+                </SideNavLink>
+                <SideNavLink href="/code" onClick={toggleMenu}>
+                    Code
+                </SideNavLink>
+                <SideNavLink href="/photos" onClick={toggleMenu}>
+                    Photos
+                </SideNavLink>
             </SideMenu>
         </Header>
     );
@@ -99,7 +113,7 @@ const HomeLink = styled(NavLink)`
     }
 `;
 
-const MenuButton = styled.div<{ isOpen: boolean }>`
+const MenuButton = styled.div<{ isopen: boolean }>`
     display: none;
     cursor: pointer;
     position: absolute;
@@ -119,19 +133,21 @@ const MenuButton = styled.div<{ isOpen: boolean }>`
         transition: all 0.3s;
 
         &:nth-child(1) {
-            transform: ${({ isOpen }) => (isOpen ? "rotate(45deg) translateY(10px)" : "none")};
+            transform: ${({ isopen }) =>
+                isopen ? "rotate(45deg) translateY(10px)" : "none"};
         }
 
         &:nth-child(2) {
-            transform: ${({ isOpen }) => (isOpen ? "rotate(-45deg) translateY(-10px)" : "none")};
+            transform: ${({ isopen }) =>
+                isopen ? "rotate(-45deg) translateY(-10px)" : "none"};
         }
     }
 `;
 
-const SideMenu = styled.div<{ isOpen: boolean }>`
+const SideMenu = styled.div<{ isopen: boolean }>`
     position: fixed;
     top: 0;
-    left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
+    left: ${({ isopen }) => (isopen ? "0" : "-100%")};
     width: 100%;
     height: 100%;
     background-color: ${Colors.white};
