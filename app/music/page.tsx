@@ -17,8 +17,13 @@ export default async function Page({
 
     return (
         <div>
-            <div className={styles.search}>
-                <Search placeholder="Search" shouldSetPage={false} />
+            <div className={styles.topBar}>
+                <div className={styles.search}>
+                    <Search placeholder="Search" shouldSetPage={false} />
+                </div>
+                <Link href="/music/create" className={styles.addButton}>
+                    +
+                </Link>
             </div>
             <div className={styles.grid}>
                 {musicReviews.map((review, i) => (

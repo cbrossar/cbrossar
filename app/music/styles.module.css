@@ -94,6 +94,32 @@
 }
 
 .search {
+    flex-grow: 1;
     max-width: 400px;
     margin: 0 auto;
+}
+
+.topBar {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.addButton {
+    position: absolute;
+    right: 0;
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.addButton:hover {
+    background-color: #f0f0f0;
 }
