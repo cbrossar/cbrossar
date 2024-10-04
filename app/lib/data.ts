@@ -9,7 +9,7 @@ import {
 } from "./definitions";
 import { unstable_noStore as noStore } from "next/cache";
 
-export async function fetchMusicReviews() {
+export async function fetchMusicReviews(query: string) {
     // Add noStore() here to prevent the response from being cached.
     // This is equivalent to in fetch(..., {cache: 'no-store'}).
     noStore();

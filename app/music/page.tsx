@@ -1,13 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { fetchMusicReviews } from "@/app/lib/data";
+import Search from "@/app/ui/search";
 import styles from "./styles.module.css";
 
-export default async function Page() {
-    const musicReviews = await fetchMusicReviews();
+export default async function Page({
+    searchParams,
+}: {
+    searchParams?: {
+        query?: string;
+    };
+}) {
+    const query = searchParams?.query || "";
+
+    const musicReviews = await fetchMusicReviews(query);
 
     return (
         <div>
+            <div className={styles.search}>
+                <Search placeholder="Search" shouldSetPage={false} />
+            </div>
             <div className={styles.grid}>
                 {musicReviews.map((review, i) => (
                     <div key={i}>
