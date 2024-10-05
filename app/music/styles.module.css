@@ -110,7 +110,7 @@
 .addButton {
     position: absolute;
     right: 0; /* Align the button to the right */
-    font-size: 1.75rem; /* Adjust font size to better fit the button */
+    font-size: 1.5rem; /* Adjust font size to better fit the button */
     text-decoration: none;
     color: black;
     border-radius: 50%;
