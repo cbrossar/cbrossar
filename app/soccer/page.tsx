@@ -20,7 +20,7 @@ export default async function Page() {
         },
         {},
     );
-    const formTeamNames = [WERDER_BEERMEN, SPURS, GARNET_UNITED];
+    const formTeamNames = [WERDER_BEERMEN, GARNET_UNITED, SPURS];
     const formTeams = formTeamNames.map((name) =>
         teams.find((team: Team) => team.name === name),
     );

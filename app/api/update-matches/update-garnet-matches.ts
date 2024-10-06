@@ -24,9 +24,6 @@ async function getBrowser() {
 
 export default async function updateGarnetMatches() {
     try {
-        const url =
-            "https://metrosoccerny.leagueapps.com/leagues/4374844/teams/7033425";
-
         const browser = await getBrowser();
         const page = await browser.newPage();
 
@@ -35,8 +32,12 @@ export default async function updateGarnetMatches() {
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
         );
 
+        const fall2024url =
+            "https://metrosoccerny.leagueapps.com/leagues/4374844/teams/7033425";
+        const summer2024url =
+            "https://metrosoccerny.leagueapps.com/leagues/4299649/teams/6931712";
         // Navigate to the URL and wait for the page to load
-        await page.goto(url, { waitUntil: "networkidle2" });
+        await page.goto(summer2024url, { waitUntil: "networkidle2" });
 
         // Wait for the iframe to load
         await page.waitForSelector("iframe#monolith-iframe");
@@ -85,11 +86,19 @@ export default async function updateGarnetMatches() {
                             ? opposingTeamName
                             : "Garnet United";
 
-                        // Substring to remove W/L/D from the score
-                        const scoreText = element
-                            .querySelector(".team-result")
-                            ?.textContent?.trim()
-                            .substring(1);
+                        // Substring to remove W/L from the score
+                        let scoreText: string =
+                            element
+                                .querySelector(".team-result")
+                                ?.textContent?.trim() || "";
+
+                        // if starts with W or L, remove it
+                        if (
+                            scoreText.startsWith("W") ||
+                            scoreText.startsWith("L")
+                        ) {
+                            scoreText = scoreText.substring(1);
+                        }
 
                         if (scoreText) {
                             const [homeScore, awayScore] = scoreText
@@ -104,6 +113,7 @@ export default async function updateGarnetMatches() {
                                 awayTeamName,
                                 homeScore,
                                 awayScore,
+                                scoreText,
                             };
                         }
 
