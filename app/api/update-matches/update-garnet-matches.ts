@@ -42,7 +42,7 @@ export default async function updateGarnetMatches() {
         await page.waitForSelector("iframe#monolith-iframe");
 
         // Get the iframe element
-        const iframeElement = await page.$("iframe#monolith-iframe");
+        const iframeElement: any = await page.$("iframe#monolith-iframe");
 
         // Switch context to the iframe
         const iframe = await iframeElement.contentFrame();
@@ -51,62 +51,67 @@ export default async function updateGarnetMatches() {
         await iframe.waitForSelector(".schedule-game");
 
         // Scrape the matches inside the iframe
-        const matches = await iframe.$$eval(".schedule-game", (elements) => {
-            return elements
-                .map((element) => {
-                    const matchDate =
-                        element
-                            .querySelector(".sched-start-date .date")
-                            ?.textContent?.trim() || "";
-                    const matchTime =
-                        element
-                            .querySelector(".sched-start-date .time")
-                            ?.textContent?.trim() || "";
+        const matches = await iframe.$$eval(
+            ".schedule-game",
+            (elements: any) => {
+                return elements
+                    .map((element: any) => {
+                        const matchDate =
+                            element
+                                .querySelector(".sched-start-date .date")
+                                ?.textContent?.trim() || "";
+                        const matchTime =
+                            element
+                                .querySelector(".sched-start-date .time")
+                                ?.textContent?.trim() || "";
 
-                    const dateParts = matchDate.split(", ")[1];
-                    const fullDateStr = `${dateParts} ${new Date().getFullYear()} ${matchTime}`; // Add current year
-                    const fullDate = new Date(fullDateStr).toISOString();
+                        const dateParts = matchDate.split(", ")[1];
+                        const fullDateStr = `${dateParts} ${new Date().getFullYear()} ${matchTime}`; // Add current year
+                        const fullDate = new Date(fullDateStr).toISOString();
 
-                    const opposingTeamName =
-                        element
-                            .querySelector("h3.event-team a:first-child")
-                            ?.textContent?.trim() || "";
-                    const isHome =
-                        element
-                            .querySelector("h3.event-team tag")
-                            ?.textContent?.trim() === "(H)";
-                    const homeTeamName = isHome
-                        ? "Garnet United"
-                        : opposingTeamName;
-                    const awayTeamName = isHome
-                        ? opposingTeamName
-                        : "Garnet United";
+                        const opposingTeamName =
+                            element
+                                .querySelector("h3.event-team a:first-child")
+                                ?.textContent?.trim() || "";
+                        const isHome =
+                            element
+                                .querySelector("h3.event-team tag")
+                                ?.textContent?.trim() === "(H)";
+                        const homeTeamName = isHome
+                            ? "Garnet United"
+                            : opposingTeamName;
+                        const awayTeamName = isHome
+                            ? opposingTeamName
+                            : "Garnet United";
 
-                    // Substring to remove W/L/D from the score
-                    const scoreText = element
-                        .querySelector(".team-result")
-                        ?.textContent?.trim()
-                        .substring(1);
+                        // Substring to remove W/L/D from the score
+                        const scoreText = element
+                            .querySelector(".team-result")
+                            ?.textContent?.trim()
+                            .substring(1);
 
-                    if (scoreText) {
-                        const [homeScore, awayScore] = scoreText
-                            .split("-")
-                            .map((score) => parseInt(score.trim(), 10));
+                        if (scoreText) {
+                            const [homeScore, awayScore] = scoreText
+                                .split("-")
+                                .map((score: string) =>
+                                    parseInt(score.trim(), 10),
+                                );
 
-                        return {
-                            fullDate,
-                            homeTeamName,
-                            awayTeamName,
-                            homeScore,
-                            awayScore,
-                        };
-                    }
+                            return {
+                                fullDate,
+                                homeTeamName,
+                                awayTeamName,
+                                homeScore,
+                                awayScore,
+                            };
+                        }
 
-                    // Return null if no score is found
-                    return null;
-                })
-                .filter((match) => match !== null); // Filter out matches without a score
-        });
+                        // Return null if no score is found
+                        return null;
+                    })
+                    .filter((match: any) => match !== null); // Filter out matches without a score
+            },
+        );
 
         // Iterate over the matches and create them
         for (const match of matches) {
