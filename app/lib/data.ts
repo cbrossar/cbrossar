@@ -7,6 +7,7 @@ import {
     FantasyPosition,
     FantasyTeam,
 } from "./definitions";
+import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "./constants";
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchMusicReviews(query: string) {
@@ -64,8 +65,8 @@ export async function fetchSpursMatches(count: number) {
     try {
         const data = await sql<Match>`
             SELECT * FROM matches
-            WHERE home_team_id = (SELECT id FROM teams WHERE name = 'Tottenham Hotspur FC')
-            OR away_team_id = (SELECT id FROM teams WHERE name = 'Tottenham Hotspur FC')
+            WHERE home_team_id = (SELECT id FROM teams WHERE name = ${SPURS})
+            OR away_team_id = (SELECT id FROM teams WHERE name = ${SPURS})
             ORDER BY date DESC limit ${count}
         `;
         return data.rows;
@@ -75,14 +76,31 @@ export async function fetchSpursMatches(count: number) {
     }
 }
 
-export async function fetchMyMatches(count: number) {
+export async function fetchWerderMatches(count: number) {
     noStore();
 
     try {
         const data = await sql<Match>`
             SELECT * FROM matches
-            WHERE home_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen' OR name = 'Brooklyn Hove Albion') 
-            OR away_team_id in (SELECT id FROM teams WHERE name = 'Werder Beermen'  OR name = 'Brooklyn Hove Albion')
+            WHERE home_team_id in (SELECT id FROM teams WHERE name = ${WERDER_BEERMEN}) 
+            OR away_team_id in (SELECT id FROM teams WHERE name = ${WERDER_BEERMEN})
+            ORDER BY date DESC limit ${count}
+        `;
+        return data.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch my matches data.");
+    }
+}
+
+export async function fetchGarnetMatches(count: number) {
+    noStore();
+
+    try {
+        const data = await sql<Match>`
+            SELECT * FROM matches
+            WHERE home_team_id in (SELECT id FROM teams WHERE name = ${GARNET_UNITED}) 
+            OR away_team_id in (SELECT id FROM teams WHERE name = ${GARNET_UNITED})
             ORDER BY date DESC limit ${count}
         `;
         return data.rows;

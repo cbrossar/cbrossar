@@ -2,19 +2,26 @@ import Image from "next/image";
 import Tooltip from "@mui/material/Tooltip";
 import styles from "./styles.module.css";
 import { Team, Match } from "../lib/definitions";
-import { SPURS } from "../lib/constants";
+import { SPURS, WERDER_BEERMEN } from "../lib/constants";
 
 type CurrentFormProps = {
     formTeams: (Team | undefined)[];
     spursMatches: Match[];
-    myMatches: Match[];
+    werderMatches: Match[];
+    garnetMatches: Match[];
     teamNameMap: { [key: string]: string };
     numMatches: number;
 };
 
 function CurrentForm(props: CurrentFormProps) {
-    const { formTeams, spursMatches, myMatches, teamNameMap, numMatches } =
-        props;
+    const {
+        formTeams,
+        spursMatches,
+        werderMatches,
+        garnetMatches,
+        teamNameMap,
+        numMatches,
+    } = props;
     return (
         <>
             <div className={styles.formHeader}>Current Form</div>
@@ -22,7 +29,12 @@ function CurrentForm(props: CurrentFormProps) {
                 if (!team) {
                     return null;
                 }
-                const matches = team.name === SPURS ? spursMatches : myMatches;
+                const matches =
+                    team.name === SPURS
+                        ? spursMatches
+                        : team.name === WERDER_BEERMEN
+                          ? werderMatches
+                          : garnetMatches;
                 const teamName =
                     team.name === SPURS ? team.name.slice(0, -11) : team.name;
 

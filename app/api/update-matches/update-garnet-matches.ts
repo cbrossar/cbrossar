@@ -73,10 +73,11 @@ export default async function updateGarnetMatches() {
                             element
                                 .querySelector("h3.event-team a:first-child")
                                 ?.textContent?.trim() || "";
-                        const isHome =
+                        const vsText =
                             element
-                                .querySelector("h3.event-team tag")
-                                ?.textContent?.trim() === "(H)";
+                                .querySelector("h3.event-team")
+                                ?.textContent?.trim() || "";
+                        const isHome = vsText?.includes("(H)");
                         const homeTeamName = isHome
                             ? "Garnet United"
                             : opposingTeamName;
@@ -135,7 +136,7 @@ export default async function updateGarnetMatches() {
         await browser.close();
     } catch (error) {
         // If an error occurs, log it and mark update as failed
-        // await crea?teMatchUpdate(false);
+        await createMatchUpdate(false);
         console.error("Failed to fetch garnet matches", error);
     }
 }

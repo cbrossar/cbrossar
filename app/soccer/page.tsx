@@ -1,10 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import CurrentForm from "./CurrentForm";
-import { fetchSpursMatches, fetchMyMatches, fetchTeams } from "@/app/lib/data";
+import {
+    fetchSpursMatches,
+    fetchWerderMatches,
+    fetchTeams,
+    fetchGarnetMatches,
+} from "@/app/lib/data";
 import styles from "./styles.module.css";
 import { Team } from "../lib/definitions";
-import { SPURS, WERDER_BEERMEN } from "../lib/constants";
+import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "../lib/constants";
 
 export default async function Page() {
     const teams = await fetchTeams();
@@ -15,13 +20,14 @@ export default async function Page() {
         },
         {},
     );
-    const formTeamNames = [WERDER_BEERMEN, SPURS];
+    const formTeamNames = [WERDER_BEERMEN, SPURS, GARNET_UNITED];
     const formTeams = formTeamNames.map((name) =>
         teams.find((team: Team) => team.name === name),
     );
     const numMatches = 5;
     const spursMatches = await fetchSpursMatches(numMatches);
-    const myMatches = await fetchMyMatches(numMatches);
+    const werderMatches = await fetchWerderMatches(numMatches);
+    const garnetMatches = await fetchGarnetMatches(numMatches);
 
     return (
         <div className={styles.centerContainer}>
@@ -29,7 +35,8 @@ export default async function Page() {
                 <CurrentForm
                     formTeams={formTeams}
                     spursMatches={spursMatches}
-                    myMatches={myMatches}
+                    werderMatches={werderMatches}
+                    garnetMatches={garnetMatches}
                     teamNameMap={teamNameMap}
                     numMatches={numMatches}
                 />
@@ -48,6 +55,19 @@ export default async function Page() {
                         </div>
                     </Link>
                     <div className={styles.caption}>Werder Beermen</div>
+                </div>
+                <div className={styles.item}>
+                    <Link href="https://metrosoccerny.leagueapps.com/leagues/4374844/teams/7033425">
+                        <div className={styles.imageWrapper}>
+                            <Image
+                                src="/soccer/swathmore.png"
+                                width={200}
+                                height={200}
+                                alt="Swathmore"
+                            />
+                        </div>
+                    </Link>
+                    <div className={styles.caption}>Garnet United</div>
                 </div>
                 <div className={styles.item}>
                     <Link href="fantasy-prem/players">
