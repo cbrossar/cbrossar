@@ -6,8 +6,8 @@ import updateHotspurMatches from "./update-hotspur-mtaches";
 
 export async function GET(request: Request) {
     try {
-        // await updateBeermenMatches();
-        // await updateHotspurMatches();
+        await updateBeermenMatches();
+        await updateHotspurMatches();
         await updateGarnetMatches();
 
         // Send back the extracted data as a response
