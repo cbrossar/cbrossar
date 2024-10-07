@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import Navbar from "./ui/navbar";
+import Footer from "./ui/footer";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/registry";
 
@@ -16,6 +17,7 @@ export default function ServerLayout({
                 <StyledComponentsRegistry>
                     <Navbar />
                     <main>{children}</main>
+                    <Footer />
                 </StyledComponentsRegistry>
             </body>
         </html>
