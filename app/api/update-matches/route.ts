@@ -1,3 +1,5 @@
+export const maxDuration = 60;
+
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
 import updateBeermenMatches from "./update-beermen-matches";
