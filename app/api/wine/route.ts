@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
 export async function GET(request: NextRequest) {
-
-
     const headers = {
         "User-Agent":
             "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
@@ -29,8 +27,6 @@ export async function GET(request: NextRequest) {
     const pageNumber = "1";
     const wineryId = "89393";
 
-
-
     const vivinoReviewsUrl = `https://www.vivino.com/api/wines/${wineId}/reviews?per_page=1&year=${vintageYear}&page=${pageNumber}`;
     const vivinoCountriesUrl = `https://www.vivino.com/api/countries`;
     const vivinoExploreUrl = `https://www.vivino.com/api/explore/explore?country_code=FR&currency_code=EUR&min_rating=3&price_range_min=7&price_range_max=20&order_by=price&order=asc`;
@@ -39,9 +35,10 @@ export async function GET(request: NextRequest) {
     const vivinoPricesUrl = `https://www.vivino.com/api/prices`;
     const vivinoGrapesUrl = `https://www.vivino.com/api/grapes`;
     const vivinoRegionsUrl = `https://www.vivino.com/api/regions`;
-    const vivinoExploreWineTypeUrl = "https://www.vivino.com/api/explore/explore?wine_type_ids[]=2&country_code=US&min_rating=3&order_by=price&order=desc";
-    const vivinoExploreRegionUrl = "https://www.vivino.com/api/explore/explore?region_ids[]=2849&country_code=it&min_rating=3&order_by=price&order=desc";
-
+    const vivinoExploreWineTypeUrl =
+        "https://www.vivino.com/api/explore/explore?wine_type_ids[]=2&country_code=US&min_rating=3&order_by=price&order=desc";
+    const vivinoExploreRegionUrl =
+        "https://www.vivino.com/api/explore/explore?region_ids[]=2849&country_code=it&min_rating=3&order_by=price&order=desc";
 
     /* 
 
@@ -106,7 +103,7 @@ export async function GET(request: NextRequest) {
     Region?
 
 
-    */ 
+    */
 
     try {
         const response = await fetch(vivinoExploreRegionUrl, { headers });

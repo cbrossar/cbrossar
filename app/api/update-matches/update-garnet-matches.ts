@@ -34,8 +34,12 @@ export default async function updateGarnetMatches() {
 
         const summer2024url =
             "https://metrosoccerny.leagueapps.com/leagues/4299649/teams/6931712";
+
+        const fall2024url =
+            "https://metrosoccerny.leagueapps.com/leagues/4299649/teams/7033425";
+
         // Navigate to the URL and wait for the page to load
-        await page.goto(summer2024url, { waitUntil: "networkidle2" });
+        await page.goto(fall2024url, { waitUntil: "networkidle2" });
 
         // Wait for the iframe to load
         await page.waitForSelector("iframe#monolith-iframe");
