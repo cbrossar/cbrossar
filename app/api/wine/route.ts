@@ -63,6 +63,8 @@ export async function GET(request: NextRequest) {
     - page 1-80
     - per_page 25? 50? 
 
+    Bulk insert data into database?
+
 
     Data tables
 
