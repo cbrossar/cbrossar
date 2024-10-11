@@ -298,7 +298,7 @@ async function seedWine(client) {
 
         const createCountriesTable = await client.sql`
             CREATE TABLE IF NOT EXISTS vivino_countries (
-                id INT NOT NULL PRIMARY KEY,
+                code VARCHAR(4) NOT NULL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 wines_count INT NOT NULL,
                 wineries_count INT NOT NULL,
@@ -317,8 +317,8 @@ async function seedWine(client) {
             CREATE TABLE IF NOT EXISTS vivino_regions (
                 id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                country_id INT NOT NULL,
-                FOREIGN KEY (country_id) REFERENCES vivino_countries(id)
+                country_code VARCHAR(4) NOT NULL,
+                FOREIGN KEY (country_code) REFERENCES vivino_countries(code)
             );
         `;
 
@@ -337,7 +337,7 @@ async function seedWine(client) {
             CREATE TABLE IF NOT EXISTS vivino_wines (
                 id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                country_id INT NOT NULL,
+                country_code VARCHAR(4) NOT NULL,
                 region_id INT NOT NULL,
                 winery_id INT NOT NULL,
                 taste VARCHAR(255),
@@ -347,7 +347,7 @@ async function seedWine(client) {
                 intensity FLOAT NOT NULL,
                 sweetness FLOAT NOT NULL,
                 tannin FLOAT NOT NULL,
-                FOREIGN KEY (country_id) REFERENCES vivino_countries(id),
+                FOREIGN KEY (country_code) REFERENCES vivino_countries(code),
                 FOREIGN KEY (region_id) REFERENCES vivino_regions(id),
                 FOREIGN KEY (winery_id) REFERENCES vivino_wineries(id)
             );

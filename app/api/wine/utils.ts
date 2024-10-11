@@ -1,5 +1,5 @@
 import { Grape, Country } from "@/app/lib/definitions";
-import { createGrapes } from "@/app/lib/data";
+import { createGrapes, createCountries } from "@/app/lib/data";
 
 const headers = {
     "User-Agent":
@@ -11,14 +11,10 @@ export async function store_grapes() {
     const response = await fetch(vivinoGrapesUrl, { headers });
     const data = await response.json();
 
-    console.log(data["grapes"].length);
-
     const grapes: Grape[] = data["grapes"].map((grape: any) => ({
         id: grape["id"],
         name: grape["name"],
     }));
-
-    console.log(grapes.length);
 
     await createGrapes(grapes);
 }
@@ -27,7 +23,22 @@ export async function store_countries() {
     const vivinoCountriesUrl = `https://www.vivino.com/api/countries`;
     const response = await fetch(vivinoCountriesUrl, { headers });
     const data = await response.json();
-    console.log(data["countries"].length);
+
+    console.log(data["countries"][0]);
+
+    const countries: Country[] = data["countries"].map((country: any) => ({
+        id: country["id"],
+        name: country["name"],
+        wines_count: country["wines_count"],
+        wineries_count: country["wineries_count"],
+        grape1_id: country["most_used_grapes"][0]["id"],
+        grape2_id: country["most_used_grapes"][1]["id"],
+        grape3_id: country["most_used_grapes"][2]["id"],
+    }));
+
+    console.log(countries.length);
+
+    // await createCountries(countries);
 }
 
 export async function store_regions() {

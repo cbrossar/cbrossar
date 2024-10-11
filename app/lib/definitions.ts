@@ -76,7 +76,7 @@ export interface Grape {
 }
 
 export interface Country {
-    id: number;
+    code: string;
     name: string;
     wines_count: number;
     wineries_count: number;

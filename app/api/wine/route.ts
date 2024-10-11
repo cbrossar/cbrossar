@@ -9,7 +9,7 @@ import {
 
 export async function GET(request: Request) {
     try {
-        await store_grapes();
+        // await store_grapes();
         await store_countries();
         await store_regions();
 
