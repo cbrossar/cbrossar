@@ -46,6 +46,8 @@ export async function GET(request: NextRequest) {
 
     Get countries
 
+    Get regions
+
     Get wines
 
     Explore each country by rating
