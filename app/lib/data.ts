@@ -663,9 +663,9 @@ export async function createCountries(countries: Country[]) {
     try {
         for (const country of countries) {
             await sql`
-                INSERT INTO vivino_countries (id, name, wines_count, wineries_count, grape1_id, grape2_id, grape3_id)
-                VALUES (${country.id}, ${country.name}, ${country.wines_count}, ${country.wineries_count}, ${country.grape1_id}, ${country.grape2_id}, ${country.grape3_id})
-                ON CONFLICT (id) DO UPDATE SET name = ${country.name}, wines_count = ${country.wines_count}, wineries_count = ${country.wineries_count}, grape1_id = ${country.grape1_id}, grape2_id = ${country.grape2_id}, grape3_id = ${country.grape3_id}
+                INSERT INTO vivino_countries (code, name, wines_count, wineries_count, grape1_id, grape2_id, grape3_id)
+                VALUES (${country.code}, ${country.name}, ${country.wines_count}, ${country.wineries_count}, ${country.grape1_id}, ${country.grape2_id}, ${country.grape3_id})
+                ON CONFLICT (code) DO UPDATE SET name = ${country.name}, wines_count = ${country.wines_count}, wineries_count = ${country.wineries_count}, grape1_id = ${country.grape1_id}, grape2_id = ${country.grape2_id}, grape3_id = ${country.grape3_id}
             `;
         }
     } catch (error) {
