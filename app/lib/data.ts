@@ -8,6 +8,9 @@ import {
     FantasyTeam,
     Grape,
     Country,
+    Region,
+    Winery,
+    Wine,
 } from "./definitions";
 import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "./constants";
 import { unstable_noStore as noStore } from "next/cache";
@@ -671,5 +674,59 @@ export async function createCountries(countries: Country[]) {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to create countries.");
+    }
+}
+
+export async function fetchCountries() {
+    try {
+        const response = await sql`SELECT * FROM vivino_countries`;
+        return response.rows as Country[];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch countries.");
+    }
+}
+
+export async function createRegions(regions: Region[]) {
+    try {
+        for (const region of regions) {
+            await sql`INSERT INTO vivino_regions (id, name, country_code) VALUES (${region.id}, ${region.name}, ${region.country_code}) ON CONFLICT (id) DO UPDATE SET name = ${region.name}`;
+        }
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create regions.");
+    }
+}
+
+export async function fetchRegions(country_code: string) {
+    try {
+        const response =
+            await sql`SELECT * FROM vivino_regions WHERE country_code = ${country_code}`;
+        return response.rows as Region[];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch regions.");
+    }
+}
+
+export async function createWineries(wineries: Winery[]) {
+    try {
+        for (const winery of wineries) {
+            await sql`INSERT INTO vivino_wineries (id, name) VALUES (${winery.id}, ${winery.name}) ON CONFLICT (id) DO UPDATE SET name = ${winery.name}`;
+        }
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create wineries.");
+    }
+}
+
+export async function createWines(wines: Wine[]) {
+    try {
+        for (const wine of wines) {
+            await sql`INSERT INTO vivino_wines (id, name, region_id, winery_id, ratings_count, ratings_average, acidity, intensity, sweetness) VALUES (${wine.id}, ${wine.name}, ${wine.region_id}, ${wine.winery_id}, ${wine.ratings_count}, ${wine.ratings_average}, ${wine.acidity}, ${wine.intensity}, ${wine.sweetness}) ON CONFLICT (id) DO UPDATE SET name = ${wine.name}, region_id = ${wine.region_id}, winery_id = ${wine.winery_id}, ratings_count = ${wine.ratings_count}, ratings_average = ${wine.ratings_average}, acidity = ${wine.acidity}, intensity = ${wine.intensity}, sweetness = ${wine.sweetness}`;
+        }
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create wines.");
     }
 }

@@ -337,17 +337,14 @@ async function seedWine(client) {
             CREATE TABLE IF NOT EXISTS vivino_wines (
                 id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                country_code VARCHAR(4) NOT NULL,
                 region_id INT NOT NULL,
                 winery_id INT NOT NULL,
-                taste VARCHAR(255),
-                ratings_count INT NOT NULL,
-                ratings_average FLOAT NOT NULL,
-                acidity FLOAT NOT NULL,
-                intensity FLOAT NOT NULL,
-                sweetness FLOAT NOT NULL,
-                tannin FLOAT NOT NULL,
-                FOREIGN KEY (country_code) REFERENCES vivino_countries(code),
+                ratings_count INT,
+                ratings_average FLOAT,
+                acidity FLOAT,
+                intensity FLOAT,
+                sweetness FLOAT,
+                tannin FLOAT,
                 FOREIGN KEY (region_id) REFERENCES vivino_regions(id),
                 FOREIGN KEY (winery_id) REFERENCES vivino_wineries(id)
             );

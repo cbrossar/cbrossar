@@ -1,5 +1,11 @@
-import { Grape, Country } from "@/app/lib/definitions";
-import { createGrapes, createCountries } from "@/app/lib/data";
+import { Grape, Country, Region, Winery, Wine } from "@/app/lib/definitions";
+import {
+    createGrapes,
+    createCountries,
+    createRegions,
+    createWineries,
+    createWines,
+} from "@/app/lib/data";
 
 const headers = {
     "User-Agent":
@@ -24,28 +30,31 @@ export async function store_countries() {
     const response = await fetch(vivinoCountriesUrl, { headers });
     const data = await response.json();
 
-    console.log(data["countries"][0]);
-
     const countries: Country[] = data["countries"].map((country: any) => ({
-        id: country["id"],
+        code: country["code"],
         name: country["name"],
         wines_count: country["wines_count"],
         wineries_count: country["wineries_count"],
-        grape1_id: country["most_used_grapes"][0]["id"],
-        grape2_id: country["most_used_grapes"][1]["id"],
-        grape3_id: country["most_used_grapes"][2]["id"],
+        grape1_id: country["most_used_grapes"][0]?.["id"] || null,
+        grape2_id: country["most_used_grapes"][1]?.["id"] || null,
+        grape3_id: country["most_used_grapes"][2]?.["id"] || null,
     }));
 
-    console.log(countries.length);
-
-    // await createCountries(countries);
+    await createCountries(countries);
 }
 
 export async function store_regions() {
     const vivinoRegionsUrl = `https://www.vivino.com/api/regions`;
     const response = await fetch(vivinoRegionsUrl, { headers });
     const data = await response.json();
-    console.log(data["regions"].length);
+
+    const regions: Region[] = data["regions"].map((region: any) => ({
+        id: region["id"],
+        name: region["name"],
+        country_code: region["country"]["code"],
+    }));
+
+    await createRegions(regions);
 }
 
 export async function explore_wines(
@@ -55,6 +64,9 @@ export async function explore_wines(
     price_range_min: number,
     price_range_max: number,
 ) {
+    const wineries: Winery[] = [];
+    const wines: Wine[] = [];
+
     const page = 1;
     const per_page = 50;
     const vivinoExploreWineTypeUrl = `https://www.vivino.com/api/explore/explore?wine_type_ids[]=${wine_type_id}&country_code=${country_code}&region_ids[]=${region_id}&price_range_min=${price_range_min}&price_range_max=${price_range_max}&page=${page}&per_page=${per_page}`;
@@ -62,12 +74,42 @@ export async function explore_wines(
     const data = await response.json();
 
     const num_records_matched = data["explore_vintage"]["records_matched"];
+    console.log("num_records_matched", num_records_matched);
     const num_pages = Math.ceil(num_records_matched / per_page);
 
     for (let page = 1; page <= num_pages; page++) {
         const vivinoExploreWineTypeUrl = `https://www.vivino.com/api/explore/explore?wine_type_ids[]=${wine_type_id}&country_code=${country_code}&region_ids[]=${region_id}&price_range_min=${price_range_min}&price_range_max=${price_range_max}&page=${page}&per_page=${per_page}`;
         const response = await fetch(vivinoExploreWineTypeUrl, { headers });
         const data = await response.json();
-        console.log(data["explore_vintage"]["matches"].length);
+
+        data["explore_vintage"]["matches"].forEach((match: any) => {
+            const wine = match["vintage"]["wine"];
+            const winery = wine["winery"];
+
+            wineries.push({
+                id: winery["id"],
+                name: winery["name"],
+            });
+
+            wines.push({
+                id: wine["id"],
+                name: wine["name"],
+                region_id: wine["region"]["id"],
+                winery_id: winery["id"],
+                ratings_count: wine["statistics"]?.["ratings_count"] || null,
+                ratings_average:
+                    wine["statistics"]?.["ratings_average"] || null,
+                acidity: wine["taste"]?.["structure"]?.["acidity"] || null,
+                intensity: wine["taste"]?.["structure"]?.["intensity"] || null,
+                sweetness: wine["taste"]?.["structure"]?.["sweetness"] || null,
+            });
+        });
+    }
+
+    if (wineries.length > 0) {
+        await createWineries(wineries);
+    }
+    if (wines.length > 0) {
+        await createWines(wines);
     }
 }

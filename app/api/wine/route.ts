@@ -6,16 +6,18 @@ import {
     store_regions,
     explore_wines,
 } from "./utils";
+import { fetchRegions } from "@/app/lib/data";
 
 export async function GET(request: Request) {
     try {
         // await store_grapes();
-        await store_countries();
-        await store_regions();
+        // await store_countries();
+        // await store_regions();
 
         const red_wine_id = 1;
-        const country_code = "US";
-        const region_id = 24;
+        // const country_codes = ["us", "fr", "it", "es", "pt"];
+
+        const country_codes = ["us"];
 
         const priceRanges = [
             [0, 5],
@@ -31,9 +33,20 @@ export async function GET(request: Request) {
             [1000, 5000],
         ];
 
-        // for (const [price_range_min, price_range_max] of priceRanges) {
-        //     await explore_wines(red_wine_id, country_code, region_id, price_range_min, price_range_max);
-        // }
+        for (const country_code of country_codes) {
+            const regions = await fetchRegions(country_code);
+            for (const region of regions) {
+                for (const [price_range_min, price_range_max] of priceRanges) {
+                    await explore_wines(
+                        red_wine_id,
+                        country_code,
+                        region.id,
+                        price_range_min,
+                        price_range_max,
+                    );
+                }
+            }
+        }
 
         return Response.json({ message: "Success" });
     } catch (error) {

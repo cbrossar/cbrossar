@@ -80,7 +80,30 @@ export interface Country {
     name: string;
     wines_count: number;
     wineries_count: number;
-    grape1_id: string;
-    grape2_id: string;
-    grape3_id: string;
+    grape1_id: number | null;
+    grape2_id: number | null;
+    grape3_id: number | null;
+}
+
+export interface Region {
+    id: number;
+    name: string;
+    country_code: string;
+}
+
+export interface Winery {
+    id: number;
+    name: string;
+}
+
+export interface Wine {
+    id: number;
+    name: string;
+    region_id: number;
+    winery_id: number;
+    ratings_count: number | null;
+    ratings_average: number | null;
+    acidity: number | null;
+    intensity: number | null;
+    sweetness: number | null;
 }
