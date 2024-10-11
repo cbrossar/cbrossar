@@ -36,7 +36,7 @@ export default async function updateGarnetMatches() {
             "https://metrosoccerny.leagueapps.com/leagues/4299649/teams/6931712";
 
         const fall2024url =
-            "https://metrosoccerny.leagueapps.com/leagues/4299649/teams/7033425";
+            "https://metrosoccerny.leagueapps.com/leagues/4374844/teams/7033425";
 
         // Navigate to the URL and wait for the page to load
         await page.goto(fall2024url, { waitUntil: "networkidle2" });
