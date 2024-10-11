@@ -6,8 +6,8 @@ async function main() {
     // await seedMusicReviews(client);
     // await seedDoomsdayAttempts(client);
     // await seedSoccerStats(client);
-    await seedFantasyPremierLeagueStats(client);
-
+    // await seedFantasyPremierLeagueStats(client);
+    await seedWine(client);
     await client.end();
 }
 
@@ -281,6 +281,89 @@ async function seedFantasyPremierLeagueStats(client) {
         };
     } catch (error) {
         console.error("Error seeding fantasy premier league stats:", error);
+        throw error;
+    }
+}
+
+async function seedWine(client) {
+    try {
+        const createGrapesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS vivino_grapes (
+                id INT NOT NULL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL
+            );
+        `;
+
+        console.log(`Created "grapes" table`);
+
+        const createCountriesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS vivino_countries (
+                id INT NOT NULL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                wines_count INT NOT NULL,
+                wineries_count INT NOT NULL,
+                grape1_id INT,
+                grape2_id INT,
+                grape3_id INT,
+                FOREIGN KEY (grape1_id) REFERENCES vivino_grapes(id),
+                FOREIGN KEY (grape2_id) REFERENCES vivino_grapes(id),
+                FOREIGN KEY (grape3_id) REFERENCES vivino_grapes(id)
+            );
+        `;
+
+        console.log(`Created "countries" table`);
+
+        const createRegionsTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS vivino_regions (
+                id INT NOT NULL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                country_id INT NOT NULL,
+                FOREIGN KEY (country_id) REFERENCES vivino_countries(id)
+            );
+        `;
+
+        console.log(`Created "regions" table`);
+
+        const createWineriesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS vivino_wineries (
+                id INT NOT NULL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL
+            );
+        `;
+
+        console.log(`Created "wineries" table`);
+
+        const createWinesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS vivino_wines (
+                id INT NOT NULL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                country_id INT NOT NULL,
+                region_id INT NOT NULL,
+                winery_id INT NOT NULL,
+                taste VARCHAR(255),
+                ratings_count INT NOT NULL,
+                ratings_average FLOAT NOT NULL,
+                acidity FLOAT NOT NULL,
+                intensity FLOAT NOT NULL,
+                sweetness FLOAT NOT NULL,
+                tannin FLOAT NOT NULL,
+                FOREIGN KEY (country_id) REFERENCES vivino_countries(id),
+                FOREIGN KEY (region_id) REFERENCES vivino_regions(id),
+                FOREIGN KEY (winery_id) REFERENCES vivino_wineries(id)
+            );
+        `;
+
+        console.log(`Created "wines" table`);
+
+        return {
+            createGrapesTable,
+            createCountriesTable,
+            createRegionsTable,
+            createWineriesTable,
+            createWinesTable,
+        };
+    } catch (error) {
+        console.error("Error seeding wine:", error);
         throw error;
     }
 }

@@ -69,3 +69,18 @@ export interface FantasyTeam {
     name: string;
     image_filename?: string;
 }
+
+export interface Grape {
+    id: number;
+    name: string;
+}
+
+export interface Country {
+    id: number;
+    name: string;
+    wines_count: number;
+    wineries_count: number;
+    grape1_id: string;
+    grape2_id: string;
+    grape3_id: string;
+}

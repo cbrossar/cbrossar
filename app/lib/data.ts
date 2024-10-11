@@ -6,6 +6,7 @@ import {
     FantasyPlayer,
     FantasyPosition,
     FantasyTeam,
+    Grape,
 } from "./definitions";
 import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "./constants";
 import { unstable_noStore as noStore } from "next/cache";
@@ -627,5 +628,32 @@ export async function updateFantasyPlayerData(
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to update player data.");
+    }
+}
+
+// Wine
+
+export async function createGrapes(grapes: Grape[]) {
+    try {
+        for (const grape of grapes) {
+            await sql`
+                INSERT INTO vivino_grapes (id, name)
+                VALUES (${grape.id}, ${grape.name})
+                ON CONFLICT (id) DO UPDATE SET name = ${grape.name}
+            `;
+        }
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create grapes.");
+    }
+}
+
+export async function fetchGrapes() {
+    try {
+        const response = await sql`SELECT * FROM vivino_grapes`;
+        return response.rows as Grape[];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch grapes.");
     }
 }
