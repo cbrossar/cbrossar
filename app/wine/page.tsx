@@ -33,8 +33,6 @@ export default async function Page({
         currentRegionId,
     )) as Wine[];
 
-    console.log(wines[0]);
-
     const totalPages = await fetchWinesPageCount(
         query,
         currentCountryCode,
