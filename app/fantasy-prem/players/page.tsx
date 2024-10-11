@@ -11,7 +11,7 @@ import {
 } from "@/app/lib/definitions";
 import Link from "next/link";
 import Image from "next/image";
-import Pagination from "./pagination";
+import Pagination from "@/app/ui/pagination";
 import Search from "@/app/ui/search";
 import TableHeader from "./table-header";
 import styles from "./styles.module.css";

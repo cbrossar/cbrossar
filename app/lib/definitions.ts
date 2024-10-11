@@ -106,4 +106,6 @@ export interface Wine {
     acidity: number | null;
     intensity: number | null;
     sweetness: number | null;
+    region_name?: string | null;
+    winery_name?: string | null;
 }

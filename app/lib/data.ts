@@ -720,7 +720,6 @@ export async function createWineries(wineries: Winery[]) {
     }
 }
 
-
 export async function fetchWineries() {
     try {
         const response = await sql`SELECT * FROM vivino_wineries`;
@@ -749,5 +748,123 @@ export async function fetchWines() {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch wines.");
+    }
+}
+
+export async function fetchWinesFiltered(
+    query: string,
+    currentPage: number,
+    sortBy: string,
+    sortOrder: string,
+    currentCountryCode: string,
+    currentRegionId: string,
+) {
+    try {
+        noStore();
+        const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+        // Initialize arrays for dynamic query construction
+        let whereClauses = [];
+        let queryParams: (string | number)[] = [];
+        let paramIndex = 1;
+
+        // Add search conditions for wine names
+        if (query) {
+            whereClauses.push(`(vivino_wines.name ILIKE $${paramIndex})`);
+            queryParams.push(`%${query}%`);
+            paramIndex++;
+        }
+
+        if (currentCountryCode) {
+            whereClauses.push(`vivino_countries.code = $${paramIndex}`);
+            queryParams.push(currentCountryCode);
+            paramIndex++;
+        }
+
+        if (currentRegionId) {
+            whereClauses.push(`vivino_regions.id = $${paramIndex}`);
+            queryParams.push(currentRegionId);
+            paramIndex++;
+        }
+
+        // Construct the WHERE clause
+        let whereClause = "";
+        if (whereClauses.length > 0) {
+            whereClause = `WHERE ${whereClauses.join(" AND ")}`;
+        }
+
+        const sqlQuery = `
+            SELECT vivino_wines.*, vivino_regions.name AS region_name, vivino_wineries.name AS winery_name
+            FROM vivino_wines
+            LEFT JOIN vivino_regions ON vivino_wines.region_id = vivino_regions.id
+            LEFT JOIN vivino_wineries ON vivino_wines.winery_id = vivino_wineries.id
+            ${whereClause}
+            ORDER BY 
+                CASE 
+                    WHEN vivino_wines.${sortBy} IS NULL THEN 1 
+                    ELSE 0 
+                END,
+                ${sortBy} ${sortOrder}
+            LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
+
+        const response = await sql.query(sqlQuery, queryParams);
+        return response.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch wines.");
+    }
+}
+
+export async function fetchWinesPageCount(
+    query: string,
+    currentCountryCode: string,
+    currentRegionId: string,
+) {
+    try {
+        noStore();
+
+        let whereClauses = [];
+        let queryParams: (string | number)[] = [];
+        let paramIndex = 1;
+
+        // Add search conditions for wine names
+        if (query) {
+            whereClauses.push(`(name ILIKE $${paramIndex})`);
+            queryParams.push(`%${query}%`);
+            paramIndex++;
+        }
+
+        if (currentCountryCode) {
+            whereClauses.push(`country_code = $${paramIndex}`);
+            queryParams.push(currentCountryCode);
+            paramIndex++;
+        }
+
+        if (currentRegionId) {
+            whereClauses.push(`region_id = $${paramIndex}`);
+            queryParams.push(currentRegionId);
+            paramIndex++;
+        }
+
+        // Construct the WHERE clause
+        let whereClause = "";
+        if (whereClauses.length > 0) {
+            whereClause = `WHERE ${whereClauses.join(" AND ")}`;
+        }
+
+        const sqlQuery = `
+            SELECT COUNT(*) FROM vivino_wines
+            ${whereClause}
+        `;
+
+        const result = await sql.query(sqlQuery, queryParams);
+        const totalCount = Number(result.rows[0].count);
+        const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
+        return totalPages;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch wines count.");
     }
 }

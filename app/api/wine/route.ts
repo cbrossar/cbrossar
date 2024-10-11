@@ -22,8 +22,10 @@ export async function GET(request: Request) {
         const wineries = await fetchWineries();
         const wines = await fetchWines();
 
-        const seen_wineries: Set<number> = new Set(wineries.map(winery => winery.id));
-        const seen_wines: Set<number> = new Set(wines.map(wine => wine.id));
+        const seen_wineries: Set<number> = new Set(
+            wineries.map((winery) => winery.id),
+        );
+        const seen_wines: Set<number> = new Set(wines.map((wine) => wine.id));
 
         const priceRanges = [
             [0, 5],
@@ -31,9 +33,12 @@ export async function GET(request: Request) {
             [10, 15],
             [15, 20],
             [20, 30],
-            [30, 50],
-            [50, 100],
-            [100, 200],
+            [30, 40],
+            [40, 50],
+            [50, 70],
+            [70, 90],
+            [90, 120],
+            [120, 200],
             [200, 500],
             [500, 1000],
             [1000, 5000],
