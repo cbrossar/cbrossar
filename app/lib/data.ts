@@ -720,6 +720,17 @@ export async function createWineries(wineries: Winery[]) {
     }
 }
 
+
+export async function fetchWineries() {
+    try {
+        const response = await sql`SELECT * FROM vivino_wineries`;
+        return response.rows as Winery[];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch wineries.");
+    }
+}
+
 export async function createWines(wines: Wine[]) {
     try {
         for (const wine of wines) {
@@ -728,5 +739,15 @@ export async function createWines(wines: Wine[]) {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to create wines.");
+    }
+}
+
+export async function fetchWines() {
+    try {
+        const response = await sql`SELECT * FROM vivino_wines`;
+        return response.rows as Wine[];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch wines.");
     }
 }

@@ -63,7 +63,11 @@ export async function explore_wines(
     region_id: number,
     price_range_min: number,
     price_range_max: number,
+    seen_wineries: Set<number>,
+    seen_wines: Set<number>,
 ) {
+    
+
     const wineries: Winery[] = [];
     const wines: Wine[] = [];
 
@@ -74,7 +78,9 @@ export async function explore_wines(
     const data = await response.json();
 
     const num_records_matched = data["explore_vintage"]["records_matched"];
+    if (num_records_matched > 0) {
     console.log("num_records_matched", num_records_matched);
+    }
     const num_pages = Math.ceil(num_records_matched / per_page);
 
     for (let page = 1; page <= num_pages; page++) {
@@ -86,30 +92,38 @@ export async function explore_wines(
             const wine = match["vintage"]["wine"];
             const winery = wine["winery"];
 
-            wineries.push({
+            if (!seen_wineries.has(winery["id"])) {
+                seen_wineries.add(winery["id"]);
+                wineries.push({
                 id: winery["id"],
-                name: winery["name"],
-            });
+                    name: winery["name"],
+                });
+            }
 
-            wines.push({
-                id: wine["id"],
-                name: wine["name"],
-                region_id: wine["region"]["id"],
-                winery_id: winery["id"],
-                ratings_count: wine["statistics"]?.["ratings_count"] || null,
-                ratings_average:
-                    wine["statistics"]?.["ratings_average"] || null,
-                acidity: wine["taste"]?.["structure"]?.["acidity"] || null,
-                intensity: wine["taste"]?.["structure"]?.["intensity"] || null,
-                sweetness: wine["taste"]?.["structure"]?.["sweetness"] || null,
-            });
+            if (!seen_wines.has(wine["id"])) {
+                seen_wines.add(wine["id"]);     
+                wines.push({
+                    id: wine["id"],
+                    name: wine["name"],
+                    region_id: wine["region"]["id"],
+                    winery_id: winery["id"],
+                    ratings_count: wine["statistics"]?.["ratings_count"] || null,
+                    ratings_average:
+                        wine["statistics"]?.["ratings_average"] || null,
+                    acidity: wine["taste"]?.["structure"]?.["acidity"] || null,
+                    intensity: wine["taste"]?.["structure"]?.["intensity"] || null,
+                    sweetness: wine["taste"]?.["structure"]?.["sweetness"] || null,
+                });
+            }
         });
     }
 
     if (wineries.length > 0) {
+        console.log(`Creating ${wineries.length} new wineries`)
         await createWineries(wineries);
     }
     if (wines.length > 0) {
+        console.log(`Creating ${wines.length} new wines`)
         await createWines(wines);
     }
 }
