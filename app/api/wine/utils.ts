@@ -77,7 +77,8 @@ export async function explore_wines(
     const data = await response.json();
 
     const num_records_matched = data["explore_vintage"]["records_matched"];
-    if (num_records_matched > 0) {
+    if (num_records_matched > 3000) {
+        console.log("region_id", region_id);
         console.log("num_records_matched", num_records_matched);
     }
     const num_pages = Math.ceil(num_records_matched / per_page);
