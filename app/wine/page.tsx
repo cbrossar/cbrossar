@@ -54,11 +54,11 @@ export default async function Page({
                             "Winery",
                             "Region",
                             "Country",
-                            "Ratings Count",
-                            "Ratings Average",
                             "Acidity",
                             "Intensity",
                             "Sweetness",
+                            "Ratings Count",
+                            "Ratings Average",
                         ]}
                         sortBy={sortBy}
                     />
@@ -71,12 +71,7 @@ export default async function Page({
                                 <td>
                                     {wine.country_code?.toUpperCase() || ""}
                                 </td>
-                                <td>{wine.ratings_count}</td>
-                                <td>
-                                    {wine.ratings_average
-                                        ? wine.ratings_average.toFixed(2)
-                                        : ""}
-                                </td>
+                                
                                 <td>
                                     {wine.acidity
                                         ? wine.acidity.toFixed(2)
@@ -91,6 +86,10 @@ export default async function Page({
                                     {wine.sweetness
                                         ? wine.sweetness.toFixed(2)
                                         : ""}
+                                </td>
+                                <td>{wine.ratings_count}</td>
+                                <td>
+                                    {wine.ratings_average}
                                 </td>
                             </tr>
                         ))}
