@@ -700,8 +700,13 @@ export async function createRegions(regions: Region[]) {
 
 export async function fetchRegions(country_code: string) {
     try {
-        const response =
-            await sql`SELECT * FROM vivino_regions WHERE country_code = ${country_code}`;
+        const response = await sql`
+            SELECT vr.*
+            FROM vivino_regions vr
+            LEFT JOIN vivino_wines vw ON vr.id = vw.region_id
+            WHERE vr.country_code = ${country_code}
+            AND vw.id IS NULL
+        `;
         return response.rows as Region[];
     } catch (error) {
         console.error("Database Error:", error);

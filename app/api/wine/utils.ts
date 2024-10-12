@@ -66,21 +66,12 @@ export async function explore_wines(
     price_range_max: number,
     seen_wineries: Set<number>,
     seen_wines: Set<number>,
+    num_records_matched: number,
 ) {
     const wineries: Winery[] = [];
     const wines: Wine[] = [];
 
-    const page = 1;
     const per_page = 50;
-    const vivinoExploreWineTypeUrl = `https://www.vivino.com/api/explore/explore?wine_type_ids[]=${wine_type_id}&country_code=${country_code}&region_ids[]=${region_id}&price_range_min=${price_range_min}&price_range_max=${price_range_max}&page=${page}&per_page=${per_page}`;
-    const response = await fetch(vivinoExploreWineTypeUrl, { headers });
-    const data = await response.json();
-
-    const num_records_matched = data["explore_vintage"]["records_matched"];
-    if (num_records_matched > 3000) {
-        console.log("region_id", region_id);
-        console.log("num_records_matched", num_records_matched);
-    }
     const num_pages = Math.ceil(num_records_matched / per_page);
 
     for (let page = 1; page <= num_pages; page++) {
@@ -134,4 +125,30 @@ export async function explore_wines(
         console.log(`Creating ${wines.length} new wines`);
         await createWines(wines);
     }
+}
+
+export async function fetchExploreWineNumRecordsMatched(
+    wine_type_id: number,
+    country_code: string,
+    region_id: number,
+    price_range_min: number,
+    price_range_max: number,
+) {
+    const vivinoExploreWineTypeUrl = `https://www.vivino.com/api/explore/explore?wine_type_ids[]=${wine_type_id}&country_code=${country_code}&region_ids[]=${region_id}&price_range_min=${price_range_min}&price_range_max=${price_range_max}&page=1&per_page=1`;
+    const response = await fetch(vivinoExploreWineTypeUrl, { headers });
+    const data = await response.json();
+
+    const num_records_matched = data["explore_vintage"]["records_matched"];
+    if (num_records_matched > 3000) {
+        console.log("num_records_matched", num_records_matched);
+        console.log(
+            "params",
+            wine_type_id,
+            country_code,
+            region_id,
+            price_range_min,
+            price_range_max,
+        );
+    }
+    return num_records_matched;
 }
