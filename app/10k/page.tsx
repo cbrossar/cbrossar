@@ -24,14 +24,14 @@ function CalculateContent() {
     const { replace } = useRouter();
 
     const params = new URLSearchParams(searchParams);
+    const birthdayParam = params.get("birthday");
 
     useEffect(() => {
-        const birthdayParam = params.get("birthday");
         if (birthdayParam) {
             setBirthday(birthdayParam);
             calculateDate(birthdayParam);
         }
-    }, []);
+    }, [birthdayParam]);
 
     const calculateDate = (birthday: string) => {
         if (!birthday) {

@@ -185,19 +185,19 @@ interface Props {
 }
 
 function StatsModal({ show, onClose, stats, message }: Props) {
-    const handleClickOutside = (event: any) => {
-        if (event.target.className.includes(styles.modalOverlay)) {
-            onClose();
-        }
-    };
-
     useEffect(() => {
+        const handleClickOutside = (event: any) => {
+            if (event.target.className.includes(styles.modalOverlay)) {
+                onClose();
+            }
+        };
+
         document.addEventListener("click", handleClickOutside);
 
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
-    }, []);
+    }, [onClose]);
 
     if (!show) return null;
 

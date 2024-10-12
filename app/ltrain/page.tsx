@@ -25,13 +25,13 @@ function LTrain() {
     const { replace } = useRouter();
 
     const params = new URLSearchParams(searchParams);
+    const stationParam = params.get("station");
 
     useEffect(() => {
-        const stationParam = params.get("station");
         if (stationParam) {
             setSelectedOption(stationParam);
         }
-    }, []);
+    }, [stationParam]);
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedOption(e.target.value);
