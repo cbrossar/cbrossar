@@ -14,11 +14,13 @@ export const headerToColumnMap: Record<string, string> = {
     Name: "name",
     Region: "region_id",
     Winery: "winery_id",
-    "Ratings Count": "ratings_count",
-    "Ratings Average": "ratings_average",
+    "Ratings": "ratings_count",
+    "Score": "ratings_average",
     Acidity: "acidity",
     Intensity: "intensity",
-    Sweetness: "sweetness",
+    Sweet: "sweetness",
+    Tannin: "tannin",
+    Price: "price",
 };
 
 export const headerToTooltipMap: Record<string, string> = {};
