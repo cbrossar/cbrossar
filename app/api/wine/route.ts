@@ -18,17 +18,18 @@ export async function GET(request: Request) {
         // await store_regions();
 
         const { searchParams } = new URL(request.url);
-        const red_wine_id = parseInt(searchParams.get("wine_type_id") ?? "1");
-        const country_code = searchParams.get("country_code") || null;
+        const param_red_wine_id = parseInt(searchParams.get("wine_type_id") ?? "1");
+        const param_country_code = searchParams.get("country_code") || null;
+        const param_region_id = parseInt(searchParams.get("region_id") ?? "") || null;
 
-        if (!country_code) {
+        if (!param_country_code) {
             return Response.json(
                 { error: "Country code is required" },
                 { status: 400 },
             );
         }
 
-        const country_codes = [country_code];
+        const country_codes = [param_country_code];
 
         const wineries = await fetchWineries();
         const wines = await fetchWines();
@@ -54,7 +55,7 @@ export async function GET(request: Request) {
         ];
 
         for (const country_code of country_codes) {
-            const regions = await fetchRegions(country_code);
+            const regions = await fetchRegions(country_code, param_region_id);
             let index = 1;
 
             for (const region of regions) {
@@ -67,8 +68,8 @@ export async function GET(request: Request) {
                 try {
                     const num_records_matched =
                         await fetchExploreWineNumRecordsMatched(
-                            red_wine_id,
-                            country_code,
+                            param_red_wine_id,
+                            param_country_code,
                             region.id,
                             price_min,
                             price_max,
@@ -76,8 +77,8 @@ export async function GET(request: Request) {
 
                     if (num_records_matched < 3000) {
                         await explore_wines(
-                            red_wine_id,
-                            country_code,
+                            param_red_wine_id,
+                            param_country_code,
                             region.id,
                             price_min,
                             price_max,
@@ -95,16 +96,16 @@ export async function GET(request: Request) {
                     ] of priceRanges) {
                         const num_records_matched =
                             await fetchExploreWineNumRecordsMatched(
-                                red_wine_id,
-                                country_code,
+                                param_red_wine_id,
+                                param_country_code,
                                 region.id,
                                 price_range_min,
                                 price_range_max,
                             );
 
                         await explore_wines(
-                            red_wine_id,
-                            country_code,
+                            param_red_wine_id,
+                            param_country_code,
                             region.id,
                             price_range_min,
                             price_range_max,
@@ -128,7 +129,7 @@ export async function GET(request: Request) {
                     console.error("Error fetching wines:", error);
                     console.error(
                         "Params: ",
-                        country_code,
+                        param_country_code,
                         region.id,
                         price_min,
                         price_max,

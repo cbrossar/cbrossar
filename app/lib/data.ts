@@ -698,8 +698,16 @@ export async function createRegions(regions: Region[]) {
     }
 }
 
-export async function fetchRegions(country_code: string) {
+export async function fetchRegions(
+    country_code: string,
+    region_id: number | null = null,
+) {
     try {
+        if (region_id) {
+            const response = await sql`SELECT * FROM vivino_regions WHERE id = ${region_id}`;
+            return response.rows as Region[];
+        }
+
         const response = await sql`
             SELECT vr.*
             FROM vivino_regions vr
