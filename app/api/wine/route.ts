@@ -57,12 +57,6 @@ export async function GET(request: Request) {
             [500, 100000],
         ];
 
-        console.log(
-            "Country codes:",
-            country_codes,
-            "Region ID:",
-            param_region_id,
-        );
 
         for (const country_code of country_codes) {
             const regions = await fetchRegions(country_code, param_region_id);
