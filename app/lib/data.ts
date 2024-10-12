@@ -699,7 +699,7 @@ export async function createRegions(regions: Region[]) {
 }
 
 export async function fetchRegions(
-    country_code: string | null = null,
+    country_code: string,
     region_id: number | null = null,
 ) {
     try {
