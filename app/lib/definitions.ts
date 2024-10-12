@@ -108,4 +108,5 @@ export interface Wine {
     sweetness: number | null;
     region_name?: string | null;
     winery_name?: string | null;
+    country_code?: string | null;
 }

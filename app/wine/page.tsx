@@ -51,8 +51,9 @@ export default async function Page({
                     <TableHeader
                         headers={[
                             "Name",
-                            "Region",
                             "Winery",
+                            "Region",
+                            "Country",
                             "Ratings Count",
                             "Ratings Average",
                             "Acidity",
@@ -65,8 +66,11 @@ export default async function Page({
                         {wines.map((wine, index) => (
                             <tr key={index}>
                                 <td>{wine.name}</td>
-                                <td>{wine.region_name}</td>
                                 <td>{wine.winery_name}</td>
+                                <td>{wine.region_name}</td>
+                                <td>
+                                    {wine.country_code?.toUpperCase() || ""}
+                                </td>
                                 <td>{wine.ratings_count}</td>
                                 <td>
                                     {wine.ratings_average

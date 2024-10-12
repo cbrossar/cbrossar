@@ -796,10 +796,11 @@ export async function fetchWinesFiltered(
         }
 
         const sqlQuery = `
-            SELECT vivino_wines.*, vivino_regions.name AS region_name, vivino_wineries.name AS winery_name
+            SELECT vivino_wines.*, vivino_regions.name AS region_name, vivino_wineries.name AS winery_name, vivino_countries.code AS country_code
             FROM vivino_wines
             LEFT JOIN vivino_regions ON vivino_wines.region_id = vivino_regions.id
             LEFT JOIN vivino_wineries ON vivino_wines.winery_id = vivino_wineries.id
+            LEFT JOIN vivino_countries ON vivino_regions.country_code = vivino_countries.code
             ${whereClause}
             ORDER BY 
                 CASE 
