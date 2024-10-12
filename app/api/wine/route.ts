@@ -10,6 +10,11 @@ import { fetchRegions, fetchWineries, fetchWines } from "@/app/lib/data";
 
 export async function GET(request: Request) {
     try {
+        const vivinoExploreUrl = `https://www.vivino.com/api/explore/explore?country_code=FR&currency_code=EUR&min_rating=3&price_range_min=7&price_range_max=20&order_by=price&order=desc`;
+        const response = await fetch(vivinoExploreUrl);
+        console.log(await response.text());
+        const data = await response.json();
+        return Response.json(data);
         // await store_grapes();
         // await store_countries();
         // await store_regions();
@@ -17,7 +22,7 @@ export async function GET(request: Request) {
         const red_wine_id = 1;
         // const country_codes = ["us", "fr", "it", "es", "pt"];
 
-        const country_codes = ["us"];
+        const country_codes = ["it"];
 
         const wineries = await fetchWineries();
         const wines = await fetchWines();
@@ -78,7 +83,13 @@ export async function GET(request: Request) {
 
         return Response.json({ message: "Success" });
     } catch (error) {
-        console.error("Error fetching data:", error);
+        if (error instanceof SyntaxError) {
+            console.error("Full error message:", error.message);
+        }
+        if (error instanceof Error && "cause" in error) {
+            console.error("Error cause:", error.cause);
+        }
+
         return Response.json(
             { error: "Failed to fetch data" },
             { status: 500 },
