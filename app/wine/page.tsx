@@ -78,13 +78,28 @@ export default async function Page({
                     <tbody>
                         {wines.map((wine, index) => (
                             <tr key={index}>
-                                <td style={{ padding: "0 4px", minWidth: "150px" }}>
+                                <td
+                                    style={{
+                                        padding: "0 4px",
+                                        minWidth: "150px",
+                                    }}
+                                >
                                     {wine.name}
                                 </td>
-                                <td style={{ padding: "0 4px", minWidth: "120px" }}>
+                                <td
+                                    style={{
+                                        padding: "0 4px",
+                                        minWidth: "120px",
+                                    }}
+                                >
                                     {wine.winery_name}
                                 </td>
-                                <td style={{ padding: "0 4px", minWidth: "100px" }}>
+                                <td
+                                    style={{
+                                        padding: "0 4px",
+                                        minWidth: "100px",
+                                    }}
+                                >
                                     {wine.region_name}
                                 </td>
                                 <td style={{ padding: "0 4px" }}>

@@ -71,6 +71,19 @@ export default function Page() {
                 <div className={styles.caption}>L Train</div>
             </div>
             <div className={styles.item}>
+                <Link href="wine">
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src="/code/wine.png"
+                            width={200}
+                            height={200}
+                            alt="Wine"
+                        />
+                    </div>
+                </Link>
+                <div className={styles.caption}>Wine</div>
+            </div>
+            <div className={styles.item}>
                 <Link href="10k">
                     <div className={styles.imageWrapper}>
                         <Image

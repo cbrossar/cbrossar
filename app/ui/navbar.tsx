@@ -45,6 +45,9 @@ export default function Navbar() {
                 <SideNavLink href="/ltrain" onClick={toggleMenu}>
                     L Train
                 </SideNavLink>
+                <SideNavLink href="/wine" onClick={toggleMenu}>
+                    Wine
+                </SideNavLink>
                 <SideNavLink href="/code" onClick={toggleMenu}>
                     Code
                 </SideNavLink>
