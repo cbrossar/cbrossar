@@ -13,10 +13,10 @@ import { fetchRegions, fetchWineries, fetchWines } from "@/app/lib/data";
 
 export async function GET(request: Request) {
     try {
-        const vivinoExploreUrl = `https://www.vivino.com/api/explore/explore?country_code=FR&currency_code=EUR&min_rating=3&price_range_min=7&price_range_max=20&order_by=price&order=asc`;
-        const response = await fetch(vivinoExploreUrl);
-        const data = await response.json();
-        return Response.json(data);
+        // const vivinoExploreUrl = `https://www.vivino.com/api/explore/explore?country_code=FR&currency_code=EUR&min_rating=3&price_range_min=7&price_range_max=20&order_by=price&order=asc`;
+        // const response = await fetch(vivinoExploreUrl);
+        // const data = await response.json();
+        // return Response.json(data);
         // await store_grapes();
         // await store_countries();
         // await store_regions();
