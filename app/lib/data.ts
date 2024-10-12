@@ -733,7 +733,7 @@ export async function fetchWineries() {
 export async function createWines(wines: Wine[]) {
     try {
         for (const wine of wines) {
-            await sql`INSERT INTO vivino_wines (id, name, region_id, winery_id, ratings_count, ratings_average, acidity, intensity, sweetness) VALUES (${wine.id}, ${wine.name}, ${wine.region_id}, ${wine.winery_id}, ${wine.ratings_count}, ${wine.ratings_average}, ${wine.acidity}, ${wine.intensity}, ${wine.sweetness}) ON CONFLICT (id) DO UPDATE SET name = ${wine.name}, region_id = ${wine.region_id}, winery_id = ${wine.winery_id}, ratings_count = ${wine.ratings_count}, ratings_average = ${wine.ratings_average}, acidity = ${wine.acidity}, intensity = ${wine.intensity}, sweetness = ${wine.sweetness}`;
+            await sql`INSERT INTO vivino_wines (id, name, region_id, winery_id, ratings_count, ratings_average, acidity, intensity, sweetness, tannin, currency_code, price) VALUES (${wine.id}, ${wine.name}, ${wine.region_id}, ${wine.winery_id}, ${wine.ratings_count}, ${wine.ratings_average}, ${wine.acidity}, ${wine.intensity}, ${wine.sweetness}, ${wine.tannin}, ${wine.currency_code}, ${wine.price}) ON CONFLICT (id) DO UPDATE SET name = ${wine.name}, region_id = ${wine.region_id}, winery_id = ${wine.winery_id}, ratings_count = ${wine.ratings_count}, ratings_average = ${wine.ratings_average}, acidity = ${wine.acidity}, intensity = ${wine.intensity}, sweetness = ${wine.sweetness}, tannin = ${wine.tannin}, currency_code = ${wine.currency_code}, price = ${wine.price}`;
         }
     } catch (error) {
         console.error("Database Error:", error);

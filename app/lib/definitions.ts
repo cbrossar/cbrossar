@@ -101,11 +101,14 @@ export interface Wine {
     name: string;
     region_id: number;
     winery_id: number;
+    currency_code: string;
+    price: number;
     ratings_count: number | null;
     ratings_average: number | null;
     acidity: number | null;
     intensity: number | null;
     sweetness: number | null;
+    tannin: number | null;
     region_name?: string | null;
     winery_name?: string | null;
     country_code?: string | null;

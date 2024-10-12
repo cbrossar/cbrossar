@@ -39,6 +39,11 @@ export default async function Page({
         currentRegionId,
     );
 
+    const currency_map: Record<string, string> = {
+        USD: "$",
+        EUR: "€",
+    };
+
     return (
         <div>
             <div className={styles.header}>
@@ -56,7 +61,9 @@ export default async function Page({
                             "Country",
                             "Acidity",
                             "Intensity",
-                            "Sweetness",
+                            "Sweet",
+                            "Tannin",
+                            "Price",
                             "Ratings Count",
                             "Ratings Average",
                         ]}
@@ -71,7 +78,7 @@ export default async function Page({
                                 <td>
                                     {wine.country_code?.toUpperCase() || ""}
                                 </td>
-                                
+
                                 <td>
                                     {wine.acidity
                                         ? wine.acidity.toFixed(2)
@@ -87,10 +94,15 @@ export default async function Page({
                                         ? wine.sweetness.toFixed(2)
                                         : ""}
                                 </td>
-                                <td>{wine.ratings_count}</td>
                                 <td>
-                                    {wine.ratings_average}
+                                    {wine.tannin ? wine.tannin.toFixed(2) : ""}
                                 </td>
+                                <td>
+                                    {currency_map[wine.currency_code || ""]}
+                                    {wine.price}
+                                </td>
+                                <td>{wine.ratings_count}</td>
+                                <td>{wine.ratings_average}</td>
                             </tr>
                         ))}
                     </tbody>

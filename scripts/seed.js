@@ -339,6 +339,8 @@ async function seedWine(client) {
                 name VARCHAR(255) NOT NULL,
                 region_id INT NOT NULL,
                 winery_id INT NOT NULL,
+                currency_code VARCHAR(4) NOT NULL,
+                price FLOAT NOT NULL,
                 ratings_count INT,
                 ratings_average FLOAT,
                 acidity FLOAT,

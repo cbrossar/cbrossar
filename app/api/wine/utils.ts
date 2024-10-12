@@ -89,6 +89,7 @@ export async function explore_wines(
         const data = await response.json();
 
         data["explore_vintage"]["matches"].forEach((match: any) => {
+            const price = match["price"];
             const vintage = match["vintage"];
             const wine = vintage["wine"];
             const winery = wine["winery"];
@@ -108,6 +109,8 @@ export async function explore_wines(
                     name: wine["name"],
                     region_id: wine["region"]["id"],
                     winery_id: winery["id"],
+                    currency_code: price["currency"]["code"],
+                    price: price["amount"],
                     ratings_count:
                         vintage["statistics"]?.["wine_ratings_count"] || null,
                     ratings_average:
@@ -117,6 +120,7 @@ export async function explore_wines(
                         wine["taste"]?.["structure"]?.["intensity"] || null,
                     sweetness:
                         wine["taste"]?.["structure"]?.["sweetness"] || null,
+                    tannin: wine["taste"]?.["structure"]?.["tannin"] || null,
                 });
             }
         });
