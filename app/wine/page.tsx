@@ -48,7 +48,7 @@ export default async function Page({
         <div>
             <div className={styles.header}>
                 <div>
-                    <Search placeholder="Search Wines" query={query} />
+                    <Search placeholder="Search Wines" />
                 </div>
             </div>
             <div style={{ overflowX: "auto" }}>

@@ -7,25 +7,21 @@ import { useState, useEffect } from "react";
 
 export default function Search({
     placeholder,
-    query = "", // Make query optional with a default value
     shouldSetPage = true, // New boolean prop to control the 'page' param
 }: {
     placeholder: string;
-    query?: string; // Mark query as optional
     shouldSetPage?: boolean; // New boolean prop
 }) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
 
-    const [searchTerm, setSearchTerm] = useState(query);
-
-    useEffect(() => {
-        setSearchTerm(query);
-    }, [query]);
+    const [searchTerm, setSearchTerm] = useState(
+        searchParams.get("query") || "",
+    );
 
     const handleSearch = useDebouncedCallback((term: string) => {
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams(searchParams.toString());
 
         if (shouldSetPage) {
             params.set("page", "1");

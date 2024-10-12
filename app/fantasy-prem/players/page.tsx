@@ -75,7 +75,7 @@ export default async function Page({
         <div>
             <div className={styles.header}>
                 <div>
-                    <Search placeholder="Search Players" query={query} />
+                    <Search placeholder="Search Players" />
                 </div>
                 <div className={styles.topRightCorner}>
                     <div className={styles.optimalTeamButton}>
