@@ -42,6 +42,7 @@ export async function GET(request: Request) {
             [200, 500],
             [500, 1000],
             [1000, 5000],
+            [5000, 100000],
         ];
 
         for (const country_code of country_codes) {
