@@ -78,39 +78,45 @@ export default async function Page({
                     <tbody>
                         {wines.map((wine, index) => (
                             <tr key={index}>
-                                <td className={styles.td}>{wine.name}</td>
-                                <td className={styles.td}>{wine.winery_name}</td>
-                                <td className={styles.td}>{wine.region_name}</td>
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px", minWidth: "150px" }}>
+                                    {wine.name}
+                                </td>
+                                <td style={{ padding: "0 4px", minWidth: "120px" }}>
+                                    {wine.winery_name}
+                                </td>
+                                <td style={{ padding: "0 4px", minWidth: "100px" }}>
+                                    {wine.region_name}
+                                </td>
+                                <td style={{ padding: "0 4px" }}>
                                     {wine.country_code?.toUpperCase() || ""}
                                 </td>
 
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px" }}>
                                     {wine.acidity
                                         ? wine.acidity.toFixed(2)
                                         : ""}
                                 </td>
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px" }}>
                                     {wine.intensity
                                         ? wine.intensity.toFixed(2)
                                         : ""}
                                 </td>
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px" }}>
                                     {wine.sweetness
                                         ? wine.sweetness.toFixed(2)
                                         : ""}
                                 </td>
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px" }}>
                                     {wine.tannin ? wine.tannin.toFixed(2) : ""}
                                 </td>
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px" }}>
                                     {currency_map[wine.currency_code || ""]}
                                     {wine.price}
                                 </td>
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px" }}>
                                     {wine.ratings_count}
                                 </td>
-                                <td className={styles.td}>
+                                <td style={{ padding: "0 4px" }}>
                                     {wine.ratings_average}
                                 </td>
                             </tr>
