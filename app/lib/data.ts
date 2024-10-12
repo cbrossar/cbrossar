@@ -704,7 +704,8 @@ export async function fetchRegions(
 ) {
     try {
         if (region_id) {
-            const response = await sql`SELECT * FROM vivino_regions WHERE id = ${region_id}`;
+            const response =
+                await sql`SELECT * FROM vivino_regions WHERE id = ${region_id}`;
             return response.rows as Region[];
         }
 

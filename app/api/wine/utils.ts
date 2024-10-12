@@ -138,23 +138,22 @@ export async function fetchExploreWineNumRecordsMatched(
     const response = await fetch(vivinoExploreWineTypeUrl, { headers });
     if (!response.ok) {
         if (response.status === 429) {
-            throw new Error('Too many requests. Please try again later.');
+            throw new Error("Too many requests. Please try again later.");
         }
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
 
     const num_records_matched = data["explore_vintage"]["records_matched"];
-    if (num_records_matched > 3000) {
-        console.log("num_records_matched", num_records_matched);
-        console.log(
-            "params",
-            wine_type_id,
-            country_code,
-            region_id,
-            price_range_min,
-            price_range_max,
-        );
-    }
+    console.log(
+        "num_records_matched",
+        num_records_matched,
+        "params:",
+        wine_type_id,
+        country_code,
+        region_id,
+        price_range_min,
+        price_range_max,
+    );
     return num_records_matched;
 }

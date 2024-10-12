@@ -18,9 +18,12 @@ export async function GET(request: Request) {
         // await store_regions();
 
         const { searchParams } = new URL(request.url);
-        const param_red_wine_id = parseInt(searchParams.get("wine_type_id") ?? "1");
+        const param_red_wine_id = parseInt(
+            searchParams.get("wine_type_id") ?? "1",
+        );
         const param_country_code = searchParams.get("country_code") || null;
-        const param_region_id = parseInt(searchParams.get("region_id") ?? "") || null;
+        const param_region_id =
+            parseInt(searchParams.get("region_id") ?? "") || null;
 
         if (!param_country_code) {
             return Response.json(
@@ -54,7 +57,12 @@ export async function GET(request: Request) {
             [500, 100000],
         ];
 
-        console.log("Country codes:", country_codes, "Region ID:", param_region_id);
+        console.log(
+            "Country codes:",
+            country_codes,
+            "Region ID:",
+            param_region_id,
+        );
 
         for (const country_code of country_codes) {
             const regions = await fetchRegions(country_code, param_region_id);
@@ -121,7 +129,9 @@ export async function GET(request: Request) {
                         error instanceof Error &&
                         error.message.includes("Too many requests")
                     ) {
-                        console.error("Rate limit exceeded. Waiting 10 seconds before retrying...");
+                        console.error(
+                            "Rate limit exceeded. Waiting 10 seconds before retrying...",
+                        );
                         // await new Promise(resolve => setTimeout(resolve, 10000));
                         return Response.json(
                             { error: "Rate limit exceeded" },
@@ -144,9 +154,11 @@ export async function GET(request: Request) {
     } catch (error) {
         const errorResponse = {
             error: "Failed to fetch data",
-            ...(error instanceof SyntaxError ? { message: error.message } :
-               error instanceof Error && "cause" in error ? { cause: error.cause } :
-               {})
+            ...(error instanceof SyntaxError
+                ? { message: error.message }
+                : error instanceof Error && "cause" in error
+                  ? { cause: error.cause }
+                  : {}),
         };
 
         return Response.json(errorResponse, { status: 500 });
