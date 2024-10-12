@@ -770,7 +770,9 @@ export async function fetchWinesFiltered(
 
         // Add search conditions for wine names
         if (query) {
-            whereClauses.push(`(vivino_wines.name ILIKE $${paramIndex})`);
+            whereClauses.push(
+                `(vivino_wines.name ILIKE $${paramIndex}) OR (vivino_wineries.name ILIKE $${paramIndex}) OR (vivino_regions.name ILIKE $${paramIndex})`,
+            );
             queryParams.push(`%${query}%`);
             paramIndex++;
         }

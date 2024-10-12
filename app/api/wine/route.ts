@@ -46,18 +46,31 @@ export async function GET(request: Request) {
 
         for (const country_code of country_codes) {
             const regions = await fetchRegions(country_code);
+            let index = 1;
             for (const region of regions) {
-                console.log("Region: ", region.name);
+                console.log(`Region ${index}: ${region.name}`);
+                index++;
                 for (const [price_range_min, price_range_max] of priceRanges) {
-                    await explore_wines(
-                        red_wine_id,
-                        country_code,
-                        region.id,
-                        price_range_min,
-                        price_range_max,
-                        seen_wineries,
-                        seen_wines,
-                    );
+                    try {
+                        await explore_wines(
+                            red_wine_id,
+                            country_code,
+                            region.id,
+                            price_range_min,
+                            price_range_max,
+                            seen_wineries,
+                            seen_wines,
+                        );
+                    } catch (error) {
+                        console.error("Error fetching wines:", error);
+                        console.error(
+                            "Params: ",
+                            country_code,
+                            region.id,
+                            price_range_min,
+                            price_range_max,
+                        );
+                    }
                 }
             }
         }
