@@ -2,23 +2,11 @@ export const maxDuration = 60;
 
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
-import {
-    store_grapes,
-    store_countries,
-    store_regions,
-    fetchExploreWineNumRecordsMatched,
-    explore_wines,
-} from "./utils";
+import { fetchExploreWineNumRecordsMatched, explore_wines } from "./utils";
 import { fetchRegions, fetchWineries, fetchWines } from "@/app/lib/data";
 
 export async function GET(request: Request) {
     try {
-        const vivinoWineryUrl = `https://www.vivino.com/api/wineries/89393/wines`;
-        const response = await fetch(vivinoWineryUrl);
-        const data = await response.json();
-        return Response.json(data);
-
-        /*
         const { searchParams } = new URL(request.url);
         const param_red_wine_id = parseInt(
             searchParams.get("wine_type_id") ?? "1",
@@ -58,7 +46,6 @@ export async function GET(request: Request) {
             [200, 500],
             [500, 100000],
         ];
-
 
         for (const country_code of country_codes) {
             const regions = await fetchRegions(country_code, param_region_id);
@@ -147,7 +134,6 @@ export async function GET(request: Request) {
         }
 
         return Response.json({ message: "Success" });
-        */
     } catch (error) {
         const errorResponse = {
             error: "Failed to fetch data",
@@ -160,5 +146,4 @@ export async function GET(request: Request) {
 
         return Response.json(errorResponse, { status: 500 });
     }
-    
 }

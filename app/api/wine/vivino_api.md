@@ -17,10 +17,10 @@ const vintageYear = "2020";
 const pageNumber = "1";
 const wineryId = "89393";
 
-const vivinoReviewsUrl = `https://www.vivino.com/api/wines/${wineId}/reviews?per_page=1&year=${vintageYear}&page=${pageNumber}`;
+const vivinoReviewsUrl = `https://www.vivino.com/api/wines/8811516/reviews?per_page=1&year=2020&page=1`;
 const vivinoCountriesUrl = `https://www.vivino.com/api/countries`;
 const vivinoExploreUrl = `https://www.vivino.com/api/explore/explore?country_code=FR&currency_code=EUR&min_rating=3&price_range_min=7&price_range_max=20&order_by=price&order=asc`;
-const vivinoWineryUrl = `https://www.vivino.com/api/wineries/${wineryId}/wines`;
+const vivinoWineryUrl = `https://www.vivino.com/api/wineries/8811516/wines`;
 const vivinoTastesUrl = `https://www.vivino.com/api/wines/${wineId}/tastes`;
 const vivinoPricesUrl = `https://www.vivino.com/api/prices`;
 const vivinoGrapesUrl = `https://www.vivino.com/api/grapes`;
