@@ -885,3 +885,8 @@ export async function fetchWinesPageCount(
         throw new Error("Failed to fetch wines count.");
     }
 }
+
+export async function fetchWineById(id: string) {
+    const response = await sql`SELECT * FROM vivino_wines WHERE id = ${id}`;
+    return response.rows[0];
+}

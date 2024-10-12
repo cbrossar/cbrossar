@@ -1,8 +1,9 @@
-import { fetchWinesFiltered, fetchWinesPageCount } from "@/app/lib/data";
-import { Wine } from "@/app/lib/definitions";
+import Link from "next/link";
 import Pagination from "@/app/ui/pagination";
 import Search from "@/app/ui/search";
 import TableHeader from "@/app/wine/table-header";
+import { fetchWinesFiltered, fetchWinesPageCount } from "@/app/lib/data";
+import { Wine } from "@/app/lib/definitions";
 import styles from "./styles.module.css";
 
 export default async function Page({
@@ -76,15 +77,17 @@ export default async function Page({
                         sortBy={sortBy}
                     />
                     <tbody>
-                        {wines.map((wine, index) => (
-                            <tr key={index}>
+                        {wines.map((wine) => (
+                            <tr key={wine.id}>
                                 <td
                                     style={{
                                         padding: "0 4px",
                                         minWidth: "150px",
                                     }}
                                 >
-                                    {wine.name}
+                                    <Link href={`/wine/${wine.id}/quiz`}>
+                                        {wine.name}
+                                    </Link>
                                 </td>
                                 <td
                                     style={{
