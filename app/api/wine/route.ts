@@ -13,7 +13,7 @@ import { fetchRegions, fetchWineries, fetchWines } from "@/app/lib/data";
 
 export async function GET(request: Request) {
     try {
-        const vivinoWineryUrl = `https://www.vivino.com/api/wineries/8811516/wines`;
+        const vivinoWineryUrl = `https://www.vivino.com/api/wineries/89393/wines`;
         const response = await fetch(vivinoWineryUrl);
         const data = await response.json();
         return Response.json(data);
