@@ -43,10 +43,10 @@ export async function GET(request: Request) {
         const seen_wines: Set<number> = new Set(wines.map((wine) => wine.id));
 
         const priceRanges = [
-            [0, 10],
-            [10, 15],
-            [15, 20],
-            [20, 30],
+            // [0, 10],
+            // [10, 15],
+            // [15, 20],
+            // [20, 30],
             [30, 40],
             [40, 50],
             [50, 70],
