@@ -136,6 +136,12 @@ export async function fetchExploreWineNumRecordsMatched(
 ) {
     const vivinoExploreWineTypeUrl = `https://www.vivino.com/api/explore/explore?wine_type_ids[]=${wine_type_id}&country_code=${country_code}&region_ids[]=${region_id}&price_range_min=${price_range_min}&price_range_max=${price_range_max}&page=1&per_page=1`;
     const response = await fetch(vivinoExploreWineTypeUrl, { headers });
+    if (!response.ok) {
+        if (response.status === 429) {
+            throw new Error('Too many requests. Please try again later.');
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data = await response.json();
 
     const num_records_matched = data["explore_vintage"]["records_matched"];

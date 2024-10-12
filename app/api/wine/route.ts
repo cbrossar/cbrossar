@@ -114,6 +114,17 @@ export async function GET(request: Request) {
                         );
                     }
                 } catch (error) {
+                    if (
+                        error instanceof Error &&
+                        error.message.includes("Too many requests")
+                    ) {
+                        console.error("Rate limit exceeded. Waiting 10 seconds before retrying...");
+                        // await new Promise(resolve => setTimeout(resolve, 10000));
+                        return Response.json(
+                            { error: "Rate limit exceeded" },
+                            { status: 429 },
+                        );
+                    }
                     console.error("Error fetching wines:", error);
                     console.error(
                         "Params: ",
@@ -128,16 +139,13 @@ export async function GET(request: Request) {
 
         return Response.json({ message: "Success" });
     } catch (error) {
-        if (error instanceof SyntaxError) {
-            console.error("Full error message:", error.message);
-        }
-        if (error instanceof Error && "cause" in error) {
-            console.error("Error cause:", error.cause);
-        }
+        const errorResponse = {
+            error: "Failed to fetch data",
+            ...(error instanceof SyntaxError ? { message: error.message } :
+               error instanceof Error && "cause" in error ? { cause: error.cause } :
+               {})
+        };
 
-        return Response.json(
-            { error: "Failed to fetch data" },
-            { status: 500 },
-        );
+        return Response.json(errorResponse, { status: 500 });
     }
 }
