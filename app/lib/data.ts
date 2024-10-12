@@ -715,7 +715,6 @@ export async function fetchRegions(
             LEFT JOIN vivino_wines vw ON vr.id = vw.region_id
             WHERE vr.country_code = ${country_code}
             AND vw.id IS NULL
-            AND vr.id != 4963
         `;
         return response.rows as Region[];
     } catch (error) {
