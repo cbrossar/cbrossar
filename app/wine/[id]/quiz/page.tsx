@@ -15,6 +15,12 @@ export default function Page({
     const id = params.id;
     const [wine, setWine] = useState<Wine | null>(null);
     const [regions, setRegions] = useState<Region[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [acidity, setAcidity] = useState(2.5);
+    const [sweetness, setSweetness] = useState(2.5);
+    const [tannins, setTannins] = useState(2.5);
+    const [cost, setCost] = useState(0);
+    const [rating, setRating] = useState(2.5);
 
     useEffect(() => {
         fetch("/api/wine-quiz?id=" + id)
@@ -22,10 +28,11 @@ export default function Page({
             .then((data) => {
                 setWine(data.wine);
                 setRegions(data.regions);
+                setIsLoading(false);
             });
     }, [id]);
 
-    if (!wine) {
+    if (isLoading || !wine) {
         return <></>;
     }
 
@@ -101,11 +108,12 @@ export default function Page({
                     min="0"
                     max="5"
                     step="0.1"
-                    defaultValue="2.5"
+                    value={acidity}
+                    onChange={(e) => setAcidity(Number(e.target.value))}
                     style={{ width: "200px" }}
                 />
                 <output htmlFor="acidity-slider" style={{ marginTop: "5px" }}>
-                    2.5
+                    {acidity}
                 </output>
             </div>
             <div
@@ -128,11 +136,12 @@ export default function Page({
                     min="0"
                     max="5"
                     step="0.1"
-                    defaultValue="2.5"
+                    value={sweetness}
+                    onChange={(e) => setSweetness(Number(e.target.value))}
                     style={{ width: "200px" }}
                 />
                 <output htmlFor="sweetness-slider" style={{ marginTop: "5px" }}>
-                    2.5
+                    {sweetness}
                 </output>
             </div>
             <div
@@ -155,11 +164,12 @@ export default function Page({
                     min="0"
                     max="5"
                     step="0.1"
-                    defaultValue="2.5"
+                    value={tannins}
+                    onChange={(e) => setTannins(Number(e.target.value))}
                     style={{ width: "200px" }}
                 />
                 <output htmlFor="tannins-slider" style={{ marginTop: "5px" }}>
-                    2.5
+                    {tannins}
                 </output>
             </div>
             <div
@@ -183,7 +193,9 @@ export default function Page({
                         min="0"
                         step="0.01"
                         placeholder="Enter cost"
-                        style={{ padding: "5px", width: "180px" }}
+                        style={{ padding: "5px", width: "80px" }}
+                        value={cost}
+                        onChange={(e) => setCost(Number(e.target.value))}
                     />
                 </div>
             </div>
@@ -204,7 +216,8 @@ export default function Page({
                     min="0"
                     max="5"
                     step="0.1"
-                    defaultValue="2.5"
+                    value={rating}
+                    onChange={(e) => setRating(Number(e.target.value))}
                     style={{ width: "200px" }}
                 />
                 <div
@@ -228,7 +241,7 @@ export default function Page({
                                     color: "gold",
                                     position: "absolute",
                                     overflow: "hidden",
-                                    width: `${Math.min(100, Math.max(0, (2.5 - star + 1) * 100))}%`,
+                                    width: `${Math.min(100, Math.max(0, (rating - star + 1) * 100))}%`,
                                 }}
                             >
                                 ★
@@ -240,7 +253,7 @@ export default function Page({
                         htmlFor="rating-slider"
                         style={{ marginLeft: "10px" }}
                     >
-                        2.5
+                        {rating}
                     </output>
                 </div>
             </div>

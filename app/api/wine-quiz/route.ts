@@ -3,7 +3,6 @@ export const dynamic = "force-dynamic"; // static by default, unless reading the
 import { fetchWineById, fetchRegions } from "@/app/lib/data";
 
 export async function GET(request: Request) {
-    console.log("fetching wine quiz data");
     const searchParams = new URL(request.url).searchParams;
     const id = searchParams.get("id");
     if (!id) {
