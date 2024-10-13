@@ -65,7 +65,7 @@ export default async function Page({
                             "Name",
                             "Winery",
                             "Region",
-                            "Country",
+                            "Ctry",
                             "Acidity",
                             "Intensity",
                             "Sweet",
