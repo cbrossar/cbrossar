@@ -19,7 +19,7 @@ export default function Page({
     const [acidity, setAcidity] = useState(2.5);
     const [sweetness, setSweetness] = useState(2.5);
     const [tannins, setTannins] = useState(2.5);
-    const [cost, setCost] = useState(0);
+    const [cost, setCost] = useState("");
     const [rating, setRating] = useState(2.5);
 
     useEffect(() => {
@@ -198,14 +198,12 @@ export default function Page({
                         {wine.currency_code === "USD" ? "$" : "€"}
                     </span>
                     <input
-                        type="number"
+                        type="text"
                         id="cost-input"
-                        min="0"
-                        step="0.01"
-                        placeholder="Enter cost"
+                        placeholder="19.99"
                         style={{ padding: "5px", width: "80px" }}
                         value={cost}
-                        onChange={(e) => setCost(Number(e.target.value))}
+                        onChange={(e) => setCost(e.target.value)}
                     />
                 </div>
             </div>
