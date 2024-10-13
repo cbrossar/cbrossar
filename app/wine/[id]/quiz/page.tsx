@@ -80,8 +80,18 @@ export default function Page({
                     list="region-options"
                     placeholder="Napa Valley"
                     style={{ padding: "5px", width: "200px" }}
+                    onFocus={(e) => {
+                        if ('ontouchstart' in window) {
+                            e.target.setAttribute('list', 'region-options');
+                        }
+                    }}
+                    onBlur={(e) => {
+                        if ('ontouchstart' in window) {
+                            e.target.removeAttribute('list');
+                        }
+                    }}
                 />
-                <datalist id="region-options" style={{ zIndex: 1000 }}>
+                <datalist id="region-options">
                     {regions.map((region) => (
                         <option key={region.id} value={region.name} />
                     ))}
