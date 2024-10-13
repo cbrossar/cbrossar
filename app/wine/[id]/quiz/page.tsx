@@ -17,11 +17,14 @@ export default function Page({
     const [wine, setWine] = useState<Wine | null>(null);
     const [regions, setRegions] = useState<Region[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [region_dict, setRegionDict] = useState<{ value: string, label: string }>();
     const [acidity, setAcidity] = useState(2.5);
     const [sweetness, setSweetness] = useState(2.5);
     const [tannins, setTannins] = useState(2.5);
     const [cost, setCost] = useState("");
     const [rating, setRating] = useState(2.5);
+    const [completed, setCompleted] = useState(false);
+    const [score, setScore] = useState(0);
 
     useEffect(() => {
         fetch("/api/wine-quiz?id=" + id)
@@ -39,9 +42,45 @@ export default function Page({
 
     const isHidden = searchParams.isHidden === "true";
 
-    const regionOptions = regions.map(region => ({ value: region.id, label: region.name }));
+    const regionOptions = regions.map(region => ({ value: region.id.toString(), label: region.name }));
 
-      // TODO: Add share link to copy url
+    const calculateScore = () => {
+        let score = 100; // Start with a perfect score
+
+        // Calculate score for acidity
+        const acidityDiff = Math.abs((wine.acidity || 0) - acidity);
+        score -= Math.min(acidityDiff * 5, 10);
+
+        // Calculate score for sweetness
+        const sweetnessDiff = Math.abs((wine.sweetness || 0) - sweetness);
+        score -= Math.min(sweetnessDiff * 5, 10);
+
+        // Calculate score for tannins
+        const tanninsDiff = Math.abs((wine.tannin || 0) - tannins);
+        score -= Math.min(tanninsDiff * 5, 10);
+
+        // Calculate score for cost
+        const costDiff = Math.abs(wine.price) - (parseFloat(cost) || 0);
+        score -= Math.min(costDiff * 5, 10);
+
+        // Calculate score for rating
+        const ratingDiff = Math.abs((wine.ratings_average || 0) - rating);
+        score -= Math.min(ratingDiff * 5, 10);
+
+        // Check if the region is correct
+        if (region_dict && region_dict.value !== wine.region_id.toString()) {
+            score -= 10;
+        }
+
+        // Ensure the score doesn't go below 0
+        return Math.max(0, Math.round(score));
+    };
+
+    const handleComplete = () => {
+        setCompleted(true);
+        const score = calculateScore();
+        setScore(score);
+    };
 
     return (
         <div style={{ position: "relative" }}>
@@ -81,6 +120,8 @@ export default function Page({
                     id="region-select"
                     options={regionOptions}
                     placeholder="Napa Valley"
+                    value={region_dict}
+                    onChange={(selectedOption) => setRegionDict(selectedOption as { value: string, label: string })}
                     styles={{
                         control: (provided) => ({
                             ...provided,
@@ -261,6 +302,43 @@ export default function Page({
                 >
                     {rating}
                 </output>
+            </div>
+
+            <div
+                style={{
+                    marginTop: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
+                {!completed ? (
+                    <button
+                        style={{
+                            padding: "10px 20px",
+                            fontSize: "16px",
+                            backgroundColor: "#4CAF50",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            marginBottom: "30px",
+                        }}
+                        onClick={handleComplete}
+                    >
+                        Complete
+                    </button>
+                ) : (
+                    <div
+                        style={{
+                            fontSize: "24px",
+                            fontWeight: "bold",
+                            color: "#4CAF50",
+                            marginBottom: "30px",
+                        }}
+                    >
+                        Score: {score}
+                    </div>
+                )}
             </div>
         </div>
     );
