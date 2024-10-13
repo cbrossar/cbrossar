@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import EyeToggle from "@/app/wine/eye-toggle";
-import Select from 'react-select';
+import Select from "react-select";
 import styles from "./styles.module.css";
 import { Region, Wine } from "@/app/lib/definitions";
 
@@ -17,7 +17,10 @@ export default function Page({
     const [wine, setWine] = useState<Wine | null>(null);
     const [regions, setRegions] = useState<Region[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [region_dict, setRegionDict] = useState<{ value: string, label: string }>();
+    const [region_dict, setRegionDict] = useState<{
+        value: string;
+        label: string;
+    }>();
     const [acidity, setAcidity] = useState(2.5);
     const [sweetness, setSweetness] = useState(2.5);
     const [tannins, setTannins] = useState(2.5);
@@ -42,7 +45,10 @@ export default function Page({
 
     const isHidden = searchParams.isHidden === "true";
 
-    const regionOptions = regions.map(region => ({ value: region.id.toString(), label: region.name }));
+    const regionOptions = regions.map((region) => ({
+        value: region.id.toString(),
+        label: region.name,
+    }));
 
     const calculateScore = () => {
         let score = 100; // Start with a perfect score
@@ -121,11 +127,15 @@ export default function Page({
                     options={regionOptions}
                     placeholder="Napa Valley"
                     value={region_dict}
-                    onChange={(selectedOption) => setRegionDict(selectedOption as { value: string, label: string })}
+                    onChange={(selectedOption) =>
+                        setRegionDict(
+                            selectedOption as { value: string; label: string },
+                        )
+                    }
                     styles={{
                         control: (provided) => ({
                             ...provided,
-                            width: '200px',
+                            width: "200px",
                         }),
                     }}
                 />
@@ -288,7 +298,7 @@ export default function Page({
                         step="0.1"
                         value={rating}
                         onChange={(e) => setRating(Number(e.target.value))}
-                        style={{ 
+                        style={{
                             position: "absolute",
                             width: "100%",
                             height: "100%",
@@ -297,11 +307,7 @@ export default function Page({
                         }}
                     />
                 </div>
-                <output
-                    htmlFor="rating-slider"
-                >
-                    {rating}
-                </output>
+                <output htmlFor="rating-slider">{rating}</output>
             </div>
 
             <div
