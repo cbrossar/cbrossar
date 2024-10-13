@@ -699,10 +699,16 @@ export async function createRegions(regions: Region[]) {
 }
 
 export async function fetchRegions(
-    country_code: string,
+    country_code: string | null = null,
     region_id: number | null = null,
 ) {
     try {
+        if (!country_code && !region_id) {
+            const response =
+                await sql`SELECT * FROM vivino_regions ORDER BY name`;
+            return response.rows as Region[];
+        }
+
         if (region_id) {
             const response =
                 await sql`SELECT * FROM vivino_regions WHERE id = ${region_id}`;
@@ -887,6 +893,12 @@ export async function fetchWinesPageCount(
 }
 
 export async function fetchWineById(id: string) {
-    const response = await sql`SELECT * FROM vivino_wines WHERE id = ${id}`;
+    const response = await sql`
+        SELECT v.*, r.name AS region_name, w.name AS winery_name
+        FROM vivino_wines v
+        LEFT JOIN vivino_regions r ON v.region_id = r.id
+        LEFT JOIN vivino_wineries w ON v.winery_id = w.id
+        WHERE v.id = ${id}
+    `;
     return response.rows[0];
 }

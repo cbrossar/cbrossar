@@ -1,0 +1,17 @@
+.title {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.wineName {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.hidden {
+    background-color: #f0f0f0;
+    color: #f0f0f0;
+    border-radius: 5px;
+    padding: 2px 5px;
+}

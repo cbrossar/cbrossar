@@ -1,7 +1,6 @@
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
 export async function GET(request: Request) {
-
     const wineId = "8811516";
     const vintageYear = "2020";
     const pageNumber = "4";
@@ -18,9 +17,8 @@ export async function GET(request: Request) {
     const vivinoGrapesUrl = `https://www.vivino.com/api/grapes`;
     const vivinoRegionsUrl = `https://www.vivino.com/api/regions`;
     const vivinoExploreWineTypeUrl =
-    "https://www.vivino.com/api/explore/explore?wine_type_ids[]=2&country_code=US&min_rating=3&order_by=price&order=desc";
-    const vivinoExploreRegionUrl =
-    `https://www.vivino.com/api/explore/explore?region_ids[]=${regionId}&country_code=${countryCode}&order_by=price&order=desc&page=${pageNumber}`;
+        "https://www.vivino.com/api/explore/explore?wine_type_ids[]=2&country_code=US&min_rating=3&order_by=price&order=desc";
+    const vivinoExploreRegionUrl = `https://www.vivino.com/api/explore/explore?region_ids[]=${regionId}&country_code=${countryCode}&order_by=price&order=desc&page=${pageNumber}`;
 
     const response = await fetch(vivinoExploreRegionUrl);
     const data = await response.json();

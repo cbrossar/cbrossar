@@ -79,9 +79,23 @@ export default async function Page({
                     <tbody>
                         {wines.map((wine) => (
                             <tr key={wine.id}>
-                                <td style={{ padding: "0 4px", minWidth: "150px" }}>
+                                <td
+                                    style={{
+                                        padding: "0 4px",
+                                        minWidth: "150px",
+                                    }}
+                                >
                                     <Link href={`/wine/${wine.id}/quiz`}>
-                                        <div style={{ maxHeight: "2.8em", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+                                        <div
+                                            style={{
+                                                maxHeight: "2.8em",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                display: "-webkit-box",
+                                                WebkitLineClamp: 2,
+                                                WebkitBoxOrient: "vertical",
+                                            }}
+                                        >
                                             {wine.name}
                                         </div>
                                     </Link>
@@ -92,7 +106,16 @@ export default async function Page({
                                         minWidth: "120px",
                                     }}
                                 >
-                                    <div style={{ maxHeight: "2.8em", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+                                    <div
+                                        style={{
+                                            maxHeight: "2.8em",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 2,
+                                            WebkitBoxOrient: "vertical",
+                                        }}
+                                    >
                                         {wine.winery_name}
                                     </div>
                                 </td>
@@ -102,7 +125,16 @@ export default async function Page({
                                         minWidth: "100px",
                                     }}
                                 >
-                                    <div style={{ maxHeight: "2.8em", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
+                                    <div
+                                        style={{
+                                            maxHeight: "2.8em",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            display: "-webkit-box",
+                                            WebkitLineClamp: 2,
+                                            WebkitBoxOrient: "vertical",
+                                        }}
+                                    >
                                         {wine.region_name}
                                     </div>
                                 </td>
