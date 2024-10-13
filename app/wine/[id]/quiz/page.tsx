@@ -81,7 +81,7 @@ export default function Page({
                     placeholder="Napa Valley"
                     style={{ padding: "5px", width: "200px" }}
                 />
-                <datalist id="region-options">
+                <datalist id="region-options" style={{ zIndex: 1000 }}>
                     {regions.map((region) => (
                         <option key={region.id} value={region.name} />
                     ))}
