@@ -892,6 +892,13 @@ export async function fetchWinesPageCount(
     }
 }
 
+export async function fetchWineQuizData() {
+    console.log("fetching wine quiz data for");
+    const id = "1";
+    const response = await fetch(`/api/wine-quiz?id=${id}`);
+    return response.json();
+}
+
 export async function fetchWineById(id: string) {
     const response = await sql`
         SELECT v.*, r.name AS region_name, w.name AS winery_name
@@ -900,5 +907,5 @@ export async function fetchWineById(id: string) {
         LEFT JOIN vivino_wineries w ON v.winery_id = w.id
         WHERE v.id = ${id}
     `;
-    return response.rows[0];
+    return response.rows[0] as Wine;
 }

@@ -1,9 +1,11 @@
-import { fetchWineById, fetchRegions } from "@/app/lib/data";
-import { notFound } from "next/navigation";
+"use client";
+
+import { useState, useEffect } from "react";
 import EyeToggle from "@/app/wine/eye-toggle";
 import styles from "./styles.module.css";
+import { Region, Wine } from "@/app/lib/definitions";
 
-export default async function Page({
+export default function Page({
     params,
     searchParams,
 }: {
@@ -11,14 +13,25 @@ export default async function Page({
     searchParams: { isHidden?: string };
 }) {
     const id = params.id;
-    const wine = await fetchWineById(id);
+    const [wine, setWine] = useState<Wine | null>(null);
+    const [regions, setRegions] = useState<Region[]>([]);
+
+    useEffect(() => {
+        fetch("/api/wine-quiz?id=" + id)
+            .then((res) => res.json())
+            .then((data) => {
+                setWine(data.wine);
+                setRegions(data.regions);
+            });
+    }, [id]);
+
     if (!wine) {
-        notFound();
+        return <></>;
     }
 
-    const regions = await fetchRegions();
-
     const isHidden = searchParams.isHidden === "true";
+
+    // TODO: Add share link to copy url
 
     return (
         <div style={{ position: "relative" }}>
