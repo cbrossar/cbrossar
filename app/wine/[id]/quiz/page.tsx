@@ -218,21 +218,11 @@ export default function Page({
                 <label htmlFor="rating-slider" style={{ marginBottom: "10px" }}>
                     Guess the Rating:
                 </label>
-                <input
-                    type="range"
-                    id="rating-slider"
-                    min="0"
-                    max="5"
-                    step="0.1"
-                    value={rating}
-                    onChange={(e) => setRating(Number(e.target.value))}
-                    style={{ width: "200px" }}
-                />
                 <div
                     style={{
-                        marginTop: "10px",
                         display: "flex",
                         alignItems: "center",
+                        position: "relative",
                     }}
                 >
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -257,13 +247,28 @@ export default function Page({
                             <span style={{ color: "gray" }}>★</span>
                         </span>
                     ))}
-                    <output
-                        htmlFor="rating-slider"
-                        style={{ marginLeft: "10px" }}
-                    >
-                        {rating}
-                    </output>
+                    <input
+                        type="range"
+                        id="rating-slider"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value={rating}
+                        onChange={(e) => setRating(Number(e.target.value))}
+                        style={{ 
+                            position: "absolute",
+                            width: "100%",
+                            height: "100%",
+                            opacity: 0,
+                            cursor: "pointer",
+                        }}
+                    />
                 </div>
+                <output
+                    htmlFor="rating-slider"
+                >
+                    {rating}
+                </output>
             </div>
         </div>
     );
