@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import EyeToggle from "@/app/wine/eye-toggle";
+import Select from 'react-select';
 import styles from "./styles.module.css";
 import { Region, Wine } from "@/app/lib/definitions";
 
@@ -38,7 +39,9 @@ export default function Page({
 
     const isHidden = searchParams.isHidden === "true";
 
-    // TODO: Add share link to copy url
+    const regionOptions = regions.map(region => ({ value: region.id, label: region.name }));
+
+      // TODO: Add share link to copy url
 
     return (
         <div style={{ position: "relative" }}>
@@ -74,28 +77,17 @@ export default function Page({
                 <label htmlFor="region-select" style={{ marginBottom: "10px" }}>
                     Select the Region:
                 </label>
-                <input
-                    type="text"
+                <Select
                     id="region-select"
-                    list="region-options"
+                    options={regionOptions}
                     placeholder="Napa Valley"
-                    style={{ padding: "5px", width: "200px" }}
-                    onFocus={(e) => {
-                        if ('ontouchstart' in window) {
-                            e.target.setAttribute('list', 'region-options');
-                        }
-                    }}
-                    onBlur={(e) => {
-                        if ('ontouchstart' in window) {
-                            e.target.removeAttribute('list');
-                        }
+                    styles={{
+                        control: (provided) => ({
+                            ...provided,
+                            width: '200px',
+                        }),
                     }}
                 />
-                <datalist id="region-options">
-                    {regions.map((region) => (
-                        <option key={region.id} value={region.name} />
-                    ))}
-                </datalist>
             </div>
 
             <div
