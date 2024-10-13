@@ -75,7 +75,13 @@ export default function Page({
 
         // Check if the region is correct
         if (region_dict && region_dict.value !== wine.region_id.toString()) {
-            score -= 10;
+            const selectedRegion = regions.find(r => r.id.toString() === region_dict.value);
+            const wineRegion = regions.find(r => r.id === wine.region_id);
+            if (selectedRegion && wineRegion && selectedRegion.country_code === wineRegion.country_code) {
+                score -= 5;
+            } else {
+                score -= 10;
+            }
         }
 
         // Ensure the score doesn't go below 0
