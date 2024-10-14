@@ -5,6 +5,8 @@ import EyeToggle from "@/app/wine/eye-toggle";
 import Select from "react-select";
 import styles from "./styles.module.css";
 import { Region, Wine } from "@/app/lib/definitions";
+import { usePathname, useRouter } from "next/navigation";
+import { calculateScore } from "./utils";
 
 export default function Page({
     params,
@@ -29,6 +31,9 @@ export default function Page({
     const [completed, setCompleted] = useState(false);
     const [score, setScore] = useState(0);
 
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
     useEffect(() => {
         fetch("/api/wine-quiz?id=" + id)
             .then((res) => res.json())
@@ -50,49 +55,26 @@ export default function Page({
         label: region.name,
     }));
 
-    const calculateScore = () => {
-        let score = 100; // Start with a perfect score
-
-        // Calculate score for acidity
-        const acidityDiff = Math.abs((wine.acidity || 0) - acidity);
-        score -= Math.min(acidityDiff * 5, 10);
-
-        // Calculate score for sweetness
-        const sweetnessDiff = Math.abs((wine.sweetness || 0) - sweetness);
-        score -= Math.min(sweetnessDiff * 5, 10);
-
-        // Calculate score for tannins
-        const tanninsDiff = Math.abs((wine.tannin || 0) - tannins);
-        score -= Math.min(tanninsDiff * 5, 10);
-
-        // Calculate score for cost
-        const costDiff = Math.abs(wine.price) - (parseFloat(cost) || 0);
-        score -= Math.min(costDiff * 5, 10);
-
-        // Calculate score for rating
-        const ratingDiff = Math.abs((wine.ratings_average || 0) - rating);
-        score -= Math.min(ratingDiff * 5, 10);
-
-        // Check if the region is correct
-        if (region_dict && region_dict.value !== wine.region_id.toString()) {
-            const selectedRegion = regions.find(r => r.id.toString() === region_dict.value);
-            const wineRegion = regions.find(r => r.id === wine.region_id);
-            if (selectedRegion && wineRegion && selectedRegion.country_code === wineRegion.country_code) {
-                score -= 5;
-            } else {
-                score -= 10;
-            }
-        }
-
-        // Ensure the score doesn't go below 0
-        return Math.max(0, Math.round(score));
-    };
-
     const handleComplete = () => {
         setCompleted(true);
-        const score = calculateScore();
+        const score = calculateScore(
+            wine,
+            acidity,
+            sweetness,
+            tannins,
+            cost,
+            rating,
+            region_dict,
+            regions,
+        );
         setScore(score);
+        const params = new URLSearchParams(searchParams as any);
+        params.set("isHidden", "false");
+        replace(`${pathname}?${params.toString()}`);
     };
+
+    const regionName = regions.find((r) => r.id === wine.region_id)?.name;
+    const milesAway = 10;
 
     return (
         <div style={{ position: "relative" }}>
@@ -146,6 +128,42 @@ export default function Page({
                     }}
                 />
             </div>
+            {completed && regionName == region_dict?.label && (
+                <div
+                    style={{
+                        marginTop: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        color: "green",
+                    }}
+                >
+                    <p>
+                        <span style={{ fontSize: "1.5em", marginRight: "5px" }}>
+                            ✓
+                        </span>
+                        {regionName}
+                    </p>
+                </div>
+            )}
+            {completed && regionName != region_dict?.label && (
+                <div
+                    style={{
+                        marginTop: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        color: "red",
+                    }}
+                >
+                    <p>
+                        <span style={{ fontSize: "1em", marginRight: "5px" }}>
+                            ✕
+                        </span>
+                        {regionName} ({milesAway} mi away)
+                    </p>
+                </div>
+            )}
 
             <div
                 style={{
@@ -172,7 +190,38 @@ export default function Page({
                     style={{ width: "200px" }}
                 />
                 <output htmlFor="acidity-slider" style={{ marginTop: "5px" }}>
-                    {acidity}
+                    {completed && wine ? (
+                        acidity.toFixed(1) ===
+                        (wine.acidity || 0).toFixed(1) ? (
+                            <span style={{ color: "green" }}>
+                                <span
+                                    style={{
+                                        fontSize: "1.5em",
+                                        marginRight: "5px",
+                                    }}
+                                >
+                                    ✓
+                                </span>
+                                {acidity.toFixed(1)}
+                            </span>
+                        ) : (
+                            <>
+                                <span
+                                    style={{
+                                        color: "red",
+                                        textDecoration: "line-through",
+                                    }}
+                                >
+                                    {acidity.toFixed(1)}
+                                </span>{" "}
+                                <span style={{ color: "green" }}>
+                                    {(wine.acidity || 0).toFixed(1)}
+                                </span>
+                            </>
+                        )
+                    ) : (
+                        acidity.toFixed(1)
+                    )}
                 </output>
             </div>
             <div
@@ -200,7 +249,38 @@ export default function Page({
                     style={{ width: "200px" }}
                 />
                 <output htmlFor="sweetness-slider" style={{ marginTop: "5px" }}>
-                    {sweetness}
+                    {completed && wine ? (
+                        sweetness.toFixed(1) ===
+                        (wine.sweetness || 0).toFixed(1) ? (
+                            <span style={{ color: "green" }}>
+                                <span
+                                    style={{
+                                        fontSize: "1.5em",
+                                        marginRight: "5px",
+                                    }}
+                                >
+                                    ✓
+                                </span>
+                                {sweetness.toFixed(1)}
+                            </span>
+                        ) : (
+                            <>
+                                <span
+                                    style={{
+                                        color: "red",
+                                        textDecoration: "line-through",
+                                    }}
+                                >
+                                    {sweetness.toFixed(1)}
+                                </span>{" "}
+                                <span style={{ color: "green" }}>
+                                    {(wine.sweetness || 0).toFixed(1)}
+                                </span>
+                            </>
+                        )
+                    ) : (
+                        sweetness.toFixed(1)
+                    )}
                 </output>
             </div>
             <div
@@ -228,7 +308,37 @@ export default function Page({
                     style={{ width: "200px" }}
                 />
                 <output htmlFor="tannins-slider" style={{ marginTop: "5px" }}>
-                    {tannins}
+                    {completed && wine ? (
+                        tannins.toFixed(1) === (wine.tannin || 0).toFixed(1) ? (
+                            <span style={{ color: "green" }}>
+                                <span
+                                    style={{
+                                        fontSize: "1.5em",
+                                        marginRight: "5px",
+                                    }}
+                                >
+                                    ✓
+                                </span>
+                                {tannins.toFixed(1)}
+                            </span>
+                        ) : (
+                            <>
+                                <span
+                                    style={{
+                                        color: "red",
+                                        textDecoration: "line-through",
+                                    }}
+                                >
+                                    {tannins.toFixed(1)}
+                                </span>{" "}
+                                <span style={{ color: "green" }}>
+                                    {(wine.tannin || 0).toFixed(1)}
+                                </span>
+                            </>
+                        )
+                    ) : (
+                        tannins.toFixed(1)
+                    )}
                 </output>
             </div>
             <div
@@ -254,6 +364,26 @@ export default function Page({
                         value={cost}
                         onChange={(e) => setCost(e.target.value)}
                     />
+                    {completed &&
+                        wine &&
+                        (Number(cost) == (wine.price || 0) ? (
+                            <span style={{ color: "green" }}>
+                                <span
+                                    style={{
+                                        fontSize: "1.5em",
+                                        marginRight: "5px",
+                                    }}
+                                >
+                                    ✓
+                                </span>
+                            </span>
+                        ) : (
+                            <>
+                                <span style={{ color: "green" }}>
+                                    {(wine.price || 0).toFixed(2)}
+                                </span>
+                            </>
+                        ))}
                 </div>
             </div>
             <div
@@ -313,9 +443,40 @@ export default function Page({
                         }}
                     />
                 </div>
-                <output htmlFor="rating-slider">{rating}</output>
+                <output htmlFor="rating-slider">
+                    {completed && wine ? (
+                        rating == wine.ratings_average ? (
+                            <span style={{ color: "green" }}>
+                                <span
+                                    style={{
+                                        fontSize: "1.5em",
+                                        marginRight: "5px",
+                                    }}
+                                >
+                                    ✓
+                                </span>
+                                {rating.toFixed(1)}
+                            </span>
+                        ) : (
+                            <>
+                                <span
+                                    style={{
+                                        color: "red",
+                                        textDecoration: "line-through",
+                                    }}
+                                >
+                                    {rating.toFixed(1)}
+                                </span>{" "}
+                                <span style={{ color: "green" }}>
+                                    {(wine.ratings_average || 0).toFixed(1)}
+                                </span>
+                            </>
+                        )
+                    ) : (
+                        rating.toFixed(1)
+                    )}
+                </output>
             </div>
-
             <div
                 style={{
                     marginTop: "20px",
