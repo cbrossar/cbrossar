@@ -1,26 +1,4 @@
 import { sql } from "@vercel/postgres";
-import { Team } from "./definitions";
-
-export async function fetchBethpage() {
-    try {
-        const response = await fetch("/api/bethpage");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        throw new Error("Failed to fetch booking data");
-    }
-}
-
-export async function fetchLTrainTimes() {
-    try {
-        const response = await fetch("/api/ltrain");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error(error);
-        throw new Error("Failed to fetch L train times data");
-    }
-}
 
 export async function createDoomsdayAttempt(
     correct: boolean,

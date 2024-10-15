@@ -1,5 +1,5 @@
 import Form from "@/app/ui/music-review/edit-form";
-import { fetchMusicReviewById } from "@/app/lib/data";
+import { fetchMusicReviewById } from "@/app/data/music";
 import { notFound } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {

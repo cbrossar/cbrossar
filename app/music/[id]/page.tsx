@@ -1,4 +1,4 @@
-import { fetchMusicReviewById } from "@/app/lib/data";
+import { fetchMusicReviewById } from "@/app/data/music";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";

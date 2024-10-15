@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
-import { createDoomsdayAttempt, fetchDoomsdayStats } from "@/app/lib/data";
+import { createDoomsdayAttempt, fetchDoomsdayStats } from "@/app/data/doomsday";
 
 export async function POST(request: Request) {
     try {

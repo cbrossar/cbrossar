@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { fetchLTrainTimes } from "@/app/lib/data";
 
 const useLTrainTimes = () => {
     const [lTrainTimes, setLTrainTimes] = useState<{ [key: string]: string[] }>(
@@ -11,7 +10,8 @@ const useLTrainTimes = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const times = await fetchLTrainTimes();
+                const response = await fetch("/api/ltrain");
+                const times = await response.json();
                 setLTrainTimes(times);
             } catch (error) {
                 setError(

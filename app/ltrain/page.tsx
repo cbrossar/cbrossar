@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import { format, parse } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import useLTrainTimes from "@/app/lib/useLTrainTimes";
 import Tooltip from "@mui/material/Tooltip";
+import SuspenseBoundary from "@/app/lib/suspense";
 import styles from "./styles.module.css";
-import SuspenseBoundary from "../lib/suspense"; // Update the path
+import useLTrainTimes from "./useLTrainTimes";
 
 export default function Page() {
     return (

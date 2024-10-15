@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { fetchBethpage } from "../lib/data";
-import { BookingData } from "../lib/definitions";
+import { BookingData } from "@/app/lib/definitions";
 import styles from "./styles.module.css"; // Import CSS module for styling
 
 const BethpageBookingPage = () => {
@@ -15,7 +14,8 @@ const BethpageBookingPage = () => {
         setError(null);
         setProgress(0);
         try {
-            const data = await fetchBethpage();
+            const response = await fetch("/api/bethpage");
+            const data = await response.json();
             setBookingData(data);
         } catch (error) {
             setError("Error fetching booking data. Please try again later.");
