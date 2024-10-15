@@ -2,7 +2,7 @@ import {
     fetchFantasyTeams,
     fetchPlayersByPositionAll,
     fetchPlayersByPositionCurrent,
-} from "@/app/lib/data";
+} from "@/app/data/fantasy";
 import Link from "next/link";
 import Image from "next/image";
 import { maximizeFantasyTeam } from "./utils";

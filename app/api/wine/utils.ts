@@ -1,12 +1,11 @@
 import { Grape, Country, Region, Winery, Wine } from "@/app/lib/definitions";
 import {
     createGrapes,
-    createCountries,
-    createRegions,
-    createWineries,
     createWines,
-} from "@/app/lib/data";
-import { exit } from "process";
+    createWineries,
+    createRegions,
+    createCountries,
+} from "@/app/data/wine";
 
 const headers = {
     "User-Agent":

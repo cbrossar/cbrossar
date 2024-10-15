@@ -1,4 +1,4 @@
-import { upsertFantasyPlayer, fetchFantasyMaxStats } from "@/app/lib/data";
+import { upsertFantasyPlayer, fetchFantasyMaxStats } from "@/app/data/fantasy";
 import { FantasyPlayer } from "@/app/lib/definitions";
 import { calculateTransferIndex, upsertFantasyTeams } from "./utils";
 

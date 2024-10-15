@@ -3,7 +3,7 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
 import { fetchExploreWineNumRecordsMatched, explore_wines } from "./utils";
-import { fetchRegions, fetchWineries, fetchWines } from "@/app/lib/data";
+import { fetchWines, fetchWineries, fetchRegions } from "@/app/data/wine";
 
 export async function GET(request: Request) {
     try {

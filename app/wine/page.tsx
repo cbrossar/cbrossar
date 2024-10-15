@@ -2,7 +2,7 @@ import Link from "next/link";
 import Pagination from "@/app/ui/pagination";
 import Search from "@/app/ui/search";
 import TableHeader from "@/app/wine/table-header";
-import { fetchWinesFiltered, fetchWinesPageCount } from "@/app/lib/data";
+import { fetchWinesFiltered, fetchWinesPageCount } from "@/app/data/wine";
 import { Wine } from "@/app/lib/definitions";
 import styles from "./styles.module.css";
 

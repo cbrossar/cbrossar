@@ -3,7 +3,7 @@ import {
     fetchFantasyPositions,
     fetchFantasyTeams,
     fetchPlayersCount,
-} from "@/app/lib/data";
+} from "@/app/data/fantasy";
 import {
     FantasyPlayer,
     FantasyPosition,

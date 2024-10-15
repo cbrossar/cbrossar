@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
-import { fetchWineById, fetchRegions } from "@/app/lib/data";
+import { fetchWineById, fetchRegions } from "@/app/data/wine";
 
 export async function GET(request: Request) {
     const searchParams = new URL(request.url).searchParams;

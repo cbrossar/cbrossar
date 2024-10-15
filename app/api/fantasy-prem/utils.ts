@@ -1,4 +1,4 @@
-import { upsertFantasyPosition, upsertFantasyTeam } from "@/app/lib/data";
+import { upsertFantasyPosition, upsertFantasyTeam } from "@/app/data/fantasy";
 import {
     FantasyPlayer,
     FantasyPosition,
