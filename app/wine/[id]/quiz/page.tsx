@@ -540,7 +540,7 @@ export default function Page({
                                 </div>
                             }
                             enterTouchDelay={0}
-                            leaveTouchDelay={1500}
+                            leaveTouchDelay={3000}
                         >
                             <span
                                 style={{
