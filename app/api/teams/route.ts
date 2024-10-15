@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
-import { fetchTeams } from "@/app/lib/data";
+import { fetchTeams } from "@/app/data/soccer";
 
 export async function GET(request: Request) {
     try {
