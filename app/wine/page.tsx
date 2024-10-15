@@ -106,16 +106,7 @@ export default async function Page({
                                         minWidth: "120px",
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            maxHeight: "2.8em",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            display: "-webkit-box",
-                                            WebkitLineClamp: 2,
-                                            WebkitBoxOrient: "vertical",
-                                        }}
-                                    >
+                                    <div className={styles.twoLineClamp}>
                                         {wine.winery_name}
                                     </div>
                                 </td>
@@ -125,16 +116,7 @@ export default async function Page({
                                         minWidth: "100px",
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            maxHeight: "2.8em",
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            display: "-webkit-box",
-                                            WebkitLineClamp: 2,
-                                            WebkitBoxOrient: "vertical",
-                                        }}
-                                    >
+                                    <div className={styles.twoLineClamp}>
                                         {wine.region_name}
                                     </div>
                                 </td>
