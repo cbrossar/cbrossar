@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { fetchMusicReviews } from "@/app/lib/data";
+import { fetchMusicReviews } from "@/app/data/music";
 import Search from "@/app/ui/search";
 import styles from "./styles.module.css";
 

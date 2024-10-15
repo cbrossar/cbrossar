@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
+import { createMatch, createTeam, createMatchUpdate } from "@/app/data/soccer";
 
 const API_KEY = process.env.FOOTBALL_DATA_API_KEY;
 const TEAM_ID = "73"; // Tottenham Hotspur's team ID in Football-Data.org

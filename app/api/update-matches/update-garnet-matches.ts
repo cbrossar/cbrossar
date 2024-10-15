@@ -1,7 +1,7 @@
 import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
 import chromium from "@sparticuz/chromium";
-import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
+import { createMatch, createTeam, createMatchUpdate } from "@/app/data/soccer";
 
 export const dynamic = "force-dynamic";
 

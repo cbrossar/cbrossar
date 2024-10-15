@@ -1,6 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import { createMatch, createTeam, createMatchUpdate } from "@/app/lib/data";
+import { createMatch, createTeam, createMatchUpdate } from "@/app/data/soccer";
 
 export default async function updateBeermenMatches() {
     try {

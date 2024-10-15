@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import CurrentForm from "./CurrentForm";
 import {
+    fetchTeams,
     fetchSpursMatches,
     fetchWerderMatches,
-    fetchTeams,
     fetchGarnetMatches,
-} from "@/app/lib/data";
+} from "@/app/data/soccer";
 import styles from "./styles.module.css";
 import { Team } from "../lib/definitions";
 import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "../lib/constants";
