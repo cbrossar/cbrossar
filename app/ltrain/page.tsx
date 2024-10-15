@@ -5,7 +5,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import Tooltip from "@mui/material/Tooltip";
 import SuspenseBoundary from "@/app/lib/suspense";
-import styles from "./styles.module.css";
+import Spinner from "@/app/ui/spinner";
 import useLTrainTimes from "./useLTrainTimes";
 
 export default function Page() {
@@ -59,11 +59,7 @@ function LTrain() {
     };
 
     if (isLoading) {
-        return (
-            <div className="flex justify-center h-screen">
-                <div className={styles.spinner}></div>
-            </div>
-        );
+        return <Spinner />;
     }
 
     if (error) {

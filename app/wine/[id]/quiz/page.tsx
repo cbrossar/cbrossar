@@ -7,6 +7,7 @@ import styles from "./styles.module.css";
 import { Region, Wine } from "@/app/lib/definitions";
 import { usePathname, useRouter } from "next/navigation";
 import { calculateScore } from "./utils";
+import Spinner from "@/app/ui/spinner";
 
 export default function Page({
     params,
@@ -45,7 +46,7 @@ export default function Page({
     }, [id]);
 
     if (isLoading || !wine) {
-        return <></>;
+        return <Spinner />;
     }
 
     const isHidden = searchParams.isHidden === "true";
