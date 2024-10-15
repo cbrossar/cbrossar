@@ -44,7 +44,7 @@ export const calculateScore = (
 
     // Calculate score for cost
     const costDiff = Math.abs(wine.price - (parseFloat(cost) || 0));
-    costScore = Math.round(Math.max(0, 15 - Math.min(costDiff * 5, 15)));
+    costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 2, 15)));
     score += costScore;
 
     // Calculate score for rating
