@@ -6,6 +6,7 @@ import Select from "react-select";
 import styles from "./styles.module.css";
 import { Region, Wine } from "@/app/lib/definitions";
 import { usePathname, useRouter } from "next/navigation";
+import Tooltip from "@mui/material/Tooltip";
 import { calculateScore } from "./utils";
 import Spinner from "@/app/ui/spinner";
 
@@ -30,7 +31,6 @@ export default function Page({
     const [cost, setCost] = useState("");
     const [rating, setRating] = useState(2.5);
     const [completed, setCompleted] = useState(false);
-    const [score, setScore] = useState(0);
 
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -58,17 +58,6 @@ export default function Page({
 
     const handleComplete = () => {
         setCompleted(true);
-        const score = calculateScore(
-            wine,
-            acidity,
-            sweetness,
-            tannins,
-            cost,
-            rating,
-            region_dict,
-            regions,
-        );
-        setScore(score);
         const params = new URLSearchParams(searchParams as any);
         params.set("isHidden", "false");
         replace(`${pathname}?${params.toString()}`);
@@ -76,6 +65,16 @@ export default function Page({
 
     const regionName = regions.find((r) => r.id === wine.region_id)?.name;
     const milesAway = 10;
+    const { score, tooltipText } = calculateScore(
+        wine,
+        acidity,
+        sweetness,
+        tannins,
+        cost,
+        rating,
+        region_dict,
+        regions,
+    );
 
     return (
         <div style={{ position: "relative" }}>
@@ -354,7 +353,6 @@ export default function Page({
                     Guess the Cost:
                 </label>
                 <div style={{ display: "flex", alignItems: "center" }}>
-                    
                     {!completed && (
                         <>
                             <span style={{ marginRight: "5px" }}>
@@ -374,7 +372,6 @@ export default function Page({
                         wine &&
                         (Number(cost) == (wine.price || 0) ? (
                             <span style={{ color: "green" }}>
-                                
                                 <span
                                     style={{
                                         fontSize: "1.5em",
@@ -390,7 +387,7 @@ export default function Page({
                             </span>
                         ) : (
                             <>
-                            <span style={{ marginRight: "5px" }}>
+                                <span style={{ marginRight: "5px" }}>
                                     {wine.currency_code === "USD" ? "$" : "€"}
                                 </span>
                                 <span
@@ -400,7 +397,6 @@ export default function Page({
                                         marginRight: "5px",
                                     }}
                                 >
-                                    
                                     {cost || 0}
                                 </span>{" "}
                                 <span style={{ color: "green" }}>
@@ -531,9 +527,33 @@ export default function Page({
                             fontWeight: "bold",
                             color: "#4CAF50",
                             marginBottom: "30px",
+                            display: "flex",
+                            alignItems: "center",
+                            position: "relative",
                         }}
                     >
                         Score: {score}
+                        <Tooltip
+                            title={
+                                <div style={{ whiteSpace: "pre-line" }}>
+                                    {tooltipText}
+                                </div>
+                            }
+                            enterTouchDelay={0}
+                            leaveTouchDelay={1500}
+                        >
+                            <span
+                                style={{
+                                    position: "absolute",
+                                    top: "0",
+                                    right: "-20px",
+                                    fontSize: "14px",
+                                    cursor: "help",
+                                }}
+                            >
+                                ⓘ
+                            </span>
+                        </Tooltip>
                     </div>
                 )}
             </div>
