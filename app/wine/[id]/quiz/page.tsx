@@ -354,21 +354,27 @@ export default function Page({
                     Guess the Cost:
                 </label>
                 <div style={{ display: "flex", alignItems: "center" }}>
-                    <span style={{ marginRight: "5px" }}>
-                        {wine.currency_code === "USD" ? "$" : "€"}
-                    </span>
-                    <input
-                        type="text"
-                        id="cost-input"
-                        placeholder="19.99"
-                        style={{ padding: "5px", width: "80px" }}
-                        value={cost}
-                        onChange={(e) => setCost(e.target.value)}
-                    />
+                    
+                    {!completed && (
+                        <>
+                            <span style={{ marginRight: "5px" }}>
+                                {wine.currency_code === "USD" ? "$" : "€"}
+                            </span>
+                            <input
+                                type="text"
+                                id="cost-input"
+                                placeholder="19.99"
+                                style={{ padding: "5px", width: "80px" }}
+                                value={cost}
+                                onChange={(e) => setCost(e.target.value)}
+                            />
+                        </>
+                    )}
                     {completed &&
                         wine &&
                         (Number(cost) == (wine.price || 0) ? (
                             <span style={{ color: "green" }}>
+                                
                                 <span
                                     style={{
                                         fontSize: "1.5em",
@@ -377,11 +383,28 @@ export default function Page({
                                 >
                                     ✓
                                 </span>
+                                <span style={{ marginRight: "5px" }}>
+                                    {wine.currency_code === "USD" ? "$" : "€"}
+                                </span>
+                                <span> {cost} </span>
                             </span>
                         ) : (
                             <>
+                            <span style={{ marginRight: "5px" }}>
+                                    {wine.currency_code === "USD" ? "$" : "€"}
+                                </span>
+                                <span
+                                    style={{
+                                        color: "red",
+                                        textDecoration: "line-through",
+                                        marginRight: "5px",
+                                    }}
+                                >
+                                    
+                                    {cost || 0}
+                                </span>{" "}
                                 <span style={{ color: "green" }}>
-                                    {(wine.price || 0).toFixed(2)}
+                                    {wine.price || 0}
                                 </span>
                             </>
                         ))}
