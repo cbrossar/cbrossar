@@ -13,8 +13,6 @@ export default function Navbar() {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    console.log("pathname", window.location.pathname);
-
     const handleCoinFlip = () => {
         if (window.location.pathname !== "/") {
             return;
