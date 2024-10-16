@@ -226,7 +226,7 @@ const CoinFlipWrapper = styled.div<{ $rotationDegrees: number }>`
     transition: transform 2s;
 `;
 
-const CoinFace = styled.div`
+const CoinFaceFront = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
@@ -237,11 +237,7 @@ const CoinFace = styled.div`
     font-size: inherit;
 `;
 
-const CoinFaceFront = styled(CoinFace)`
-    color: ${Colors.black};
-`;
 
-const CoinFaceBack = styled(CoinFace)`
+const CoinFaceBack = styled(CoinFaceFront)`
     transform: rotateY(180deg);
-    color: ${Colors.black};
 `;
