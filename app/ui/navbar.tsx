@@ -16,8 +16,11 @@ export default function Navbar() {
     const [isUpsideDown, setIsUpsideDown] = useState(false);
 
     const handleCoinFlip = () => {
-        setIsFlipping(true);
+        if (window.location.pathname !== "/") {
+            return;
+        }
 
+        setIsFlipping(true);
         const newFlipSide = Math.random() < 0.5;
 
         // Randomly set isUpsideDown to true or false with 50% probability
@@ -26,7 +29,7 @@ export default function Navbar() {
         // 1 revolution is 1000ms
         let flipTime = Math.floor(Math.random() * 3 + 2) * 1000;
 
-        if (isUpsideDown) {
+        if (newFlipSide) {
             flipTime += 500;
         }
 
@@ -236,14 +239,10 @@ const CoinFlipWrapper = styled.div<{
 
     @keyframes spin {
         from {
-            transform: rotate(
-                ${({ $isUpsideDown }) => ($isUpsideDown ? "180deg" : "0deg")}
-            );
+            transform: rotate(0deg);
         }
         to {
-            transform: rotate(
-                ${({ $isUpsideDown }) => ($isUpsideDown ? "540deg" : "360deg")}
-            );
+            transform: rotate(360deg);
         }
     }
 `;
