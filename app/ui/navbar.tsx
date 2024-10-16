@@ -2,40 +2,30 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Colors, MobileWidth } from "@/app/lib/constants";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [rotationDegrees, setRotationDegrees] = useState(0);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const [isFlipping, setIsFlipping] = useState(false);
-    const [isUpsideDown, setIsUpsideDown] = useState(false);
+    console.log("pathname", window.location.pathname);
 
     const handleCoinFlip = () => {
         if (window.location.pathname !== "/") {
             return;
         }
 
-        setIsFlipping(true);
-        const newFlipSide = Math.random() < 0.5;
+        const rotations = Math.floor(Math.random() * 2) + 3; // Random rotations between 2 and 4
+        const isUpsideDown = Math.random() < 0.5; // 50% chance to end upside down
 
-        // Randomly set isUpsideDown to true or false with 50% probability
-        setIsUpsideDown(newFlipSide);
+        const totalDegrees = rotations * 360 + (isUpsideDown ? 180 : 0);
 
-        // 1 revolution is 1000ms
-        let flipTime = Math.floor(Math.random() * 3 + 2) * 1000;
-
-        if (newFlipSide) {
-            flipTime += 500;
-        }
-
-        setTimeout(() => {
-            setIsFlipping(false);
-        }, flipTime);
+        setRotationDegrees((prevDegrees) => prevDegrees + totalDegrees);
     };
 
     return (
@@ -48,12 +38,12 @@ export default function Navbar() {
                 <NavLink href="/music">Music</NavLink>
                 <NavLink href="/soccer">Soccer</NavLink>
                 <HomeLink href="/" onClick={handleCoinFlip}>
-                    <CoinFlipWrapper
-                        $isFlipping={isFlipping}
-                        $isUpsideDown={isUpsideDown}
-                    >
-                        Cole
-                    </CoinFlipWrapper>
+                    <CoinFlipContainer>
+                        <CoinFlipWrapper $rotationDegrees={rotationDegrees}>
+                            <CoinFaceFront>Cole</CoinFaceFront>
+                            <CoinFaceBack>Eloc</CoinFaceBack>
+                        </CoinFlipWrapper>
+                    </CoinFlipContainer>
                 </HomeLink>
                 <NavLink href="/code">Code</NavLink>
                 <NavLink href="/photos">Photos</NavLink>
@@ -145,6 +135,7 @@ const HomeLink = styled(NavLink)`
     align-items: center;
     justify-content: center;
     letter-spacing: 1px;
+    min-width: 140px;
 
     @media (max-width: ${MobileWidth}) {
         margin: 0 auto;
@@ -223,26 +214,37 @@ const CloseButton = styled.button`
     }
 `;
 
-const CoinFlipWrapper = styled.div<{
-    $isFlipping: boolean;
-    $isUpsideDown: boolean;
-}>`
-    transform: ${({ $isFlipping, $isUpsideDown }) =>
-        $isFlipping
-            ? "rotate(360deg)"
-            : $isUpsideDown
-              ? "rotate(180deg)"
-              : "rotate(0deg)"};
-    transition: transform 1s linear;
-    animation: ${({ $isFlipping }) =>
-        $isFlipping ? "spin 1s linear infinite" : "none"};
+const CoinFlipContainer = styled.div`
+    perspective: 1000px;
+    display: inline-block;
+`;
 
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
+const CoinFlipWrapper = styled.div<{ $rotationDegrees: number }>`
+  position: relative;
+  width: 100%;
+  height: 50px;
+  transform-style: preserve-3d;
+  transform: rotateY(${(props) => props.$rotationDegrees}deg);
+  transition: transform 2s;
+`;
+
+
+const CoinFace = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: inherit;
+`;
+
+const CoinFaceFront = styled(CoinFace)`
+    color: ${Colors.black};
+`;
+
+const CoinFaceBack = styled(CoinFace)`
+    transform: rotateY(180deg);
+    color: ${Colors.black};
 `;
