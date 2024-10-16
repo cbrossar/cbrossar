@@ -218,14 +218,13 @@ const CoinFlipContainer = styled.div`
 `;
 
 const CoinFlipWrapper = styled.div<{ $rotationDegrees: number }>`
-  position: relative;
-  width: 100%;
-  height: 50px;
-  transform-style: preserve-3d;
-  transform: rotateY(${(props) => props.$rotationDegrees}deg);
-  transition: transform 2s;
+    position: relative;
+    width: 100%;
+    height: 50px;
+    transform-style: preserve-3d;
+    transform: rotateY(${(props) => props.$rotationDegrees}deg);
+    transition: transform 2s;
 `;
-
 
 const CoinFace = styled.div`
     position: absolute;
