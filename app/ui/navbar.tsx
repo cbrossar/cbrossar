@@ -12,6 +12,29 @@ export default function Navbar() {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const [isFlipping, setIsFlipping] = useState(false);
+    const [isUpsideDown, setIsUpsideDown] = useState(false);
+
+    const handleCoinFlip = () => {
+        setIsFlipping(true);
+
+        const newFlipSide = Math.random() < 0.5;
+
+        // Randomly set isUpsideDown to true or false with 50% probability
+        setIsUpsideDown(newFlipSide);
+
+        // 1 revolution is 1000ms
+        let flipTime = Math.floor(Math.random() * 3 + 2) * 1000;
+
+        if (isUpsideDown) {
+            flipTime += 500;
+        }
+
+        setTimeout(() => {
+            setIsFlipping(false);
+        }, flipTime);
+    };
+
     return (
         <Header>
             <NavbarWrapper>
@@ -21,7 +44,14 @@ export default function Navbar() {
                 </MenuButton>
                 <NavLink href="/music">Music</NavLink>
                 <NavLink href="/soccer">Soccer</NavLink>
-                <HomeLink href="/">Cole</HomeLink>
+                <HomeLink href="/" onClick={handleCoinFlip}>
+                    <CoinFlipWrapper
+                        $isFlipping={isFlipping}
+                        $isUpsideDown={isUpsideDown}
+                    >
+                        Cole
+                    </CoinFlipWrapper>
+                </HomeLink>
                 <NavLink href="/code">Code</NavLink>
                 <NavLink href="/photos">Photos</NavLink>
             </NavbarWrapper>
@@ -187,5 +217,33 @@ const CloseButton = styled.button`
 
     &:hover {
         color: ${Colors.yellow};
+    }
+`;
+
+const CoinFlipWrapper = styled.div<{
+    $isFlipping: boolean;
+    $isUpsideDown: boolean;
+}>`
+    transform: ${({ $isFlipping, $isUpsideDown }) =>
+        $isFlipping
+            ? "rotate(360deg)"
+            : $isUpsideDown
+              ? "rotate(180deg)"
+              : "rotate(0deg)"};
+    transition: transform 1s linear;
+    animation: ${({ $isFlipping }) =>
+        $isFlipping ? "spin 1s linear infinite" : "none"};
+
+    @keyframes spin {
+        from {
+            transform: rotate(
+                ${({ $isUpsideDown }) => ($isUpsideDown ? "180deg" : "0deg")}
+            );
+        }
+        to {
+            transform: rotate(
+                ${({ $isUpsideDown }) => ($isUpsideDown ? "540deg" : "360deg")}
+            );
+        }
     }
 `;

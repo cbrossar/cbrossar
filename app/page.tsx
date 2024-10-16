@@ -7,7 +7,6 @@ import Image from "next/image";
 import { MobileWidth } from "@/app/lib/constants";
 
 export default function Home() {
-
     const [dateTime, setDateTime] = useState(new Date());
 
     useEffect(() => {
