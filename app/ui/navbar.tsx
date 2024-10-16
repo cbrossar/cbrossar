@@ -237,7 +237,6 @@ const CoinFaceFront = styled.div`
     font-size: inherit;
 `;
 
-
 const CoinFaceBack = styled(CoinFaceFront)`
     transform: rotateY(180deg);
 `;
