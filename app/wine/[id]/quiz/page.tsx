@@ -1,7 +1,7 @@
 import EyeToggle from "@/app/wine/eye-toggle";
-import Spinner from "@/app/ui/spinner";
 import { Region, Wine } from "@/app/lib/definitions";
 import { fetchWineById, fetchRegions } from "@/app/data/wine";
+import { notFound } from "next/navigation";
 import WineQuizForm from "./wine-quiz-form";
 
 export default async function Page({ params, searchParams }: any) {
@@ -11,7 +11,7 @@ export default async function Page({ params, searchParams }: any) {
     const regions: Region[] = await fetchRegions();
 
     if (!wine) {
-        return <Spinner />;
+        return notFound();
     }
 
     const isHidden = searchParams.isHidden === "true";
