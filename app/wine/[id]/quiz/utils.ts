@@ -38,7 +38,6 @@ export const calculateScore = (
     const tanninsDiff = Math.abs(
         (Number(wine.tannin?.toFixed(1)) || 0) - tannins,
     );
-    console.log("tanninsDiff", tanninsDiff);
     tanninsScore = Math.round(Math.max(0, 15 - Math.min(tanninsDiff * 5, 15)));
     score += tanninsScore;
 

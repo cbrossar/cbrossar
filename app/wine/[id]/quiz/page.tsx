@@ -1,6 +1,6 @@
 import EyeToggle from "@/app/wine/eye-toggle";
 import { Region, Wine } from "@/app/lib/definitions";
-import { fetchWineById, fetchRegions } from "@/app/data/wine";
+import { fetchWineById, fetchTopRegions } from "@/app/data/wine";
 import { notFound } from "next/navigation";
 import WineQuizForm from "./wine-quiz-form";
 
@@ -8,7 +8,7 @@ export default async function Page({ params, searchParams }: any) {
     const id = params.id;
 
     const wine: Wine = await fetchWineById(id);
-    const regions: Region[] = await fetchRegions();
+    const regions: Region[] = await fetchTopRegions(wine.country_code);
 
     if (!wine) {
         return notFound();

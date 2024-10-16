@@ -68,12 +68,6 @@ export async function fetchRegions(
     region_id: number | null = null,
 ) {
     try {
-        if (!country_code && !region_id) {
-            const response =
-                await sql`SELECT * FROM vivino_regions ORDER BY name`;
-            return response.rows as Region[];
-        }
-
         if (region_id) {
             const response =
                 await sql`SELECT * FROM vivino_regions WHERE id = ${region_id}`;
@@ -93,6 +87,28 @@ export async function fetchRegions(
         throw new Error("Failed to fetch regions.");
     }
 }
+
+export async function fetchTopRegions(country_code: string | null = null) {
+    try {
+        const response = await sql`
+            SELECT vr.*
+            FROM vivino_regions vr
+            JOIN (
+                SELECT region_id, COUNT(*) as wine_count
+                FROM vivino_wines
+                GROUP BY region_id
+                HAVING COUNT(*) >= 10
+            ) wc ON vr.id = wc.region_id
+            WHERE vr.country_code = ${country_code}
+            ORDER BY vr.name
+        `;
+        return response.rows as Region[];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch regions.");
+    }
+}
+
 export async function createWineries(wineries: Winery[]) {
     try {
         for (const winery of wineries) {
@@ -267,7 +283,7 @@ export async function fetchWineQuizData() {
 
 export async function fetchWineById(id: string) {
     const response = await sql`
-        SELECT v.*, r.name AS region_name, w.name AS winery_name
+        SELECT v.*, r.name AS region_name, r.country_code, w.name AS winery_name
         FROM vivino_wines v
         LEFT JOIN vivino_regions r ON v.region_id = r.id
         LEFT JOIN vivino_wineries w ON v.winery_id = w.id

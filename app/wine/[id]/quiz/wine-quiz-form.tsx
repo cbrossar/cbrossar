@@ -37,10 +37,21 @@ export default function WineQuizForm({
 
     const milesAway = 10;
 
-    const regionOptions = regions.map((region) => ({
+    let regionOptions = regions.map((region) => ({
         value: region.id.toString(),
         label: region.name,
     }));
+
+    if (
+        !regionOptions.some(
+            (region) => region.value === wine.region_id.toString(),
+        )
+    ) {
+        regionOptions.push({
+            value: wine.region_id.toString(),
+            label: wine.region_name || "",
+        });
+    }
 
     const { score, tooltipText } = calculateScore(
         wine,
@@ -69,7 +80,7 @@ export default function WineQuizForm({
                 <Select
                     id="region-select"
                     options={regionOptions}
-                    placeholder="Napa Valley"
+                    placeholder="Type to search..."
                     value={regionDict}
                     onChange={(selectedOption) =>
                         setRegionDict(
