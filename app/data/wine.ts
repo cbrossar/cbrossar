@@ -67,6 +67,7 @@ export async function fetchRegions(
     country_code: string | null = null,
     region_id: number | null = null,
 ) {
+    noStore();
     try {
         if (region_id) {
             const response =
@@ -88,7 +89,25 @@ export async function fetchRegions(
     }
 }
 
+export async function fetchRegionsWithoutGeocode(country_code: string) {
+    noStore();
+    try {
+        const response = await sql`
+            SELECT vr.*
+            FROM vivino_regions vr
+            WHERE vr.country_code = ${country_code}
+            AND vr.latitude IS NULL
+            AND vr.longitude IS NULL
+        `;
+        return response.rows as Region[];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch regions.");
+    }
+}
+
 export async function fetchTopRegions(country_code: string | null = null) {
+    noStore();
     try {
         const response = await sql`
             SELECT vr.*
@@ -106,6 +125,19 @@ export async function fetchTopRegions(country_code: string | null = null) {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch regions.");
+    }
+}
+
+export async function updateRegionGeocode(
+    region_id: number,
+    latitude: number,
+    longitude: number,
+) {
+    try {
+        await sql`UPDATE vivino_regions SET latitude = ${latitude}, longitude = ${longitude} WHERE id = ${region_id}`;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to update region geocode.");
     }
 }
 

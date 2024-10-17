@@ -1,3 +1,4 @@
+import haversine from "haversine-distance";
 import { Region, Wine } from "@/app/lib/definitions";
 
 export const calculateScore = (
@@ -7,7 +8,7 @@ export const calculateScore = (
     tannins: number,
     cost: string,
     rating: number,
-    region_dict: any,
+    selectedRegionDict: any,
     regions: Region[],
 ) => {
     let score = 0; // Start with zero score
@@ -42,8 +43,15 @@ export const calculateScore = (
     score += tanninsScore;
 
     // Calculate score for cost
-    const costDiff = Math.abs(wine.price - (parseFloat(cost) || 0));
-    costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 2, 15)));
+    const actualCost = wine.price;
+    const guessedCost = parseFloat(cost) || 0;
+    const costDiff = Math.abs(actualCost - guessedCost);
+
+    // Calculate log difference
+    const logDiff = Math.log10(costDiff + 1); // Add 1 to avoid log(0)
+
+    // Scale to 15-point system
+    costScore = Math.round(Math.max(0, 15 - Math.min(logDiff * 5, 15))); // Multiplied by 3 to scale appropriately
     score += costScore;
 
     // Calculate score for rating
@@ -53,24 +61,31 @@ export const calculateScore = (
     ratingScore = Math.round(Math.max(0, 15 - Math.min(ratingDiff * 5, 15)));
     score += ratingScore;
 
+    let distance = 0;
+
     // Calculate score for region
-    if (region_dict) {
-        if (region_dict.value === wine.region_id.toString()) {
+    if (selectedRegionDict) {
+        const correctRegion = regions.find(
+            (r) => r.id.toString() === wine.region_id.toString(),
+        );
+        const selectedRegion = regions.find(
+            (r) => r.id.toString() === selectedRegionDict.value,
+        );
+        if (correctRegion?.id === selectedRegion?.id) {
             regionScore = 25;
         } else {
-            const selectedRegion = regions.find(
-                (r) => r.id.toString() === region_dict.value,
+            const correctLat = correctRegion?.latitude || 0;
+            const correctLong = correctRegion?.longitude || 0;
+            const selectedLat = selectedRegion?.latitude || 0;
+            const selectedLong = selectedRegion?.longitude || 0;
+            const distance = haversine(
+                { lat: correctLat, lng: correctLong },
+                { lat: selectedLat, lng: selectedLong },
             );
-            const wineRegion = regions.find((r) => r.id === wine.region_id);
-            if (
-                selectedRegion &&
-                wineRegion &&
-                selectedRegion.country_code === wineRegion.country_code
-            ) {
-                regionScore = 15;
-            } else {
-                regionScore = 5;
-            }
+
+            regionScore = Math.round(
+                Math.max(0, 25 - Math.min(distance / 20000, 25)),
+            );
         }
     }
     score += regionScore;
@@ -87,5 +102,6 @@ export const calculateScore = (
     return {
         score: Math.round(score),
         tooltipText,
+        distance: distance,
     };
 };

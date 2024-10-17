@@ -14,7 +14,7 @@ export default function WineQuizForm({
     wine: Wine;
     regions: Region[];
 }) {
-    const [regionDict, setRegionDict] = useState<{
+    const [selectedRegion, setSelectedRegion] = useState<{
         value: string;
         label: string;
     }>();
@@ -33,10 +33,6 @@ export default function WineQuizForm({
         replace(`${pathname}?isHidden=false`);
     };
 
-    const regionName = wine.region_name;
-
-    const milesAway = 10;
-
     let regionOptions = regions.map((region) => ({
         value: region.id.toString(),
         label: region.name,
@@ -53,14 +49,14 @@ export default function WineQuizForm({
         });
     }
 
-    const { score, tooltipText } = calculateScore(
+    const { score, tooltipText, distance } = calculateScore(
         wine,
         acidity,
         sweetness,
         tannins,
         cost,
         rating,
-        regionDict,
+        selectedRegion,
         regions,
     );
 
@@ -81,9 +77,9 @@ export default function WineQuizForm({
                     id="region-select"
                     options={regionOptions}
                     placeholder="Type to search..."
-                    value={regionDict}
+                    value={selectedRegion}
                     onChange={(selectedOption) =>
-                        setRegionDict(
+                        setSelectedRegion(
                             selectedOption as { value: string; label: string },
                         )
                     }
@@ -95,7 +91,7 @@ export default function WineQuizForm({
                     }}
                 />
             </div>
-            {completed && regionName == regionDict?.label && (
+            {completed && wine.region_name == selectedRegion?.label && (
                 <div
                     style={{
                         marginTop: "10px",
@@ -109,11 +105,11 @@ export default function WineQuizForm({
                         <span style={{ fontSize: "1.5em", marginRight: "5px" }}>
                             ✓
                         </span>
-                        {regionName}
+                        {wine.region_name}
                     </p>
                 </div>
             )}
-            {completed && regionName != regionDict?.label && (
+            {completed && wine.region_name != selectedRegion?.label && (
                 <div
                     style={{
                         marginTop: "10px",
@@ -127,7 +123,13 @@ export default function WineQuizForm({
                         <span style={{ fontSize: "1em", marginRight: "5px" }}>
                             ✕
                         </span>
-                        {regionName} ({milesAway} mi away)
+                        {distance > 0 && (
+                            <span>
+                                {wine.region_name} (
+                                {Math.round(distance / 1000)} km away)
+                            </span>
+                        )}
+                        {distance == 0 && <span>{wine.region_name}</span>}
                     </p>
                 </div>
             )}
@@ -499,28 +501,25 @@ export default function WineQuizForm({
                             position: "relative",
                         }}
                     >
-                        Score: {score}
-                        <Tooltip
-                            title={
-                                <div style={{ whiteSpace: "pre-line" }}>
-                                    {tooltipText}
-                                </div>
-                            }
-                            enterTouchDelay={0}
-                            leaveTouchDelay={3000}
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                            }}
                         >
-                            <span
+                            <div>Score: {score}</div>
+                            <div
                                 style={{
-                                    position: "absolute",
-                                    top: "0",
-                                    right: "-20px",
+                                    whiteSpace: "pre-line",
+                                    marginTop: "10px",
                                     fontSize: "14px",
-                                    cursor: "help",
+                                    textAlign: "left",
                                 }}
                             >
-                                ⓘ
-                            </span>
-                        </Tooltip>
+                                {tooltipText}
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

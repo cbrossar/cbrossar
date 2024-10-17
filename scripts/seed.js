@@ -318,6 +318,8 @@ async function seedWine(client) {
                 id INT NOT NULL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 country_code VARCHAR(4) NOT NULL,
+                latitude FLOAT,
+                longitude FLOAT,
                 FOREIGN KEY (country_code) REFERENCES vivino_countries(code)
             );
         `;
