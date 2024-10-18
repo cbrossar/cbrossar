@@ -506,7 +506,7 @@ export default function WineQuizForm({
                         >
                             <span
                                 style={{
-                                    color: "gold",
+                                    color: Colors.yellow,
                                     position: "absolute",
                                     overflow: "hidden",
                                     width: `${Math.min(100, Math.max(0, (rating - star + 1) * 100))}%`,
