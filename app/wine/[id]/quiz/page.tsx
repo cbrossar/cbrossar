@@ -1,15 +1,20 @@
 import EyeToggle from "@/app/wine/eye-toggle";
-import { Region, Wine } from "@/app/lib/definitions";
-import { fetchWineById, fetchTopRegions } from "@/app/data/wine";
+import { Region, Wine, Country } from "@/app/lib/definitions";
+import {
+    fetchWineById,
+    fetchTopRegions,
+    fetchCountriesWithWines,
+} from "@/app/data/wine";
 import { notFound } from "next/navigation";
 import styles from "./styles.module.css";
 import WineQuizForm from "./wine-quiz-form";
 
 export default async function Page({ params, searchParams }: any) {
     const id = params.id;
-
+    const country = searchParams.country;
     const wine: Wine = await fetchWineById(id);
-    const regions: Region[] = await fetchTopRegions(wine.country_code);
+    const regions: Region[] = await fetchTopRegions(country);
+    const countries: Country[] = await fetchCountriesWithWines();
 
     if (!wine) {
         return notFound();
@@ -39,7 +44,7 @@ export default async function Page({ params, searchParams }: any) {
                     )}
                 </div>
             </div>
-            <WineQuizForm wine={wine} regions={regions} />
+            <WineQuizForm wine={wine} regions={regions} countries={countries} />
         </div>
     );
 }

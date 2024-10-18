@@ -2,17 +2,18 @@
 
 import { useState } from "react";
 import Select from "react-select";
-import Tooltip from "@mui/material/Tooltip";
-import { Region, Wine } from "@/app/lib/definitions";
-import { useRouter, usePathname } from "next/navigation";
+import { Region, Wine, Country } from "@/app/lib/definitions";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { calculateScore } from "./utils";
 
 export default function WineQuizForm({
     wine,
     regions,
+    countries,
 }: {
     wine: Wine;
     regions: Region[];
+    countries: Country[];
 }) {
     const [selectedRegion, setSelectedRegion] = useState<{
         value: string;
@@ -24,13 +25,27 @@ export default function WineQuizForm({
     const [cost, setCost] = useState("");
     const [rating, setRating] = useState(2.5);
     const [completed, setCompleted] = useState(false);
+    const [country, setCountry] = useState("");
 
     const pathname = usePathname();
     const { replace } = useRouter();
+    const searchParams = useSearchParams();
+
+    const handleCountryChange = (selectedOption: {
+        value: string;
+        label: string;
+    }) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("country", selectedOption.value);
+        replace(`${pathname}?${params.toString()}`);
+        setCountry(selectedOption.value);
+    };
 
     const handleComplete = () => {
         setCompleted(true);
-        replace(`${pathname}?isHidden=false`);
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("isHidden", "false");
+        replace(`${pathname}?${params.toString()}`);
     };
 
     let regionOptions = regions.map((region) => ({
@@ -38,15 +53,17 @@ export default function WineQuizForm({
         label: region.name,
     }));
 
-    if (
-        !regionOptions.some(
-            (region) => region.value === wine.region_id.toString(),
-        )
-    ) {
-        regionOptions.push({
-            value: wine.region_id.toString(),
-            label: wine.region_name || "",
-        });
+    if (wine.country_code == country) {
+        if (
+            !regionOptions.some(
+                (region) => region.value === wine.region_id.toString(),
+            )
+        ) {
+            regionOptions.push({
+                value: wine.region_id.toString(),
+                label: wine.region_name || "",
+            });
+        }
     }
 
     const { score, tooltipText, distance } = calculateScore(
@@ -62,6 +79,40 @@ export default function WineQuizForm({
 
     return (
         <form>
+            <div
+                style={{
+                    marginTop: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                <label
+                    htmlFor="country-select"
+                    style={{ marginBottom: "10px" }}
+                >
+                    Select the Country:
+                </label>
+                <Select
+                    id="country-select"
+                    options={countries.map((country) => ({
+                        value: country.code,
+                        label: country.name,
+                    }))}
+                    placeholder="Type to search..."
+                    onChange={(selectedOption) =>
+                        handleCountryChange(
+                            selectedOption as { value: string; label: string },
+                        )
+                    }
+                    styles={{
+                        control: (provided) => ({
+                            ...provided,
+                            width: "200px",
+                        }),
+                    }}
+                />
+            </div>
             <div
                 style={{
                     marginTop: "20px",

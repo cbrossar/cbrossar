@@ -323,3 +323,13 @@ export async function fetchWineById(id: string) {
     `;
     return response.rows[0] as Wine;
 }
+
+export async function fetchCountriesWithWines() {
+    const response = await sql`
+        SELECT DISTINCT vc.*
+        FROM vivino_countries vc
+        JOIN vivino_regions vr ON vc.code = vr.country_code
+        JOIN vivino_wines vw ON vr.id = vw.region_id
+    `;
+    return response.rows as Country[];
+}
