@@ -9,11 +9,11 @@ export const calculateScore = (
     tannins: number,
     cost: string,
     rating: number,
-    country: string,
-    selectedRegionDict: any,
+    selectedCountryCode: string,
+    selectedRegionId: string,
     regions: Region[],
 ) => {
-    let score = 0; 
+    let score = 0;
     let countryScore = 0;
     let regionScore = 0;
     let acidityScore = 0;
@@ -52,11 +52,9 @@ export const calculateScore = (
 
     if (actualCost < 50) {
         costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 3, 15)));
-    }
-    else if (actualCost < 100) {
+    } else if (actualCost < 100) {
         costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 5, 15)));
-    }
-    else {
+    } else {
         costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 10, 15)));
     }
     score += costScore;
@@ -68,17 +66,16 @@ export const calculateScore = (
     ratingScore = Math.round(Math.max(0, 15 - Math.min(ratingDiff * 5, 15)));
     score += ratingScore;
 
-    if(country == wine.country_code) {
+    if (selectedCountryCode == wine.country_code) {
         countryScore = 10;
     }
 
     let distance = 0;
 
     // Calculate score for region
-    if (selectedRegionDict) {
-
+    if (selectedRegionId) {
         const selectedRegion = regions.find(
-            (r) => r.id.toString() === selectedRegionDict.value,
+            (r) => r.id.toString() === selectedRegionId,
         );
         if (region.id === selectedRegion?.id) {
             regionScore = 15;

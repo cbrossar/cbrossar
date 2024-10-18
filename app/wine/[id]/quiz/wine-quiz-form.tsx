@@ -17,17 +17,14 @@ export default function WineQuizForm({
     regions: Region[];
     countries: Country[];
 }) {
-    const [selectedRegion, setSelectedRegion] = useState<{
-        value: string;
-        label: string;
-    }>();
+    const [selectedRegionId, setSelectedRegionId] = useState("");
+    const [selectedCountryCode, setSelectedCountryCode] = useState("");
     const [acidity, setAcidity] = useState(2.5);
     const [sweetness, setSweetness] = useState(2.5);
     const [tannins, setTannins] = useState(2.5);
     const [cost, setCost] = useState("");
     const [rating, setRating] = useState(2.5);
     const [completed, setCompleted] = useState(false);
-    const [country, setCountry] = useState("");
 
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -40,7 +37,7 @@ export default function WineQuizForm({
         const params = new URLSearchParams(searchParams.toString());
         params.set("country", selectedOption.value);
         replace(`${pathname}?${params.toString()}`);
-        setCountry(selectedOption.value);
+        setSelectedCountryCode(selectedOption.value);
     };
 
     const handleComplete = () => {
@@ -50,17 +47,13 @@ export default function WineQuizForm({
         replace(`${pathname}?${params.toString()}`);
     };
 
-    let regionOptions = regions.map((region) => ({
-        value: region.id.toString(),
-        label: region.name,
+    let regionOptions = regions.map((r) => ({
+        value: r.id.toString(),
+        label: r.name,
     }));
 
-    if (wine.country_code == country) {
-        if (
-            !regionOptions.some(
-                (region) => region.value === wine.region_id.toString(),
-            )
-        ) {
+    if (wine.country_code == selectedCountryCode) {
+        if (!regionOptions.some((r) => r.value === wine.region_id.toString())) {
             regionOptions.push({
                 value: wine.region_id.toString(),
                 label: wine.region_name || "",
@@ -76,10 +69,9 @@ export default function WineQuizForm({
         tannins,
         cost,
         rating,
-        country,
-        selectedRegion,
+        selectedCountryCode,
+        selectedRegionId,
         regions,
-
     );
 
     const actualCountry = countries.find(
@@ -122,7 +114,7 @@ export default function WineQuizForm({
                     }}
                 />
             </div>
-            {completed && wine.country_code == country && (
+            {completed && wine.country_code == selectedCountryCode && (
                 <div
                     style={{
                         marginTop: "10px",
@@ -140,7 +132,7 @@ export default function WineQuizForm({
                     </p>
                 </div>
             )}
-            {completed && wine.country_code != country && (
+            {completed && wine.country_code != selectedCountryCode && (
                 <div
                     style={{
                         marginTop: "10px",
@@ -173,11 +165,8 @@ export default function WineQuizForm({
                     id="region-select"
                     options={regionOptions}
                     placeholder="Type to search..."
-                    value={selectedRegion}
                     onChange={(selectedOption) =>
-                        setSelectedRegion(
-                            selectedOption as { value: string; label: string },
-                        )
+                        setSelectedRegionId(selectedOption?.value || "")
                     }
                     styles={{
                         control: (provided) => ({
@@ -187,7 +176,7 @@ export default function WineQuizForm({
                     }}
                 />
             </div>
-            {completed && wine.region_name == selectedRegion?.label && (
+            {completed && wine.region_id.toString() == selectedRegionId && (
                 <div
                     style={{
                         marginTop: "10px",
@@ -205,7 +194,7 @@ export default function WineQuizForm({
                     </p>
                 </div>
             )}
-            {completed && wine.region_name != selectedRegion?.label && (
+            {completed && wine.region_id.toString() != selectedRegionId && (
                 <div
                     style={{
                         marginTop: "10px",
