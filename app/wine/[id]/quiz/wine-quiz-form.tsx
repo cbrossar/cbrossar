@@ -109,7 +109,7 @@ export default function WineQuizForm({
                     htmlFor="country-select"
                     style={{ marginBottom: "10px" }}
                 >
-                    Select the Country:
+                    Country
                 </label>
                 <Select
                     id="country-select"
@@ -176,7 +176,7 @@ export default function WineQuizForm({
                 }}
             >
                 <label htmlFor="region-select" style={{ marginBottom: "10px" }}>
-                    Select the Region:
+                    Region
                 </label>
                 <Select
                     id="region-select"
@@ -248,7 +248,7 @@ export default function WineQuizForm({
                     htmlFor="acidity-slider"
                     style={{ marginBottom: "10px" }}
                 >
-                    Guess the Acidity (0-5):
+                    Acidity
                 </label>
                 <input
                     type="range"
@@ -307,7 +307,7 @@ export default function WineQuizForm({
                     htmlFor="sweetness-slider"
                     style={{ marginBottom: "10px" }}
                 >
-                    Guess the Sweetness (0-5):
+                    Sweetness
                 </label>
                 <input
                     type="range"
@@ -366,7 +366,7 @@ export default function WineQuizForm({
                     htmlFor="tannins-slider"
                     style={{ marginBottom: "10px" }}
                 >
-                    Guess the Tannins (0-5):
+                    Tannins
                 </label>
                 <input
                     type="range"
@@ -421,7 +421,7 @@ export default function WineQuizForm({
                 }}
             >
                 <label htmlFor="cost-input" style={{ marginBottom: "10px" }}>
-                    Guess the Cost:
+                    Cost
                 </label>
                 <div style={{ display: "flex", alignItems: "center" }}>
                     {!completed && (
@@ -432,7 +432,7 @@ export default function WineQuizForm({
                             <input
                                 type="text"
                                 id="cost-input"
-                                placeholder="19.99"
+                                placeholder="199.99"
                                 style={{ padding: "5px", width: "80px" }}
                                 value={cost}
                                 onChange={(e) => setCost(e.target.value)}
@@ -486,7 +486,7 @@ export default function WineQuizForm({
                 }}
             >
                 <label htmlFor="rating-slider" style={{ marginBottom: "10px" }}>
-                    Guess the Rating:
+                    Rating
                 </label>
                 <div
                     style={{
