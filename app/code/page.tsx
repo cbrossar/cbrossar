@@ -22,9 +22,9 @@ export default function Page() {
                 <Link href="https://www.remesh.ai/">
                     <div className={styles.imageWrapper}>
                         <Image
-                            src="/code/remesh.jpeg"
-                            width={200}
-                            height={200}
+                            src="/code/remesh.png"
+                            width={130}
+                            height={130}
                             alt="Remesh"
                         />
                     </div>
