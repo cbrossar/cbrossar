@@ -54,7 +54,7 @@ export default function WineQuizForm({
                 },
                 body: JSON.stringify(wineQuiz),
             });
-    
+
             if (response.ok) {
                 console.log("Quiz created successfully");
             } else {
