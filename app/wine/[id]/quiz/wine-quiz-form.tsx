@@ -5,7 +5,6 @@ import Select from "react-select";
 import { Region, Wine, Country } from "@/app/lib/definitions";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { calculateScore } from "./utils";
-import { createWineQuiz } from "@/app/data/wine";
 
 export default function WineQuizForm({
     wine,
@@ -47,18 +46,20 @@ export default function WineQuizForm({
         params.set("isHidden", "false");
         replace(`${pathname}?${params.toString()}`);
 
-        const response = await fetch("/api/wine-quiz", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(wineQuiz),
-        });
-
-        if (response.ok) {
-            console.log("Quiz created successfully");
-        } else {
-            console.error("Error creating quiz");
+        if (process.env.NODE_ENV === "production") {
+            const response = await fetch("/api/wine-quiz", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(wineQuiz),
+            });
+    
+            if (response.ok) {
+                console.log("Quiz created successfully");
+            } else {
+                console.error("Error creating quiz");
+            }
         }
     };
 
