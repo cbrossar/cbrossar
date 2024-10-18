@@ -1,6 +1,8 @@
 "use client";
 
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 import useScrollToTop from "./scroll";
 
 export default function ClientLayout({
@@ -21,6 +23,7 @@ export default function ClientLayout({
                     return event;
                 }}
             />
+            <SpeedInsights />
         </>
     );
 }
