@@ -49,10 +49,6 @@ export const calculateScore = (
     const guessedCost = parseFloat(cost) || 0;
     const costDiff = Math.abs(actualCost - guessedCost);
 
-    // Calculate log difference
-    // const logDiff = Math.log10(costDiff + 1); // Add 1 to avoid log(0)
-
-    // Scale to 15-point system
     if (actualCost < 50) {
         costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 3, 15)));
     }
