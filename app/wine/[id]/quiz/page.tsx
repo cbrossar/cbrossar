@@ -4,6 +4,7 @@ import {
     fetchWineById,
     fetchTopRegions,
     fetchCountriesWithWines,
+    fetchRegionById,
 } from "@/app/data/wine";
 import { notFound } from "next/navigation";
 import styles from "./styles.module.css";
@@ -13,6 +14,7 @@ export default async function Page({ params, searchParams }: any) {
     const id = params.id;
     const country = searchParams.country;
     const wine: Wine = await fetchWineById(id);
+    const region: Region = await fetchRegionById(wine.region_id);
     const regions: Region[] = await fetchTopRegions(country);
     const countries: Country[] = await fetchCountriesWithWines();
 
@@ -44,7 +46,12 @@ export default async function Page({ params, searchParams }: any) {
                     )}
                 </div>
             </div>
-            <WineQuizForm wine={wine} regions={regions} countries={countries} />
+            <WineQuizForm
+                wine={wine}
+                region={region}
+                regions={regions}
+                countries={countries}
+            />
         </div>
     );
 }

@@ -324,6 +324,13 @@ export async function fetchWineById(id: string) {
     return response.rows[0] as Wine;
 }
 
+export async function fetchRegionById(id: number) {
+    const response = await sql`
+        SELECT * FROM vivino_regions WHERE id = ${id}
+    `;
+    return response.rows[0] as Region;
+}
+
 export async function fetchCountriesWithWines() {
     const response = await sql`
         SELECT DISTINCT vc.*

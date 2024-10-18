@@ -8,10 +8,12 @@ import { calculateScore } from "./utils";
 
 export default function WineQuizForm({
     wine,
+    region,
     regions,
     countries,
 }: {
     wine: Wine;
+    region: Region;
     regions: Region[];
     countries: Country[];
 }) {
@@ -68,6 +70,7 @@ export default function WineQuizForm({
 
     const { score, tooltipText, distance } = calculateScore(
         wine,
+        region,
         acidity,
         sweetness,
         tannins,

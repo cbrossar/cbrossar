@@ -3,6 +3,7 @@ import { Region, Wine } from "@/app/lib/definitions";
 
 export const calculateScore = (
     wine: Wine,
+    region: Region,
     acidity: number,
     sweetness: number,
     tannins: number,
@@ -76,17 +77,14 @@ export const calculateScore = (
     // Calculate score for region
     if (selectedRegionDict) {
 
-        const correctRegion = regions.find(
-            (r) => r.id.toString() === wine.region_id.toString(),
-        );
         const selectedRegion = regions.find(
             (r) => r.id.toString() === selectedRegionDict.value,
         );
-        if (correctRegion?.id === selectedRegion?.id) {
+        if (region.id === selectedRegion?.id) {
             regionScore = 15;
         } else {
-            const correctLat = correctRegion?.latitude || 0;
-            const correctLong = correctRegion?.longitude || 0;
+            const correctLat = region.latitude || 0;
+            const correctLong = region.longitude || 0;
             const selectedLat = selectedRegion?.latitude || 0;
             const selectedLong = selectedRegion?.longitude || 0;
             distance = haversine(
