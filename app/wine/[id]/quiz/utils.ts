@@ -50,10 +50,18 @@ export const calculateScore = (
     const costDiff = Math.abs(actualCost - guessedCost);
 
     // Calculate log difference
-    const logDiff = Math.log10(costDiff + 1); // Add 1 to avoid log(0)
+    // const logDiff = Math.log10(costDiff + 1); // Add 1 to avoid log(0)
 
     // Scale to 15-point system
-    costScore = Math.round(Math.max(0, 15 - Math.min(logDiff * 5, 15))); // Multiplied by 3 to scale appropriately
+    if (actualCost < 50) {
+        costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 3, 15)));
+    }
+    else if (actualCost < 100) {
+        costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 5, 15)));
+    }
+    else {
+        costScore = Math.round(Math.max(0, 15 - Math.min(costDiff / 10, 15)));
+    }
     score += costScore;
 
     // Calculate score for rating
@@ -90,7 +98,7 @@ export const calculateScore = (
                 { lat: selectedLat, lng: selectedLong },
             );
             regionScore = Math.round(
-                Math.max(0, 15 - Math.min(distance / 50000, 15)),
+                Math.max(0, 15 - Math.min(distance / 80000, 15)),
             );
         }
     }
