@@ -59,9 +59,6 @@ export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
         return null;
     };
 
-    // Define a fixed height for the table header cells
-    const thStyle = { height: "50px", verticalAlign: "middle" };
-
     return (
         <thead>
             <tr>
@@ -71,9 +68,11 @@ export default function TableHeader({ headers, sortBy }: TableHeaderProps) {
                             key={header}
                             onClick={() => handleSort(header)}
                             style={{
-                                ...thStyle,
+                                height: "50px",
+                                verticalAlign: "middle",
                                 cursor: "pointer",
                                 position: "relative",
+                                fontSize: "17px",
                             }}
                         >
                             <Tooltip

@@ -48,7 +48,7 @@ export default async function Page({
     };
 
     return (
-        <div>
+        <div className={styles.fontSerif}>
             <div className={styles.header}>
                 <div>
                     <Search placeholder="Search Wines" />
