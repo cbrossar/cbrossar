@@ -5,6 +5,7 @@ import Select from "react-select";
 import { Region, Wine, Country } from "@/app/lib/definitions";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { calculateScore } from "./utils";
+import { Colors } from "@/app/lib/constants";
 
 export default function WineQuizForm({
     wine,
@@ -137,7 +138,7 @@ export default function WineQuizForm({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        color: "green",
+                        color: Colors.tylerGreen,
                     }}
                 >
                     <p>
@@ -155,7 +156,7 @@ export default function WineQuizForm({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        color: "red",
+                        color: Colors.wineRed,
                     }}
                 >
                     <p>
@@ -199,7 +200,7 @@ export default function WineQuizForm({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        color: "green",
+                        color: Colors.tylerGreen,
                     }}
                 >
                     <p>
@@ -217,7 +218,7 @@ export default function WineQuizForm({
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        color: "red",
+                        color: Colors.wineRed,
                     }}
                 >
                     <p>
@@ -257,13 +258,13 @@ export default function WineQuizForm({
                     step="0.1"
                     value={acidity}
                     onChange={(e) => setAcidity(Number(e.target.value))}
-                    style={{ width: "200px" }}
+                    style={{ width: "200px", accentColor: Colors.wineRed }}
                 />
                 <output htmlFor="acidity-slider" style={{ marginTop: "5px" }}>
                     {completed && wine ? (
                         acidity.toFixed(1) ===
                         (wine.acidity || 0).toFixed(1) ? (
-                            <span style={{ color: "green" }}>
+                            <span style={{ color: Colors.tylerGreen }}>
                                 <span
                                     style={{
                                         fontSize: "1.5em",
@@ -278,13 +279,13 @@ export default function WineQuizForm({
                             <>
                                 <span
                                     style={{
-                                        color: "red",
+                                        color: Colors.wineRed,
                                         textDecoration: "line-through",
                                     }}
                                 >
                                     {acidity.toFixed(1)}
                                 </span>{" "}
-                                <span style={{ color: "green" }}>
+                                <span style={{ color: Colors.tylerGreen }}>
                                     {(wine.acidity || 0).toFixed(1)}
                                 </span>
                             </>
@@ -316,13 +317,13 @@ export default function WineQuizForm({
                     step="0.1"
                     value={sweetness}
                     onChange={(e) => setSweetness(Number(e.target.value))}
-                    style={{ width: "200px" }}
+                    style={{ width: "200px", accentColor: Colors.wineRed }}
                 />
                 <output htmlFor="sweetness-slider" style={{ marginTop: "5px" }}>
                     {completed && wine ? (
                         sweetness.toFixed(1) ===
                         (wine.sweetness || 0).toFixed(1) ? (
-                            <span style={{ color: "green" }}>
+                            <span style={{ color: Colors.tylerGreen }}>
                                 <span
                                     style={{
                                         fontSize: "1.5em",
@@ -337,13 +338,13 @@ export default function WineQuizForm({
                             <>
                                 <span
                                     style={{
-                                        color: "red",
+                                        color: Colors.wineRed,
                                         textDecoration: "line-through",
                                     }}
                                 >
                                     {sweetness.toFixed(1)}
                                 </span>{" "}
-                                <span style={{ color: "green" }}>
+                                <span style={{ color: Colors.tylerGreen }}>
                                     {(wine.sweetness || 0).toFixed(1)}
                                 </span>
                             </>
@@ -375,12 +376,12 @@ export default function WineQuizForm({
                     step="0.1"
                     value={tannins}
                     onChange={(e) => setTannins(Number(e.target.value))}
-                    style={{ width: "200px" }}
+                    style={{ width: "200px", accentColor: Colors.wineRed }}
                 />
                 <output htmlFor="tannins-slider" style={{ marginTop: "5px" }}>
                     {completed && wine ? (
                         tannins.toFixed(1) === (wine.tannin || 0).toFixed(1) ? (
-                            <span style={{ color: "green" }}>
+                            <span style={{ color: Colors.tylerGreen }}>
                                 <span
                                     style={{
                                         fontSize: "1.5em",
@@ -395,13 +396,13 @@ export default function WineQuizForm({
                             <>
                                 <span
                                     style={{
-                                        color: "red",
+                                        color: Colors.wineRed,
                                         textDecoration: "line-through",
                                     }}
                                 >
                                     {tannins.toFixed(1)}
                                 </span>{" "}
-                                <span style={{ color: "green" }}>
+                                <span style={{ color: Colors.tylerGreen }}>
                                     {(wine.tannin || 0).toFixed(1)}
                                 </span>
                             </>
@@ -441,7 +442,7 @@ export default function WineQuizForm({
                     {completed &&
                         wine &&
                         (Number(cost) == (wine.price || 0) ? (
-                            <span style={{ color: "green" }}>
+                            <span style={{ color: Colors.tylerGreen }}>
                                 <span
                                     style={{
                                         fontSize: "1.5em",
@@ -462,14 +463,14 @@ export default function WineQuizForm({
                                 </span>
                                 <span
                                     style={{
-                                        color: "red",
+                                        color: Colors.wineRed,
                                         textDecoration: "line-through",
                                         marginRight: "5px",
                                     }}
                                 >
                                     {cost || 0}
                                 </span>{" "}
-                                <span style={{ color: "green" }}>
+                                <span style={{ color: Colors.tylerGreen }}>
                                     {wine.price || 0}
                                 </span>
                             </>
@@ -536,7 +537,7 @@ export default function WineQuizForm({
                 <output htmlFor="rating-slider">
                     {completed && wine ? (
                         rating == wine.ratings_average ? (
-                            <span style={{ color: "green" }}>
+                            <span style={{ color: Colors.tylerGreen }}>
                                 <span
                                     style={{
                                         fontSize: "1.5em",
@@ -551,13 +552,13 @@ export default function WineQuizForm({
                             <>
                                 <span
                                     style={{
-                                        color: "red",
+                                        color: Colors.wineRed,
                                         textDecoration: "line-through",
                                     }}
                                 >
                                     {rating.toFixed(1)}
                                 </span>{" "}
-                                <span style={{ color: "green" }}>
+                                <span style={{ color: Colors.tylerGreen }}>
                                     {(wine.ratings_average || 0).toFixed(1)}
                                 </span>
                             </>
@@ -579,7 +580,7 @@ export default function WineQuizForm({
                         style={{
                             padding: "10px 20px",
                             fontSize: "16px",
-                            backgroundColor: "#4CAF50",
+                            backgroundColor: Colors.wineRed,
                             color: "white",
                             border: "none",
                             borderRadius: "5px",
@@ -595,7 +596,7 @@ export default function WineQuizForm({
                         style={{
                             fontSize: "24px",
                             fontWeight: "bold",
-                            color: "#4CAF50",
+                            color: Colors.tylerGreen,
                             marginBottom: "30px",
                             display: "flex",
                             alignItems: "center",
