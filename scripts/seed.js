@@ -356,12 +356,39 @@ async function seedWine(client) {
 
         console.log(`Created "wines" table`);
 
+        const createWineQuizTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS wine_quiz (
+                id SERIAL PRIMARY KEY,
+                wine_id INT NOT NULL,
+                country_code VARCHAR(4),
+                region_id INT,
+                acidity FLOAT,
+                intensity FLOAT,
+                sweetness FLOAT,
+                tannin FLOAT,
+                cost FLOAT,
+                rating FLOAT,
+                country_score FLOAT,
+                region_score FLOAT,
+                acidity_score FLOAT,
+                sweetness_score FLOAT,
+                tannin_score FLOAT,
+                cost_score FLOAT,
+                rating_score FLOAT,
+                score FLOAT,
+                FOREIGN KEY (wine_id) REFERENCES vivino_wines(id)
+            );
+        `;
+
+        console.log(`Created "wine_quiz" table`);
+
         return {
             createGrapesTable,
             createCountriesTable,
             createRegionsTable,
             createWineriesTable,
             createWinesTable,
+            createWineQuizTable,
         };
     } catch (error) {
         console.error("Error seeding wine:", error);

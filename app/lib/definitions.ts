@@ -115,3 +115,22 @@ export interface Wine {
     winery_name?: string | null;
     country_code?: string | null;
 }
+
+export interface WineQuiz {
+    wine_id: number | null;
+    country_code: string | null;
+    region_id: number | null;
+    acidity: number | null;
+    sweetness: number | null;
+    tannin: number | null;
+    cost: number | null;
+    rating: number | null;
+    country_score: number;
+    region_score: number;
+    acidity_score: number;
+    sweetness_score: number;
+    tannin_score: number;
+    cost_score: number;
+    rating_score: number;
+    score: number;
+}

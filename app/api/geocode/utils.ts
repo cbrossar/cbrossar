@@ -8,7 +8,6 @@ import {
 
 const API_KEY = process.env.GEOCODING_API_KEY;
 
-
 export async function geocodeBackfill(client: Client) {
     const country_codes = ["us", "it", "fr", "es", "pt"];
 
@@ -17,11 +16,7 @@ export async function geocodeBackfill(client: Client) {
         console.log("num regions", regions.length);
 
         for (const region of regions) {
-            const response = await geocodeRegion(
-                client,
-                region,
-                country_code,
-            );
+            const response = await geocodeRegion(client, region, country_code);
             if (response.ok) {
                 const { latitude, longitude } = await response.json();
                 await updateRegionGeocode(region.id, latitude, longitude);
@@ -29,7 +24,6 @@ export async function geocodeBackfill(client: Client) {
         }
     }
 }
-
 
 export async function geocodeRegion(
     client: Client,
@@ -66,11 +60,19 @@ export async function geocodeRegion(
     }
 }
 
-
-export async function fixRegionGeocode(client: Client, region_id: number, address_override: string) {
+export async function fixRegionGeocode(
+    client: Client,
+    region_id: number,
+    address_override: string,
+) {
     const region = await fetchRegionById(region_id);
 
-    const response = await geocodeRegion(client, region, region.country_code, address_override);
+    const response = await geocodeRegion(
+        client,
+        region,
+        region.country_code,
+        address_override,
+    );
     if (response.ok) {
         const { latitude, longitude } = await response.json();
         await updateRegionGeocode(region.id, latitude, longitude);

@@ -1,5 +1,12 @@
 import { sql } from "@vercel/postgres";
-import { Country, Grape, Region, Wine, Winery } from "@/app/lib/definitions";
+import {
+    Country,
+    Grape,
+    Region,
+    Wine,
+    WineQuiz,
+    Winery,
+} from "@/app/lib/definitions";
 import { unstable_noStore as noStore } from "next/cache";
 import { ITEMS_PER_PAGE } from "./fantasy";
 
@@ -339,4 +346,17 @@ export async function fetchCountriesWithWines() {
         JOIN vivino_wines vw ON vr.id = vw.region_id
     `;
     return response.rows as Country[];
+}
+
+export async function createWineQuiz(wineQuiz: WineQuiz) {
+    try {
+        const response = await sql`
+            INSERT INTO wine_quiz (wine_id, country_code, region_id, acidity, sweetness, tannin, cost, rating, country_score, region_score, acidity_score, sweetness_score, tannin_score, cost_score, rating_score, score)
+            VALUES (${wineQuiz.wine_id}, ${wineQuiz.country_code}, ${wineQuiz.region_id}, ${wineQuiz.acidity}, ${wineQuiz.sweetness}, ${wineQuiz.tannin}, ${wineQuiz.cost}, ${wineQuiz.rating}, ${wineQuiz.country_score}, ${wineQuiz.region_score}, ${wineQuiz.acidity_score}, ${wineQuiz.sweetness_score}, ${wineQuiz.tannin_score}, ${wineQuiz.cost_score}, ${wineQuiz.rating_score}, ${wineQuiz.score})
+        `;
+        return response;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to create wine quiz.");
+    }
 }

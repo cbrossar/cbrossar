@@ -55,7 +55,9 @@ export default async function Page({
                 </div>
                 <EyeToggle />
             </div>
-            <p className="text-gray-500 text-sm mt-4">Tap wine name to start quiz. Tap eye to hide details.</p>
+            <p className="text-gray-500 text-sm mt-4">
+                Tap wine name to start quiz. Tap eye to hide details.
+            </p>
             <div style={{ overflowX: "auto" }}>
                 <table
                     style={{

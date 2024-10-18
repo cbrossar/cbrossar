@@ -5,7 +5,7 @@ import Select from "react-select";
 import { Region, Wine, Country } from "@/app/lib/definitions";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { calculateScore } from "./utils";
-
+import { createWineQuiz } from "@/app/data/wine";
 
 export default function WineQuizForm({
     wine,
@@ -41,11 +41,25 @@ export default function WineQuizForm({
         setSelectedCountryCode(selectedOption.value);
     };
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
         setCompleted(true);
         const params = new URLSearchParams(searchParams.toString());
         params.set("isHidden", "false");
         replace(`${pathname}?${params.toString()}`);
+
+        const response = await fetch("/api/wine-quiz", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(wineQuiz),
+        });
+
+        if (response.ok) {
+            console.log("Quiz created successfully");
+        } else {
+            console.error("Error creating quiz");
+        }
     };
 
     let regionOptions = regions.map((r) => ({
@@ -62,7 +76,7 @@ export default function WineQuizForm({
         }
     }
 
-    const { score, tooltipText, distance } = calculateScore(
+    const { score, tooltipText, distance, wineQuiz } = calculateScore(
         wine,
         region,
         acidity,

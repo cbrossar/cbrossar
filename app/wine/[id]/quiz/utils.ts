@@ -1,5 +1,5 @@
 import haversine from "haversine-distance";
-import { Region, Wine } from "@/app/lib/definitions";
+import { Region, Wine, WineQuiz } from "@/app/lib/definitions";
 
 export const calculateScore = (
     wine: Wine,
@@ -106,9 +106,31 @@ export const calculateScore = (
         Rating points: ${ratingScore}/15
     `.trim();
 
+    score = Math.round(score);
+
+    const wineQuiz: WineQuiz = {
+        wine_id: wine.id,
+        country_code: selectedCountryCode,
+        region_id: region.id,
+        acidity: acidity,
+        sweetness: sweetness,
+        tannin: tannins,
+        cost: parseFloat(cost),
+        rating: rating,
+        country_score: countryScore,
+        region_score: regionScore,
+        acidity_score: acidityScore,
+        sweetness_score: sweetnessScore,
+        tannin_score: tanninsScore,
+        cost_score: costScore,
+        rating_score: ratingScore,
+        score: score,
+    };
+
     return {
-        score: Math.round(score),
+        score,
         tooltipText,
-        distance: distance,
+        distance,
+        wineQuiz,
     };
 };

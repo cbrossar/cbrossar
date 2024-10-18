@@ -30,7 +30,7 @@ export default async function Page({ params, searchParams }: any) {
         <div className="relative">
             <div className="absolute top-2.5 left-2.5">
                 <Link href={`/wine?isHidden=${isHidden}`}>
-                    <FaWineBottle className="h-6 w-6"/>
+                    <FaWineBottle className="h-6 w-6" />
                 </Link>
             </div>
             <div className="absolute top-2.5 right-2.5">
