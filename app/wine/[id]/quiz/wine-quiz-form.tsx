@@ -616,7 +616,7 @@ export default function WineQuizForm({
                                     whiteSpace: "pre-line",
                                     marginTop: "10px",
                                     fontSize: "14px",
-                                    textAlign: "left",
+                                    textAlign: "center",
                                 }}
                             >
                                 {tooltipText}

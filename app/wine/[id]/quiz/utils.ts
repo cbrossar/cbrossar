@@ -97,13 +97,13 @@ export const calculateScore = (
     score += regionScore;
 
     const tooltipText = `
-        Country points: ${countryScore}/10
-        Region points: ${regionScore}/15    
-        Acidity points: ${acidityScore}/15
-        Sweetness points: ${sweetnessScore}/15
-        Tannins points: ${tanninsScore}/15
-        Cost points: ${costScore}/15
-        Rating points: ${ratingScore}/15
+        Country: ${countryScore}/10
+        Region: ${regionScore}/15    
+        Acidity: ${acidityScore}/15
+        Sweetness: ${sweetnessScore}/15
+        Tannins: ${tanninsScore}/15
+        Cost: ${costScore}/15
+        Rating: ${ratingScore}/15
     `.trim();
 
     score = Math.round(score);
