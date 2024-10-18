@@ -4,6 +4,7 @@ import Search from "@/app/ui/search";
 import TableHeader from "@/app/wine/table-header";
 import { fetchWinesFiltered, fetchWinesPageCount } from "@/app/data/wine";
 import { Wine } from "@/app/lib/definitions";
+import EyeToggle from "@/app/wine/eye-toggle";
 import styles from "./styles.module.css";
 
 export default async function Page({
@@ -15,6 +16,7 @@ export default async function Page({
         sortby?: string;
         country?: string;
         region?: string;
+        isHidden?: string;
     };
 }) {
     const query = searchParams?.query || "";
@@ -24,7 +26,7 @@ export default async function Page({
     const sortByColumn = sortBy.replace("-", "");
     const currentCountryCode = searchParams?.country || "";
     const currentRegionId = searchParams?.region || "";
-
+    const isHidden = searchParams?.isHidden === "true";
     const wines = (await fetchWinesFiltered(
         query,
         currentPage,
@@ -51,6 +53,7 @@ export default async function Page({
                 <div>
                     <Search placeholder="Search Wines" />
                 </div>
+                <EyeToggle />
             </div>
             <div style={{ overflowX: "auto" }}>
                 <table
@@ -85,7 +88,9 @@ export default async function Page({
                                         minWidth: "150px",
                                     }}
                                 >
-                                    <Link href={`/wine/${wine.id}/quiz`}>
+                                    <Link
+                                        href={`/wine/${wine.id}/quiz${isHidden ? "?isHidden=true" : ""}`}
+                                    >
                                         <div
                                             style={{
                                                 maxHeight: "2.8em",
@@ -116,40 +121,66 @@ export default async function Page({
                                         minWidth: "100px",
                                     }}
                                 >
-                                    <div className={styles.twoLineClamp}>
+                                    <div
+                                        className={`${styles.twoLineClamp} ${isHidden ? styles.hidden : ""}`}
+                                    >
                                         {wine.region_name}
                                     </div>
                                 </td>
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {wine.country_code?.toUpperCase() || ""}
                                 </td>
 
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {wine.acidity
                                         ? wine.acidity.toFixed(2)
                                         : ""}
                                 </td>
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {wine.intensity
                                         ? wine.intensity.toFixed(2)
                                         : ""}
                                 </td>
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {wine.sweetness
                                         ? wine.sweetness.toFixed(2)
                                         : ""}
                                 </td>
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {wine.tannin ? wine.tannin.toFixed(2) : ""}
                                 </td>
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {currency_map[wine.currency_code || ""]}
                                     {wine.price}
                                 </td>
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {wine.ratings_count}
                                 </td>
-                                <td style={{ padding: "0 4px" }}>
+                                <td
+                                    className={isHidden ? styles.hidden : ""}
+                                    style={{ padding: "0 4px" }}
+                                >
                                     {wine.ratings_average}
                                 </td>
                             </tr>
