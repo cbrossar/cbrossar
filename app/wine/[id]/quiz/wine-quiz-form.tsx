@@ -6,6 +6,7 @@ import { Region, Wine, Country } from "@/app/lib/definitions";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { calculateScore } from "./utils";
 
+
 export default function WineQuizForm({
     wine,
     region,

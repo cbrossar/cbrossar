@@ -6,7 +6,9 @@ import {
     fetchCountriesWithWines,
     fetchRegionById,
 } from "@/app/data/wine";
+import { FaWineBottle } from "react-icons/fa";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import styles from "./styles.module.css";
 import WineQuizForm from "./wine-quiz-form";
 
@@ -26,6 +28,11 @@ export default async function Page({ params, searchParams }: any) {
 
     return (
         <div className="relative">
+            <div className="absolute top-2.5 left-2.5">
+                <Link href={`/wine?isHidden=${isHidden}`}>
+                    <FaWineBottle className="h-6 w-6"/>
+                </Link>
+            </div>
             <div className="absolute top-2.5 right-2.5">
                 <EyeToggle />
             </div>
