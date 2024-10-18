@@ -27,7 +27,7 @@ export default async function Page({ params, searchParams }: any) {
     const isHidden = searchParams.isHidden === "true";
 
     return (
-        <div className="relative">
+        <div className="relative font-serif">
             <div className="absolute top-2.5 left-2.5">
                 <Link href={`/wine?isHidden=${isHidden}`}>
                     <FaWineBottle className="h-6 w-6" />
