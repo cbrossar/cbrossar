@@ -77,6 +77,10 @@ export default function WineQuizForm({
         regions,
     );
 
+    const actualCountry = countries.find(
+        (country) => country.code === wine.country_code,
+    );
+
     return (
         <form>
             <div
@@ -113,6 +117,42 @@ export default function WineQuizForm({
                     }}
                 />
             </div>
+            {completed && wine.country_code == country && (
+                <div
+                    style={{
+                        marginTop: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        color: "green",
+                    }}
+                >
+                    <p>
+                        <span style={{ fontSize: "1.5em", marginRight: "5px" }}>
+                            ✓
+                        </span>
+                        {actualCountry?.name}
+                    </p>
+                </div>
+            )}
+            {completed && wine.country_code != country && (
+                <div
+                    style={{
+                        marginTop: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        color: "red",
+                    }}
+                >
+                    <p>
+                        <span style={{ fontSize: "1em", marginRight: "5px" }}>
+                            ✕
+                        </span>
+                        {actualCountry?.name}
+                    </p>
+                </div>
+            )}
             <div
                 style={{
                     marginTop: "20px",

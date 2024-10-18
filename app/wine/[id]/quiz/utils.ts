@@ -65,6 +65,7 @@ export const calculateScore = (
 
     // Calculate score for region
     if (selectedRegionDict) {
+
         const correctRegion = regions.find(
             (r) => r.id.toString() === wine.region_id.toString(),
         );
@@ -78,11 +79,10 @@ export const calculateScore = (
             const correctLong = correctRegion?.longitude || 0;
             const selectedLat = selectedRegion?.latitude || 0;
             const selectedLong = selectedRegion?.longitude || 0;
-            const distance = haversine(
+            distance = haversine(
                 { lat: correctLat, lng: correctLong },
                 { lat: selectedLat, lng: selectedLong },
             );
-
             regionScore = Math.round(
                 Math.max(0, 25 - Math.min(distance / 20000, 25)),
             );
