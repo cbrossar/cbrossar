@@ -96,7 +96,7 @@ export default function WineQuizForm({
     );
 
     return (
-        <form>
+        <form style={{ fontSize: "18px" }}>
             <div
                 style={{
                     marginTop: "20px",
@@ -579,7 +579,7 @@ export default function WineQuizForm({
                     <button
                         style={{
                             padding: "10px 20px",
-                            fontSize: "16px",
+                            fontSize: "18px",
                             backgroundColor: Colors.wineRed,
                             color: "white",
                             border: "none",
