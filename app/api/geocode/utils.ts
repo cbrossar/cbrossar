@@ -1,17 +1,45 @@
-import { Region } from "@/app/lib/definitions";
 import { Client } from "@googlemaps/google-maps-services-js";
+import { Region } from "@/app/lib/definitions";
+import {
+    fetchRegionsWithoutGeocode,
+    updateRegionGeocode,
+} from "@/app/data/wine";
 
 const API_KEY = process.env.GEOCODING_API_KEY;
+
+
+export async function geocodeBackfill(client: Client) {
+    const country_codes = ["us", "it", "fr", "es", "pt"];
+
+    for (const country_code of country_codes) {
+        const regions = await fetchRegionsWithoutGeocode(country_code);
+        console.log("num regions", regions.length);
+
+        for (const region of regions) {
+            const response = await geocodeRegion(
+                client,
+                region,
+                country_code,
+            );
+            if (response.ok) {
+                const { latitude, longitude } = await response.json();
+                await updateRegionGeocode(region.id, latitude, longitude);
+            }
+        }
+    }
+}
+
 
 export async function geocodeRegion(
     client: Client,
     region: Region,
     country_code: string,
+    address_override?: string,
 ) {
     try {
         const response = await client.geocode({
             params: {
-                address: region.name,
+                address: address_override || region.name,
                 components: {
                     country: country_code,
                 },

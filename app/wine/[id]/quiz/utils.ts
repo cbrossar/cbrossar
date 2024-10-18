@@ -69,6 +69,7 @@ export const calculateScore = (
     if (selectedCountryCode == wine.country_code) {
         countryScore = 10;
     }
+    score += countryScore;
 
     let distance = 0;
 
