@@ -3,6 +3,7 @@ import { Region } from "@/app/lib/definitions";
 import {
     fetchRegionsWithoutGeocode,
     updateRegionGeocode,
+    fetchRegionById,
 } from "@/app/data/wine";
 
 const API_KEY = process.env.GEOCODING_API_KEY;
@@ -62,5 +63,16 @@ export async function geocodeRegion(
     } catch (error) {
         console.error(error);
         return Response.json({ error: "Geocoding failed", details: error });
+    }
+}
+
+
+export async function fixRegionGeocode(client: Client, region_id: number, address_override: string) {
+    const region = await fetchRegionById(region_id);
+
+    const response = await geocodeRegion(client, region, region.country_code, address_override);
+    if (response.ok) {
+        const { latitude, longitude } = await response.json();
+        await updateRegionGeocode(region.id, latitude, longitude);
     }
 }
