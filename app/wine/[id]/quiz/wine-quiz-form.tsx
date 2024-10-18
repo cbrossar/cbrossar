@@ -73,8 +73,10 @@ export default function WineQuizForm({
         tannins,
         cost,
         rating,
+        country,
         selectedRegion,
         regions,
+
     );
 
     const actualCountry = countries.find(

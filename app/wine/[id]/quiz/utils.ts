@@ -8,10 +8,12 @@ export const calculateScore = (
     tannins: number,
     cost: string,
     rating: number,
+    country: string,
     selectedRegionDict: any,
     regions: Region[],
 ) => {
-    let score = 0; // Start with zero score
+    let score = 0; 
+    let countryScore = 0;
     let regionScore = 0;
     let acidityScore = 0;
     let sweetnessScore = 0;
@@ -61,6 +63,10 @@ export const calculateScore = (
     ratingScore = Math.round(Math.max(0, 15 - Math.min(ratingDiff * 5, 15)));
     score += ratingScore;
 
+    if(country == wine.country_code) {
+        countryScore = 10;
+    }
+
     let distance = 0;
 
     // Calculate score for region
@@ -73,7 +79,7 @@ export const calculateScore = (
             (r) => r.id.toString() === selectedRegionDict.value,
         );
         if (correctRegion?.id === selectedRegion?.id) {
-            regionScore = 25;
+            regionScore = 15;
         } else {
             const correctLat = correctRegion?.latitude || 0;
             const correctLong = correctRegion?.longitude || 0;
@@ -84,14 +90,15 @@ export const calculateScore = (
                 { lat: selectedLat, lng: selectedLong },
             );
             regionScore = Math.round(
-                Math.max(0, 25 - Math.min(distance / 20000, 25)),
+                Math.max(0, 15 - Math.min(distance / 50000, 15)),
             );
         }
     }
     score += regionScore;
 
     const tooltipText = `
-        Region points: ${regionScore}/25
+        Country points: ${countryScore}/10
+        Region points: ${regionScore}/15    
         Acidity points: ${acidityScore}/15
         Sweetness points: ${sweetnessScore}/15
         Tannins points: ${tanninsScore}/15
