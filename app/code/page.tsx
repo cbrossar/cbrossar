@@ -13,6 +13,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="Github"
+                            priority
                         />
                     </div>
                 </Link>
@@ -26,6 +27,7 @@ export default function Page() {
                             width={130}
                             height={130}
                             alt="Remesh"
+                            priority
                         />
                     </div>
                 </Link>
@@ -39,6 +41,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="Fantasy Premier League"
+                            priority
                         />
                     </div>
                 </Link>
@@ -52,6 +55,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="bethpage"
+                            priority
                         />
                     </div>
                 </Link>
@@ -65,6 +69,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="L Train"
+                            priority
                         />
                     </div>
                 </Link>
@@ -78,6 +83,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="Wine"
+                            priority
                         />
                     </div>
                 </Link>
@@ -91,6 +97,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="10k"
+                            priority
                         />
                     </div>
                 </Link>
@@ -104,6 +111,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="Maxaer"
+                            priority
                         />
                     </div>
                 </Link>
@@ -117,6 +125,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="Bracket Game"
+                            priority
                         />
                     </div>
                 </Link>
@@ -130,6 +139,7 @@ export default function Page() {
                             width={200}
                             height={200}
                             alt="Doomsday"
+                            priority
                         />
                     </div>
                 </Link>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { Colors, MobileWidth } from "@/app/lib/constants";
 
 export default function Navbar() {
