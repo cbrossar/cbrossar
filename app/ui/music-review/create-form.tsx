@@ -24,7 +24,7 @@ export default function Form() {
                         name="album"
                         type="text"
                         placeholder="Enter album name"
-                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                         aria-describedby="album-error"
                     />
                 </div>
@@ -42,7 +42,7 @@ export default function Form() {
                         name="artist"
                         type="text"
                         placeholder="Enter artist name"
-                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                         aria-describedby="artist-error"
                     />
                     <div
@@ -75,7 +75,7 @@ export default function Form() {
                         name="rating"
                         type="float"
                         placeholder="Enter rating"
-                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                         aria-describedby="rating-error"
                     />
                     <div
@@ -107,7 +107,7 @@ export default function Form() {
                         id="review"
                         name="review"
                         placeholder="Live with the album for at least a week. Share your thoughts!"
-                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                         aria-describedby="review-error"
                         rows={5}
                     />
@@ -141,7 +141,7 @@ export default function Form() {
                         name="name"
                         type="text"
                         placeholder="Enter your first name"
-                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                         aria-describedby="name-error"
                     />
                     <div id="name-error" aria-live="polite" aria-atomic="true">
@@ -169,7 +169,7 @@ export default function Form() {
                         id="image_file"
                         name="image_file"
                         type="file"
-                        className="block w-full rounded-md border border-gray-200 py-2 text-sm"
+                        className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                         aria-describedby="image_file-error"
                     />
                     <div
