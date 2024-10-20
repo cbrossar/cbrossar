@@ -47,6 +47,7 @@ export default function Home() {
                         width={900}
                         height={450}
                         alt="Colombia soccer"
+                        priority
                     />
                     <ImageText>Soccer Stats</ImageText>
                 </ImageLink>
@@ -58,6 +59,7 @@ export default function Home() {
                         width={900}
                         height={450}
                         alt="Code"
+                        priority
                     />
                     <ImageText>Code Collection</ImageText>
                 </ImageLink>
@@ -69,6 +71,7 @@ export default function Home() {
                         width={900}
                         height={450}
                         alt="Flagler surfer"
+                        priority
                     />
                     <ImageText>Film Photos</ImageText>
                 </ImageLink>
