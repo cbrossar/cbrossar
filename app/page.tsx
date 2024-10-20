@@ -35,6 +35,7 @@ export default function Home() {
                         width={900}
                         height={450}
                         alt="Vinyl collage"
+                        priority
                     />
                     <ImageText>Music Reviews</ImageText>
                 </ImageLink>
