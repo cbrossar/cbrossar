@@ -57,17 +57,17 @@ export default function Navbar() {
                 <SideNavLink href="/soccer" onClick={toggleMenu}>
                     Soccer
                 </SideNavLink>
+                <SideNavLink href="/wine" onClick={toggleMenu}>
+                    Wine
+                </SideNavLink>
                 <SideNavLink href="/fantasy-prem/players" onClick={toggleMenu}>
-                    Fantasy Players
+                    FPL Players
                 </SideNavLink>
                 <SideNavLink href="/fantasy-prem/team" onClick={toggleMenu}>
-                    Fantasy Team
+                    FPL Team
                 </SideNavLink>
                 <SideNavLink href="/ltrain" onClick={toggleMenu}>
                     L Train
-                </SideNavLink>
-                <SideNavLink href="/wine" onClick={toggleMenu}>
-                    Wine
                 </SideNavLink>
                 <SideNavLink href="/code" onClick={toggleMenu}>
                     Code
