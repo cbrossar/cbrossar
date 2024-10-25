@@ -30,6 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                             width={500}
                             height={500}
                             alt={`Photo ${review.id}`}
+                            priority
                         />
                         <p className="text-gray-500 text-sm mt-4">
                             Click to open in Spotify.
