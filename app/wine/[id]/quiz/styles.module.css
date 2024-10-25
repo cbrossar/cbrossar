@@ -8,7 +8,7 @@
 .pageContainer::before {
     content: "";
     position: absolute;
-    top: 0;
+    top: 0px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -19,7 +19,7 @@
     opacity: 0.2; /* Adjusts only the background image opacity */
     z-index: 0;
     pointer-events: none; /* Ensures the background does not block clicks */
-    animation: flow 12s linear infinite;
+    animation: flow 15s linear infinite;
 }
 
 /* Animation for the flowing effect */

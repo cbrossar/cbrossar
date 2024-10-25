@@ -103,7 +103,7 @@ export default function WineQuizForm({
     );
 
     return (
-        <form style={{ fontSize: "18px" }}>
+        <form style={{ fontSize: "18px"}}>
             <div
                 style={{
                     marginTop: "20px",
@@ -478,7 +478,7 @@ export default function WineQuizForm({
                 <label htmlFor="cost-input" style={{ marginBottom: "10px" }}>
                     Cost
                 </label>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>
                     {!completed && (
                         <>
                             <span style={{ marginRight: "5px" }}>
@@ -488,9 +488,14 @@ export default function WineQuizForm({
                                 type="text"
                                 id="cost-input"
                                 placeholder="199.99"
-                                style={{ padding: "5px", width: "80px" }}
+                                style={{ padding: "5px", width: "70px" }}
                                 value={cost}
                                 onChange={(e) => setCost(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault(); // Prevents form submission
+                                    }
+                                }}
                             />
                         </>
                     )}
