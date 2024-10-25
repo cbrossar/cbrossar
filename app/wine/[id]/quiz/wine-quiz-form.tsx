@@ -6,6 +6,7 @@ import { Region, Wine, Country } from "@/app/lib/definitions";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { calculateScore } from "./utils";
 import { Colors } from "@/app/lib/constants";
+import { set } from "date-fns";
 
 export default function WineQuizForm({
     wine,
@@ -26,6 +27,12 @@ export default function WineQuizForm({
     const [cost, setCost] = useState("");
     const [rating, setRating] = useState(2.5);
     const [completed, setCompleted] = useState(false);
+
+    // Increment or decrement functions
+    const handleIncrement = (setter: any, value: any) =>
+        setter(Math.min(value + 0.1, 5));
+    const handleDecrement = (setter: any, value: any) =>
+        setter(Math.max(value - 0.1, 0));
 
     const pathname = usePathname();
     const { replace } = useRouter();
@@ -250,16 +257,32 @@ export default function WineQuizForm({
                 >
                     Acidity
                 </label>
-                <input
-                    type="range"
-                    id="acidity-slider"
-                    min="0"
-                    max="5"
-                    step="0.1"
-                    value={acidity}
-                    onChange={(e) => setAcidity(Number(e.target.value))}
-                    style={{ width: "200px", accentColor: Colors.wineRed }}
-                />
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <button
+                        type="button"
+                        onClick={() => handleDecrement(setAcidity, acidity)}
+                        style={{ marginRight: "10px" }}
+                    >
+                        -
+                    </button>
+                    <input
+                        type="range"
+                        id="acidity-slider"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value={acidity}
+                        onChange={(e) => setAcidity(Number(e.target.value))}
+                        style={{ width: "200px", accentColor: Colors.wineRed }}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => handleIncrement(setAcidity, acidity)}
+                        style={{ marginLeft: "10px" }}
+                    >
+                        +
+                    </button>
+                </div>
                 <output htmlFor="acidity-slider" style={{ marginTop: "5px" }}>
                     {completed && wine ? (
                         acidity.toFixed(1) ===
@@ -309,16 +332,32 @@ export default function WineQuizForm({
                 >
                     Sweetness
                 </label>
-                <input
-                    type="range"
-                    id="sweetness-slider"
-                    min="0"
-                    max="5"
-                    step="0.1"
-                    value={sweetness}
-                    onChange={(e) => setSweetness(Number(e.target.value))}
-                    style={{ width: "200px", accentColor: Colors.wineRed }}
-                />
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <button
+                        type="button"
+                        onClick={() => handleDecrement(setSweetness, sweetness)}
+                        style={{ marginRight: "10px" }}
+                    >
+                        -
+                    </button>
+                    <input
+                        type="range"
+                        id="sweetness-slider"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value={sweetness}
+                        onChange={(e) => setSweetness(Number(e.target.value))}
+                        style={{ width: "200px", accentColor: Colors.wineRed }}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => handleIncrement(setSweetness, sweetness)}
+                        style={{ marginLeft: "10px" }}
+                    >
+                        +
+                    </button>
+                </div>
                 <output htmlFor="sweetness-slider" style={{ marginTop: "5px" }}>
                     {completed && wine ? (
                         sweetness.toFixed(1) ===
@@ -368,16 +407,32 @@ export default function WineQuizForm({
                 >
                     Tannins
                 </label>
-                <input
-                    type="range"
-                    id="tannins-slider"
-                    min="0"
-                    max="5"
-                    step="0.1"
-                    value={tannins}
-                    onChange={(e) => setTannins(Number(e.target.value))}
-                    style={{ width: "200px", accentColor: Colors.wineRed }}
-                />
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <button
+                        type="button"
+                        onClick={() => handleDecrement(setTannins, tannins)}
+                        style={{ marginRight: "10px" }}
+                    >
+                        -
+                    </button>
+                    <input
+                        type="range"
+                        id="tannins-slider"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value={tannins}
+                        onChange={(e) => setTannins(Number(e.target.value))}
+                        style={{ width: "200px", accentColor: Colors.wineRed }}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => handleIncrement(setTannins, tannins)}
+                        style={{ marginLeft: "10px" }}
+                    >
+                        +
+                    </button>
+                </div>
                 <output htmlFor="tannins-slider" style={{ marginTop: "5px" }}>
                     {completed && wine ? (
                         tannins.toFixed(1) === (wine.tannin || 0).toFixed(1) ? (
