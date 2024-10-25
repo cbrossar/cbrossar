@@ -543,51 +543,67 @@ export default function WineQuizForm({
                 <label htmlFor="rating-slider" style={{ marginBottom: "10px" }}>
                     Rating
                 </label>
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        position: "relative",
-                    }}
-                >
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                            key={star}
-                            style={{
-                                position: "relative",
-                                fontSize: "24px",
-                                marginRight: "5px",
-                            }}
-                        >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <button
+                        type="button"
+                        onClick={() => handleDecrement(setRating, rating)}
+                        style={{ marginRight: "10px" }}
+                    >
+                        -
+                    </button>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            position: "relative",
+                        }}
+                    >
+                        {[1, 2, 3, 4, 5].map((star) => (
                             <span
+                                key={star}
                                 style={{
-                                    color: Colors.yellow,
-                                    position: "absolute",
-                                    overflow: "hidden",
-                                    width: `${Math.min(100, Math.max(0, (rating - star + 1) * 100))}%`,
+                                    position: "relative",
+                                    fontSize: "24px",
+                                    marginRight: "5px",
                                 }}
                             >
-                                ★
+                                <span
+                                    style={{
+                                        color: Colors.yellow,
+                                        position: "absolute",
+                                        overflow: "hidden",
+                                        width: `${Math.min(100, Math.max(0, (rating - star + 1) * 100))}%`,
+                                    }}
+                                >
+                                    ★
+                                </span>
+                                <span style={{ color: "gray" }}>★</span>
                             </span>
-                            <span style={{ color: "gray" }}>★</span>
-                        </span>
-                    ))}
-                    <input
-                        type="range"
-                        id="rating-slider"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        value={rating}
-                        onChange={(e) => setRating(Number(e.target.value))}
-                        style={{
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                            opacity: 0,
-                            cursor: "pointer",
-                        }}
-                    />
+                        ))}
+                        <input
+                            type="range"
+                            id="rating-slider"
+                            min="0"
+                            max="5"
+                            step="0.1"
+                            value={rating}
+                            onChange={(e) => setRating(Number(e.target.value))}
+                            style={{
+                                position: "absolute",
+                                width: "100%",
+                                height: "100%",
+                                opacity: 0,
+                                cursor: "pointer",
+                            }}
+                        />
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => handleIncrement(setRating, rating)}
+                        style={{ marginLeft: "10px" }}
+                    >
+                        +
+                    </button>
                 </div>
                 <output htmlFor="rating-slider">
                     {completed && wine ? (
