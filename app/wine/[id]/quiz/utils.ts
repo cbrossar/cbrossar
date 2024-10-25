@@ -26,7 +26,7 @@ export const calculateScore = (
     const acidityDiff = Math.abs(
         (Number(wine.acidity?.toFixed(1)) || 0) - acidity,
     );
-    acidityScore = Math.round(Math.max(0, 15 - Math.min(acidityDiff * 5, 15)));
+    acidityScore = Math.round(Math.max(0, 15 - Math.min(acidityDiff * 6, 15)));
     score += acidityScore;
 
     // Calculate score for sweetness
@@ -34,7 +34,7 @@ export const calculateScore = (
         (Number(wine.sweetness?.toFixed(1)) || 0) - sweetness,
     );
     sweetnessScore = Math.round(
-        Math.max(0, 15 - Math.min(sweetnessDiff * 5, 15)),
+        Math.max(0, 15 - Math.min(sweetnessDiff * 6, 15)),
     );
     score += sweetnessScore;
 
@@ -42,7 +42,7 @@ export const calculateScore = (
     const tanninsDiff = Math.abs(
         (Number(wine.tannin?.toFixed(1)) || 0) - tannins,
     );
-    tanninsScore = Math.round(Math.max(0, 15 - Math.min(tanninsDiff * 5, 15)));
+    tanninsScore = Math.round(Math.max(0, 15 - Math.min(tanninsDiff * 6, 15)));
     score += tanninsScore;
 
     // Calculate score for cost
@@ -63,7 +63,7 @@ export const calculateScore = (
     const ratingDiff = Math.abs(
         (Number(wine.ratings_average?.toFixed(1)) || 0) - rating,
     );
-    ratingScore = Math.round(Math.max(0, 15 - Math.min(ratingDiff * 5, 15)));
+    ratingScore = Math.round(Math.max(0, 15 - Math.min(ratingDiff * 6, 15)));
     score += ratingScore;
 
     if (selectedCountryCode == wine.country_code) {
