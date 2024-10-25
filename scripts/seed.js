@@ -359,6 +359,7 @@ async function seedWine(client) {
         const createWineQuizTable = await client.sql`
             CREATE TABLE IF NOT EXISTS wine_quiz (
                 id SERIAL PRIMARY KEY,
+                ip_address VARCHAR(255) NOT NULL,
                 wine_id INT NOT NULL,
                 country_code VARCHAR(4),
                 region_id INT,

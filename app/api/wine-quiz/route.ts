@@ -2,9 +2,13 @@ import { createWineQuiz, fetchWineById } from "@/app/data/wine";
 import { sendEmail } from "@/app/api/send-email/utils";
 
 export async function POST(req: Request) {
+    // Retrieve the client IP address
+    const clientIp =
+        req.headers.get("x-forwarded-for")?.split(",")[0] || "Unknown IP";
+
     const wineQuiz = await req.json();
     try {
-        const result = await createWineQuiz(wineQuiz);
+        const result = await createWineQuiz(wineQuiz, clientIp);
         const wine = await fetchWineById(wineQuiz.wine_id);
         await sendEmail(
             process.env.EMAIL_USER as string,
