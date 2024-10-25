@@ -25,10 +25,10 @@
 /* Animation for the flowing effect */
 @keyframes flow {
     0% {
-        background-position: -1200px 200px;
+        background-position: -1200px 0px;
     }
     100% {
-        background-position: 0 200px; /* Adjust as needed for speed and direction */
+        background-position: 0 0px; /* Adjust as needed for speed and direction */
     }
 }
 
