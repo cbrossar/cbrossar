@@ -1,3 +1,37 @@
+.pageContainer {
+    position: relative;
+    min-height: 100vh;
+    font-family: "Playfair Display", serif;
+    overflow: hidden; /* Ensures no scrolling issues with the pseudo-element */
+}
+
+.pageContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/wine/wine.png");
+    background-size: 1200px 1000px;
+    background-position: center;
+    background-repeat: repeat-x;
+    opacity: 0.2; /* Adjusts only the background image opacity */
+    z-index: 0;
+    pointer-events: none; /* Ensures the background does not block clicks */
+    animation: flow 12s linear infinite;
+}
+
+/* Animation for the flowing effect */
+@keyframes flow {
+    0% {
+        background-position: -1200px 200px;
+    }
+    100% {
+        background-position: 0 200px; /* Adjust as needed for speed and direction */
+    }
+}
+
 .title {
     text-align: center;
     font-size: 2rem;
@@ -16,8 +50,4 @@
     color: #f0f0f0;
     border-radius: 5px;
     padding: 2px 5px;
-}
-
-.font-serif {
-    font-family: "Playfair Display", serif;
 }
