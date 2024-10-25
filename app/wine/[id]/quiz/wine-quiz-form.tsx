@@ -612,7 +612,7 @@ export default function WineQuizForm({
                 </div>
                 <output htmlFor="rating-slider">
                     {completed && wine ? (
-                        rating == wine.ratings_average ? (
+                        rating.toString() == (wine.ratings_average || 0).toFixed(1) ? (
                             <span style={{ color: Colors.tylerGreen }}>
                                 <span
                                     style={{
