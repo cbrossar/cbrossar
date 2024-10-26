@@ -77,6 +77,20 @@ export async function createMusicReview(prevState: State, formData: FormData) {
         : "";
 
     try {
+        const existingReview = await sql`
+            SELECT id FROM music_reviews 
+            WHERE album = ${album} 
+            AND artist = ${artist} 
+            AND rating = ${rating}
+            AND name = ${name}
+            LIMIT 1
+        `;
+
+        if (existingReview.rows.length > 0) {
+            // Record with the same album, artist, and rating already exists
+            throw new Error("A review with this album, artist, and rating already exists.");
+        }
+
         const result = await sql`
             INSERT INTO music_reviews (album, artist, rating, review, name, spotify_album_id, image_url)
             VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${spotify_album_id}, ${image_url})
