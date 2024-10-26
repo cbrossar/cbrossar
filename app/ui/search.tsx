@@ -15,10 +15,10 @@ export default function Search({
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
+    const query = searchParams.get("query") || "";
+    const [searchTerm, setSearchTerm] = useState(query);
 
-    const [searchTerm, setSearchTerm] = useState(
-        searchParams.get("query") || "",
-    );
+
 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -38,8 +38,12 @@ export default function Search({
 
     const handleClearSearch = () => {
         setSearchTerm("");
-        handleSearch(""); // Trigger search reset
+        handleSearch("");
     };
+
+    useEffect(() => {
+        setSearchTerm(query);
+    }, [query]);
 
     return (
         <div className="relative flex flex-1 flex-shrink-0">
