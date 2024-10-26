@@ -649,6 +649,7 @@ export default function WineQuizForm({
                     marginTop: "20px",
                     display: "flex",
                     justifyContent: "center",
+
                 }}
             >
                 {!completed ? (
