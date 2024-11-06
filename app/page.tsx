@@ -41,6 +41,30 @@ export default function Home() {
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
+                <ImageLink href="/fantasy/players">
+                    <Image
+                        src="/foggy-field.jpeg"
+                        width={900}
+                        height={450}
+                        alt="Fantasy players"
+                        priority
+                    />
+                    <ImageText>FPL Players</ImageText>
+                </ImageLink>
+            </ImageWrapper>
+            <ImageWrapper>
+                <ImageLink href="/wine">
+                    <Image
+                        src="/photos/bottles.jpeg"
+                        width={900}
+                        height={450}
+                        alt="Wine"
+                        priority
+                    />
+                    <ImageText>Wine</ImageText>
+                </ImageLink>
+            </ImageWrapper>
+            <ImageWrapper>
                 <ImageLink href="/soccer">
                     <Image
                         src="/colombia-soccer.jpeg"
