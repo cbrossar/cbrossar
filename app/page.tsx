@@ -41,7 +41,7 @@ export default function Home() {
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
-                <ImageLink href="/fantasy/players">
+                <ImageLink href="/fantasy-prem/players">
                     <Image
                         src="/foggy-field.jpeg"
                         width={900}
