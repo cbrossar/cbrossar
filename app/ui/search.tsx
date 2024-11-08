@@ -18,8 +18,6 @@ export default function Search({
     const query = searchParams.get("query") || "";
     const [searchTerm, setSearchTerm] = useState(query);
 
-
-
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams.toString());
 

@@ -88,7 +88,9 @@ export async function createMusicReview(prevState: State, formData: FormData) {
 
         if (existingReview.rows.length > 0) {
             // Record with the same album, artist, and rating already exists
-            throw new Error("A review with this album, artist, and rating already exists.");
+            throw new Error(
+                "A review with this album, artist, and rating already exists.",
+            );
         }
 
         const result = await sql`

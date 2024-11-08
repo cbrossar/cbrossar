@@ -35,6 +35,36 @@
     padding: 2px 5px;
 }
 
-.fontSerif {
+.pageContainer {
+    position: relative;
+    min-height: 100vh;
     font-family: "Playfair Display", serif;
+    overflow: hidden; /* Ensures no scrolling issues with the pseudo-element */
+}
+
+.pageContainer::before {
+    content: "";
+    position: fixed;
+    top: -100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/wine/wine-longer.png");
+    background-size: 1200px 1000px;
+    background-position: center;
+    background-repeat: repeat-x;
+    opacity: 0.2; /* Adjusts only the background image opacity */
+    z-index: 0;
+    pointer-events: none; /* Ensures the background does not block clicks */
+    animation: flow 15s linear infinite;
+}
+
+/* Animation for the flowing effect */
+@keyframes flow {
+    0% {
+        background-position: -1200px 0px;
+    }
+    100% {
+        background-position: 0 0px; /* Adjust as needed for speed and direction */
+    }
 }

@@ -103,7 +103,7 @@ export default function WineQuizForm({
     );
 
     return (
-        <form style={{ fontSize: "18px"}}>
+        <form style={{ fontSize: "18px" }}>
             <div
                 style={{
                     marginTop: "20px",
@@ -478,7 +478,13 @@ export default function WineQuizForm({
                 <label htmlFor="cost-input" style={{ marginBottom: "10px" }}>
                     Cost
                 </label>
-                <div style={{ display: "flex", alignItems: "center", marginLeft: "15px" }}>
+                <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginLeft: "15px",
+                    }}
+                >
                     {!completed && (
                         <>
                             <span style={{ marginRight: "5px" }}>
@@ -612,7 +618,8 @@ export default function WineQuizForm({
                 </div>
                 <output htmlFor="rating-slider">
                     {completed && wine ? (
-                        rating.toString() == (wine.ratings_average || 0).toFixed(1) ? (
+                        rating.toString() ==
+                        (wine.ratings_average || 0).toFixed(1) ? (
                             <span style={{ color: Colors.tylerGreen }}>
                                 <span
                                     style={{
@@ -649,7 +656,6 @@ export default function WineQuizForm({
                     marginTop: "20px",
                     display: "flex",
                     justifyContent: "center",
-
                 }}
             >
                 {!completed ? (
