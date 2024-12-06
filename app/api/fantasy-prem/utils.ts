@@ -27,26 +27,26 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
     switch (player.element_type) {
         case 1: // Goalkeepers
             weights = {
-                points: 0.3,
-                cost: 0.15,
-                clean: 0.25,
+                points: 0.4,
+                cost: 0.2,
+                clean: 0.15,
                 mins: 0.1,
-                fdr_5: 0.1,
-                goals: 0.0,
-                assists: 0.1,
+                fdr_5: 0.15,
                 xG: 0.0,
                 xA: 0.0,
+                goals: 0.0,
+                assists: 0.0,
             };
             break;
         case 2: // Defenders
             weights = {
-                points: 0.3,
-                cost: 0.1,
-                clean: 0.2,
-                goals: 0.1,
-                assists: 0.1,
-                xG: 0.05,
-                xA: 0.05,
+                points: 0.4,
+                cost: 0.2,
+                clean: 0.1,
+                goals: 0.025,
+                assists: 0.025,
+                xG: 0.025,
+                xA: 0.025,
                 mins: 0.1,
                 fdr_5: 0.1,
             };
@@ -54,40 +54,40 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         case 3: // Midfielders
             weights = {
                 points: 0.3,
-                cost: 0.1,
-                goals: 0.2,
-                assists: 0.15,
-                xG: 0.05,
-                xA: 0.05,
+                cost: 0.2,
+                goals: 0.1,
+                assists: 0.1,
+                xG: 0.075,
+                xA: 0.075,
                 mins: 0.05,
-                clean: 0.0,
                 fdr_5: 0.1,
+                clean: 0.0,
             };
             break;
         case 4: // Forwards
             weights = {
                 points: 0.3,
-                cost: 0.1,
-                goals: 0.2,
+                cost: 0.2,
+                goals: 0.1,
                 assists: 0.1,
-                xG: 0.1,
-                xA: 0.05,
+                xG: 0.075,
+                xA: 0.075,
                 mins: 0.05,
-                clean: 0.0,
                 fdr_5: 0.1,
+                clean: 0.0,
             };
             break;
         default:
             weights = {
                 points: 0.3,
-                cost: 0.1,
-                goals: 0.15,
+                cost: 0.2,
+                goals: 0.1,
                 assists: 0.1,
-                clean: 0.1,
-                xG: 0.05,
-                xA: 0.05,
+                xG: 0.075,
+                xA: 0.075,
                 mins: 0.05,
                 fdr_5: 0.1,
+                clean: 0.0,
             };
     }
 
@@ -102,6 +102,16 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         minMaxValues.cost.min,
         minMaxValues.cost.max,
     );
+
+    // Ensure minimum value of 1 for xG and xA to avoid over-inflation
+    const adjustedXG = Math.max(player.expected_goals, 1);
+    const adjustedXA = Math.max(player.expected_assists, 1);
+
+    // Calculate goal ratio and assist ratio
+    const normGoalRatio = Math.min(player.goals_scored / adjustedXG, 2);
+    const normAssistRatio = Math.min(player.assists / adjustedXA, 2);
+
+    // Normalize goal ratio and assist ratio
     const normGoals = normalize(
         player.goals_scored,
         minMaxValues.goals.min,
@@ -112,21 +122,22 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         minMaxValues.assists.min,
         minMaxValues.assists.max,
     );
+
     const normClean = normalize(
         player.clean_sheets,
         minMaxValues.clean.min,
         minMaxValues.clean.max,
     );
-    const normXG = normalize(
-        player.expected_goals,
-        minMaxValues.xG.min,
-        minMaxValues.xG.max,
-    );
-    const normXA = normalize(
-        player.expected_assists,
-        minMaxValues.xA.min,
-        minMaxValues.xA.max,
-    );
+    // const normXG = normalize(
+    //     adjustedXG,
+    //     minMaxValues.xG.min,
+    //     minMaxValues.xG.max,
+    // );
+    // const normXA = normalize(
+    //     adjustedXA,
+    //     minMaxValues.xA.min,
+    //     minMaxValues.xA.max,
+    // );
     const normMins = normalize(
         player.minutes,
         minMaxValues.mins.min,
@@ -145,8 +156,8 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
         weights.goals * normGoals +
         weights.assists * normAssists +
         weights.clean * normClean +
-        weights.xG * normXG +
-        weights.xA * normXA +
+        weights.xG * normGoalRatio +
+        weights.xA * normAssistRatio +
         weights.mins * normMins +
         weights.fdr_5 * normfdr_5;
 
