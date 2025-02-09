@@ -1,6 +1,6 @@
 import { upsertFantasyPlayer, fetchFantasyMaxStats } from "@/app/data/fantasy";
 import { FantasyPlayer } from "@/app/lib/definitions";
-import { calculateTransferIndex, upsertFantasyTeams } from "./utils";
+import { calculateTransferIndex } from "./utils";
 
 export const dynamic = "force-dynamic"; // static by default, unless reading the request
 
@@ -90,6 +90,8 @@ export async function GET(request: Request) {
                     fdr_5: fdr_5,
                     transfer_index: transferIndex,
                 };
+
+                console.log("Upserting player data for", player.first_name, player.second_name, player.id);
 
                 // Upsert player data
                 upsertFantasyPlayer(player);
