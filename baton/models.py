@@ -160,6 +160,7 @@ class FantasyPlayers(Base):
     transfers_in_event: Mapped[int] = mapped_column(Integer)
     fdr_5: Mapped[Optional[int]] = mapped_column(Integer)
     transfer_index: Mapped[Optional[float]] = mapped_column(Double(53))
+    last_5_points: Mapped[Optional[int]] = mapped_column(Integer, server_default=text('0'))
 
     fantasy_positions: Mapped['FantasyPositions'] = relationship('FantasyPositions', back_populates='fantasy_players')
     fantasy_teams: Mapped['FantasyTeams'] = relationship('FantasyTeams', back_populates='fantasy_players')
