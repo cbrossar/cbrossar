@@ -79,6 +79,7 @@ export async function GET(request: Request) {
                     now_cost: element.now_cost,
                     total_points: element.total_points,
                     event_points: element.event_points,
+                    last_5_points: 0,
                     minutes: element.minutes,
                     goals_scored: element.goals_scored,
                     assists: element.assists,
