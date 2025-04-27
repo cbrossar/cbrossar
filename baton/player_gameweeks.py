@@ -5,6 +5,8 @@ from baton.fpl import get_current_season, get_fpl_general_info, get_fpl_player
 
 def __main__():
 
+    logger.info("Starting player gameweeks task")
+
     season = get_current_season()
 
     if season is None:
@@ -15,7 +17,7 @@ def __main__():
 
     store_fpl_player_gameweeks(data, season)
 
-
+    logger.info("Player gameweeks task completed")
 def store_fpl_player_gameweeks(data, season):
     session = get_session()
 
@@ -31,7 +33,6 @@ def store_fpl_player_gameweeks(data, season):
         if player is None:
             logger.info(f"Player not found: {element['second_name']}")
             continue
-        logger.info(f"Player found: {player.first_name} {player.second_name}")
         
         gameweeks = session.query(FantasyPlayerGameweeks).filter(FantasyPlayerGameweeks.player_id == player.id, FantasyPlayerGameweeks.season_id == season.id).all()
 
@@ -65,6 +66,7 @@ def store_fpl_player_gameweeks(data, season):
 
     # Bulk insert all gameweeks at once
     if gameweeks_to_add:
+        logger.info(f"Adding {len(gameweeks_to_add)} gameweeks")
         session.bulk_save_objects(gameweeks_to_add)
         session.commit()
     
