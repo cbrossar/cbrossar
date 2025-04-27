@@ -1,6 +1,3 @@
-cbrossar: Personal website built with nextjs 
-baton: Pass on long running workloads to baton
-
 ## cbrossar - Personal Website
 A Personal website build with Next.js showcaseing music reviews, fantasy premier league stats, film photography and other various projects.
 
