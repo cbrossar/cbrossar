@@ -9,8 +9,3 @@ Install Python, git clone your repo
 Set up cron
 
 Done
-
-
-## Setup models
-
-1. dump.sh
