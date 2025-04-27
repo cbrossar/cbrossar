@@ -1,6 +1,7 @@
 import {
     fetchFantasyTeams,
-    fetchPlayersByPosition,
+    fetchPlayersByPositionAll,
+    fetchPlayersByPositionCurrent,
 } from "@/app/data/fantasy";
 import Link from "next/link";
 import Image from "next/image";
@@ -35,17 +36,23 @@ export default async function Page({
     const numMidfielders = 9;
     const numForwards = 7;
 
-    const sortBy = searchParams?.isCurrentGameweek
-        ? "event_points"
-        : "total_points";
-
-    const playersByPosition = await fetchPlayersByPosition(
+    const playersByPositionAll = await fetchPlayersByPositionAll(
         numGoalies,
         numDefenders,
         numMidfielders,
         numForwards,
-        sortBy,
     );
+
+    const playersByPositionCurrent = await fetchPlayersByPositionCurrent(
+        numGoalies,
+        numDefenders,
+        numMidfielders,
+        numForwards,
+    );
+
+    const playersByPosition = isCurrentGameweek
+        ? playersByPositionCurrent
+        : playersByPositionAll;
 
     const optimalTeam = maximizeFantasyTeam(
         playersByPosition,
