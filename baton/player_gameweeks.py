@@ -18,6 +18,8 @@ def __main__():
     store_fpl_player_gameweeks(data, season)
 
     logger.info("Player gameweeks task completed")
+
+    
 def store_fpl_player_gameweeks(data, season):
     session = get_session()
 
