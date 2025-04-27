@@ -36,6 +36,18 @@ class FantasyPositions(Base):
     fantasy_players: Mapped[List['FantasyPlayers']] = relationship('FantasyPlayers', back_populates='fantasy_positions')
 
 
+class FantasySeasons(Base):
+    __tablename__ = 'fantasy_seasons'
+    __table_args__ = (
+        PrimaryKeyConstraint('id', name='fantasy_seasons_pkey'),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, server_default=text('uuid_generate_v4()'))
+    name: Mapped[str] = mapped_column(String(255))
+    start_date: Mapped[datetime.date] = mapped_column(Date)
+    end_date: Mapped[datetime.date] = mapped_column(Date)
+
+
 class FantasyTeams(Base):
     __tablename__ = 'fantasy_teams'
     __table_args__ = (
