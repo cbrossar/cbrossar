@@ -14,7 +14,7 @@ def __main__():
 
     data = get_fpl_general_info()
 
-    store_fpl_player_gameweek_data(data, season)
+    store_fpl_player_gameweeks(data, season)
 
     
 
@@ -46,7 +46,7 @@ def get_current_season():
 
 
 
-def store_fpl_player_gameweek_data(data, season):
+def store_fpl_player_gameweeks(data, season):
     session = get_session()
 
     fpl_player_types = [1,2,3,4]
