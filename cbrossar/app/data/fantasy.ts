@@ -126,64 +126,29 @@ export async function fetchFantasyTeams() {
     }
 }
 
-export async function fetchPlayersByPositionAll(
+export async function fetchPlayersByPosition(
     numGoalies: number,
     numDefenders: number,
     numMidfielders: number,
     numForwards: number,
+    sortBy: 'total_points' | 'event_points' = 'total_points'
 ) {
     noStore();
     try {
         const goalkeepers = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY total_points DESC LIMIT ${numGoalies}
+            SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY ${sortBy} DESC LIMIT ${numGoalies}
         `;
 
         const defenders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 2 ORDER BY total_points DESC LIMIT ${numDefenders}
+            SELECT * FROM fantasy_players WHERE element_type = 2 ORDER BY ${sortBy} DESC LIMIT ${numDefenders}
         `;
 
         const midfielders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 3 ORDER BY total_points DESC LIMIT ${numMidfielders}
+            SELECT * FROM fantasy_players WHERE element_type = 3 ORDER BY ${sortBy} DESC LIMIT ${numMidfielders}
         `;
 
         const forwards = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 4 ORDER BY total_points DESC LIMIT ${numForwards}
-        `;
-
-        return {
-            1: goalkeepers.rows as FantasyPlayer[],
-            2: defenders.rows as FantasyPlayer[],
-            3: midfielders.rows as FantasyPlayer[],
-            4: forwards.rows as FantasyPlayer[],
-        };
-    } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to fetch players by position.");
-    }
-}
-
-export async function fetchPlayersByPositionCurrent(
-    numGoalies: number,
-    numDefenders: number,
-    numMidfielders: number,
-    numForwards: number,
-) {
-    noStore();
-    try {
-        const goalkeepers = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY event_points DESC LIMIT ${numGoalies}
-        `;
-
-        const defenders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 2 ORDER BY event_points DESC LIMIT ${numDefenders}
-        `;
-
-        const midfielders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 3 ORDER BY event_points DESC LIMIT ${numMidfielders}
-        `;
-
-        const forwards = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 4 ORDER BY event_points DESC LIMIT ${numForwards}
+            SELECT * FROM fantasy_players WHERE element_type = 4 ORDER BY ${sortBy} DESC LIMIT ${numForwards}
         `;
 
         return {
