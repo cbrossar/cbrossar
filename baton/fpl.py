@@ -21,6 +21,8 @@ def __main__():
             continue
 
         if element["second_name"] == "Maddison":
+
+            # TODO: join with gameweeks table filtered by season
             player = session.query(FantasyPlayers).filter(FantasyPlayers.id == element["id"]).first()
             if player is None:
                 logger.info(f"Player not found: {element['second_name']}")
