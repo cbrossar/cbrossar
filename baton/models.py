@@ -47,6 +47,8 @@ class FantasySeasons(Base):
     start_date: Mapped[datetime.date] = mapped_column(Date)
     end_date: Mapped[datetime.date] = mapped_column(Date)
 
+    fantasy_player_gameweeks: Mapped[List['FantasyPlayerGameweeks']] = relationship('FantasyPlayerGameweeks', back_populates='season')
+
 
 class FantasyTeams(Base):
     __tablename__ = 'fantasy_teams'
@@ -161,6 +163,7 @@ class FantasyPlayers(Base):
 
     fantasy_positions: Mapped['FantasyPositions'] = relationship('FantasyPositions', back_populates='fantasy_players')
     fantasy_teams: Mapped['FantasyTeams'] = relationship('FantasyTeams', back_populates='fantasy_players')
+    fantasy_player_gameweeks: Mapped[List['FantasyPlayerGameweeks']] = relationship('FantasyPlayerGameweeks', back_populates='player')
 
 
 class Matches(Base):
@@ -205,6 +208,36 @@ class VivinoCountries(Base):
     grape2: Mapped[Optional['VivinoGrapes']] = relationship('VivinoGrapes', foreign_keys=[grape2_id], back_populates='vivino_countries_')
     grape3: Mapped[Optional['VivinoGrapes']] = relationship('VivinoGrapes', foreign_keys=[grape3_id], back_populates='vivino_countries1')
     vivino_regions: Mapped[List['VivinoRegions']] = relationship('VivinoRegions', back_populates='vivino_countries')
+
+
+class FantasyPlayerGameweeks(Base):
+    __tablename__ = 'fantasy_player_gameweeks'
+    __table_args__ = (
+        ForeignKeyConstraint(['player_id'], ['fantasy_players.id'], name='fantasy_player_gameweeks_player_id_fkey'),
+        ForeignKeyConstraint(['season_id'], ['fantasy_seasons.id'], name='fantasy_player_gameweeks_season_id_fkey'),
+        PrimaryKeyConstraint('id', name='fantasy_player_gameweeks_pkey'),
+        UniqueConstraint('player_id', 'season_id', 'round', 'fixture', 'opponent_team', name='fantasy_player_gameweeks_player_id_season_id_round_fixture__key')
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, server_default=text('uuid_generate_v4()'))
+    player_id: Mapped[int] = mapped_column(Integer)
+    season_id: Mapped[uuid.UUID] = mapped_column(Uuid)
+    round: Mapped[int] = mapped_column(Integer)
+    fixture: Mapped[int] = mapped_column(Integer)
+    opponent_team: Mapped[int] = mapped_column(Integer)
+    total_points: Mapped[int] = mapped_column(Integer)
+    minutes: Mapped[int] = mapped_column(Integer)
+    goals_scored: Mapped[int] = mapped_column(Integer)
+    assists: Mapped[int] = mapped_column(Integer)
+    clean_sheets: Mapped[int] = mapped_column(Integer)
+    bonus: Mapped[int] = mapped_column(Integer)
+    expected_goals: Mapped[float] = mapped_column(Double(53))
+    expected_assists: Mapped[float] = mapped_column(Double(53))
+    transfers_in: Mapped[int] = mapped_column(Integer)
+    transfers_out: Mapped[int] = mapped_column(Integer)
+
+    player: Mapped['FantasyPlayers'] = relationship('FantasyPlayers', back_populates='fantasy_player_gameweeks')
+    season: Mapped['FantasySeasons'] = relationship('FantasySeasons', back_populates='fantasy_player_gameweeks')
 
 
 class MatchUpdates(Base):

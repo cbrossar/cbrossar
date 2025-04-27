@@ -285,11 +285,38 @@ async function seedFantasyPremierLeagueStats(client) {
         `;
         console.log(`Created "fantasy_seasons" table`);
 
+        // Create the "fantasy_gameweeks" table if it doesn't exist
+        const createFantasyPlayerGameweeksTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS fantasy_player_gameweeks (
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            player_id INT NOT NULL,
+            season_id UUID NOT NULL,
+            round INT NOT NULL,
+            fixture INT NOT NULL,
+            opponent_team INT NOT NULL,
+            total_points INT NOT NULL,
+            minutes INT NOT NULL,
+            goals_scored INT NOT NULL,
+            assists INT NOT NULL,
+            clean_sheets INT NOT NULL,
+            bonus INT NOT NULL,
+            expected_goals FLOAT NOT NULL,
+            expected_assists FLOAT NOT NULL,
+            transfers_in INT NOT NULL,
+            transfers_out INT NOT NULL,
+            FOREIGN KEY (player_id) REFERENCES fantasy_players(id),
+            FOREIGN KEY (season_id) REFERENCES fantasy_seasons(id),
+            UNIQUE (player_id, season_id, round, fixture, opponent_team)
+        );
+        `;
+        console.log(`Created "fantasy_player_gameweeks" table`);
+
         return {
             createFantasyPositionsTable,
             createFantasyTeamsTable,
             createFantasyPlayersTable,
             createFantasySeasonsTable,
+            createFantasyPlayerGameweeksTable,
         };
     } catch (error) {
         console.error("Error seeding fantasy premier league stats:", error);
