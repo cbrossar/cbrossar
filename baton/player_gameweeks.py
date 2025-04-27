@@ -1,7 +1,7 @@
-from db import get_session
-from logger import logger
-from models import FantasyPlayers, FantasyPlayerGameweeks
-from fpl import get_current_season, get_fpl_general_info, get_fpl_player
+from baton.db import get_session
+from baton.logger import logger
+from baton.models import FantasyPlayers, FantasyPlayerGameweeks
+from baton.fpl import get_current_season, get_fpl_general_info, get_fpl_player
 
 def __main__():
 

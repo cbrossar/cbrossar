@@ -5,6 +5,8 @@ from models import FantasyPlayers, FantasyPlayerGameweeks
 
 def __main__():
 
+    logger.info("Starting last 5 points task")
+
     season = get_current_season()
 
     if season is None:
@@ -15,7 +17,7 @@ def __main__():
 
     store_last_5_points(data, season)
 
-
+    logger.info("Last 5 points task completed")
 def store_last_5_points(data, season):
     session = get_session()
 
@@ -23,6 +25,7 @@ def store_last_5_points(data, season):
     players = session.query(FantasyPlayers).all()
 
     for player in players:
+        logger.info(f"Updating last 5 points for {player.first_name} {player.second_name}")
         gameweeks = session.query(FantasyPlayerGameweeks).filter(FantasyPlayerGameweeks.player_id == player.id, FantasyPlayerGameweeks.season_id == season.id).order_by(FantasyPlayerGameweeks.round.desc()).limit(5).all()
 
         last_5_points = 0
