@@ -18,7 +18,9 @@ export default function GameweekToggle({
                         name="points-view"
                         value="all"
                         checked={pointsView === "all"}
-                        onChange={(e) => setPointsView(e.target.value as PointsView)}
+                        onChange={(e) =>
+                            setPointsView(e.target.value as PointsView)
+                        }
                     />
                     <span>All</span>
                 </label>
@@ -28,7 +30,9 @@ export default function GameweekToggle({
                         name="points-view"
                         value="current"
                         checked={pointsView === "current"}
-                        onChange={(e) => setPointsView(e.target.value as PointsView)}
+                        onChange={(e) =>
+                            setPointsView(e.target.value as PointsView)
+                        }
                     />
                     <span>Current</span>
                 </label>
@@ -38,7 +42,9 @@ export default function GameweekToggle({
                         name="points-view"
                         value="last5"
                         checked={pointsView === "last5"}
-                        onChange={(e) => setPointsView(e.target.value as PointsView)}
+                        onChange={(e) =>
+                            setPointsView(e.target.value as PointsView)
+                        }
                     />
                     <span>Last 5</span>
                 </label>

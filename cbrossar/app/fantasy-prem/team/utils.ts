@@ -43,8 +43,8 @@ export function maximizeFantasyTeam(
                                 (pointsColumn === "event_points"
                                     ? player.event_points
                                     : pointsColumn === "last_5_points"
-                                    ? player.last_5_points
-                                    : player.total_points),
+                                      ? player.last_5_points
+                                      : player.total_points),
                             0,
                         );
                         teamCombinations.push({ team, totalPoints, totalCost });

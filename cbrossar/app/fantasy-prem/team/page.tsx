@@ -61,8 +61,8 @@ export default async function Page({
         pointsView === "current"
             ? playersByPositionCurrent
             : pointsView === "last5"
-            ? playersByPositionLast5
-            : playersByPositionAll;
+              ? playersByPositionLast5
+              : playersByPositionAll;
 
     const optimalTeam = maximizeFantasyTeam(
         playersByPosition,
@@ -148,8 +148,8 @@ export default async function Page({
                                             {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
-                                                ? player.last_5_points
-                                                : player.total_points}
+                                                  ? player.last_5_points
+                                                  : player.total_points}
                                         </span>
                                         <span className={styles.cost}>
                                             Cost: £
@@ -202,8 +202,8 @@ export default async function Page({
                                             {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
-                                                ? player.last_5_points
-                                                : player.total_points}
+                                                  ? player.last_5_points
+                                                  : player.total_points}
                                         </span>
                                         <span className={styles.cost}>
                                             Cost: £
@@ -256,8 +256,8 @@ export default async function Page({
                                             {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
-                                                ? player.last_5_points
-                                                : player.total_points}
+                                                  ? player.last_5_points
+                                                  : player.total_points}
                                         </span>
                                         <span className={styles.cost}>
                                             Cost: £
@@ -310,8 +310,8 @@ export default async function Page({
                                             {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
-                                                ? player.last_5_points
-                                                : player.total_points}
+                                                  ? player.last_5_points
+                                                  : player.total_points}
                                         </span>
                                         <span className={styles.cost}>
                                             Cost: £

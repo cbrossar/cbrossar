@@ -91,7 +91,12 @@ export async function GET(request: Request) {
                     transfer_index: transferIndex,
                 };
 
-                console.log("Upserting player data for", player.first_name, player.second_name, player.id);
+                console.log(
+                    "Upserting player data for",
+                    player.first_name,
+                    player.second_name,
+                    player.id,
+                );
 
                 // Upsert player data
                 upsertFantasyPlayer(player);

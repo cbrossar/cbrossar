@@ -165,7 +165,6 @@ export function calculateTransferIndex(player: FantasyPlayer, stats: any) {
 }
 
 export function upsertFantasyPositions(positions: any) {
-
     // Use in fantasy prem route:
     // let positions = data.element_types;
     // upsertFantasyPositions(positions);
