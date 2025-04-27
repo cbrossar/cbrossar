@@ -9,5 +9,3 @@ Install Python, git clone your repo
 Set up cron
 
 Done
-
-test
