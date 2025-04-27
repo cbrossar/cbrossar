@@ -49,10 +49,11 @@ def get_current_season():
 def store_fpl_player_data(data, season):
     session = get_session()
 
-    fpl_player_types = [0,1,2,3]
+    fpl_player_types = [1,2,3,4]
     gameweeks_to_add = []
     
     for element in data["elements"]:
+
         if element["element_type"] not in fpl_player_types:
             continue
 
