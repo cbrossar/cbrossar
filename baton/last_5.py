@@ -25,21 +25,18 @@ def store_last_5_points(data, season):
     for player in players:
         gameweeks = session.query(FantasyPlayerGameweeks).filter(FantasyPlayerGameweeks.player_id == player.id, FantasyPlayerGameweeks.season_id == season.id).order_by(FantasyPlayerGameweeks.round.desc()).limit(5).all()
 
-        if (player.id == 541):
-            logger.info(gameweeks)
-            break
         last_5_points = 0
         for gameweek in gameweeks:
             last_5_points += gameweek.total_points
 
         player.last_5_points = last_5_points
 
-    #     players_to_update.append(player)
+        players_to_update.append(player)
 
-    # session.bulk_save_objects(players_to_update)
-    # session.commit()
+    session.bulk_save_objects(players_to_update)
+    session.commit()
 
-    # session.close()
+    session.close()
 
         
 if __name__ == "__main__":
