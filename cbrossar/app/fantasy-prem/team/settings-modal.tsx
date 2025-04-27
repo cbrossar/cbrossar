@@ -9,6 +9,8 @@ import CostToggle from "./cost-toggle";
 import GameweekToggle from "./gameweek-toggle";
 import styles from "./modal.module.css"; // Add your modal styles here
 
+type PointsView = "all" | "current" | "last5";
+
 export default function SettingsModal() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -24,18 +26,15 @@ export default function SettingsModal() {
     const formationParam = searchParams.get("formation") || "1-3-5-2";
     const [formation, setFormation] = useState(formationParam);
 
-    const isCurrentGameweekParam =
-        searchParams.get("isCurrentGameweek") === "true";
-    const [isCurrentGameweek, setIsCurrentGameweek] = useState(
-        isCurrentGameweekParam,
-    );
+    const pointsViewParam = (searchParams.get("pointsView") as PointsView) || "all";
+    const [pointsView, setPointsView] = useState<PointsView>(pointsViewParam);
 
     const isNowCostParam = searchParams.get("isNowCost") === "true";
     const [isNowCost, setIsNowCost] = useState(isNowCostParam);
 
     // Update the URL param when modal state changes
     useEffect(() => {
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams(searchParams.toString());
         if (isModalOpen) {
             params.set("modalOpen", "true");
         } else {
@@ -56,10 +55,10 @@ export default function SettingsModal() {
         } else {
             params.delete("isNowCost");
         }
-        if (isCurrentGameweek) {
-            params.set("isCurrentGameweek", "true");
+        if (pointsView) {
+            params.set("pointsView", pointsView);
         } else {
-            params.delete("isCurrentGameweek");
+            params.delete("pointsView");
         }
         router.replace(`${pathname}?${params.toString()}`);
     }, [
@@ -67,7 +66,7 @@ export default function SettingsModal() {
         budget,
         formation,
         isNowCost,
-        isCurrentGameweek,
+        pointsView,
         searchParams,
         pathname,
         router,
@@ -113,8 +112,8 @@ export default function SettingsModal() {
                         </div>
                         <div className={styles.config}>
                             <GameweekToggle
-                                isCurrentGameweek={isCurrentGameweek}
-                                setIsCurrentGameweek={setIsCurrentGameweek}
+                                pointsView={pointsView}
+                                setPointsView={setPointsView}
                             />
                         </div>
                     </div>

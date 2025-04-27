@@ -5,7 +5,7 @@ export function maximizeFantasyTeam(
     budget: number,
     formation: number[],
     isNowCost: boolean,
-    isCurrentGameweek: boolean,
+    pointsColumn: string,
 ): { team: FantasyPlayer[]; totalPoints: number; totalCost: number } {
     const goalies = playersByPosition[1];
     const defenders = playersByPosition[2];
@@ -40,8 +40,10 @@ export function maximizeFantasyTeam(
                         const totalPoints = team.reduce(
                             (acc, player) =>
                                 acc +
-                                (isCurrentGameweek
+                                (pointsColumn === "event_points"
                                     ? player.event_points
+                                    : pointsColumn === "last_5_points"
+                                    ? player.last_5_points
                                     : player.total_points),
                             0,
                         );

@@ -2,6 +2,7 @@ import {
     fetchFantasyTeams,
     fetchPlayersByPositionAll,
     fetchPlayersByPositionCurrent,
+    fetchPlayersByPositionLast5,
 } from "@/app/data/fantasy";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,7 +18,7 @@ export default async function Page({
         budget?: string;
         formation?: string;
         isNowCost?: string;
-        isCurrentGameweek?: string;
+        pointsView?: string;
     };
 }) {
     const budget = Number(searchParams?.budget || "80") * 10;
@@ -28,8 +29,7 @@ export default async function Page({
 
     const isNowCost = searchParams?.isNowCost === "true" || false;
 
-    const isCurrentGameweek =
-        searchParams?.isCurrentGameweek === "true" || false;
+    const pointsView = searchParams?.pointsView || "all";
 
     const numGoalies = 4;
     const numDefenders = 8;
@@ -50,16 +50,26 @@ export default async function Page({
         numForwards,
     );
 
-    const playersByPosition = isCurrentGameweek
-        ? playersByPositionCurrent
-        : playersByPositionAll;
+    const playersByPositionLast5 = await fetchPlayersByPositionLast5(
+        numGoalies,
+        numDefenders,
+        numMidfielders,
+        numForwards,
+    );
+
+    const playersByPosition =
+        pointsView === "current"
+            ? playersByPositionCurrent
+            : pointsView === "last5"
+            ? playersByPositionLast5
+            : playersByPositionAll;
 
     const optimalTeam = maximizeFantasyTeam(
         playersByPosition,
         budget,
         formationArray,
         isNowCost,
-        isCurrentGameweek,
+        pointsView,
     );
 
     const goalkeepers = optimalTeam.team.filter(
@@ -135,8 +145,10 @@ export default async function Page({
                                         </div>
                                         <span className={styles.points}>
                                             Points:{" "}
-                                            {isCurrentGameweek
+                                            {pointsView === "current"
                                                 ? player.event_points
+                                                : pointsView === "last5"
+                                                ? player.last_5_points
                                                 : player.total_points}
                                         </span>
                                         <span className={styles.cost}>
@@ -187,8 +199,10 @@ export default async function Page({
                                         </div>
                                         <span className={styles.points}>
                                             Points:{" "}
-                                            {isCurrentGameweek
+                                            {pointsView === "current"
                                                 ? player.event_points
+                                                : pointsView === "last5"
+                                                ? player.last_5_points
                                                 : player.total_points}
                                         </span>
                                         <span className={styles.cost}>
@@ -239,8 +253,10 @@ export default async function Page({
                                         </div>
                                         <span className={styles.points}>
                                             Points:{" "}
-                                            {isCurrentGameweek
+                                            {pointsView === "current"
                                                 ? player.event_points
+                                                : pointsView === "last5"
+                                                ? player.last_5_points
                                                 : player.total_points}
                                         </span>
                                         <span className={styles.cost}>
@@ -291,8 +307,10 @@ export default async function Page({
                                         </div>
                                         <span className={styles.points}>
                                             Points:{" "}
-                                            {isCurrentGameweek
+                                            {pointsView === "current"
                                                 ? player.event_points
+                                                : pointsView === "last5"
+                                                ? player.last_5_points
                                                 : player.total_points}
                                         </span>
                                         <span className={styles.cost}>

@@ -45,6 +45,7 @@ export interface FantasyPlayer {
     now_cost: number;
     total_points: number;
     event_points: number;
+    last_5_points: number;
     minutes: number;
     goals_scored: number;
     assists: number;

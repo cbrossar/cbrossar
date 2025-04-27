@@ -28,14 +28,14 @@ export default function CostToggle({
                 .cost-toggle-container {
                     display: flex;
                     align-items: center;
-                    gap: 10px;
+                    gap: 8px;
                 }
 
                 .switch {
                     position: relative;
                     display: inline-block;
-                    width: 60px;
-                    height: 34px;
+                    width: 40px;
+                    height: 22px;
                 }
 
                 .switch input {
@@ -53,16 +53,16 @@ export default function CostToggle({
                     bottom: 0;
                     background-color: #ccc;
                     transition: 0.4s;
-                    border-radius: 34px;
+                    border-radius: 22px;
                 }
 
                 .slider:before {
                     position: absolute;
                     content: "";
-                    height: 26px;
-                    width: 26px;
-                    left: 4px;
-                    bottom: 4px;
+                    height: 18px;
+                    width: 18px;
+                    left: 2px;
+                    bottom: 2px;
                     background-color: white;
                     transition: 0.4s;
                     border-radius: 50%;
@@ -73,7 +73,7 @@ export default function CostToggle({
                 }
 
                 input:checked + .slider:before {
-                    transform: translateX(26px);
+                    transform: translateX(18px);
                 }
             `}</style>
         </div>

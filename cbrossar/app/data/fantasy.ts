@@ -198,6 +198,42 @@ export async function fetchPlayersByPositionCurrent(
     }
 }
 
+export async function fetchPlayersByPositionLast5(
+    numGoalies: number,
+    numDefenders: number,
+    numMidfielders: number,
+    numForwards: number,
+) {
+    noStore();
+    try {
+        const goalkeepers = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 1 ORDER BY last_5_points DESC LIMIT ${numGoalies}
+        `;
+
+        const defenders = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 2 ORDER BY last_5_points DESC LIMIT ${numDefenders}
+        `;
+
+        const midfielders = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 3 ORDER BY last_5_points DESC LIMIT ${numMidfielders}
+        `;
+
+        const forwards = await sql`
+            SELECT * FROM fantasy_players WHERE element_type = 4 ORDER BY last_5_points DESC LIMIT ${numForwards}
+        `;
+
+        return {
+            1: goalkeepers.rows as FantasyPlayer[],
+            2: defenders.rows as FantasyPlayer[],
+            3: midfielders.rows as FantasyPlayer[],
+            4: forwards.rows as FantasyPlayer[],
+        };
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch players by position.");
+    }
+}
+
 export const ITEMS_PER_PAGE = 10;
 
 export async function fetchPlayersCount(
