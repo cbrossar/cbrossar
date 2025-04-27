@@ -3,8 +3,8 @@ init:
 	source venv/bin/activate && \
 	pip install -r requirements.txt
 
-fpl:
-	python fpl.py
+player-gameweeks:
+	python player_gameweeks.py
 
 last-5:
 	python last_5.py
