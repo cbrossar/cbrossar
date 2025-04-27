@@ -8,8 +8,5 @@
             "path": "/api/fantasy-prem",
             "schedule": "0 20 * * *"
         }
-    ],
-    "ignore": [
-        "../baton/**/*"
     ]
 }
