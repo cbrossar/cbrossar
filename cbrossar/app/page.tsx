@@ -101,7 +101,6 @@ export default function Home() {
                 </ImageLink>
             </ImageWrapper>
             <FooterWrapper>
-                hello world
                 <DateTimeDisplay>{formattedDateTime}</DateTimeDisplay>
             </FooterWrapper>
         </HomeWrapper>
