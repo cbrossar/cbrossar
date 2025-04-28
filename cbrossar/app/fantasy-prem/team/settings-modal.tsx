@@ -94,7 +94,7 @@ export default function SettingsModal() {
                         <div className={styles.config}>
                             <BudgetSlider
                                 min={0}
-                                max={100}
+                                max={110}
                                 budget={budget}
                                 setBudget={setBudget}
                             />
