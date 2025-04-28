@@ -1,7 +1,7 @@
-from baton.db import get_session
-from baton.logger import logger
-from baton.models import FantasyPlayers, FantasyPlayerGameweeks
-from baton.fpl import get_current_season, get_fpl_general_info, get_fpl_player
+from db import get_session
+from logger import logger
+from models import FantasyPlayers, FantasyPlayerGameweeks
+from fpl import get_current_season, get_fpl_general_info, get_fpl_player
 
 def __main__():
 
@@ -24,7 +24,7 @@ def store_fpl_player_gameweeks(data, season):
     session = get_session()
 
     fpl_player_types = [1,2,3,4]
-    gameweeks_to_add = []
+    player_gameweeks_to_add = []
     
     for element in data["elements"]:
 
@@ -38,38 +38,39 @@ def store_fpl_player_gameweeks(data, season):
         
         gameweeks = session.query(FantasyPlayerGameweeks).filter(FantasyPlayerGameweeks.player_id == player.id, FantasyPlayerGameweeks.season_id == season.id).all()
 
-        completed_gameweeks = set([gameweek.round for gameweek in gameweeks])
+        completed_gameweeks = set([(gameweek.round, gameweek.fixture, gameweek.opponent_team) for gameweek in gameweeks])
 
         fpl_player = get_fpl_player(element["id"])
-        fpl_gameweek_history = fpl_player['history']
+        fpl_player_gameweek_history = fpl_player['history']
         
-        for fpl_gameweek in fpl_gameweek_history:
-            if fpl_gameweek['round'] in completed_gameweeks:
+        for fpl_player_gameweek in fpl_player_gameweek_history:
+            gameweek_key = (fpl_player_gameweek['round'], fpl_player_gameweek['fixture'], fpl_player_gameweek['opponent_team'])
+            if gameweek_key in completed_gameweeks:
                 continue
 
-            gameweek = FantasyPlayerGameweeks(
+            player_gameweek = FantasyPlayerGameweeks(
                 player_id=player.id,
                 season_id=season.id,
-                round=fpl_gameweek['round'],
-                fixture=fpl_gameweek['fixture'],
-                opponent_team=fpl_gameweek['opponent_team'],
-                total_points=fpl_gameweek['total_points'],
-                minutes=fpl_gameweek['minutes'],
-                goals_scored=fpl_gameweek['goals_scored'],
-                assists=fpl_gameweek['assists'],
-                clean_sheets=fpl_gameweek['clean_sheets'],
-                bonus=fpl_gameweek['bonus'],
-                expected_goals=fpl_gameweek['expected_goals'],
-                expected_assists=fpl_gameweek['expected_assists'],
-                transfers_in=fpl_gameweek['transfers_in'],
-                transfers_out=fpl_gameweek['transfers_out'],
+                round=fpl_player_gameweek['round'],
+                fixture=fpl_player_gameweek['fixture'],
+                opponent_team=fpl_player_gameweek['opponent_team'],
+                total_points=fpl_player_gameweek['total_points'],
+                minutes=fpl_player_gameweek['minutes'],
+                goals_scored=fpl_player_gameweek['goals_scored'],
+                assists=fpl_player_gameweek['assists'],
+                clean_sheets=fpl_player_gameweek['clean_sheets'],
+                bonus=fpl_player_gameweek['bonus'],
+                expected_goals=fpl_player_gameweek['expected_goals'],
+                expected_assists=fpl_player_gameweek['expected_assists'],
+                transfers_in=fpl_player_gameweek['transfers_in'],
+                transfers_out=fpl_player_gameweek['transfers_out'],
             )
-            gameweeks_to_add.append(gameweek)
+            player_gameweeks_to_add.append(player_gameweek)
 
     # Bulk insert all gameweeks at once
-    if gameweeks_to_add:
-        logger.info(f"Adding {len(gameweeks_to_add)} gameweeks")
-        session.bulk_save_objects(gameweeks_to_add)
+    if player_gameweeks_to_add:
+        logger.info(f"Adding {len(player_gameweeks_to_add)} player gameweeks")
+        session.bulk_save_objects(player_gameweeks_to_add)
         session.commit()
     
     session.close()
