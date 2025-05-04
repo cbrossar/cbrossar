@@ -1,11 +1,2 @@
-## Simple Plan
-
-EC2 tiny server with a cron.
-
-Create an EC2
-
-Install Python, git clone your repo
-
-Set up cron
-
-Done!
+1. Setup on EC2 with cron jobs
+2. Move to AWS Lambda
