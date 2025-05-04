@@ -5,3 +5,5 @@ venv
 schema.sql
 
 logs
+
+.env
