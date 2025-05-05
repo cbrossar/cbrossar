@@ -3,8 +3,8 @@ from logger import logger
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from fpl import get_current_season, get_fpl_general_info, get_fpl_player
 from datetime import datetime
-def __main__():
 
+def run_player_gameweeks():
     logger.info("Starting player gameweeks task")
     start_time = datetime.now()
 
@@ -12,7 +12,7 @@ def __main__():
 
     if season is None:
         logger.error("No season found")
-        return
+        return False
 
     data = get_fpl_general_info()
 
@@ -21,8 +21,11 @@ def __main__():
     end_time = datetime.now()
     duration = end_time - start_time
     logger.info(f"Player gameweeks task completed in {duration.total_seconds():.2f} seconds")
+    return True
 
-    
+def __main__():
+    run_player_gameweeks()
+
 def store_fpl_player_gameweeks(data, season):
     session = get_session()
 

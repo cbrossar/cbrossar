@@ -3,8 +3,8 @@ from logger import logger
 from fpl import get_current_season
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from datetime import datetime
-def __main__():
 
+def run_last_5_points():
     logger.info("Starting last 5 points task")
     start_time = datetime.now()
 
@@ -12,14 +12,17 @@ def __main__():
 
     if season is None:
         logger.error("No season found")
-        return
+        return False
 
     store_last_5_points(season)
 
     end_time = datetime.now()
     duration = end_time - start_time
     logger.info(f"Last 5 points task completed in {duration.total_seconds():.2f} seconds")
+    return True
 
+def __main__():
+    run_last_5_points()
 
 def store_last_5_points(season):
     session = get_session()
@@ -50,6 +53,5 @@ def store_last_5_points(season):
 
     session.close()
 
-        
 if __name__ == "__main__":
     __main__()
