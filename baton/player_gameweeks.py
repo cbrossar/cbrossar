@@ -23,9 +23,6 @@ def run_player_gameweeks():
     logger.info(f"Player gameweeks task completed in {duration.total_seconds():.2f} seconds")
     return True
 
-def __main__():
-    run_player_gameweeks()
-
 def store_fpl_player_gameweeks(data, season):
     session = get_session()
 
@@ -82,4 +79,4 @@ def store_fpl_player_gameweeks(data, season):
     session.close()
 
 if __name__ == "__main__":
-    __main__()
+    run_player_gameweeks()

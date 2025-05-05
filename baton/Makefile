@@ -6,6 +6,9 @@ init:
 install:
 	$(python) -m pip install -r requirements.txt
 
+health:
+	$(python) health.py
+
 player-gameweeks:
 	$(python) player_gameweeks.py
 
