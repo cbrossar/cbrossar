@@ -7,3 +7,5 @@ schema.sql
 logs
 
 .env
+
+lambda_deployment.zip
