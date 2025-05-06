@@ -4,6 +4,7 @@ from player_gameweeks import run_player_gameweeks
 from last_5 import run_last_5_points
 from logger import logger
 import os
+import uvicorn
 
 app = FastAPI()
 
@@ -41,6 +42,5 @@ async def last_5():
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    import uvicorn
     port = int(os.getenv("PORT", 8080))
-    uvicorn.run(app, host="0.0.0.0", port=port) 
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=False) 
