@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from health import run_health_check
 from player_gameweeks import run_player_gameweeks
 from last_5 import run_last_5_points
@@ -7,6 +9,12 @@ import os
 import uvicorn
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/favicon.ico")
+async def favicon():
+    return FileResponse("static/favicon.ico")
 
 @app.get("/")
 async def health_check():
