@@ -21,7 +21,7 @@ def run_player_gameweeks():
     end_time = datetime.now()
     duration = end_time - start_time
     logger.info(f"Player gameweeks task completed in {duration.total_seconds():.2f} seconds")
-    return success
+    return True
 
 def store_fpl_player_gameweeks(data, season):
     fpl_player_types = [1,2,3,4]
