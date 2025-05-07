@@ -21,3 +21,16 @@ last-5:
 update-db-models:
 	$(python) -m sqlacodegen ${DATABASE_URL} --outfile models.py
 
+deploy:
+	gcloud run deploy baton \
+		--image gcr.io/quixotic-geode-234622/baton \
+		--platform managed \
+		--region us-central1 \
+		--allow-unauthenticated \
+		--timeout 300 \
+		--memory 512Mi \
+		--cpu 1 \
+		--min-instances 0 \
+		--max-instances 10 \
+		--set-secrets=DATABASE_URL=baton-db-url:latest
+
