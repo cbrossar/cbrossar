@@ -16,8 +16,4 @@ try:
 except Exception as e:
     logger.error(f"Database connection failed: {e}")
 
-SessionLocal = sessionmaker(bind=engine)
-
-def get_session():
-    """Create a new database session."""
-    return SessionLocal()
+Session = sessionmaker(bind=engine)

@@ -1,4 +1,4 @@
-from db import get_session
+from db import Session
 from logger import logger
 from models import FantasyPlayers
 from datetime import datetime
@@ -7,10 +7,9 @@ def run_health_check():
     logger.info("Starting health check")
     start_time = datetime.now()
 
-    session = get_session()
-    count = session.query(FantasyPlayers).count()
-    logger.info(f"Number of fantasyplayers: {count}")
-    session.close()
+    with Session() as session:
+        count = session.query(FantasyPlayers).count()
+        logger.info(f"Number of fantasyplayers: {count}")
 
     end_time = datetime.now()
     duration = end_time - start_time

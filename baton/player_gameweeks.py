@@ -1,4 +1,4 @@
-from db import get_session
+from db import Session
 from logger import logger
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from fpl import get_current_season, get_fpl_general_info, get_fpl_player
@@ -21,7 +21,7 @@ def run_player_gameweeks():
     end_time = datetime.now()
     duration = end_time - start_time
     logger.info(f"Player gameweeks task completed in {duration.total_seconds():.2f} seconds")
-    return True
+    return success
 
 def store_fpl_player_gameweeks(data, season):
     fpl_player_types = [1,2,3,4]
@@ -32,22 +32,18 @@ def store_fpl_player_gameweeks(data, season):
             continue
 
         try:
-            # Create a new session for each player to avoid long-lived connections
-            session = get_session()
+            with Session() as session:
+                player = session.query(FantasyPlayers).filter(FantasyPlayers.id == element["id"]).first()
+                if player is None:
+                    logger.info(f"Player not found: {element['second_name']}")
+                    continue
             
-            player = session.query(FantasyPlayers).filter(FantasyPlayers.id == element["id"]).first()
-            if player is None:
-                logger.info(f"Player not found: {element['second_name']}")
-                session.close()
-                continue
-            
-            gameweeks = session.query(FantasyPlayerGameweeks).filter(
-                FantasyPlayerGameweeks.player_id == player.id, 
-                FantasyPlayerGameweeks.season_id == season.id
-            ).all()
+                gameweeks = session.query(FantasyPlayerGameweeks).filter(
+                    FantasyPlayerGameweeks.player_id == player.id, 
+                    FantasyPlayerGameweeks.season_id == season.id
+                ).all()
 
             completed_gameweeks = set([(gameweek.round, gameweek.fixture, gameweek.opponent_team) for gameweek in gameweeks])
-            session.close()
 
             fpl_player = get_fpl_player(element["id"])
             if fpl_player is None:
@@ -82,22 +78,13 @@ def store_fpl_player_gameweeks(data, season):
 
         except Exception as e:
             logger.error(f"Error processing player {element.get('second_name', 'unknown')}: {str(e)}")
-            if session:
-                session.close()
             continue
 
     # Bulk insert all gameweeks at once
     if player_gameweeks_to_add:
-        try:
-            session = get_session()
+        with Session.begin() as session:
             logger.info(f"Adding {len(player_gameweeks_to_add)} player gameweeks")
             session.bulk_save_objects(player_gameweeks_to_add)
-            session.commit()
-            session.close()
-        except Exception as e:
-            logger.error(f"Error saving player gameweeks: {str(e)}")
-            if session:
-                session.close()
 
 if __name__ == "__main__":
     run_player_gameweeks()

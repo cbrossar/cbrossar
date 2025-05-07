@@ -1,4 +1,4 @@
-from db import get_session
+from db import Session
 from logger import logger
 from fpl import get_current_season
 from models import FantasyPlayers, FantasyPlayerGameweeks
@@ -22,33 +22,29 @@ def run_last_5_points():
     return True
 
 def store_last_5_points(season):
-    session = get_session()
-
     players_to_update = []
-    players = session.query(FantasyPlayers).all()
-
     highest_last_5_points = 0
 
-    for player in players:
-        gameweeks = session.query(FantasyPlayerGameweeks).filter(FantasyPlayerGameweeks.player_id == player.id, FantasyPlayerGameweeks.season_id == season.id).order_by(FantasyPlayerGameweeks.round.desc()).limit(5).all()
+    with Session() as session:
+        players = session.query(FantasyPlayers).all()
+        for player in players:
+            gameweeks = session.query(FantasyPlayerGameweeks).filter(FantasyPlayerGameweeks.player_id == player.id, FantasyPlayerGameweeks.season_id == season.id).order_by(FantasyPlayerGameweeks.round.desc()).limit(5).all()
 
-        last_5_points = 0
-        for gameweek in gameweeks:
-            last_5_points += gameweek.total_points
+            last_5_points = 0
+            for gameweek in gameweeks:
+                last_5_points += gameweek.total_points
 
-        player.last_5_points = last_5_points
+            player.last_5_points = last_5_points
 
-        if last_5_points > highest_last_5_points:
-            highest_last_5_points = last_5_points
+            if last_5_points > highest_last_5_points:
+                highest_last_5_points = last_5_points
 
-        players_to_update.append(player)
+            players_to_update.append(player)
 
     logger.info(f"Updating {len(players_to_update)} players")
     logger.info(f"Highest last 5 points: {highest_last_5_points}")
-    session.bulk_save_objects(players_to_update)
-    session.commit()
-
-    session.close()
+    with Session.begin() as session:
+        session.bulk_save_objects(players_to_update)
 
 if __name__ == "__main__":
     run_last_5_points()
