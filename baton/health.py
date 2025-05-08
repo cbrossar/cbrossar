@@ -5,6 +5,7 @@ from datetime import datetime
 
 def run_health_check():
     logger.info("Starting health check")
+
     start_time = datetime.now()
 
     with Session() as session:
