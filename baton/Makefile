@@ -12,6 +12,9 @@ run:
 health:
 	$(python) health.py
 
+players:
+	$(python) players.py
+
 player-gameweeks:
 	$(python) player_gameweeks.py
 

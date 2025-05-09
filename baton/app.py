@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from health import run_health_check
 from player_gameweeks import run_player_gameweeks
 from last_5 import run_last_5_points
+from players import run_update_players
 from logger import logger
 import os
 from emails import send_email
@@ -21,6 +22,20 @@ async def health_check():
         logger.error(f"Health check error: {str(e)}")
         send_email("Baton: Health check failed", str(e), email_to)
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+@app.post("/players")
+async def players():
+    try:
+        success = run_update_players()
+        if not success:
+            raise HTTPException(status_code=500, detail="Players update failed")
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Players error: {str(e)}")
+        send_email("Baton: Players update failed", str(e), email_to)
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/player-gameweeks")
 async def player_gameweeks():

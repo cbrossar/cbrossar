@@ -1,3 +1,0 @@
-0 18 * * * cd /home/ec2-user/cbrossar/baton && /home/ec2-user/cbrossar/baton/venv/bin/python player_gameweeks.py >> /home/ec2-user/cbrossar/baton/cron.log 2>&1
-
-0 19 * * * cd /home/ec2-user/cbrossar/baton && /home/ec2-user/cbrossar/baton/venv/bin/python last_5.py >> /home/ec2-user/cbrossar/baton/cron.log 2>&1
