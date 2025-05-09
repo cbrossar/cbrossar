@@ -52,7 +52,7 @@ def update_players(data):
         stmt = insert(FantasyPlayers).values(player_dicts)
         update_columns = {col.name: getattr(stmt.excluded, col.name)
                           for col in FantasyPlayers.__table__.columns
-                          if col.name != 'id'}  # exclude PK
+                          if col.name not in ['id', 'fdr_5', 'last_5_points']}  # exclude PK and fdr_5
         stmt = stmt.on_conflict_do_update(
             index_elements=['id'],
             set_=update_columns
