@@ -19,6 +19,8 @@ def run_update_players():
 
     logger.info(f"Update players completed in {duration.total_seconds():.2f} seconds")
 
+    return True
+
 
 def update_players(data):
 
