@@ -10,7 +10,7 @@ export default function RefreshButton() {
     const handleRefresh = async () => {
         setIsSpinning(true);
         try {
-            const response = await fetch("/api/fantasy-prem", {
+            const response = await fetch("/api/baton/players", {
                 method: "GET",
             });
             if (response.ok) {
