@@ -42,6 +42,11 @@ deploy:
 		--set-secrets=EMAIL_USER=baton-email-user:latest \
 		--set-secrets=EMAIL_PASS=baton-email-pass:latest
 
+build-and-deploy:
+	$(MAKE) build
+	$(MAKE) deploy
+
+
 cleanup-images:
 	gcloud container images list-tags gcr.io/quixotic-geode-234622/baton --format='get(digest)' | while read digest; do \
 		gcloud container images delete gcr.io/quixotic-geode-234622/baton@$$digest --quiet; \
