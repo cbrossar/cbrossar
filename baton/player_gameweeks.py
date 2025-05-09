@@ -25,6 +25,7 @@ def run_player_gameweeks():
 
 def store_fpl_player_gameweeks(data, season):
     fpl_player_types = [1,2,3,4]
+    players_fdr_5_updated = []
     player_gameweeks_to_add = []
     
     for element in data["elements"]:
@@ -50,6 +51,12 @@ def store_fpl_player_gameweeks(data, season):
                 logger.error(f"Failed to fetch FPL data for player {element['second_name']}")
                 continue
 
+            # sum fixture difficulty for next 5 fixtures
+            fpl_player_fixture = fpl_player['fixtures']
+            fpl_player_fdr_5 = sum([fixture['difficulty'] for fixture in fpl_player_fixture[:5]])
+            player.fdr_5 = fpl_player_fdr_5
+            players_fdr_5_updated.append(player)
+            
             fpl_player_gameweek_history = fpl_player['history']
             
             for fpl_player_gameweek in fpl_player_gameweek_history:
@@ -85,6 +92,11 @@ def store_fpl_player_gameweeks(data, season):
         with Session.begin() as session:
             logger.info(f"Adding {len(player_gameweeks_to_add)} player gameweeks")
             session.bulk_save_objects(player_gameweeks_to_add)
+
+    if players_fdr_5_updated:
+        with Session.begin() as session:
+            logger.info(f"Updating {len(players_fdr_5_updated)} player FDR5")
+            session.bulk_save_objects(players_fdr_5_updated)
 
 if __name__ == "__main__":
     run_player_gameweeks()
