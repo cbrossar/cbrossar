@@ -51,8 +51,16 @@ def update_players(data):
         players_to_upsert.append(player)
 
     with Session() as session:
-        for player in players_to_upsert:
-            session.merge(player)  # Will insert or update based on PK
+        # Use _bulk_save_mappings with proper parameters for upsert operation
+        session._bulk_save_mappings(
+            FantasyPlayers,
+            [vars(p) for p in players_to_upsert],
+            isupdate=True,
+            isstates=False,
+            return_defaults=False,
+            update_changed_only=False,
+            render_nulls=False
+        )
         session.commit()
 
 
