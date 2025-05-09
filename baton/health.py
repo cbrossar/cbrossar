@@ -10,7 +10,7 @@ def run_health_check():
 
     with Session() as session:
         count = session.query(FantasyPlayers).count()
-        logger.info(f"Number of fantasyplayers: {count}")
+        logger.info(f"Number of fantasy players: {count}")
 
     end_time = datetime.now()
     duration = end_time - start_time

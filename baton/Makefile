@@ -39,3 +39,12 @@ deploy:
 		--set-secrets=EMAIL_USER=baton-email-user:latest \
 		--set-secrets=EMAIL_PASS=baton-email-pass:latest
 
+cleanup-images:
+	gcloud container images list-tags gcr.io/quixotic-geode-234622/baton --format='get(digest)' | while read digest; do \
+		gcloud container images delete gcr.io/quixotic-geode-234622/baton@$$digest --quiet; \
+	done 
+
+cleanup-builds:
+	gsutil ls gs://quixotic-geode-234622_cloudbuild/source/ | while read file; do \
+		gsutil rm "$$file"; \
+	done
