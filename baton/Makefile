@@ -50,6 +50,18 @@ cleanup-builds:
 	done
 
 cleanup-revisions:
-	gcloud run revisions list --service baton --region us-central1 --format="get(metadata.name)" --filter="metadata.name!=$(gcloud run services describe baton --region=us-central1 --format='get(status.latestCreatedRevisionName)')" | while read revision; do \
+	@latest_rev=$$(gcloud run services describe baton --region=us-central1 --format='get(status.latestCreatedRevisionName)'); \
+	gcloud run revisions list --service baton --region us-central1 --format="get(metadata.name)" --filter="metadata.name!=$$latest_rev" | while read revision; do \
 		gcloud run revisions delete $$revision --region us-central1 --quiet; \
 	done
+
+
+cleanup:
+	@echo "Cleaning up Cloud Run revisions..."; \
+	$(MAKE) cleanup-revisions; \
+	echo "Cleaning up container images..."; \
+	$(MAKE) cleanup-images; \
+	echo "Cleaning up Cloud Build files..."; \
+	$(MAKE) cleanup-builds
+
+
