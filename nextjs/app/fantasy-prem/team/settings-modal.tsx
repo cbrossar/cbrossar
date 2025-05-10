@@ -27,10 +27,10 @@ export default function SettingsModal() {
     const [formation, setFormation] = useState(formationParam);
 
     const pointsViewParam =
-        (searchParams.get("pointsView") as PointsView) || "all";
+        (searchParams.get("pointsView") as PointsView) || "current";
     const [pointsView, setPointsView] = useState<PointsView>(pointsViewParam);
 
-    const isNowCostParam = searchParams.get("isNowCost") === "true";
+    const isNowCostParam = searchParams.get("isNowCost") !== "false";
     const [isNowCost, setIsNowCost] = useState(isNowCostParam);
 
     // Update the URL param when modal state changes

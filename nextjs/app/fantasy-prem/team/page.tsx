@@ -27,9 +27,9 @@ export default async function Page({
 
     const formationArray = formation.split("-").map(Number);
 
-    const isNowCost = searchParams?.isNowCost === "true" || false;
+    const isNowCost = searchParams?.isNowCost !== "false";
 
-    const pointsView = searchParams?.pointsView || "all";
+    const pointsView = searchParams?.pointsView || "current";
 
     const numGoalies = 4;
     const numDefenders = 8;
