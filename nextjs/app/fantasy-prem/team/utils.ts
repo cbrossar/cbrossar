@@ -40,9 +40,9 @@ export function maximizeFantasyTeam(
                         const totalPoints = team.reduce(
                             (acc, player) =>
                                 acc +
-                                (pointsColumn === "event_points"
+                                (pointsColumn === "current"
                                     ? player.event_points
-                                    : pointsColumn === "last_5_points"
+                                    : pointsColumn === "last5"
                                       ? player.last_5_points
                                       : player.total_points),
                             0,
