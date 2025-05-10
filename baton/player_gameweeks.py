@@ -37,24 +37,13 @@ def store_fpl_player_gameweeks(data, season):
             continue
 
         try:
-            with Session() as session:
-                player = (
-                    session.query(FantasyPlayers)
-                    .filter(FantasyPlayers.id == element["id"])
-                    .first()
-                )
-                if player is None:
-                    logger.info(f"Player not found: {element['second_name']}")
-                    continue
+            player = fetch_player(element["id"])
 
-                gameweeks = (
-                    session.query(FantasyPlayerGameweeks)
-                    .filter(
-                        FantasyPlayerGameweeks.player_id == player.id,
-                        FantasyPlayerGameweeks.season_id == season.id,
-                    )
-                    .all()
-                )
+            if player is None:
+                logger.info(f"Player not found: {element['second_name']}")
+                continue
+
+            gameweeks = fetch_player_gameweeks(player.id, season.id)
 
             completed_gameweeks = set(
                 [
@@ -110,7 +99,7 @@ def store_fpl_player_gameweeks(data, season):
 
         except Exception as e:
             logger.error(
-                f"Error processing player {element.get('second_name', 'unknown')}: {str(e)}"
+                f"Error processing player {element.get('second_name', '')}: {str(e)}"
             )
             continue
 
@@ -124,6 +113,27 @@ def store_fpl_player_gameweeks(data, season):
         with Session.begin() as session:
             logger.info(f"Updating {len(players_fdr_5_updated)} player FDR5")
             session.bulk_save_objects(players_fdr_5_updated)
+
+
+def fetch_player(player_id):
+    with Session() as session:
+        player = (
+            session.query(FantasyPlayers).filter(FantasyPlayers.id == player_id).first()
+        )
+        return player
+
+
+def fetch_player_gameweeks(player_id, season_id):
+    with Session() as session:
+        gameweeks = (
+            session.query(FantasyPlayerGameweeks)
+            .filter(
+                FantasyPlayerGameweeks.player_id == player_id,
+                FantasyPlayerGameweeks.season_id == season_id,
+            )
+            .all()
+        )
+        return gameweeks
 
 
 if __name__ == "__main__":
