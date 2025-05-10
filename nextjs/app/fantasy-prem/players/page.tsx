@@ -141,7 +141,6 @@ export default async function Page({
                                 <td>{player.expected_assists}</td>
                                 <td>{player.fdr_5}</td>
                                 <td>{player.transfers_in_event}</td>
-
                             </tr>
                         ))}
                     </tbody>
