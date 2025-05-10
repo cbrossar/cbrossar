@@ -4,6 +4,7 @@ from fpl import get_current_season
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from datetime import datetime
 
+
 def run_last_5_points():
     logger.info("Starting last 5 points task")
     start_time = datetime.now()
@@ -18,8 +19,11 @@ def run_last_5_points():
 
     end_time = datetime.now()
     duration = end_time - start_time
-    logger.info(f"Last 5 points task completed in {duration.total_seconds():.2f} seconds")
+    logger.info(
+        f"Last 5 points task completed in {duration.total_seconds():.2f} seconds"
+    )
     return True
+
 
 def store_last_5_points(season):
     highest_last_5_points = 0
@@ -28,11 +32,12 @@ def store_last_5_points(season):
         # Preload all relevant gameweeks and group by player_id
         gameweeks = (
             session.query(
-                FantasyPlayerGameweeks.player_id,
-                FantasyPlayerGameweeks.total_points
+                FantasyPlayerGameweeks.player_id, FantasyPlayerGameweeks.total_points
             )
             .filter(FantasyPlayerGameweeks.season_id == season.id)
-            .order_by(FantasyPlayerGameweeks.player_id, FantasyPlayerGameweeks.round.desc())
+            .order_by(
+                FantasyPlayerGameweeks.player_id, FantasyPlayerGameweeks.round.desc()
+            )
             .all()
         )
 
@@ -56,6 +61,7 @@ def store_last_5_points(season):
 
         with Session.begin() as update_session:
             update_session.bulk_save_objects(players)
+
 
 if __name__ == "__main__":
     run_last_5_points()

@@ -3,6 +3,7 @@ from logger import logger
 from models import FantasyPlayers
 from datetime import datetime
 
+
 def run_health_check():
     logger.info("Starting health check")
 
@@ -16,6 +17,7 @@ def run_health_check():
     duration = end_time - start_time
     logger.info(f"Health check completed in {duration.total_seconds():.2f} seconds")
     return True
+
 
 if __name__ == "__main__":
     run_health_check()

@@ -11,6 +11,7 @@ import uvicorn
 email_to = os.getenv("EMAIL_USER")
 app = FastAPI()
 
+
 @app.get("/")
 async def health_check():
     try:
@@ -22,7 +23,7 @@ async def health_check():
         logger.error(f"Health check error: {str(e)}")
         send_email("Baton: Health check failed", str(e), email_to)
         raise HTTPException(status_code=500, detail=str(e))
-    
+
 
 @app.post("/players")
 async def players():
@@ -42,12 +43,15 @@ async def player_gameweeks():
     try:
         success = run_player_gameweeks()
         if not success:
-            raise HTTPException(status_code=500, detail="Player gameweeks update failed")
+            raise HTTPException(
+                status_code=500, detail="Player gameweeks update failed"
+            )
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Player gameweeks error: {str(e)}")
         send_email("Baton: Player gameweeks update failed", str(e), email_to)
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.post("/last-5")
 async def last_5():
@@ -61,6 +65,7 @@ async def last_5():
         send_email("Baton: Last 5 points update failed", str(e), email_to)
         raise HTTPException(status_code=500, detail=str(e))
 
+
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
-    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=False) 
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=False)

@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from logger import logger
 import os
 
+
 def send_email(subject, body, to):
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
@@ -11,10 +12,10 @@ def send_email(subject, body, to):
     smtp_password = os.getenv("EMAIL_PASS")
 
     msg = MIMEMultipart()
-    msg['From'] = smtp_username
-    msg['To'] = to
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+    msg["From"] = smtp_username
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain"))
 
     logger.info(f"Sending email to {to}")
     logger.info(f"Username: {smtp_username}")

@@ -10,10 +10,10 @@ logger.remove()
 # Configure Loguru
 logger.add(
     "logs/script.log",
-    rotation="10 MB",    # Rotate after 10MB
-    retention="10 days", # Keep logs for 10 days
-    compression="zip",   # Compress old logs
-    level="INFO",        # Log level
+    rotation="10 MB",  # Rotate after 10MB
+    retention="10 days",  # Keep logs for 10 days
+    compression="zip",  # Compress old logs
+    level="INFO",  # Log level
     backtrace=True,
     diagnose=True,
 )

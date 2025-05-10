@@ -72,4 +72,15 @@ cleanup:
 	echo "Cleaning up Cloud Build files..."; \
 	$(MAKE) cleanup-builds
 
+lint:
+	$(python) -m flake8 .
+
+format:
+	$(python) -m black .
+
+format-check:
+	$(python) -m black . --check
+
+lint-and-format: format lint
+
 

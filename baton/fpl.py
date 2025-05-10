@@ -4,6 +4,7 @@ from models import FantasySeasons
 import requests
 from datetime import datetime, timedelta
 
+
 def get_fpl_player(element_id):
     player_url = f"https://fantasy.premierleague.com/api/element-summary/{element_id}/"
     response = requests.get(player_url)
@@ -15,9 +16,17 @@ def get_fpl_player(element_id):
 
 def get_current_season():
     with Session() as session:
-        season = session.query(FantasySeasons).filter(FantasySeasons.start_date <= datetime.now(), FantasySeasons.end_date + timedelta(days=14) >= datetime.now()).first()
+        season = (
+            session.query(FantasySeasons)
+            .filter(
+                FantasySeasons.start_date <= datetime.now(),
+                FantasySeasons.end_date + timedelta(days=14) >= datetime.now(),
+            )
+            .first()
+        )
         logger.info(f"Season: {season.name}")
         return season
+
 
 def get_fpl_general_info():
     general_info_url = "https://fantasy.premierleague.com/api/bootstrap-static/"
