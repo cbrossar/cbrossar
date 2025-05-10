@@ -60,11 +60,7 @@ def store_fpl_player_gameweeks(data, season):
                 continue
 
             # sum fixture difficulty for next 5 fixtures
-            fpl_player_fixture = fpl_player["fixtures"]
-            fpl_player_fdr_5 = sum(
-                [fixture["difficulty"] for fixture in fpl_player_fixture[:5]]
-            )
-            player.fdr_5 = fpl_player_fdr_5
+            player.fdr_5 = sum(f["difficulty"] for f in fpl_player["fixtures"][:5])
             players_fdr_5_updated.append(player)
 
             fpl_player_gameweek_history = fpl_player["history"]
