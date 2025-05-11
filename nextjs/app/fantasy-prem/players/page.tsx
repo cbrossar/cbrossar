@@ -18,6 +18,14 @@ import TableHeader from "./table-header";
 import styles from "./styles.module.css";
 import RefreshButton from "./refresh-button";
 
+// Add this helper function at the top level
+function formatDateWithTimezone(date: Date): string {
+    return new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'medium',
+    }).format(date);
+}
+
 export default async function Page({
     searchParams,
 }: {
@@ -82,7 +90,7 @@ export default async function Page({
                     <div className={styles.optimalTeamButton}>
                         <Link href="/fantasy-prem/team">Team</Link>
                     </div>
-                    <RefreshButton latestUpdateTime={latestUpdate.toLocaleString()} />
+                    <RefreshButton latestUpdateTime={formatDateWithTimezone(latestUpdate)} />
                 </div>
             </div>
             <div style={{ overflowX: "auto" }}>
