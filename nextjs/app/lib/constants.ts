@@ -4,6 +4,7 @@ export const Colors = {
     white: "#ffffff",
     wineRed: "#7e002f",
     tylerGreen: "#00823e",
+    teal: "#007378",
 };
 
 export const MobileWidth = "900px";
