@@ -3,6 +3,7 @@ import {
     fetchFantasyPositions,
     fetchFantasyTeams,
     fetchPlayersCount,
+    fetchFantasyPremLatestUpdatedTime,
 } from "@/app/data/fantasy";
 import {
     FantasyPlayer,
@@ -51,7 +52,7 @@ export default async function Page({
     );
     const positions = (await fetchFantasyPositions()) as FantasyPosition[];
     const teams = (await fetchFantasyTeams()) as FantasyTeam[];
-
+    const latestUpdate = await fetchFantasyPremLatestUpdatedTime();
     const teamsById = teams.reduce(
         (acc, team) => {
             acc[team.id] = {
@@ -81,7 +82,7 @@ export default async function Page({
                     <div className={styles.optimalTeamButton}>
                         <Link href="/fantasy-prem/team">Team</Link>
                     </div>
-                    <RefreshButton />
+                    <RefreshButton latestUpdateTime={latestUpdate.toLocaleString()} />
                 </div>
             </div>
             <div style={{ overflowX: "auto" }}>

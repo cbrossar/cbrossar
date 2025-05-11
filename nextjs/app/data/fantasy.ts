@@ -404,3 +404,15 @@ export async function updateFantasyPlayerData(
         throw new Error("Failed to update player data.");
     }
 }
+
+export async function fetchFantasyPremLatestUpdatedTime() {
+    try {
+        const response = await sql`
+            SELECT updated FROM fantasy_prem_updates ORDER BY updated DESC LIMIT 1
+        `;
+        return response.rows[0].updated;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch latest fantasy prem update.");
+    }
+}

@@ -1,7 +1,7 @@
 from db import Session
 from sqlalchemy.dialects.postgresql import insert
 from logger import logger
-from models import FantasyPlayers
+from models import FantasyPlayers, FantasyPremUpdates
 from fpl import get_fpl_general_info
 from datetime import datetime
 
@@ -60,8 +60,8 @@ def update_players(data):
         }  # exclude PK and fdr_5
         stmt = stmt.on_conflict_do_update(index_elements=["id"], set_=update_columns)
         session.execute(stmt)
+        session.add(FantasyPremUpdates())
         session.commit()
-
 
 if __name__ == "__main__":
     run_update_players()

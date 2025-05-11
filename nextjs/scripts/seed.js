@@ -315,8 +315,8 @@ async function seedFantasyPremierLeagueStats(client) {
         // Create the "fantasy_prem_updates" table if it doesn't exist
         const createFantasyPremUpdatesTable = await client.sql`
             CREATE TABLE IF NOT EXISTS fantasy_prem_updates (
-            id INT PRIMARY KEY,
-            updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            id SERIAL PRIMARY KEY,
+            updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
         );
         `;
         console.log(`Created "fantasy_prem_updates" table`);

@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { MdSync } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
-import styles from "./RefreshButton.module.css"; // CSS module for styling
+import styles from "./RefreshButton.module.css"; 
 
-export default function RefreshButton() {
+export default function RefreshButton({ latestUpdateTime }: { latestUpdateTime: string }) {
     const [isSpinning, setIsSpinning] = useState(false);
 
     const handleRefresh = async () => {
@@ -27,7 +27,7 @@ export default function RefreshButton() {
 
     return (
         <Tooltip
-            title="Updated stats are available every 30 minutes"
+            title={`Last updated: ${latestUpdateTime}`}
             enterTouchDelay={0} // Show tooltip immediately on touch
             leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
         >
