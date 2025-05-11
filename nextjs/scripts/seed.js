@@ -6,8 +6,8 @@ async function main() {
     // await seedMusicReviews(client);
     // await seedDoomsdayAttempts(client);
     // await seedSoccerStats(client);
+    // await seedWine(client);
     await seedFantasyPremierLeagueStats(client);
-    await seedWine(client);
     await client.end();
 }
 
@@ -312,12 +312,22 @@ async function seedFantasyPremierLeagueStats(client) {
         `;
         console.log(`Created "fantasy_player_gameweeks" table`);
 
+        // Create the "fantasy_prem_updates" table if it doesn't exist
+        const createFantasyPremUpdatesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS fantasy_prem_updates (
+            id INT PRIMARY KEY,
+            updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        `;
+        console.log(`Created "fantasy_prem_updates" table`);
+
         return {
             createFantasyPositionsTable,
             createFantasyTeamsTable,
             createFantasyPlayersTable,
             createFantasySeasonsTable,
             createFantasyPlayerGameweeksTable,
+            createFantasyPremUpdatesTable,
         };
     } catch (error) {
         console.error("Error seeding fantasy premier league stats:", error);

@@ -53,6 +53,16 @@ class FantasyPositions(Base):
     )
 
 
+class FantasyPremUpdates(Base):
+    __tablename__ = "fantasy_prem_updates"
+    __table_args__ = (PrimaryKeyConstraint("id", name="fantasy_prem_updates_pkey"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    updated: Mapped[Optional[datetime.datetime]] = mapped_column(
+        DateTime, server_default=text("CURRENT_TIMESTAMP")
+    )
+
+
 class FantasySeasons(Base):
     __tablename__ = "fantasy_seasons"
     __table_args__ = (PrimaryKeyConstraint("id", name="fantasy_seasons_pkey"),)
