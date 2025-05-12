@@ -60,12 +60,6 @@ export default function Navbar() {
                 <SideNavLink href="/wine" onClick={toggleMenu}>
                     Wine
                 </SideNavLink>
-                <SideNavLink href="/fantasy-prem/players" onClick={toggleMenu}>
-                    FPL Players
-                </SideNavLink>
-                <SideNavLink href="/fantasy-prem/team" onClick={toggleMenu}>
-                    FPL Team
-                </SideNavLink>
                 <SideNavLink href="/ltrain" onClick={toggleMenu}>
                     L Train
                 </SideNavLink>
