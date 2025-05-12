@@ -115,7 +115,9 @@ export default async function Page({
                                             player.second_name,
                                         )}`}
                                     >
-                                        {player.first_name} {player.second_name}
+                                        {`${player.first_name} ${player.second_name}`.length > 25 
+                                            ? `${`${player.first_name} ${player.second_name}`.slice(0, 11)}...${`${player.first_name} ${player.second_name}`.slice(-11)}`
+                                            : `${player.first_name} ${player.second_name}`}
                                     </Link>
                                 </td>
                                 <td>
