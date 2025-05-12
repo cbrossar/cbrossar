@@ -111,7 +111,7 @@ export default async function Page({
                                 <td>
                                     <Link
                                         key={player.id}
-                                        href={`/fantasy-prem/players?query=${encodeURIComponent(
+                                        href={`/soccer/fantasy-prem/players?query=${encodeURIComponent(
                                             player.second_name,
                                         )}`}
                                     >

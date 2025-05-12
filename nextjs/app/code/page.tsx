@@ -34,7 +34,7 @@ export default function Page() {
                 <div className={styles.caption}>Remesh</div>
             </div>
             <div className={styles.item}>
-                <Link href="fantasy-prem/players">
+                <Link href="soccer/fantasy-prem/players">
                     <div className={styles.imageWrapper}>
                         <Image
                             src="/code/fantasy-prem.png"

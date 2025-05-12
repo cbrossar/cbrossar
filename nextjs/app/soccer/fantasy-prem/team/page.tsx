@@ -119,7 +119,7 @@ export default async function Page({
                         {goalkeepers.map((player) => (
                             <Link
                                 key={player.id}
-                                href={`/fantasy-prem/players?query=${encodeURIComponent(
+                                href={`/soccer/fantasy-prem/players?query=${encodeURIComponent(
                                     player.second_name,
                                 )}`}
                             >
@@ -173,7 +173,7 @@ export default async function Page({
                         {defenders.map((player) => (
                             <Link
                                 key={player.id}
-                                href={`/fantasy-prem/players?query=${encodeURIComponent(
+                                href={`/soccer/fantasy-prem/players?query=${encodeURIComponent(
                                     player.second_name,
                                 )}`}
                             >
@@ -227,7 +227,7 @@ export default async function Page({
                         {midfielders.map((player) => (
                             <Link
                                 key={player.id}
-                                href={`/fantasy-prem/players?query=${encodeURIComponent(
+                                href={`/soccer/fantasy-prem/players?query=${encodeURIComponent(
                                     player.second_name,
                                 )}`}
                             >
@@ -281,7 +281,7 @@ export default async function Page({
                         {forwards.map((player) => (
                             <Link
                                 key={player.id}
-                                href={`/fantasy-prem/players?query=${encodeURIComponent(
+                                href={`/soccer/fantasy-prem/players?query=${encodeURIComponent(
                                     player.second_name,
                                 )}`}
                             >
