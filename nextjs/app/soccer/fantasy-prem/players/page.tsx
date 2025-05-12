@@ -97,9 +97,9 @@ export default async function Page({
                             "Clean",
                             "xG",
                             "xA",
+                            "Fdr-5",
                             "Pts-5",
-                            "FDR-5",
-                            "TF Gw",
+                            "Tf Gw",
                         ]}
                         sortBy={sortBy}
                         teams={teams}
@@ -136,10 +136,10 @@ export default async function Page({
                                 <td>{player.goals_scored}</td>
                                 <td>{player.assists}</td>
                                 <td>{player.clean_sheets}</td>
-                                <td>{player.expected_goals}</td>
-                                <td>{player.expected_assists}</td>
-                                <td>{player.last_5_points}</td>
+                                <td>{player.expected_goals.toFixed(1)}</td>
+                                <td>{player.expected_assists.toFixed(1)}</td>
                                 <td>{player.fdr_5}</td>
+                                <td>{player.last_5_points}</td>
                                 <td>{player.transfers_in_event}</td>
                             </tr>
                         ))}

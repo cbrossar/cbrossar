@@ -27,15 +27,15 @@ export const headerToColumnMap: Record<string, string> = {
     xG: "expected_goals",
     xA: "expected_assists",
     "Pts-5": "last_5_points",
-    "FDR-5": "fdr_5",
-    "TF Gw": "transfers_in_event",
-    "TF Idx": "transfer_index",
+    "Fdr-5": "fdr_5",
+    "Tf Gw": "transfers_in_event",
+    "Tf Idx": "transfer_index",
 };
 
 export const headerToTooltipMap: Record<string, string> = {
-    "FDR-5": "The sum Fixture Difficulty Rating for the next 5 games",
-    "TF Gw": "The number of transfers in for the current gameweek",
-    "TF Idx": "Weighted score of data in this table",
+    "Fdr-5": "The sum Fixture Difficulty Rating for the next 5 games",
+    "Tf Gw": "The number of transfers in for the current gameweek",
+    "Tf Idx": "Weighted score of data in this table",
 };
 
 export default function TableHeader({
