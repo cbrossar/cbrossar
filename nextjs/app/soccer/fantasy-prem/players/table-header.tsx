@@ -26,6 +26,7 @@ export const headerToColumnMap: Record<string, string> = {
     Clean: "clean_sheets",
     xG: "expected_goals",
     xA: "expected_assists",
+    "Pts-5": "last_5_points",
     "FDR-5": "fdr_5",
     "TF Gw": "transfers_in_event",
     "TF Idx": "transfer_index",

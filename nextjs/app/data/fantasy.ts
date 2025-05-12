@@ -353,6 +353,7 @@ export async function fetchFantasyPlayersFiltered(
             "clean_sheets",
             "expected_goals",
             "expected_assists",
+            "last_5_points",
             "fdr_5",
             "transfers_in_event",
             "transfer_index",

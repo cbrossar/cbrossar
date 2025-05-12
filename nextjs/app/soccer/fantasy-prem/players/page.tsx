@@ -97,6 +97,7 @@ export default async function Page({
                             "Clean",
                             "xG",
                             "xA",
+                            "Pts-5",
                             "FDR-5",
                             "TF Gw",
                         ]}
@@ -137,6 +138,7 @@ export default async function Page({
                                 <td>{player.clean_sheets}</td>
                                 <td>{player.expected_goals}</td>
                                 <td>{player.expected_assists}</td>
+                                <td>{player.last_5_points}</td>
                                 <td>{player.fdr_5}</td>
                                 <td>{player.transfers_in_event}</td>
                             </tr>
