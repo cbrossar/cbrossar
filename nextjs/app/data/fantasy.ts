@@ -369,7 +369,7 @@ export async function fetchFantasyPlayersFiltered(
         }
 
         // Construct the ORDER BY clause
-        const orderByClause = `${sortBy} ${sortOrder.toUpperCase()}, transfer_index ${sortOrder.toUpperCase()}`;
+        const orderByClause = `${sortBy} ${sortOrder.toUpperCase()}, second_name ASC`;
 
         // Final SQL query
         const sqlQuery = `
