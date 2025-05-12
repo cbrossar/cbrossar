@@ -34,7 +34,7 @@ export default function Navbar() {
                     <span />
                 </MenuButton>
                 <NavLink href="/music">Music</NavLink>
-                <NavLink href="/soccer">Soccer</NavLink>
+                <NavLink href="/soccer/fantasy-prem/players">Soccer</NavLink>
                 <HomeLink href="/" onClick={handleCoinFlip}>
                     <CoinFlipContainer>
                         <CoinFlipWrapper $rotationDegrees={rotationDegrees}>
@@ -54,7 +54,7 @@ export default function Navbar() {
                 <SideNavLink href="/music" onClick={toggleMenu}>
                     Music
                 </SideNavLink>
-                <SideNavLink href="/soccer" onClick={toggleMenu}>
+                <SideNavLink href="/soccer/fantasy-prem/players" onClick={toggleMenu}>
                     Soccer
                 </SideNavLink>
                 <SideNavLink href="/wine" onClick={toggleMenu}>

@@ -7,9 +7,9 @@ import {
     fetchWerderMatches,
     fetchGarnetMatches,
 } from "@/app/data/soccer";
-import styles from "./styles.module.css";
-import { Team } from "../lib/definitions";
-import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "../lib/constants";
+import styles from "../styles.module.css";
+import { Team } from "../../lib/definitions";
+import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "../../lib/constants";
 
 export default async function Page() {
     const teams = await fetchTeams();
@@ -30,7 +30,7 @@ export default async function Page() {
     const garnetMatches = await fetchGarnetMatches(numMatches);
 
     return (
-        <div className={styles.centerContainer}>
+        <div className={styles.centerContainer}>   
             <div className={styles.formSection}>
                 <CurrentForm
                     formTeams={formTeams}

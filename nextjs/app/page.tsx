@@ -41,7 +41,7 @@ export default function Home() {
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
-                <ImageLink href="/fantasy-prem/players">
+                <ImageLink href="/soccer/fantasy-prem/players">
                     <Image
                         src="/foggy-field.jpeg"
                         width={900}
@@ -65,7 +65,7 @@ export default function Home() {
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
-                <ImageLink href="/soccer">
+                <ImageLink href="/soccer/my-teams">
                     <Image
                         src="/colombia-soccer.jpeg"
                         width={900}

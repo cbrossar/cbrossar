@@ -79,9 +79,6 @@ export default async function Page({
                     <Search placeholder="Search Players" />
                 </div>
                 <div className={styles.topRightCorner}>
-                    <div className={styles.optimalTeamButton}>
-                        <Link href="/fantasy-prem/team">Team</Link>
-                    </div>
                     <RefreshButton latestUpdateTime={latestUpdate.toLocaleString('en-US', { timeZone: 'America/New_York' })} />
                 </div>
             </div>

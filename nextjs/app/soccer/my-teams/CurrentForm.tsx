@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Tooltip from "@mui/material/Tooltip";
-import styles from "./styles.module.css";
-import { Team, Match } from "../lib/definitions";
-import { SPURS, WERDER_BEERMEN } from "../lib/constants";
+import styles from "../styles.module.css";
+import { Team, Match } from "../../lib/definitions";
+import { SPURS, WERDER_BEERMEN } from "../../lib/constants";
 
 type CurrentFormProps = {
     formTeams: (Team | undefined)[];
