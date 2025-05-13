@@ -79,7 +79,12 @@ function LTrain() {
 
     return (
         <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-bold mb-6">L Train</h1>
+            <div className="flex items-center rounded-lg px-6 py-3 mb-6">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-400 mr-4">
+                    <span className="text-white text-3xl font-bold translate-y-[-1px]">L</span>
+                </div>
+                <span className="text-black text-3xl font-bold">Trains</span>
+            </div>
             <select
                 value={selectedOption}
                 onChange={handleSelectChange}
