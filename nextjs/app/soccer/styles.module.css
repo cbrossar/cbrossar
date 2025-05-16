@@ -166,17 +166,25 @@
     width: 100%;
     padding: 0 0 0.5rem 0;
     margin-bottom: 1.5rem;
+    margin-left: -1.35rem;
     border-bottom: 1px solid #e5e7eb;
     background: white;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+    .navBar {
+        margin-left: 0;
+    }
 }
 
 .navLink {
     color: #111;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
-    padding: 0.25rem 1.25rem;
+    padding: 0.25rem 1rem;
     border-radius: 0;
     background: none;
     display: flex;
@@ -185,19 +193,28 @@
 }
 
 .navLink:hover {
-    color: #2563eb;
-    background: none;
+    background: #111;
+    color: #ffd600;
+    font-weight: 600;
+    border-radius: 0;
+    padding: 0.25rem 1rem;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    text-transform: uppercase;
 }
 
 .navLinkActive {
     background: #111;
     color: #ffd600;
-    font-weight: 700;
+    font-weight: 600;
     border-radius: 0;
-    padding: 0.25rem 1.25rem;
+    padding: 0.25rem 1rem;
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    text-transform: uppercase;
+    font-size: 0.8rem;
 }
 
 .navDot {
