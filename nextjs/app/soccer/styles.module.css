@@ -234,7 +234,7 @@
     }
     .navLink, .navLinkActive {
         font-size: 0.65rem;
-        padding: 0.25rem 0.75rem;
+        padding: 0.25rem 0.5rem;
     }
     .navDot {
         font-size: 0.9rem;
