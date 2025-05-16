@@ -184,7 +184,7 @@
     font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 0;
     background: none;
     display: flex;
@@ -197,7 +197,7 @@
     color: #ffd600;
     font-weight: 600;
     border-radius: 0;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0.5rem;
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -209,7 +209,7 @@
     color: #ffd600;
     font-weight: 600;
     border-radius: 0;
-    padding: 0.25rem 1rem;
+    padding: 0.25rem 0.5rem;
     display: flex;
     align-items: center;
     box-sizing: border-box;

@@ -100,8 +100,8 @@ const NavbarWrapper = styled.div`
 const NavLink = styled(Link)`
     font-size: 1.5rem;
     font-weight: 900;
-    padding-left: 0.3125rem;
-    padding-right: 0.3125rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     text-transform: uppercase;
     text-decoration: none;
 
