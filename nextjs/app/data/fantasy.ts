@@ -381,11 +381,10 @@ export async function fetchFantasyPlayersFiltered(
 
         // Execute the query with parameterized values
         const response = await sql.query(sqlQuery, queryParams);
-
         return response.rows;
     } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to fetch fantasy players.");
+        console.error("Database error: Failed to fetch fantasy players.", error);
+        return [];
     }
 }
 
