@@ -90,18 +90,18 @@ export default function Page() {
                 <div className={styles.caption}>Wine</div>
             </div>
             <div className={styles.item}>
-                <Link href="10k">
+                <Link href="https://www.chess.com/member/colebrossart">
                     <div className={styles.imageWrapper}>
                         <Image
-                            src="/code/10k.jpeg"
+                            src="/code/chess.jpg"
                             width={200}
                             height={200}
-                            alt="10k"
+                            alt="Chess"
                             priority
                         />
                     </div>
                 </Link>
-                <div className={styles.caption}>10,000th Day</div>
+                <div className={styles.caption}>Chess</div>
             </div>
             <div className={styles.item}>
                 <Link href="/code/maxaer.jar">
