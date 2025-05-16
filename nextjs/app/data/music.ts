@@ -22,8 +22,7 @@ export async function fetchMusicReviews(query: string) {
 
         return data.rows;
     } catch (error) {
-        console.error("Failed to fetch music reviews data.");
-        console.error("Database Error:", error);
+        console.error("Database error: Failed to fetch music reviews data.", error);
         return [];
     }
 }
@@ -36,7 +35,7 @@ export async function fetchMusicReviewById(id: string) {
             await sql<MusicReview>`SELECT * FROM music_reviews WHERE id = ${id}`;
         return data.rows[0];
     } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to fetch music review data.");
+        console.error("Database error: Failed to fetch music review data.", error);
+        return null;
     }
 }
