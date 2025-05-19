@@ -384,7 +384,7 @@ export async function fetchFantasyPlayersFiltered(
         return response.rows;
     } catch (error) {
         console.error("Database error: Failed to fetch fantasy players.", error);
-        return [];
+        return null;
     }
 }
 

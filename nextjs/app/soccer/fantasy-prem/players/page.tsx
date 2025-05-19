@@ -44,7 +44,7 @@ export default async function Page({
         sortOrder,
         currentTeamId,
         currentPosId,
-    )) as FantasyPlayer[];
+    )) as FantasyPlayer[] | null;
     const totalPages = await fetchPlayersCount(
         query,
         currentTeamId,
@@ -72,7 +72,7 @@ export default async function Page({
         {} as Record<number, string>,
     );
 
-    if (topTransfers.length === 0) {
+    if (topTransfers === null) {
         return (
             <div className="flex items-center justify-center">
                 <div className="text-red-600 text-sm font-medium bg-red-50 px-4 py-3 rounded">
