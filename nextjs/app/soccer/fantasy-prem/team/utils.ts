@@ -58,7 +58,12 @@ export function maximizeFantasyTeam(
         return { team: [], totalPoints: 0, totalCost: 0 };
     }
 
-    teamCombinations.sort((a, b) => b.totalPoints - a.totalPoints);
+    teamCombinations.sort((a, b) => {
+        if (b.totalPoints !== a.totalPoints) {
+            return b.totalPoints - a.totalPoints;
+        }
+        return a.totalCost - b.totalCost;
+    });
     return teamCombinations[0];
 }
 
