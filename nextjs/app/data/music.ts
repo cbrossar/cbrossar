@@ -23,7 +23,7 @@ export async function fetchMusicReviews(query: string) {
         return data.rows;
     } catch (error) {
         console.error("Database error: Failed to fetch music reviews data.", error);
-        return [];
+        return null;
     }
 }
 
