@@ -30,7 +30,7 @@ export default async function Page() {
     const garnetMatches = await fetchGarnetMatches(numMatches);
 
     return (
-        <div className={styles.centerContainer}>   
+        <div className={styles.centerContainer}>
             <div className={styles.formSection}>
                 <CurrentForm
                     formTeams={formTeams}

@@ -2,9 +2,13 @@
 import { useState } from "react";
 import { MdSync } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
-import styles from "./RefreshButton.module.css"; 
+import styles from "./RefreshButton.module.css";
 
-export default function RefreshButton({ latestUpdateTime }: { latestUpdateTime: string }) {
+export default function RefreshButton({
+    latestUpdateTime,
+}: {
+    latestUpdateTime: string;
+}) {
     const [isSpinning, setIsSpinning] = useState(false);
 
     const handleRefresh = async () => {

@@ -233,7 +233,8 @@
         gap: 0;
         padding: 0 0 0.25rem 0;
     }
-    .navLink, .navLinkActive {
+    .navLink,
+    .navLinkActive {
         font-size: 0.65rem;
         padding: 0.25rem 0.5rem;
     }

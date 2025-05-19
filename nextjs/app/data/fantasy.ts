@@ -383,7 +383,10 @@ export async function fetchFantasyPlayersFiltered(
         const response = await sql.query(sqlQuery, queryParams);
         return response.rows;
     } catch (error) {
-        console.error("Database error: Failed to fetch fantasy players.", error);
+        console.error(
+            "Database error: Failed to fetch fantasy players.",
+            error,
+        );
         return null;
     }
 }

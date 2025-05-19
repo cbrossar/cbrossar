@@ -81,7 +81,9 @@ function LTrain() {
         <div className="flex flex-col items-center">
             <div className="flex items-center rounded-lg px-6 py-3 mb-6">
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-400 mr-4">
-                    <span className="text-white text-3xl font-bold translate-y-[-1px]">L</span>
+                    <span className="text-white text-3xl font-bold translate-y-[-1px]">
+                        L
+                    </span>
                 </div>
                 <span className="text-black text-3xl font-bold">Trains</span>
             </div>

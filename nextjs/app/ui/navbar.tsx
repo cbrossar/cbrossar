@@ -54,7 +54,10 @@ export default function Navbar() {
                 <SideNavLink href="/music" onClick={toggleMenu}>
                     Music
                 </SideNavLink>
-                <SideNavLink href="/soccer/fantasy-prem/players" onClick={toggleMenu}>
+                <SideNavLink
+                    href="/soccer/fantasy-prem/players"
+                    onClick={toggleMenu}
+                >
                     Soccer
                 </SideNavLink>
                 <SideNavLink href="/wine" onClick={toggleMenu}>

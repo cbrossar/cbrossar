@@ -89,78 +89,105 @@ export default async function Page({
                     <Search placeholder="Search Players" />
                 </div>
                 <div className={styles.topRightCorner}>
-                    <RefreshButton latestUpdateTime={latestUpdate.toLocaleString('en-US', { timeZone: 'America/New_York' })} />
+                    <RefreshButton
+                        latestUpdateTime={latestUpdate.toLocaleString("en-US", {
+                            timeZone: "America/New_York",
+                        })}
+                    />
                 </div>
             </div>
-            <div style={{ overflowX: "auto" }}>
-                <table style={{ minWidth: "900px" }}>
-                    <TableHeader
-                        headers={[
-                            "Player",
-                            "Team",
-                            "Pos",
-                            "Cost",
-                            "Point",
-                            "Min",
-                            "Goal",
-                            "Assist",
-                            "Clean",
-                            "xG",
-                            "xA",
-                            "Fdr-5",
-                            "Pts-5",
-                            "Tf Gw",
-                        ]}
-                        sortBy={sortBy}
-                        teams={teams}
-                        positions={positions}
-                    />
-                    <tbody>
-                        {topTransfers.map((player, index) => (
-                            <tr key={index}>
-                                <td>
-                                    <Link
-                                        key={player.id}
-                                        href={`/soccer/fantasy-prem/players?query=${encodeURIComponent(
-                                            player.second_name,
-                                        )}`}
-                                    >
-                                        {`${player.first_name} ${player.second_name}`.length > 25 
-                                            ? `${`${player.first_name} ${player.second_name}`.slice(0, 11)}...${`${player.first_name} ${player.second_name}`.slice(-11)}`
-                                            : `${player.first_name} ${player.second_name}`}
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Image
-                                        src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                        alt={teamsById[player.team].name}
-                                        width={30} // Adjust width
-                                        height={30} // Adjust height
-                                        style={{ objectFit: "contain" }} // Ensure it fits nicely
-                                    />
-                                </td>
-                                <td>
-                                    {positionNameMap[player.element_type][0]}
-                                </td>
-                                <td>{(player.now_cost / 10).toFixed(1)}</td>
-                                <td>{player.total_points}</td>
-                                <td>{player.minutes}</td>
-                                <td>{player.goals_scored}</td>
-                                <td>{player.assists}</td>
-                                <td>{player.clean_sheets}</td>
-                                <td>{player.expected_goals.toFixed(1)}</td>
-                                <td>{player.expected_assists.toFixed(1)}</td>
-                                <td>{player.fdr_5}</td>
-                                <td>{player.last_5_points}</td>
-                                <td>{player.transfers_in_event}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            <div className={styles.pagination}>
-                <Pagination totalPages={totalPages} />
-            </div>
+            {topTransfers.length === 0 ? (
+                <div className="flex items-center justify-center">
+                    <div className="text-gray-600 text-sm font-medium bg-gray-50 px-4 py-3 rounded">
+                        No players found.
+                    </div>
+                </div>
+            ) : (
+                <>
+                    <div style={{ overflowX: "auto" }}>
+                        <table style={{ minWidth: "900px" }}>
+                            <TableHeader
+                                headers={[
+                                    "Player",
+                                    "Team",
+                                    "Pos",
+                                    "Cost",
+                                    "Point",
+                                    "Min",
+                                    "Goal",
+                                    "Assist",
+                                    "Clean",
+                                    "xG",
+                                    "xA",
+                                    "Fdr-5",
+                                    "Pts-5",
+                                    "Tf Gw",
+                                ]}
+                                sortBy={sortBy}
+                                teams={teams}
+                                positions={positions}
+                            />
+                            <tbody>
+                                {topTransfers.map((player, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            <Link
+                                                key={player.id}
+                                                href={`/soccer/fantasy-prem/players?query=${encodeURIComponent(
+                                                    player.second_name,
+                                                )}`}
+                                            >
+                                                {`${player.first_name} ${player.second_name}`
+                                                    .length > 25
+                                                    ? `${`${player.first_name} ${player.second_name}`.slice(0, 11)}...${`${player.first_name} ${player.second_name}`.slice(-11)}`
+                                                    : `${player.first_name} ${player.second_name}`}
+                                            </Link>
+                                        </td>
+                                        <td>
+                                            <Image
+                                                src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                                alt={
+                                                    teamsById[player.team].name
+                                                }
+                                                width={30} // Adjust width
+                                                height={30} // Adjust height
+                                                style={{ objectFit: "contain" }} // Ensure it fits nicely
+                                            />
+                                        </td>
+                                        <td>
+                                            {
+                                                positionNameMap[
+                                                    player.element_type
+                                                ][0]
+                                            }
+                                        </td>
+                                        <td>
+                                            {(player.now_cost / 10).toFixed(1)}
+                                        </td>
+                                        <td>{player.total_points}</td>
+                                        <td>{player.minutes}</td>
+                                        <td>{player.goals_scored}</td>
+                                        <td>{player.assists}</td>
+                                        <td>{player.clean_sheets}</td>
+                                        <td>
+                                            {player.expected_goals.toFixed(1)}
+                                        </td>
+                                        <td>
+                                            {player.expected_assists.toFixed(1)}
+                                        </td>
+                                        <td>{player.fdr_5}</td>
+                                        <td>{player.last_5_points}</td>
+                                        <td>{player.transfers_in_event}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className={styles.pagination}>
+                        <Pagination totalPages={totalPages} />
+                    </div>
+                </>
+            )}
         </div>
     );
 }
