@@ -64,6 +64,17 @@ export default async function Page({
               ? playersByPositionLast5
               : playersByPositionAll;
 
+    
+    if (playersByPosition === null) {
+        return (
+            <div className="flex items-center justify-center">
+                <div className="text-red-600 text-sm font-medium bg-red-50 px-4 py-3 rounded">
+                    Error: Unable to fetch team. Please try again later.
+                </div>
+            </div>
+        );
+    }
+
     const optimalTeam = maximizeFantasyTeam(
         playersByPosition,
         budget,

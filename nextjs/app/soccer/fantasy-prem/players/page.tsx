@@ -45,6 +45,17 @@ export default async function Page({
         currentTeamId,
         currentPosId,
     )) as FantasyPlayer[] | null;
+
+    if (topTransfers === null) {
+        return (
+            <div className="flex items-center justify-center">
+                <div className="text-red-600 text-sm font-medium bg-red-50 px-4 py-3 rounded">
+                    Error: Unable to fetch players. Please try again later.
+                </div>
+            </div>
+        );
+    }
+
     const totalPages = await fetchPlayersCount(
         query,
         currentTeamId,
@@ -71,16 +82,6 @@ export default async function Page({
         },
         {} as Record<number, string>,
     );
-
-    if (topTransfers === null) {
-        return (
-            <div className="flex items-center justify-center">
-                <div className="text-red-600 text-sm font-medium bg-red-50 px-4 py-3 rounded">
-                    Error: Unable to fetch players. Please try again later.
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div>

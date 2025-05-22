@@ -10,8 +10,8 @@ export async function fetchTeams() {
         const data = await sql<Team>`SELECT * FROM teams`;
         return data.rows;
     } catch (error) {
-        console.error("Database Error:", error);
-        throw new Error("Failed to fetch teams data.");
+        console.error("Failed to fetch teams data. Database Error:", error);
+        return null;
     }
 }
 export async function fetchSpursMatches(count: number) {

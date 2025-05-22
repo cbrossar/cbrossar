@@ -13,6 +13,17 @@ import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "../../lib/constants";
 
 export default async function Page() {
     const teams = await fetchTeams();
+
+    if (teams === null) {
+        return (
+            <div className="flex items-center justify-center">
+                <div className="text-red-600 text-sm font-medium bg-red-50 px-4 py-3 rounded">
+                    Error: Unable to fetch teams. Please try again later.
+                </div>
+            </div>
+        );
+    }
+
     const teamNameMap = teams.reduce(
         (acc: { [key: string]: string }, team: Team) => {
             acc[team.id] = team.name;
