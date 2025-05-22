@@ -157,7 +157,10 @@ export async function fetchPlayersByPositionAll(
             4: forwards.rows as FantasyPlayer[],
         };
     } catch (error) {
-        console.error("Failed to fetch players by position. Database Error:", error);
+        console.error(
+            "Failed to fetch players by position. Database Error:",
+            error,
+        );
         return null;
     }
 }
@@ -193,7 +196,10 @@ export async function fetchPlayersByPositionCurrent(
             4: forwards.rows as FantasyPlayer[],
         };
     } catch (error) {
-        console.error("Failed to fetch players by position. Database Error:", error);
+        console.error(
+            "Failed to fetch players by position. Database Error:",
+            error,
+        );
         return null;
     }
 }
@@ -229,7 +235,10 @@ export async function fetchPlayersByPositionLast5(
             4: forwards.rows as FantasyPlayer[],
         };
     } catch (error) {
-        console.error("Failed to fetch players by position. Database Error:", error);
+        console.error(
+            "Failed to fetch players by position. Database Error:",
+            error,
+        );
         return null;
     }
 }

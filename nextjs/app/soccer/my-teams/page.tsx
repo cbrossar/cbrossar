@@ -7,11 +7,18 @@ import {
     fetchWerderMatches,
     fetchGarnetMatches,
 } from "@/app/data/soccer";
+import IsMobile from "@/app/ui/isMobile";
 import styles from "../styles.module.css";
 import { Team } from "../../lib/definitions";
 import { SPURS, WERDER_BEERMEN, GARNET_UNITED } from "../../lib/constants";
 
-export default async function Page() {
+export default async function Page({
+    searchParams,
+}: {
+    searchParams?: {
+        isMobile?: string;
+    };
+}) {
     const teams = await fetchTeams();
 
     if (teams === null) {
@@ -35,13 +42,15 @@ export default async function Page() {
     const formTeams = formTeamNames.map((name) =>
         teams.find((team: Team) => team.name === name),
     );
-    const numMatches = 5;
+    const isMobile = searchParams?.isMobile === "true";
+    const numMatches = isMobile ? 5 : 10;
     const spursMatches = await fetchSpursMatches(numMatches);
     const werderMatches = await fetchWerderMatches(numMatches);
     const garnetMatches = await fetchGarnetMatches(numMatches);
 
     return (
         <div className={styles.centerContainer}>
+            <IsMobile />
             <div className={styles.formSection}>
                 <CurrentForm
                     formTeams={formTeams}

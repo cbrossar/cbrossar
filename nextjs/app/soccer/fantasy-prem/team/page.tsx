@@ -64,7 +64,6 @@ export default async function Page({
               ? playersByPositionLast5
               : playersByPositionAll;
 
-    
     if (playersByPosition === null) {
         return (
             <div className="flex items-center justify-center">

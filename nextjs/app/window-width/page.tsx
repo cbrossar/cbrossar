@@ -1,10 +1,13 @@
+"use client";
+import useWindowWidth from "../lib/useWindowWidth";
 import IsMobile from "../ui/isMobile";
 
-export default async function Page() {
+export default function Page() {
+    const windowWidth = useWindowWidth();
 
     return (
         <div>
-            Hello World
+            <div>window width: {windowWidth}</div>
             <IsMobile />
         </div>
     );
