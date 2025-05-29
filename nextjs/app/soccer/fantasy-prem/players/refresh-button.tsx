@@ -1,13 +1,14 @@
 "use client";
+
 import { useState } from "react";
 import { MdSync } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import styles from "./RefreshButton.module.css";
 
 export default function RefreshButton({
-    latestUpdateTime,
+    latestUpdate,
 }: {
-    latestUpdateTime: string;
+    latestUpdate: Date;
 }) {
     const [isSpinning, setIsSpinning] = useState(false);
 
@@ -31,7 +32,7 @@ export default function RefreshButton({
 
     return (
         <Tooltip
-            title={`Last updated: ${latestUpdateTime}`}
+            title={`Last updated: ${latestUpdate.toLocaleString()}`}
             enterTouchDelay={0} // Show tooltip immediately on touch
             leaveTouchDelay={1500} // Keep tooltip open for a while after touch ends
         >

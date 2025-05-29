@@ -90,11 +90,7 @@ export default async function Page({
                     <Search placeholder="Search Players" />
                 </div>
                 <div className={styles.topRightCorner}>
-                    <RefreshButton
-                        latestUpdateTime={latestUpdate.toLocaleString("en-US", {
-                            timeZone: "America/New_York",
-                        })}
-                    />
+                    <RefreshButton latestUpdate={latestUpdate} />
                 </div>
             </div>
             {topTransfers.length === 0 ? (
