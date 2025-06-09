@@ -63,5 +63,6 @@ def update_players(data):
         session.add(FantasyPremUpdates())
         session.commit()
 
+
 if __name__ == "__main__":
     run_update_players()

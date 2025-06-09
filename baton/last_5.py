@@ -12,8 +12,8 @@ def run_last_5_points():
     season = get_current_season()
 
     if season is None:
-        logger.error("No season found")
-        return False
+        logger.info("Not updating last 5 points, no season found")
+        return True
 
     store_last_5_points(season)
 

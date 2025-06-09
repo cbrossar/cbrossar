@@ -24,6 +24,11 @@ def get_current_season():
             )
             .first()
         )
+
+        if not season:
+            logger.error("No season found")
+            return None
+
         logger.info(f"Season: {season.name}")
         return season
 

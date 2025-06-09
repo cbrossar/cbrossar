@@ -12,8 +12,8 @@ def run_player_gameweeks():
     season = get_current_season()
 
     if season is None:
-        logger.error("No season found")
-        return False
+        logger.info("Not updating player gameweeks, no season found")
+        return True
 
     data = get_fpl_general_info()
 
