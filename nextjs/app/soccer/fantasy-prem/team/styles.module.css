@@ -1,31 +1,123 @@
 .container {
-    padding: 10px;
+    padding: 16px;
     font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
     position: relative;
 }
 
-.header {
+.headerAndLineup {
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    width: 100%;
+    gap: 20px;
+    align-items: flex-start;
 }
 
 .stats {
+    position: absolute;
+    top: 16px;
+    left: 16px;
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1;
 }
 
 .stats h3 {
     margin: 0;
-    color: #333;
+    color: #495057;
+    font-size: 0.9em;
+    font-weight: 500;
 }
 
 .topRightCorner {
-    margin-left: auto;
+    position: absolute;
+    top: 16px;
+    right: 16px;
     display: flex;
     align-items: center;
+    z-index: 1;
 }
 
+.lineup {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 5px;
+}
+
+@media (max-width: 767px) {
+    .lineup {
+        padding-top: 60px;
+    }
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.row h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #34495e;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.players {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+
+.player {
+    background: white;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 12px;
+    min-width: 140px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.player:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    border-color: #3498db;
+}
+
+.playerName {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.playerStats {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.playerStats span {
+    font-size: 0.8em;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+
+/* Remove unused styles */
 .topTransfersButton {
     background: none;
     border: none;
@@ -39,70 +131,46 @@
     color: #005bb5;
 }
 
-.lineup {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.compactLineup {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.row {
+@media (min-width: 768px) {
+    .compactLineup {
+        grid-template-columns: 1fr 2fr;
+        grid-template-areas: 
+            "goalkeeper defenders"
+            "midfielders forwards";
+        gap: 15px;
+    }
+    
+    .goalkeeper { grid-area: goalkeeper; }
+    .defenders { grid-area: defenders; }
+    .midfielders { grid-area: midfielders; }
+    .forwards { grid-area: forwards; }
+}
+
+.compactRow {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-}
-
-.row h3 {
-    margin-top: 0;
-    font-size: 1.5em;
-    color: #333;
-}
-
-.players {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-.player {
-    padding: 10px;
-    border: 1px solid #ddd;
+    gap: 6px;
+    padding: 8px;
+    background: #f8f9fa;
     border-radius: 8px;
-    background-color: #fff;
-    min-width: 130px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.player:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.playerInfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.playerNameLogo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.playerName {
-    font-weight: bold;
-    margin-right: 8px;
+    border: 1px solid #e9ecef;
 }
 
 .points,
 .cost {
-    font-size: 0.9em;
+    font-size: 0.8em;
     color: #555;
 }
 
 .points {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }

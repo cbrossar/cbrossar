@@ -110,17 +110,14 @@ export default async function Page({
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <div className={styles.stats}>
-                    <h3>Total Points: {optimalTeam.totalPoints}</h3>
-                    <h3>
-                        Total Cost: £{(optimalTeam.totalCost / 10).toFixed(1)}m
-                    </h3>
-                </div>
-                <div className={styles.topRightCorner}>
-                    <SettingsModal />
-                </div>
+            <div className={styles.stats}>
+                <h3>Total Points: {optimalTeam.totalPoints}</h3>
+                <h3>Total Cost: £{(optimalTeam.totalCost / 10).toFixed(1)}m</h3>
             </div>
+            <div className={styles.topRightCorner}>
+                <SettingsModal />
+            </div>
+            
             <div className={styles.lineup}>
                 {/* Goalkeepers */}
                 <div className={styles.row}>
@@ -134,31 +131,25 @@ export default async function Page({
                                 )}`}
                             >
                                 <div className={styles.player}>
-                                    <div className={styles.playerInfo}>
-                                        <div className={styles.playerNameLogo}>
-                                            <span className={styles.playerName}>
-                                                {player.first_name}{" "}
-                                                {player.second_name}
-                                            </span>
-                                            <Image
-                                                src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                                alt={
-                                                    teamsById[player.team].name
-                                                }
-                                                width={30}
-                                                height={30}
-                                                style={{ objectFit: "contain" }}
-                                            />
-                                        </div>
-                                        <span className={styles.points}>
-                                            Points:{" "}
-                                            {pointsView === "current"
+                                    <div className={styles.playerName}>
+                                        {player.first_name} {player.second_name}
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={20}
+                                            height={20}
+                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                        />
+                                    </div>
+                                    <div className={styles.playerStats}>
+                                        <span>
+                                            Points: {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
                                                   : player.total_points}
                                         </span>
-                                        <span className={styles.cost}>
+                                        <span>
                                             Cost: £
                                             {(
                                                 (isNowCost
@@ -166,8 +157,7 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}
-                                            m
+                                            ).toFixed(1)}m
                                         </span>
                                     </div>
                                 </div>
@@ -188,31 +178,25 @@ export default async function Page({
                                 )}`}
                             >
                                 <div className={styles.player}>
-                                    <div className={styles.playerInfo}>
-                                        <div className={styles.playerNameLogo}>
-                                            <span className={styles.playerName}>
-                                                {player.first_name}{" "}
-                                                {player.second_name}
-                                            </span>
-                                            <Image
-                                                src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                                alt={
-                                                    teamsById[player.team].name
-                                                }
-                                                width={30}
-                                                height={30}
-                                                style={{ objectFit: "contain" }}
-                                            />
-                                        </div>
-                                        <span className={styles.points}>
-                                            Points:{" "}
-                                            {pointsView === "current"
+                                    <div className={styles.playerName}>
+                                        {player.first_name} {player.second_name}
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={20}
+                                            height={20}
+                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                        />
+                                    </div>
+                                    <div className={styles.playerStats}>
+                                        <span>
+                                            Points: {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
                                                   : player.total_points}
                                         </span>
-                                        <span className={styles.cost}>
+                                        <span>
                                             Cost: £
                                             {(
                                                 (isNowCost
@@ -220,8 +204,7 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}
-                                            m
+                                            ).toFixed(1)}m
                                         </span>
                                     </div>
                                 </div>
@@ -242,31 +225,25 @@ export default async function Page({
                                 )}`}
                             >
                                 <div className={styles.player}>
-                                    <div className={styles.playerInfo}>
-                                        <div className={styles.playerNameLogo}>
-                                            <span className={styles.playerName}>
-                                                {player.first_name}{" "}
-                                                {player.second_name}
-                                            </span>
-                                            <Image
-                                                src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                                alt={
-                                                    teamsById[player.team].name
-                                                }
-                                                width={30}
-                                                height={30}
-                                                style={{ objectFit: "contain" }}
-                                            />
-                                        </div>
-                                        <span className={styles.points}>
-                                            Points:{" "}
-                                            {pointsView === "current"
+                                    <div className={styles.playerName}>
+                                        {player.first_name} {player.second_name}
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={20}
+                                            height={20}
+                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                        />
+                                    </div>
+                                    <div className={styles.playerStats}>
+                                        <span>
+                                            Points: {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
                                                   : player.total_points}
                                         </span>
-                                        <span className={styles.cost}>
+                                        <span>
                                             Cost: £
                                             {(
                                                 (isNowCost
@@ -274,8 +251,7 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}
-                                            m
+                                            ).toFixed(1)}m
                                         </span>
                                     </div>
                                 </div>
@@ -296,31 +272,25 @@ export default async function Page({
                                 )}`}
                             >
                                 <div className={styles.player}>
-                                    <div className={styles.playerInfo}>
-                                        <div className={styles.playerNameLogo}>
-                                            <span className={styles.playerName}>
-                                                {player.first_name}{" "}
-                                                {player.second_name}
-                                            </span>
-                                            <Image
-                                                src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                                alt={
-                                                    teamsById[player.team].name
-                                                }
-                                                width={30}
-                                                height={30}
-                                                style={{ objectFit: "contain" }}
-                                            />
-                                        </div>
-                                        <span className={styles.points}>
-                                            Points:{" "}
-                                            {pointsView === "current"
+                                    <div className={styles.playerName}>
+                                        {player.first_name} {player.second_name}
+                                        <Image
+                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                            alt={teamsById[player.team].name}
+                                            width={20}
+                                            height={20}
+                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                        />
+                                    </div>
+                                    <div className={styles.playerStats}>
+                                        <span>
+                                            Points: {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
                                                   : player.total_points}
                                         </span>
-                                        <span className={styles.cost}>
+                                        <span>
                                             Cost: £
                                             {(
                                                 (isNowCost
@@ -328,8 +298,7 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}
-                                            m
+                                            ).toFixed(1)}m
                                         </span>
                                     </div>
                                 </div>
