@@ -112,7 +112,7 @@ export default async function Page({
             ) : (
                 <>
                     <div style={{ overflowX: "auto" }}>
-                        <table style={{ minWidth: "900px" }}>
+                        <table className={styles.table}>
                             <TableHeader
                                 headers={[
                                     "Player",
