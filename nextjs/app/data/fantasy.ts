@@ -312,6 +312,7 @@ export async function fetchFantasyPlayersFiltered(
     sortOrder: string,
     currentTeamId: string,
     currentPosId: string,
+    seasonId: string,
 ) {
     try {
         noStore();
@@ -342,6 +343,12 @@ export async function fetchFantasyPlayersFiltered(
         if (currentPosId) {
             whereClauses.push(`element_type = $${paramIndex}`);
             queryParams.push(Number(currentPosId));
+            paramIndex++;
+        }
+
+        if (seasonId) {
+            whereClauses.push(`season_id = $${paramIndex}`);
+            queryParams.push(seasonId);
             paramIndex++;
         }
 
@@ -426,5 +433,17 @@ export async function fetchFantasyPremLatestUpdatedTime() {
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to fetch latest fantasy prem update.");
+    }
+}
+
+export async function fetchFantasySeasons(season: string) {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_seasons WHERE name = ${season}
+        `;
+        return response.rows[0];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch fantasy seasons.");
     }
 }

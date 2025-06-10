@@ -4,6 +4,7 @@ import {
     fetchFantasyTeams,
     fetchPlayersCount,
     fetchFantasyPremLatestUpdatedTime,
+    fetchFantasySeasons,
 } from "@/app/data/fantasy";
 import {
     FantasyPlayer,
@@ -27,6 +28,7 @@ export default async function Page({
         sortby?: string;
         team?: string;
         pos?: string;
+        season?: string;
     };
 }) {
     const query = searchParams?.query || "";
@@ -36,6 +38,13 @@ export default async function Page({
     const sortByColumn = sortBy.replace("-", "");
     const currentTeamId = searchParams?.team || "";
     const currentPosId = searchParams?.pos || "";
+    const season = searchParams?.season || "";
+
+    let seasonId = "";
+    if (season) {
+        const seasonData = await fetchFantasySeasons(season);
+        seasonId = seasonData.id;
+    }
 
     const topTransfers = (await fetchFantasyPlayersFiltered(
         query,
@@ -44,6 +53,7 @@ export default async function Page({
         sortOrder,
         currentTeamId,
         currentPosId,
+        seasonId,
     )) as FantasyPlayer[] | null;
 
     if (topTransfers === null) {
