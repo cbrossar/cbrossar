@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { fetchMusicReviews } from "@/app/data/music";
 import Search from "@/app/ui/search";
 import styles from "./styles.module.css";
@@ -33,7 +34,7 @@ export default async function Page({
                     <Search placeholder="Search" shouldSetPage={false} />
                 </div>
                 <Link href="/music/create" className={styles.addButton}>
-                    +
+                    <PlusIcon className="h-5 w-5" />
                 </Link>
             </div>
             {musicReviews.length === 0 ? (

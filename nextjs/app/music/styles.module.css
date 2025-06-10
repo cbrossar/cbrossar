@@ -98,7 +98,7 @@
     justify-content: center; /* Center content horizontally */
     align-items: center;
     position: relative;
-    padding: 4px 40px; /* Optional: adds padding around the search bar and button */
+    padding: 4px 70px 4px 40px; /* More padding on right to account for button space */
 }
 
 .search {
@@ -110,21 +110,26 @@
 .addButton {
     position: absolute;
     right: 0; /* Align the button to the right */
-    font-size: 1.5rem; /* Adjust font size to better fit the button */
     text-decoration: none;
-    color: black;
-    border-radius: 50%;
-    width: 35px; /* Increase width */
-    height: 35px; /* Increase height */
+    color: #333;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition:
-        background-color 0.3s ease,
-        transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.15s ease;
 }
 
 .addButton:hover {
     background-color: #f0f0f0;
+    border-color: #d0d0d0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    transform: translateY(-0.5px);
 }
+
+
