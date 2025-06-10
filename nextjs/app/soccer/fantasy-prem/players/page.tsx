@@ -31,7 +31,7 @@ export default async function Page({
 }) {
     const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
-    const sortBy = searchParams?.sortby || "transfers_in_event"; // Default sort
+    const sortBy = searchParams?.sortby || "last_5_points"; // Default sort
     const sortOrder = sortBy.startsWith("-") ? "ASC" : "DESC";
     const sortByColumn = sortBy.replace("-", "");
     const currentTeamId = searchParams?.team || "";
@@ -117,8 +117,8 @@ export default async function Page({
                                     "xG",
                                     "xA",
                                     "Fdr-5",
-                                    "Pts-5",
                                     "Tf Gw",
+                                    "Pts-5",
                                 ]}
                                 sortBy={sortBy}
                                 teams={teams}
@@ -173,8 +173,8 @@ export default async function Page({
                                             {player.expected_assists.toFixed(1)}
                                         </td>
                                         <td>{player.fdr_5}</td>
-                                        <td>{player.last_5_points}</td>
                                         <td>{player.transfers_in_event}</td>
+                                        <td>{player.last_5_points}</td>
                                     </tr>
                                 ))}
                             </tbody>
