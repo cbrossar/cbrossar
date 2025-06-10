@@ -59,7 +59,7 @@ class FantasyPremUpdates(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     updated: Mapped[Optional[datetime.datetime]] = mapped_column(
-        DateTime, server_default=text("CURRENT_TIMESTAMP")
+        DateTime(True), server_default=text("CURRENT_TIMESTAMP")
     )
 
 
@@ -74,6 +74,9 @@ class FantasySeasons(Base):
     start_date: Mapped[datetime.date] = mapped_column(Date)
     end_date: Mapped[datetime.date] = mapped_column(Date)
 
+    fantasy_players: Mapped[List["FantasyPlayers"]] = relationship(
+        "FantasyPlayers", back_populates="season"
+    )
     fantasy_player_gameweeks: Mapped[List["FantasyPlayerGameweeks"]] = relationship(
         "FantasyPlayerGameweeks", back_populates="season"
     )
@@ -189,6 +192,9 @@ class FantasyPlayers(Base):
             name="fantasy_players_element_type_fkey",
         ),
         ForeignKeyConstraint(
+            ["season_id"], ["fantasy_seasons.id"], name="fantasy_players_season_fkey"
+        ),
+        ForeignKeyConstraint(
             ["team"], ["fantasy_teams.id"], name="fantasy_players_team_fkey"
         ),
         PrimaryKeyConstraint("id", name="fantasy_players_pkey"),
@@ -216,9 +222,13 @@ class FantasyPlayers(Base):
     last_5_points: Mapped[Optional[int]] = mapped_column(
         Integer, server_default=text("0")
     )
+    season_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
 
     fantasy_positions: Mapped["FantasyPositions"] = relationship(
         "FantasyPositions", back_populates="fantasy_players"
+    )
+    season: Mapped[Optional["FantasySeasons"]] = relationship(
+        "FantasySeasons", back_populates="fantasy_players"
     )
     fantasy_teams: Mapped["FantasyTeams"] = relationship(
         "FantasyTeams", back_populates="fantasy_players"
