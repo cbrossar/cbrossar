@@ -346,6 +346,11 @@ export async function fetchFantasyPlayersFiltered(
             paramIndex++;
         }
 
+        // Always exclude element type 5 unless currentPosId is 5
+        if (currentPosId !== "5") {
+            whereClauses.push(`element_type != 5`);
+        }
+
         if (seasonId) {
             whereClauses.push(`season_id = $${paramIndex}`);
             queryParams.push(seasonId);
