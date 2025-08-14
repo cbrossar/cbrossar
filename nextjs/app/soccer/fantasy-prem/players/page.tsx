@@ -120,6 +120,7 @@ export default async function Page({
                                     "Pos",
                                     "Cost",
                                     "Point",
+                                    "P/C",
                                     "Min",
                                     "Goal",
                                     "Assist",
@@ -172,6 +173,9 @@ export default async function Page({
                                             {(player.now_cost / 10).toFixed(1)}
                                         </td>
                                         <td>{player.total_points}</td>
+                                        <td>
+                                            {player.pts_per_cost?.toFixed(1)}
+                                        </td>
                                         <td>{player.minutes}</td>
                                         <td>{player.goals_scored}</td>
                                         <td>{player.assists}</td>

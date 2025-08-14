@@ -373,6 +373,7 @@ export async function fetchFantasyPlayersFiltered(
             "fdr_5",
             "transfers_in_event",
             "transfer_index",
+            "pts_per_cost",
         ];
         const allowedSortOrders = ["ASC", "DESC"];
 
@@ -384,12 +385,18 @@ export async function fetchFantasyPlayersFiltered(
             throw new Error("Invalid sortOrder");
         }
 
-        // Construct the ORDER BY clause
-        const orderByClause = `${sortBy} ${sortOrder.toUpperCase()}, second_name ASC`;
+        let orderByClause;
+        if (sortBy === "pts_per_cost") {
+            // For the calculated column, we need to use the actual calculation in ORDER BY
+            orderByClause = `(CASE WHEN now_cost > 0 THEN total_points::float / now_cost ELSE NULL END) ${sortOrder.toUpperCase()}, second_name ASC`;
+        } else {
+            orderByClause = `${sortBy} ${sortOrder.toUpperCase()}, second_name ASC`;
+        }
 
-        // Final SQL query
         const sqlQuery = `
-            SELECT * FROM fantasy_players
+            SELECT *, 
+                   (CASE WHEN now_cost > 0 THEN total_points::float / now_cost ELSE NULL END) as pts_per_cost
+            FROM fantasy_players
             ${whereClause}
             ORDER BY ${orderByClause}
             LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}

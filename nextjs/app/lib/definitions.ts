@@ -56,6 +56,7 @@ export interface FantasyPlayer {
     transfers_in_event: number;
     fdr_5?: number;
     transfer_index?: number;
+    pts_per_cost?: number;
 }
 
 export interface FantasyPosition {
