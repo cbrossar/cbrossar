@@ -47,7 +47,9 @@ export default async function Page({
         seasonId = seasonData.id;
     } else {
         const seasonData = await fetchCurrentFantasySeasons();
-        seasonId = seasonData.id;
+        if (seasonData) {
+            seasonId = seasonData.id;
+        }
     }
 
     const topTransfers = (await fetchFantasyPlayersFiltered(
