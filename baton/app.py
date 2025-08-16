@@ -3,6 +3,7 @@ from health import run_health_check
 from player_gameweeks import run_player_gameweeks
 from last_5 import run_last_5_points
 from players import run_update_players
+from fabrizio_spurs import run_fabrizio_spurs
 from logger import logger
 import os
 from emails import send_email
@@ -63,6 +64,19 @@ async def last_5():
     except Exception as e:
         logger.error(f"Last 5 points error: {str(e)}")
         send_email("Baton: Last 5 points update failed", str(e), email_to)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/fabrizio-spurs")
+async def fabrizio_spurs():
+    try:
+        success = run_fabrizio_spurs()
+        if not success:
+            raise HTTPException(status_code=500, detail="Fabrizio Spurs update failed")
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Fabrizio Spurs error: {str(e)}")
+        send_email("Baton: Fabrizio Spurs update failed", str(e), email_to)
         raise HTTPException(status_code=500, detail=str(e))
 
 

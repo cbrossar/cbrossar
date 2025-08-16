@@ -21,6 +21,9 @@ player-gameweeks:
 last-5:
 	$(python) last_5.py
 
+fabrizio-spurs:
+	$(python) fabrizio_spurs.py
+
 update-db-models:
 	$(python) -m sqlacodegen ${DATABASE_URL} --outfile models.py
 

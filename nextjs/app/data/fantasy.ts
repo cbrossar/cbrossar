@@ -459,3 +459,15 @@ export async function fetchFantasySeasons(season: string) {
         throw new Error("Failed to fetch fantasy seasons.");
     }
 }
+
+export async function fetchCurrentFantasySeasons() {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_seasons WHERE start_date <= CURRENT_DATE AND end_date >= CURRENT_DATE
+        `;
+        return response.rows[0];
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch current fantasy seasons.");
+    }
+}

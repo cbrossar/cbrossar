@@ -5,6 +5,7 @@ import {
     fetchPlayersCount,
     fetchFantasyPremLatestUpdatedTime,
     fetchFantasySeasons,
+    fetchCurrentFantasySeasons,
 } from "@/app/data/fantasy";
 import {
     FantasyPlayer,
@@ -43,6 +44,9 @@ export default async function Page({
     let seasonId = "";
     if (season) {
         const seasonData = await fetchFantasySeasons(season);
+        seasonId = seasonData.id;
+    } else {
+        const seasonData = await fetchCurrentFantasySeasons();
         seasonId = seasonData.id;
     }
 
