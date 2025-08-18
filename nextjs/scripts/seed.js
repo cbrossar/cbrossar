@@ -7,7 +7,8 @@ async function main() {
     // await seedDoomsdayAttempts(client);
     // await seedSoccerStats(client);
     // await seedWine(client);
-    await seedFantasyPremierLeagueStats(client);
+    // await seedFantasyPremierLeagueStats(client);
+    await seedRedditSpurs(client);
     await client.end();
 }
 
@@ -443,6 +444,31 @@ async function seedWine(client) {
         };
     } catch (error) {
         console.error("Error seeding wine:", error);
+        throw error;
+    }
+}
+
+async function seedRedditSpurs(client) {
+    try {
+        const createRedditSpursTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS reddit_spurs (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                reddit_id VARCHAR(255) NOT NULL,
+                title VARCHAR(512) NOT NULL,
+                author VARCHAR(255) NOT NULL,
+                created_date TIMESTAMP NOT NULL,
+                url VARCHAR(255) NOT NULL,
+                permalink VARCHAR(255) NOT NULL
+            );
+        `;
+
+        console.log(`Created "reddit_spurs" table`);
+
+        return {
+            createRedditSpursTable,
+        };
+    } catch (error) {
+        console.error("Error seeding reddit spurs:", error);
         throw error;
     }
 }
