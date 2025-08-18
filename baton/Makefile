@@ -45,7 +45,9 @@ deploy:
 		--set-secrets=EMAIL_USER=baton-email-user:latest \
 		--set-secrets=EMAIL_PASS=baton-email-pass:latest \
 		--set-secrets=TELEGRAM_BOT_TOKEN=telegram-spurs-bot-token:latest \
-		--set-secrets=TELEGRAM_CHANNEL_ID=telegram-spurs-channel-id:latest
+		--set-secrets=TELEGRAM_CHANNEL_ID=telegram-spurs-channel-id:latest \
+		--set-secrets=REDDIT_CLIENT_ID=reddit-client-id:latest \
+		--set-secrets=REDDIT_CLIENT_SECRET=reddit-client-secret:latest
 
 build-and-deploy:
 	$(MAKE) build
