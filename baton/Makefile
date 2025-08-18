@@ -43,7 +43,9 @@ deploy:
 		--max-instances 10 \
 		--set-secrets=DATABASE_URL=baton-db-url:latest \
 		--set-secrets=EMAIL_USER=baton-email-user:latest \
-		--set-secrets=EMAIL_PASS=baton-email-pass:latest
+		--set-secrets=EMAIL_PASS=baton-email-pass:latest \
+		--set-secrets=TELEGRAM_BOT_TOKEN=telegram-spurs-bot-token:latest \
+		--set-secrets=TELEGRAM_CHANNEL_ID=telegram-spurs-channel-id:latest
 
 build-and-deploy:
 	$(MAKE) build
