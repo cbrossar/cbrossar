@@ -2,7 +2,7 @@ from db import Session
 from sqlalchemy.dialects.postgresql import insert
 from logger import logger
 from models import FantasyPlayers, FantasyPremUpdates
-from fpl import get_fpl_general_info, get_current_season
+from utils.fpl import get_fpl_general_info, get_current_season
 from datetime import datetime
 
 

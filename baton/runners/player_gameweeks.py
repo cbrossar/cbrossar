@@ -1,7 +1,7 @@
 from db import Session
 from logger import logger
 from models import FantasyPlayers, FantasyPlayerGameweeks
-from fpl import get_current_season, get_fpl_general_info, get_fpl_player
+from utils.fpl import get_current_season, get_fpl_general_info, get_fpl_player
 from datetime import datetime
 
 

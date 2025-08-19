@@ -3,7 +3,7 @@ from datetime import datetime
 from models import RedditSpurs
 from db import Session
 import praw
-from telegram import send_telegram_message
+from utils.telegram import send_telegram_message
 from logger import logger
 
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")

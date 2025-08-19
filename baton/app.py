@@ -6,7 +6,7 @@ from runners.players import run_update_players
 from runners.reddit_spurs import run_reddit_spurs
 from logger import logger
 import os
-from emails import send_email
+from baton.utils.emails import send_email
 import uvicorn
 
 email_to = os.getenv("EMAIL_USER")

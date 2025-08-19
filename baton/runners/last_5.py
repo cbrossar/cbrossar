@@ -1,6 +1,6 @@
 from db import Session
 from logger import logger
-from fpl import get_current_season
+from utils.fpl import get_current_season
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from datetime import datetime
 
