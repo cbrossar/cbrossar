@@ -130,7 +130,3 @@ def fetch_player_gameweeks(player_id, season_id):
             .all()
         )
         return gameweeks
-
-
-if __name__ == "__main__":
-    run_player_gameweeks()

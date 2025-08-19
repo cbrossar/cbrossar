@@ -61,7 +61,3 @@ def store_last_5_points(season):
 
         with Session.begin() as update_session:
             update_session.bulk_save_objects(players)
-
-
-if __name__ == "__main__":
-    run_last_5_points()
