@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-Reddit Spurs Script - Fetches newest posts from r/coys subreddit using PRAW
-"""
-
 import os
 from datetime import datetime
 import logging
@@ -77,15 +72,6 @@ class RedditSpursScraper:
         logger.info("PRAW Reddit instance initialized successfully")
     
     def get_newest_posts(self, limit: int = 25) -> list[dict]:
-        """
-        Fetch the newest posts using PRAW
-        
-        Args:
-            limit: Number of posts to fetch
-            
-        Returns:
-            List of post dictionaries
-        """
         try:
             logger.info(f"Fetching {limit} newest posts from r/{self.subreddit.display_name}")
             
@@ -102,16 +88,6 @@ class RedditSpursScraper:
             return []
     
     def get_posts_by_flair(self, flair_name: str, limit: int = 25) -> list[dict]:
-        """
-        Fetch posts from r/coys filtered by a specific flair using PRAW
-        
-        Args:
-            flair_name: Name of the flair to filter by (e.g., "Transfer News: Tier 1")
-            limit: Number of posts to fetch
-            
-        Returns:
-            List of post dictionaries with the specified flair
-        """
         try:
             logger.info(f"Fetching {limit} posts with flair '{flair_name}' from r/{self.subreddit.display_name}")
             
