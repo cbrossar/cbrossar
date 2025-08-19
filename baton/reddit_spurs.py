@@ -139,10 +139,6 @@ class RedditSpursScraper:
             'created_date': datetime.fromtimestamp(submission.created_utc).isoformat(),
             'url': submission.url,
             'permalink': f"https://reddit.com{submission.permalink}",
-            'score': submission.score,
-            'num_comments': submission.num_comments,
-            'is_self': submission.is_self,
-            'selftext': submission.selftext if submission.is_self else ''
         }
 
 
