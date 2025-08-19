@@ -122,7 +122,3 @@ class RedditSpursScraper:
             "url": submission.url,
             "permalink": f"https://reddit.com{submission.permalink}",
         }
-
-
-if __name__ == "__main__":
-    run_reddit_spurs()
