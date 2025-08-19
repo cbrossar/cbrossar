@@ -10,19 +10,19 @@ run:
 	$(python) app.py
 
 health:
-	$(python) health.py
+	$(python) -c "from runners.health import run_health_check; run_health_check()"
 
 players:
-	$(python) players.py
+	$(python) -c "from runners.players import run_update_players; run_update_players()"
 
 player-gameweeks:
-	$(python) player_gameweeks.py
+	$(python) -c "from runners.player_gameweeks import run_player_gameweeks; run_player_gameweeks()"
 
 last-5:
-	$(python) last_5.py
+	$(python) -c "from runners.last_5 import run_last_5_points; run_last_5_points()"
 
 reddit-spurs:
-	$(python) reddit_spurs.py
+	$(python) -c "from runners.reddit_spurs import run_reddit_spurs; run_reddit_spurs()"
 
 update-db-models:
 	$(python) -m sqlacodegen ${DATABASE_URL} --outfile models.py

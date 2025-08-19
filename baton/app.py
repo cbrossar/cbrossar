@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
-from health import run_health_check
-from player_gameweeks import run_player_gameweeks
-from last_5 import run_last_5_points
-from players import run_update_players
-from reddit_spurs import run_reddit_spurs
+from runners.health import run_health_check
+from runners.player_gameweeks import run_player_gameweeks
+from runners.last_5 import run_last_5_points
+from runners.players import run_update_players
+from runners.reddit_spurs import run_reddit_spurs
 from logger import logger
 import os
 from emails import send_email

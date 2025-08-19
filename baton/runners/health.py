@@ -17,7 +17,3 @@ def run_health_check():
     duration = end_time - start_time
     logger.info(f"Health check completed in {duration.total_seconds():.2f} seconds")
     return True
-
-
-if __name__ == "__main__":
-    run_health_check()
