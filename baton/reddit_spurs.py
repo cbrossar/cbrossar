@@ -1,21 +1,16 @@
 import os
 from datetime import datetime
-import logging
 from models import RedditSpurs
 from db import Session
 import praw
 from telegram import send_telegram_message
+from loguru import logger
 
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
-
 
 def run_reddit_spurs():
-    """Run the Reddit Spurs scraper"""
     scraper = RedditSpursScraper()
     posts = scraper.get_posts_by_flair(flair_name="Transfer News: Tier 1", limit=10)
 
@@ -25,8 +20,6 @@ def run_reddit_spurs():
 
 
 def save_posts_to_db(posts: list[dict]):
-    """Save posts to the database"""
-
     post_ids = [post['id'] for post in posts]
 
     with Session() as session:
