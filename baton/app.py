@@ -81,19 +81,6 @@ async def reddit_spurs():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/teams")
-async def teams():
-    try:
-        success = run_teams()
-        if not success:
-            raise HTTPException(status_code=500, detail="Teams update failed")
-        return {"status": "success"}
-    except Exception as e:
-        logger.error(f"Teams error: {str(e)}")
-        send_email("Baton: Teams update failed", str(e), email_to)
-        raise HTTPException(status_code=500, detail=str(e))
-
-
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
     uvicorn.run("app:app", host="0.0.0.0", port=port, reload=False)

@@ -41,3 +41,17 @@ def get_fpl_general_info():
         logger.error(f"Failed to fetch data: {response.status_code}")
         return None
     return response.json()
+
+
+def get_fixtures():
+    fixtures_url = "https://fantasy.premierleague.com/api/fixtures/"
+    response = requests.get(fixtures_url)
+    if response.status_code != 200:
+        logger.error(f"Failed to fetch data: {response.status_code}")
+        return None
+    return response.json()
+
+
+def get_fixtures_for_team(team_id):
+    fixtures = get_fixtures()
+    return [fixture for fixture in fixtures if fixture["team_h"] == team_id or fixture["team_a"] == team_id]

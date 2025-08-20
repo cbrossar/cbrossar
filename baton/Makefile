@@ -27,6 +27,9 @@ reddit-spurs:
 teams:
 	$(python) -c "from runners.teams import run_teams; run_teams()"
 
+fixtures:
+	$(python) -c "from runners.fixtures import run_fixtures; run_fixtures()"
+
 update-db-models:
 	$(python) -m sqlacodegen ${DATABASE_URL} --outfile models.py
 
