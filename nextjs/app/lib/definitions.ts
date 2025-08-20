@@ -69,6 +69,7 @@ export interface FantasyPosition {
 export interface FantasyTeam {
     id: number;
     name: string;
+    fpl_id?: number;
     image_filename?: string;
 }
 

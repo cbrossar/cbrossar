@@ -180,8 +180,8 @@ export default function TableHeader({
                                         </MenuItem>
                                         {teams.map((team) => (
                                             <MenuItem
-                                                key={team.id}
-                                                value={team.id.toString()}
+                                                key={team.fpl_id}
+                                                value={team.fpl_id!.toString()}
                                             >
                                                 {team.name}
                                             </MenuItem>

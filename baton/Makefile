@@ -24,6 +24,9 @@ last-5:
 reddit-spurs:
 	$(python) -c "from runners.reddit_spurs import run_reddit_spurs; run_reddit_spurs()"
 
+teams:
+	$(python) -c "from runners.teams import run_teams; run_teams()"
+
 update-db-models:
 	$(python) -m sqlacodegen ${DATABASE_URL} --outfile models.py
 

@@ -82,7 +82,7 @@ export default async function Page({
     const latestUpdate = await fetchFantasyPremLatestUpdatedTime();
     const teamsById = teams.reduce(
         (acc, team) => {
-            acc[team.id] = {
+            acc[team.fpl_id!] = {
                 name: team.name,
                 image_filename: team.image_filename || "",
             };

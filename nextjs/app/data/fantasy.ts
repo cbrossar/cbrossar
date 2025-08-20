@@ -117,6 +117,7 @@ export async function fetchFantasyTeams() {
     try {
         const response = await sql`
             SELECT * FROM fantasy_teams
+            WHERE fpl_id IS NOT NULL
             ORDER BY name
         `;
         return response.rows;

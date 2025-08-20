@@ -4,6 +4,7 @@ from runners.player_gameweeks import run_player_gameweeks
 from runners.last_5 import run_last_5_points
 from runners.players import run_update_players
 from runners.reddit_spurs import run_reddit_spurs
+from runners.teams import run_teams
 from logger import logger
 import os
 from baton.utils.emails import send_email
@@ -77,6 +78,19 @@ async def reddit_spurs():
     except Exception as e:
         logger.error(f"Reddit Spurs error: {str(e)}")
         send_email("Baton: Reddit Spurs update failed", str(e), email_to)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/teams")
+async def teams():
+    try:
+        success = run_teams()
+        if not success:
+            raise HTTPException(status_code=500, detail="Teams update failed")
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Teams error: {str(e)}")
+        send_email("Baton: Teams update failed", str(e), email_to)
         raise HTTPException(status_code=500, detail=str(e))
 
 
