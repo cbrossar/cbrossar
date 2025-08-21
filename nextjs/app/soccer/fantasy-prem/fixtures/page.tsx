@@ -159,7 +159,7 @@ export default async function Page({
             <div className="mt-6 text-sm text-gray-600">
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                     <p><strong>Difficulty Scale:</strong> 1-2 (Green) = Easy, 3 (Yellow) = Medium, 4-5 (Red) = Hard</p>
-                    <p><strong>Format:</strong> UPPERCASE = Home fixture, lowercase = Away fixture</p>
+                    <p><strong>Format:</strong> UPPERCASE = Home, lowercase = Away</p>
                 </div>
             </div>
         </div>
