@@ -42,7 +42,7 @@ export default async function Page({
     const sortByColumn = sortBy.replace("-", "");
     const currentTeamId = searchParams?.team || "";
     const currentPosId = searchParams?.pos || "";
-    const season = searchParams?.season || "";
+    const season = searchParams?.season ? decodeURIComponent(searchParams.season) : "";
 
     let seasonId = "";
     const currentSeason = (await fetchCurrentFantasySeasons()) as FantasySeason;
