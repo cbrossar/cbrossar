@@ -1,7 +1,6 @@
 import { FantasySeason } from "@/app/lib/definitions";
 
 export default function SeasonSelect({ seasons, currentSeason }: { seasons: FantasySeason[], currentSeason: FantasySeason }) {
-    console.log(currentSeason);
     return (
         <div>
             <select>
