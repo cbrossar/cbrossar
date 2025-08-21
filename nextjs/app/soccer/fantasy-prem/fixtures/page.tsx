@@ -1,5 +1,5 @@
 import {
-    fetchCurrentFantasySeasons,
+    fetchCurrentFantasySeason,
     fetchFantasyFixtures,
     fetchFantasyTeams,
 } from "@/app/data/fantasy";
@@ -19,7 +19,7 @@ export default async function Page({
         endGameweek?: string;
     };
 }) {
-    const currentSeason = (await fetchCurrentFantasySeasons()) as FantasySeason;
+    const currentSeason = (await fetchCurrentFantasySeason()) as FantasySeason;
     const teams = (await fetchFantasyTeams()) as FantasyTeam[];
     const fixtures = (await fetchFantasyFixtures(
         currentSeason.id.toString(),

@@ -1,5 +1,6 @@
 import {
     fetchFantasyTeams,
+    fetchCurrentFantasySeason,
     fetchPlayersByPositionAll,
     fetchPlayersByPositionCurrent,
     fetchPlayersByPositionLast5,
@@ -9,7 +10,7 @@ import Image from "next/image";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
 import SettingsModal from "./settings-modal"; // Import the modal component
-import { FantasyTeam } from "@/app/lib/definitions";
+import { FantasySeason, FantasyTeam } from "@/app/lib/definitions";
 
 export default async function Page({
     searchParams,
@@ -36,11 +37,14 @@ export default async function Page({
     const numMidfielders = 9;
     const numForwards = 7;
 
+    const currentSession = await fetchCurrentFantasySeason();    
+
     const playersByPositionAll = await fetchPlayersByPositionAll(
         numGoalies,
         numDefenders,
         numMidfielders,
         numForwards,
+        currentSession.id.toString(),
     );
 
     const playersByPositionCurrent = await fetchPlayersByPositionCurrent(
@@ -48,6 +52,7 @@ export default async function Page({
         numDefenders,
         numMidfielders,
         numForwards,
+        currentSession.id.toString(),
     );
 
     const playersByPositionLast5 = await fetchPlayersByPositionLast5(
@@ -55,6 +60,7 @@ export default async function Page({
         numDefenders,
         numMidfielders,
         numForwards,
+        currentSession.id.toString(),
     );
 
     const playersByPosition =
