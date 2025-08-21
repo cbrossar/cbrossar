@@ -33,6 +33,9 @@ async def players():
         success = run_update_players()
         if not success:
             raise HTTPException(status_code=500, detail="Players update failed")
+        success = run_teams()
+        if not success:
+            raise HTTPException(status_code=500, detail="Teams update failed")
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Players error: {str(e)}")
