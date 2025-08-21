@@ -2,13 +2,20 @@ import { fetchCurrentFantasySeasons, fetchFantasyFixtures, fetchFantasyTeams } f
 import { FantasyFixture, FantasySeason, FantasyTeam } from "@/app/lib/definitions";
 import NumMatchesSelect from "./num-matches-select";
 
-export default async function Page() {
+export default async function Page({
+    searchParams,
+}: {
+    searchParams?: {
+        numMatches?: string;
+    };
+}) {
     const currentSeason = (await fetchCurrentFantasySeasons()) as FantasySeason;
     const teams = (await fetchFantasyTeams()) as FantasyTeam[];
     const fixtures = (await fetchFantasyFixtures(currentSeason.id.toString())) as FantasyFixture[];
 
-    // Filter fixtures for first 3 gameweeks
-    const relevantFixtures = fixtures.filter(fixture => fixture.event >= 1 && fixture.event <= 3);
+    // Filter fixtures for the selected number of gameweeks
+    const numMatches = searchParams?.numMatches ? parseInt(searchParams.numMatches) : 3;
+    const relevantFixtures = fixtures.filter(fixture => fixture.event >= 1 && fixture.event <= numMatches);
     
     // Create a map of team ID to team name for easy lookup
     const teamMap = new Map(teams.map(team => [team.id, team]));
@@ -91,9 +98,11 @@ export default async function Page() {
                         <tr className="bg-gray-100">
                             <th className="border border-gray-300 px-4 py-2 text-left">Team</th>
                             <th className="border border-gray-300 px-4 py-2 text-center">Rank</th>
-                            <th className="border border-gray-300 px-4 py-2 text-center">GW 1</th>
-                            <th className="border border-gray-300 px-4 py-2 text-center">GW 2</th>
-                            <th className="border border-gray-300 px-4 py-2 text-center">GW 3</th>
+                            {Array.from({ length: numMatches }, (_, i) => (
+                                <th key={i} className="border border-gray-300 px-4 py-2 text-center">
+                                    GW {i + 1}
+                                </th>
+                            ))}
                             <th className="border border-gray-300 px-4 py-2 text-center">Total</th>
                         </tr>
                     </thead>
@@ -106,7 +115,8 @@ export default async function Page() {
                                 <td className="border border-gray-300 px-4 py-2 text-center">
                                     {teamData.rank}
                                 </td>
-                                {[1, 2, 3].map(gameweek => {
+                                {Array.from({ length: numMatches }, (_, i) => {
+                                    const gameweek = i + 1;
                                     const fixture = teamData.gameweekFixtures[gameweek];
                                     if (!fixture) {
                                         return (
