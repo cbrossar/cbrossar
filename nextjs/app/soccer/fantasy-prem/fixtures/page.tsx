@@ -1,5 +1,6 @@
 import { fetchCurrentFantasySeasons, fetchFantasyFixtures, fetchFantasyTeams } from "@/app/data/fantasy";
 import { FantasyFixture, FantasySeason, FantasyTeam } from "@/app/lib/definitions";
+import NumMatchesSelect from "./num-matches-select";
 
 export default async function Page() {
     const currentSeason = (await fetchCurrentFantasySeasons()) as FantasySeason;
@@ -80,7 +81,10 @@ export default async function Page() {
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Fixture Difficulty Table</h1>
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-bold">Fixture Difficulty Table</h1>
+                <NumMatchesSelect />
+            </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-300">
                     <thead>
