@@ -117,7 +117,7 @@ export default async function Page({
             <div className={styles.topRightCorner}>
                 <SettingsModal />
             </div>
-            
+
             <div className={styles.lineup}>
                 {/* Goalkeepers */}
                 <div className={styles.row}>
@@ -138,12 +138,16 @@ export default async function Page({
                                             alt={teamsById[player.team].name}
                                             width={20}
                                             height={20}
-                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                            style={{
+                                                objectFit: "contain",
+                                                marginLeft: "4px",
+                                            }}
                                         />
                                     </div>
                                     <div className={styles.playerStats}>
                                         <span>
-                                            Points: {pointsView === "current"
+                                            Points:{" "}
+                                            {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
@@ -157,7 +161,8 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}m
+                                            ).toFixed(1)}
+                                            m
                                         </span>
                                     </div>
                                 </div>
@@ -185,12 +190,16 @@ export default async function Page({
                                             alt={teamsById[player.team].name}
                                             width={20}
                                             height={20}
-                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                            style={{
+                                                objectFit: "contain",
+                                                marginLeft: "4px",
+                                            }}
                                         />
                                     </div>
                                     <div className={styles.playerStats}>
                                         <span>
-                                            Points: {pointsView === "current"
+                                            Points:{" "}
+                                            {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
@@ -204,7 +213,8 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}m
+                                            ).toFixed(1)}
+                                            m
                                         </span>
                                     </div>
                                 </div>
@@ -232,12 +242,16 @@ export default async function Page({
                                             alt={teamsById[player.team].name}
                                             width={20}
                                             height={20}
-                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                            style={{
+                                                objectFit: "contain",
+                                                marginLeft: "4px",
+                                            }}
                                         />
                                     </div>
                                     <div className={styles.playerStats}>
                                         <span>
-                                            Points: {pointsView === "current"
+                                            Points:{" "}
+                                            {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
@@ -251,7 +265,8 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}m
+                                            ).toFixed(1)}
+                                            m
                                         </span>
                                     </div>
                                 </div>
@@ -279,12 +294,16 @@ export default async function Page({
                                             alt={teamsById[player.team].name}
                                             width={20}
                                             height={20}
-                                            style={{ objectFit: "contain", marginLeft: "4px" }}
+                                            style={{
+                                                objectFit: "contain",
+                                                marginLeft: "4px",
+                                            }}
                                         />
                                     </div>
                                     <div className={styles.playerStats}>
                                         <span>
-                                            Points: {pointsView === "current"
+                                            Points:{" "}
+                                            {pointsView === "current"
                                                 ? player.event_points
                                                 : pointsView === "last5"
                                                   ? player.last_5_points
@@ -298,7 +317,8 @@ export default async function Page({
                                                     : player.now_cost -
                                                       player.cost_change_start) /
                                                 10
-                                            ).toFixed(1)}m
+                                            ).toFixed(1)}
+                                            m
                                         </span>
                                     </div>
                                 </div>

@@ -42,7 +42,9 @@ export default async function Page({
     const sortByColumn = sortBy.replace("-", "");
     const currentTeamId = searchParams?.team || "";
     const currentPosId = searchParams?.pos || "";
-    const season = searchParams?.season ? decodeURIComponent(searchParams.season) : "";
+    const season = searchParams?.season
+        ? decodeURIComponent(searchParams.season)
+        : "";
 
     let seasonId = "";
     const currentSeason = (await fetchCurrentFantasySeasons()) as FantasySeason;
@@ -111,7 +113,10 @@ export default async function Page({
                 </div>
                 <div className={styles.topRightCorner}>
                     <div style={{ marginRight: "10px", marginLeft: "10px" }}>
-                        <SeasonSelect seasons={seasons} currentSeason={currentSeason} />
+                        <SeasonSelect
+                            seasons={seasons}
+                            currentSeason={currentSeason}
+                        />
                     </div>
                     <RefreshButton latestUpdate={latestUpdate} />
                 </div>

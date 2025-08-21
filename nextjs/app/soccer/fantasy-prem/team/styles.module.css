@@ -142,16 +142,24 @@
 @media (min-width: 768px) {
     .compactLineup {
         grid-template-columns: 1fr 2fr;
-        grid-template-areas: 
+        grid-template-areas:
             "goalkeeper defenders"
             "midfielders forwards";
         gap: 15px;
     }
-    
-    .goalkeeper { grid-area: goalkeeper; }
-    .defenders { grid-area: defenders; }
-    .midfielders { grid-area: midfielders; }
-    .forwards { grid-area: forwards; }
+
+    .goalkeeper {
+        grid-area: goalkeeper;
+    }
+    .defenders {
+        grid-area: defenders;
+    }
+    .midfielders {
+        grid-area: midfielders;
+    }
+    .forwards {
+        grid-area: forwards;
+    }
 }
 
 .compactRow {

@@ -8,16 +8,23 @@ interface GameweekRangeSelectProps {
     defaultEndGameweek: number;
 }
 
-export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGameweek }: GameweekRangeSelectProps) {
+export default function GameweekRangeSelect({
+    defaultStartGameweek,
+    defaultEndGameweek,
+}: GameweekRangeSelectProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
-    
-    const currentStartGameweek = parseInt(searchParams.get('startGameweek') || defaultStartGameweek.toString());
-    const currentEndGameweek = parseInt(searchParams.get('endGameweek') || defaultEndGameweek.toString());
-    
+
+    const currentStartGameweek = parseInt(
+        searchParams.get("startGameweek") || defaultStartGameweek.toString(),
+    );
+    const currentEndGameweek = parseInt(
+        searchParams.get("endGameweek") || defaultEndGameweek.toString(),
+    );
+
     const [startGameweek, setStartGameweek] = useState(currentStartGameweek);
     const [endGameweek, setEndGameweek] = useState(currentEndGameweek);
-    const [isDragging, setIsDragging] = useState<'start' | 'end' | null>(null);
+    const [isDragging, setIsDragging] = useState<"start" | "end" | null>(null);
     const sliderRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -25,7 +32,11 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
         setEndGameweek(currentEndGameweek);
     }, [currentStartGameweek, currentEndGameweek]);
 
-    const handleMouseDown = (handle: 'start' | 'end') => {
+    const handleMouseDown = (handle: "start" | "end") => {
+        setIsDragging(handle);
+    };
+
+    const handleTouchStart = (handle: "start" | "end") => {
         setIsDragging(handle);
     };
 
@@ -38,7 +49,26 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
         const percentage = Math.max(0, Math.min(1, x / width));
         const value = Math.round(percentage * 37) + 1; // 1 to 38
 
-        if (isDragging === 'start') {
+        if (isDragging === "start") {
+            const newStart = Math.min(value, endGameweek - 1);
+            setStartGameweek(newStart);
+        } else {
+            const newEnd = Math.max(value, startGameweek + 1);
+            setEndGameweek(newEnd);
+        }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+        if (!isDragging || !sliderRef.current) return;
+
+        e.preventDefault(); // Prevent scrolling while dragging
+        const rect = sliderRef.current.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const width = rect.width;
+        const percentage = Math.max(0, Math.min(1, x / width));
+        const value = Math.round(percentage * 37) + 1; // 1 to 38
+
+        if (isDragging === "start") {
             const newStart = Math.min(value, endGameweek - 1);
             setStartGameweek(newStart);
         } else {
@@ -50,19 +80,40 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
     const handleMouseUp = () => {
         if (isDragging) {
             const params = new URLSearchParams(searchParams.toString());
-            
+
             if (startGameweek !== defaultStartGameweek) {
-                params.set('startGameweek', startGameweek.toString());
+                params.set("startGameweek", startGameweek.toString());
             } else {
-                params.delete('startGameweek');
+                params.delete("startGameweek");
             }
-            
+
             if (endGameweek !== Math.min(defaultStartGameweek + 2, 38)) {
-                params.set('endGameweek', endGameweek.toString());
+                params.set("endGameweek", endGameweek.toString());
             } else {
-                params.delete('endGameweek');
+                params.delete("endGameweek");
             }
-            
+
+            router.push(`/soccer/fantasy-prem/fixtures?${params.toString()}`);
+        }
+        setIsDragging(null);
+    };
+
+    const handleTouchEnd = () => {
+        if (isDragging) {
+            const params = new URLSearchParams(searchParams.toString());
+
+            if (startGameweek !== defaultStartGameweek) {
+                params.set("startGameweek", startGameweek.toString());
+            } else {
+                params.delete("startGameweek");
+            }
+
+            if (endGameweek !== Math.min(defaultStartGameweek + 2, 38)) {
+                params.set("endGameweek", endGameweek.toString());
+            } else {
+                params.delete("endGameweek");
+            }
+
             router.push(`/soccer/fantasy-prem/fixtures?${params.toString()}`);
         }
         setIsDragging(null);
@@ -70,11 +121,17 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
 
     useEffect(() => {
         if (isDragging) {
-            document.addEventListener('mousemove', handleMouseMove);
-            document.addEventListener('mouseup', handleMouseUp);
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
+            document.addEventListener("touchmove", handleTouchMove, {
+                passive: false,
+            });
+            document.addEventListener("touchend", handleTouchEnd);
             return () => {
-                document.removeEventListener('mousemove', handleMouseMove);
-                document.removeEventListener('mouseup', handleMouseUp);
+                document.removeEventListener("mousemove", handleMouseMove);
+                document.removeEventListener("mouseup", handleMouseUp);
+                document.removeEventListener("touchmove", handleTouchMove);
+                document.removeEventListener("touchend", handleTouchEnd);
             };
         }
     }, [isDragging, startGameweek, endGameweek]);
@@ -90,7 +147,7 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
                     {startGameweek} - {endGameweek}
                 </span>
             </div>
-            
+
             <div className="relative w-full sm:w-48 h-6">
                 <div
                     ref={sliderRef}
@@ -101,26 +158,28 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
                         className="absolute h-2 bg-blue-500 rounded-full"
                         style={{
                             left: `${startPosition}%`,
-                            width: `${endPosition - startPosition}%`
+                            width: `${endPosition - startPosition}%`,
                         }}
                     />
-                    
+
                     {/* Start handle */}
                     <div
                         className={`absolute w-4 h-4 bg-blue-600 rounded-full border-2 border-white shadow cursor-pointer transform -translate-y-1/2 top-1/2 ${
-                            isDragging === 'start' ? 'z-10' : ''
+                            isDragging === "start" ? "z-10" : ""
                         }`}
                         style={{ left: `${startPosition}%` }}
-                        onMouseDown={() => handleMouseDown('start')}
+                        onMouseDown={() => handleMouseDown("start")}
+                        onTouchStart={() => handleTouchStart("start")}
                     />
-                    
+
                     {/* End handle */}
                     <div
                         className={`absolute w-4 h-4 bg-blue-600 rounded-full border-2 border-white shadow cursor-pointer transform -translate-y-1/2 top-1/2 ${
-                            isDragging === 'end' ? 'z-10' : ''
+                            isDragging === "end" ? "z-10" : ""
                         }`}
                         style={{ left: `${endPosition}%` }}
-                        onMouseDown={() => handleMouseDown('end')}
+                        onMouseDown={() => handleMouseDown("end")}
+                        onTouchStart={() => handleTouchStart("end")}
                     />
                 </div>
             </div>
