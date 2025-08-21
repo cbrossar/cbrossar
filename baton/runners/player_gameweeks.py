@@ -114,7 +114,9 @@ def store_fpl_player_gameweeks(data, season):
 def fetch_player(player_id):
     with Session() as session:
         player = (
-            session.query(FantasyPlayers).filter(FantasyPlayers.id == player_id).first()
+            session.query(FantasyPlayers)
+            .filter(FantasyPlayers.fpl_id == player_id)
+            .first()
         )
         return player
 

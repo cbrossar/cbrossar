@@ -37,7 +37,7 @@ def update_players(data, season):
     for element in data["elements"]:
         player_dicts.append(
             {
-                "id": element["id"],
+                "fpl_id": element["id"],
                 "first_name": element["first_name"],
                 "second_name": element["second_name"],
                 "team": element["team"],
@@ -63,9 +63,11 @@ def update_players(data, season):
         update_columns = {
             col.name: getattr(stmt.excluded, col.name)
             for col in FantasyPlayers.__table__.columns
-            if col.name not in ["id", "fdr_5", "last_5_points"]
+            if col.name not in ["fpl_id", "fdr_5", "last_5_points"]
         }  # exclude PK and fdr_5
-        stmt = stmt.on_conflict_do_update(index_elements=["id", "season_id"], set_=update_columns)
+        stmt = stmt.on_conflict_do_update(
+            index_elements=["fpl_id", "season_id"], set_=update_columns
+        )
         session.execute(stmt)
         session.add(FantasyPremUpdates())
         session.commit()

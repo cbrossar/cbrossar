@@ -49,7 +49,11 @@ def store_last_5_points(season):
             if len(player_points[gw.player_id]) < 5:
                 player_points[gw.player_id].append(gw.total_points)
 
-        players = session.query(FantasyPlayers).all()
+        players = (
+            session.query(FantasyPlayers)
+            .filter(FantasyPlayers.season_id == season.id)
+            .all()
+        )
         for player in players:
             last_5_points = sum(player_points.get(player.id, []))
             player.last_5_points = last_5_points

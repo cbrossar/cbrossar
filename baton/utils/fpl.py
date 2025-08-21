@@ -54,4 +54,8 @@ def get_fixtures():
 
 def get_fixtures_for_team(team_id):
     fixtures = get_fixtures()
-    return [fixture for fixture in fixtures if fixture["team_h"] == team_id or fixture["team_a"] == team_id]
+    return [
+        fixture
+        for fixture in fixtures
+        if fixture["team_h"] == team_id or fixture["team_a"] == team_id
+    ]
