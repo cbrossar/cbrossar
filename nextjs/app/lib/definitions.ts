@@ -78,6 +78,26 @@ export interface FantasySeason {
     name: string;
 }
 
+export interface FantasyFixture {
+    id: number;
+    event: number;
+    finished: boolean;
+    finished_provisional: boolean;
+    fpl_id: number;
+    kickoff_time: string;
+    minutes: number;
+    provisional_start_time: string;
+    started: boolean;
+    team_a_difficulty: number;
+    team_a_id: number;
+    team_a_score: number;
+    team_h_id: number;
+    team_h_score: number;
+    team_h_strength: number;
+    team_h_difficulty: number;
+    season_id: number;
+}
+
 export interface Grape {
     id: number;
     name: string;

@@ -484,3 +484,15 @@ export async function fetchCurrentFantasySeasons() {
         throw new Error("Failed to fetch current fantasy seasons.");
     }
 }
+
+export async function fetchFantasyFixtures(seasonId: string) {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_prem_fixtures WHERE season_id = ${seasonId}
+        `;
+        return response.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch fantasy fixtures.");
+    }
+}

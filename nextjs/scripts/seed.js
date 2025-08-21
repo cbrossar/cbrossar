@@ -7,8 +7,8 @@ async function main() {
     // await seedDoomsdayAttempts(client);
     // await seedSoccerStats(client);
     // await seedWine(client);
-    // await seedFantasyPremierLeagueStats(client);
-    await seedRedditSpurs(client);
+    await seedFantasyPremierLeagueStats(client);
+    // await seedRedditSpurs(client);
     await client.end();
 }
 
@@ -239,7 +239,8 @@ async function seedFantasyPremierLeagueStats(client) {
         // Create the "fantasy_teams" table if it doesn't exist
         const createFantasyTeamsTable = await client.sql`
             CREATE TABLE IF NOT EXISTS fantasy_teams (
-            id INT PRIMARY KEY,
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            fpl_id INT NOT NULL,
             name VARCHAR(255) NOT NULL,
             image_filename VARCHAR(255)
         );
@@ -250,7 +251,8 @@ async function seedFantasyPremierLeagueStats(client) {
         // Create the "fantasy_players" table if it doesn't exist
         const createFantasyPlayersTable = await client.sql`
             CREATE TABLE IF NOT EXISTS fantasy_players (
-            id INT PRIMARY KEY,
+            id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+            fpl_id INT NOT NULL,
             first_name VARCHAR(255) NOT NULL,
             second_name VARCHAR(255) NOT NULL,
             team INT NOT NULL,
@@ -316,11 +318,38 @@ async function seedFantasyPremierLeagueStats(client) {
         // Create the "fantasy_prem_updates" table if it doesn't exist
         const createFantasyPremUpdatesTable = await client.sql`
             CREATE TABLE IF NOT EXISTS fantasy_prem_updates (
-            id SERIAL PRIMARY KEY,
-            updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         `;
         console.log(`Created "fantasy_prem_updates" table`);
+
+        // Create the "fantasy_prem_fixtures" table if it doesn't exist
+        const createFantasyPremFixturesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS fantasy_prem_fixtures (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                event INT,
+                finished BOOLEAN,
+                finished_provisional BOOLEAN,
+                fpl_id INT,
+                kickoff_time TIMESTAMPTZ,
+                minutes INT,
+                provisional_start_time BOOLEAN,
+                started BOOLEAN,
+                team_a_difficulty INT,
+                team_a_id UUID,
+                team_a_score INT,
+                team_h_difficulty INT,
+                team_h_id UUID,
+                team_h_score INT,
+                season_id UUID,
+                FOREIGN KEY (team_a_id) REFERENCES fantasy_teams(id),
+                FOREIGN KEY (team_h_id) REFERENCES fantasy_teams(id),
+                FOREIGN KEY (season_id) REFERENCES fantasy_seasons(id),
+                UNIQUE (fpl_id, season_id)
+            );
+        `;
+        console.log(`Created "fantasy_prem_fixtures" table`);
 
         return {
             createFantasyPositionsTable,
@@ -329,6 +358,7 @@ async function seedFantasyPremierLeagueStats(client) {
             createFantasySeasonsTable,
             createFantasyPlayerGameweeksTable,
             createFantasyPremUpdatesTable,
+            createFantasyPremFixturesTable,
         };
     } catch (error) {
         console.error("Error seeding fantasy premier league stats:", error);
