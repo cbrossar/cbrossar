@@ -95,7 +95,7 @@ export default async function Page({
 
     return (
         <div className="p-6">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h1 className="text-2xl font-bold">Fixture Difficulty Table</h1>
                 <GameweekRangeSelect defaultStartGameweek={firstUnfinishedGameweek} defaultEndGameweek={endGameweek} />
             </div>
@@ -103,23 +103,23 @@ export default async function Page({
                 <table className="min-w-full border border-gray-300">
                     <thead>
                         <tr className="bg-gray-100">
-                            <th className="border border-gray-300 px-4 py-2 text-left">Team</th>
-                            <th className="border border-gray-300 px-4 py-2 text-center">Rank</th>
+                            <th className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-sm sm:text-base">Team</th>
+                            <th className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">Rank</th>
                             {Array.from({ length: endGameweek - startGameweek + 1 }, (_, i) => (
-                                <th key={startGameweek + i} className="border border-gray-300 px-4 py-2 text-center">
+                                <th key={startGameweek + i} className="border border-gray-300 px-1 sm:px-4 py-2 text-center text-xs sm:text-base">
                                     GW {startGameweek + i}
                                 </th>
                             ))}
-                            <th className="border border-gray-300 px-4 py-2 text-center">Total</th>
+                            <th className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         {teamRanks.map((teamData) => (
                             <tr key={teamData.team.id} className="hover:bg-gray-50">
-                                <td className="border border-gray-300 px-4 py-2 font-medium">
+                                <td className="border border-gray-300 px-2 sm:px-4 py-2 font-medium text-sm sm:text-base">
                                     {teamData.team.name}
                                 </td>
-                                <td className="border border-gray-300 px-4 py-2 text-center">
+                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">
                                     {teamData.rank}
                                 </td>
                                 {Array.from({ length: endGameweek - startGameweek + 1 }, (_, i) => {
@@ -127,7 +127,7 @@ export default async function Page({
                                     const fixture = teamData.gameweekFixtures[gameweek];
                                     if (!fixture) {
                                         return (
-                                            <td key={gameweek} className="border border-gray-300 px-4 py-2 text-center text-gray-400">
+                                            <td key={gameweek} className="border border-gray-300 px-1 sm:px-4 py-2 text-center text-gray-400 text-xs sm:text-sm">
                                                 -
                                             </td>
                                         );
@@ -140,14 +140,14 @@ export default async function Page({
                                     return (
                                         <td 
                                             key={gameweek} 
-                                            className={`border border-gray-300 px-4 py-2 text-center ${getDifficultyColor(fixture.difficulty)}`}
+                                            className={`border border-gray-300 px-1 sm:px-4 py-2 text-center text-xs sm:text-sm ${getDifficultyColor(fixture.difficulty)}`}
                                             title={`${fixture.opponent} (${fixture.isHome ? 'H' : 'A'}) - Difficulty: ${fixture.difficulty}`}
                                         >
                                             {displayName}
                                         </td>
                                     );
                                 })}
-                                <td className="border border-gray-300 px-4 py-2 text-center font-medium">
+                                <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center font-medium text-sm sm:text-base">
                                     {teamData.totalDifficulty}
                                 </td>
                             </tr>
@@ -157,8 +157,10 @@ export default async function Page({
             </div>
             
             <div className="mt-6 text-sm text-gray-600">
-                <p><strong>Difficulty Scale:</strong> 1-2 (Green) = Easy, 3 (Yellow) = Medium, 4-5 (Red) = Hard</p>
-                <p><strong>Format:</strong> UPPERCASE = Home fixture, lowercase = Away fixture</p>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                    <p><strong>Difficulty Scale:</strong> 1-2 (Green) = Easy, 3 (Yellow) = Medium, 4-5 (Red) = Hard</p>
+                    <p><strong>Format:</strong> UPPERCASE = Home fixture, lowercase = Away fixture</p>
+                </div>
             </div>
         </div>
     );

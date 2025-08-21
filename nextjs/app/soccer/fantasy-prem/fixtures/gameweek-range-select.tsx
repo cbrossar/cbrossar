@@ -83,7 +83,7 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
     const endPosition = ((endGameweek - 1) / 37) * 100;
 
     return (
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">Gameweek Range:</span>
                 <span className="text-sm font-mono">
@@ -91,7 +91,7 @@ export default function GameweekRangeSelect({ defaultStartGameweek, defaultEndGa
                 </span>
             </div>
             
-            <div className="relative w-48 h-6">
+            <div className="relative w-full sm:w-48 h-6">
                 <div
                     ref={sliderRef}
                     className="absolute w-full h-2 bg-gray-300 rounded-full top-1/2 transform -translate-y-1/2"
