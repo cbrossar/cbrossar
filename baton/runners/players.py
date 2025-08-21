@@ -57,14 +57,15 @@ def update_players(data, season):
                 "season_id": season.id,
             }
         )
+        break
 
     with Session() as session:
         stmt = insert(FantasyPlayers).values(player_dicts)
         update_columns = {
             col.name: getattr(stmt.excluded, col.name)
             for col in FantasyPlayers.__table__.columns
-            if col.name not in ["fpl_id", "fdr_5", "last_5_points"]
-        }  # exclude PK and fdr_5
+            if col.name not in ["id", "fdr_5", "last_5_points"]
+        }  # exclude PK and calculated fields
         stmt = stmt.on_conflict_do_update(
             index_elements=["fpl_id", "season_id"], set_=update_columns
         )
