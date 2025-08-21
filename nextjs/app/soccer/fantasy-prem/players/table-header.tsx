@@ -307,7 +307,7 @@ export default function TableHeader({
                                         }}
                                     >
                                         <span>{header}</span>
-                                        <span style={{ marginLeft: "5px" }}>
+                                        <span style={{ paddingLeft: "5px" }}>
                                             {getSortIcon(header)}
                                         </span>
                                     </div>
