@@ -449,7 +449,19 @@ export async function fetchFantasyPremLatestUpdatedTime() {
     }
 }
 
-export async function fetchFantasySeasons(season: string) {
+export async function fetchFantasySeasons() {
+    try {
+        const response = await sql`
+            SELECT * FROM fantasy_seasons ORDER BY name DESC
+        `;
+        return response.rows;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to fetch fantasy seasons.");
+    }
+}
+
+export async function fetchFantasySeasonsByName(season: string) {
     try {
         const response = await sql`
             SELECT * FROM fantasy_seasons WHERE name = ${season}

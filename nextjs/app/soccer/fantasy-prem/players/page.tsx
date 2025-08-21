@@ -4,13 +4,15 @@ import {
     fetchFantasyTeams,
     fetchPlayersCount,
     fetchFantasyPremLatestUpdatedTime,
-    fetchFantasySeasons,
+    fetchFantasySeasonsByName,
     fetchCurrentFantasySeasons,
+    fetchFantasySeasons,
 } from "@/app/data/fantasy";
 import {
     FantasyPlayer,
     FantasyPosition,
     FantasyTeam,
+    FantasySeason,
 } from "@/app/lib/definitions";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,6 +21,7 @@ import Search from "@/app/ui/search";
 import TableHeader from "./table-header";
 import styles from "./styles.module.css";
 import RefreshButton from "./refresh-button";
+import SeasonSelect from "./season-select";
 
 export default async function Page({
     searchParams,
@@ -42,14 +45,13 @@ export default async function Page({
     const season = searchParams?.season || "";
 
     let seasonId = "";
+    const currentSeason = (await fetchCurrentFantasySeasons()) as FantasySeason;
+
     if (season) {
-        const seasonData = await fetchFantasySeasons(season);
+        const seasonData = await fetchFantasySeasonsByName(season);
         seasonId = seasonData.id;
     } else {
-        const seasonData = await fetchCurrentFantasySeasons();
-        if (seasonData) {
-            seasonId = seasonData.id;
-        }
+        seasonId = currentSeason.id.toString();
     }
 
     const topTransfers = (await fetchFantasyPlayersFiltered(
@@ -99,6 +101,8 @@ export default async function Page({
         {} as Record<number, string>,
     );
 
+    const seasons = (await fetchFantasySeasons()) as FantasySeason[];
+
     return (
         <div>
             <div className={styles.header}>
@@ -106,6 +110,9 @@ export default async function Page({
                     <Search placeholder="Search Players" />
                 </div>
                 <div className={styles.topRightCorner}>
+                    <div style={{ marginRight: "10px", marginLeft: "10px" }}>
+                        <SeasonSelect seasons={seasons} currentSeason={currentSeason} />
+                    </div>
                     <RefreshButton latestUpdate={latestUpdate} />
                 </div>
             </div>

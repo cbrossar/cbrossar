@@ -73,6 +73,11 @@ export interface FantasyTeam {
     image_filename?: string;
 }
 
+export interface FantasySeason {
+    id: number;
+    name: string;
+}
+
 export interface Grape {
     id: number;
     name: string;
