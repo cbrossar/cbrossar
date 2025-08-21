@@ -87,7 +87,7 @@ export default function GameweekRangeSelect({
                 params.delete("startGameweek");
             }
 
-            if (endGameweek !== Math.min(defaultStartGameweek + 2, 38)) {
+            if (endGameweek !== defaultEndGameweek) {
                 params.set("endGameweek", endGameweek.toString());
             } else {
                 params.delete("endGameweek");
@@ -108,7 +108,7 @@ export default function GameweekRangeSelect({
                 params.delete("startGameweek");
             }
 
-            if (endGameweek !== Math.min(defaultStartGameweek + 2, 38)) {
+            if (endGameweek !== defaultEndGameweek) {
                 params.set("endGameweek", endGameweek.toString());
             } else {
                 params.delete("endGameweek");

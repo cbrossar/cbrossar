@@ -26,18 +26,20 @@ export default async function Page({
     )) as FantasyFixture[];
 
     // Find the first gameweek that is not finished
-    const firstUnfinishedGameweek =
+    const defaultStartGameweek =
         fixtures
             .filter((fixture) => !fixture.finished)
             .sort((a, b) => a.event - b.event)[0]?.event || 1;
 
+    const defaultEndGameweek = Math.min(defaultStartGameweek + 3, 38);
+
     // Filter fixtures for the selected gameweek range
     const startGameweek = searchParams?.startGameweek
         ? parseInt(searchParams.startGameweek)
-        : firstUnfinishedGameweek;
+        : defaultStartGameweek;
     const endGameweek = searchParams?.endGameweek
         ? parseInt(searchParams.endGameweek)
-        : Math.min(firstUnfinishedGameweek + 3, 38);
+        : defaultEndGameweek;
     const relevantFixtures = fixtures.filter(
         (fixture) =>
             fixture.event >= startGameweek && fixture.event <= endGameweek,
@@ -130,8 +132,8 @@ export default async function Page({
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <h1 className="text-2xl font-bold">Fixture Difficulty Table</h1>
                 <GameweekRangeSelect
-                    defaultStartGameweek={firstUnfinishedGameweek}
-                    defaultEndGameweek={endGameweek}
+                    defaultStartGameweek={defaultStartGameweek}
+                    defaultEndGameweek={defaultEndGameweek}
                 />
             </div>
             <div className="overflow-x-auto">
