@@ -11,7 +11,7 @@ export default function SoccerLayout({
     const pathname = usePathname();
     const isFantasyPremPlayers = pathname.includes("fantasy-prem/players");
     const isFantasyPremTeam = pathname.includes("fantasy-prem/team");
-    const isMyTeams = pathname.includes("my-teams");
+    const isFixtures = pathname.includes("fantasy-prem/fixtures");
 
     return (
         <div>
@@ -24,7 +24,7 @@ export default function SoccerLayout({
                             : styles.navLink
                     }
                 >
-                    Fantasy Players
+                    Players
                 </Link>
                 <span className={styles.navDot}>•</span>
                 <Link
@@ -35,16 +35,16 @@ export default function SoccerLayout({
                             : styles.navLink
                     }
                 >
-                    Fantasy Team
+                    Team
                 </Link>
                 <span className={styles.navDot}>•</span>
                 <Link
-                    href="/soccer/my-teams"
+                    href="/soccer/fantasy-prem/fixtures"
                     className={
-                        isMyTeams ? styles.navLinkActive : styles.navLink
+                        isFixtures ? styles.navLinkActive : styles.navLink
                     }
                 >
-                    My Teams
+                    Fixtures
                 </Link>
             </nav>
             {children}
