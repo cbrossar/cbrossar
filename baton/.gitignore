@@ -9,3 +9,5 @@ logs
 .env
 
 lambda_deployment.zip
+
+scripts/db-backups/

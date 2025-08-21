@@ -65,7 +65,7 @@ def update_players(data, season):
             for col in FantasyPlayers.__table__.columns
             if col.name not in ["id", "fdr_5", "last_5_points"]
         }  # exclude PK and fdr_5
-        stmt = stmt.on_conflict_do_update(index_elements=["id"], set_=update_columns)
+        stmt = stmt.on_conflict_do_update(index_elements=["id", "season_id"], set_=update_columns)
         session.execute(stmt)
         session.add(FantasyPremUpdates())
         session.commit()

@@ -96,4 +96,5 @@ format-check:
 
 lint-and-format: format lint
 
-
+db-backup:
+	./scripts/backup-db.sh
