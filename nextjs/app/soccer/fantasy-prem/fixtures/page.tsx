@@ -1,21 +1,28 @@
 import { fetchCurrentFantasySeasons, fetchFantasyFixtures, fetchFantasyTeams } from "@/app/data/fantasy";
 import { FantasyFixture, FantasySeason, FantasyTeam } from "@/app/lib/definitions";
-import NumMatchesSelect from "./num-matches-select";
+import GameweekRangeSelect from "./gameweek-range-select";
 
 export default async function Page({
     searchParams,
 }: {
     searchParams?: {
-        numMatches?: string;
+        startGameweek?: string;
+        endGameweek?: string;
     };
 }) {
     const currentSeason = (await fetchCurrentFantasySeasons()) as FantasySeason;
     const teams = (await fetchFantasyTeams()) as FantasyTeam[];
     const fixtures = (await fetchFantasyFixtures(currentSeason.id.toString())) as FantasyFixture[];
 
-    // Filter fixtures for the selected number of gameweeks
-    const numMatches = searchParams?.numMatches ? parseInt(searchParams.numMatches) : 3;
-    const relevantFixtures = fixtures.filter(fixture => fixture.event >= 1 && fixture.event <= numMatches);
+    // Find the first gameweek that is not finished
+    const firstUnfinishedGameweek = fixtures
+        .filter(fixture => !fixture.finished)
+        .sort((a, b) => a.event - b.event)[0]?.event || 1;
+
+    // Filter fixtures for the selected gameweek range
+    const startGameweek = searchParams?.startGameweek ? parseInt(searchParams.startGameweek) : firstUnfinishedGameweek;
+    const endGameweek = searchParams?.endGameweek ? parseInt(searchParams.endGameweek) : Math.min(firstUnfinishedGameweek + 3, 38);
+    const relevantFixtures = fixtures.filter(fixture => fixture.event >= startGameweek && fixture.event <= endGameweek);
     
     // Create a map of team ID to team name for easy lookup
     const teamMap = new Map(teams.map(team => [team.id, team]));
@@ -90,7 +97,7 @@ export default async function Page({
         <div className="p-6">
             <div className="flex items-center justify-between mb-6">
                 <h1 className="text-2xl font-bold">Fixture Difficulty Table</h1>
-                <NumMatchesSelect />
+                <GameweekRangeSelect defaultStartGameweek={firstUnfinishedGameweek} defaultEndGameweek={endGameweek} />
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-300">
@@ -98,9 +105,9 @@ export default async function Page({
                         <tr className="bg-gray-100">
                             <th className="border border-gray-300 px-4 py-2 text-left">Team</th>
                             <th className="border border-gray-300 px-4 py-2 text-center">Rank</th>
-                            {Array.from({ length: numMatches }, (_, i) => (
-                                <th key={i} className="border border-gray-300 px-4 py-2 text-center">
-                                    GW {i + 1}
+                            {Array.from({ length: endGameweek - startGameweek + 1 }, (_, i) => (
+                                <th key={startGameweek + i} className="border border-gray-300 px-4 py-2 text-center">
+                                    GW {startGameweek + i}
                                 </th>
                             ))}
                             <th className="border border-gray-300 px-4 py-2 text-center">Total</th>
@@ -115,8 +122,8 @@ export default async function Page({
                                 <td className="border border-gray-300 px-4 py-2 text-center">
                                     {teamData.rank}
                                 </td>
-                                {Array.from({ length: numMatches }, (_, i) => {
-                                    const gameweek = i + 1;
+                                {Array.from({ length: endGameweek - startGameweek + 1 }, (_, i) => {
+                                    const gameweek = startGameweek + i;
                                     const fixture = teamData.gameweekFixtures[gameweek];
                                     if (!fixture) {
                                         return (
