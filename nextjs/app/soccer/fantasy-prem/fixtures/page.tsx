@@ -1,6 +1,7 @@
 import { fetchCurrentFantasySeasons, fetchFantasyFixtures, fetchFantasyTeams } from "@/app/data/fantasy";
 import { FantasyFixture, FantasySeason, FantasyTeam } from "@/app/lib/definitions";
 import GameweekRangeSelect from "./gameweek-range-select";
+import Image from "next/image";
 
 export default async function Page({
     searchParams,
@@ -117,7 +118,16 @@ export default async function Page({
                         {teamRanks.map((teamData) => (
                             <tr key={teamData.team.id} className="hover:bg-gray-50">
                                 <td className="border border-gray-300 px-2 sm:px-4 py-2 font-medium text-sm sm:text-base">
-                                    {teamData.team.name}
+                                    <div className="flex items-center gap-2">
+                                        <Image 
+                                            src={`/fantasy-prem/${teamData.team.image_filename}`}
+                                            alt={`${teamData.team.name} logo`}
+                                            width={24}
+                                            height={24}
+                                            className="object-contain"
+                                        />
+                                        {teamData.team.name}
+                                    </div>
                                 </td>
                                 <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">
                                     {teamData.rank}
