@@ -3,7 +3,7 @@ from datetime import datetime
 from models import RedditSpurs
 from db import Session
 import praw
-from utils.telegram import send_telegram_message
+from utils.telegram import send_telegram_message, Channel
 from logger import logger
 
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
@@ -40,7 +40,7 @@ def save_posts_to_db(posts: list[dict]):
             if post.get("url") and not post.get("is_self", False):
                 message += f"\n🌐 <a href='{post['url']}'>External Link</a>"
 
-            send_telegram_message(message)
+            send_telegram_message(message, Channel.SPURS)
 
             db_post = RedditSpurs(
                 reddit_id=post["id"],

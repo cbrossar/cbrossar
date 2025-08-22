@@ -7,10 +7,9 @@ from runners.reddit_spurs import run_reddit_spurs
 from runners.teams import run_teams
 from logger import logger
 import os
-from baton.utils.emails import send_email
+from utils.telegram import send_telegram_message, Channel
 import uvicorn
 
-email_to = os.getenv("EMAIL_USER")
 app = FastAPI()
 
 
@@ -23,7 +22,7 @@ async def health_check():
         return {"status": "healthy"}
     except Exception as e:
         logger.error(f"Health check error: {str(e)}")
-        send_email("Baton: Health check failed", str(e), email_to)
+        send_telegram_message(f"🚨 <b>Baton: Health check failed</b>\n\n{str(e)}", Channel.BATON)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -39,7 +38,7 @@ async def players():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Players error: {str(e)}")
-        send_email("Baton: Players update failed", str(e), email_to)
+        send_telegram_message(f"🚨 <b>Baton: Players update failed</b>\n\n{str(e)}", Channel.BATON)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -54,7 +53,7 @@ async def player_gameweeks():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Player gameweeks error: {str(e)}")
-        send_email("Baton: Player gameweeks update failed", str(e), email_to)
+        send_telegram_message(f"🚨 <b>Baton: Player gameweeks update failed</b>\n\n{str(e)}", Channel.BATON)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -67,7 +66,7 @@ async def last_5():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Last 5 points error: {str(e)}")
-        send_email("Baton: Last 5 points update failed", str(e), email_to)
+        send_telegram_message(f"🚨 <b>Baton: Last 5 points update failed</b>\n\n{str(e)}", Channel.BATON)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -80,7 +79,7 @@ async def reddit_spurs():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Reddit Spurs error: {str(e)}")
-        send_email("Baton: Reddit Spurs update failed", str(e), email_to)
+        send_telegram_message(f"🚨 <b>Baton: Reddit Spurs update failed</b>\n\n{str(e)}", Channel.BATON)
         raise HTTPException(status_code=500, detail=str(e))
 
 
