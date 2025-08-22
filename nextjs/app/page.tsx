@@ -43,13 +43,13 @@ export default function Home() {
             <ImageWrapper>
                 <ImageLink href="/soccer/fantasy-prem/players">
                     <Image
-                        src="/foggy-field.jpeg"
+                        src="/colombia-soccer.jpeg"
                         width={900}
                         height={450}
                         alt="Fantasy players"
                         priority
                     />
-                    <ImageText>FPL Players</ImageText>
+                    <ImageText>Fantasy Prem</ImageText>
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
@@ -62,18 +62,6 @@ export default function Home() {
                         priority
                     />
                     <ImageText>Wine</ImageText>
-                </ImageLink>
-            </ImageWrapper>
-            <ImageWrapper>
-                <ImageLink href="/soccer/my-teams">
-                    <Image
-                        src="/colombia-soccer.jpeg"
-                        width={900}
-                        height={450}
-                        alt="Colombia soccer"
-                        priority
-                    />
-                    <ImageText>Soccer Stats</ImageText>
                 </ImageLink>
             </ImageWrapper>
             <ImageWrapper>
