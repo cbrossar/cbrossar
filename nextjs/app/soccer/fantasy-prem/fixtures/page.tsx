@@ -140,7 +140,7 @@ export default async function Page({
                 <table className="min-w-full border border-gray-300">
                     <thead>
                         <tr className="bg-gray-100">
-                            <th className="border border-gray-300 px-1 sm:px-2 py-2 text-left text-sm sm:text-base max-w-32">
+                            <th className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-sm sm:text-base">
                                 Team
                             </th>
                             <th className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">
