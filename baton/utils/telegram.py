@@ -4,27 +4,19 @@ from loguru import logger
 
 # Telegram Bot Configuration
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID")
+SPURS_CHANNEL_ID = "-1002928194045"
+BATON_CHANNEL_ID = "-1003085470422"
 
 
 def send_telegram_message(message: str) -> bool:
-    """
-    Send a message to Telegram channel
-
-    Args:
-        message: The message to send
-
-    Returns:
-        bool: True if successful, False otherwise
-    """
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
+    if not TELEGRAM_BOT_TOKEN or not SPURS_CHANNEL_ID:
         logger.warning("Telegram bot not configured - skipping message send")
         return False
 
     try:
         url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
         data = {
-            "chat_id": TELEGRAM_CHANNEL_ID,
+            "chat_id": SPURS_CHANNEL_ID,
             "text": message,
             "parse_mode": "HTML",  # Allows basic formatting
         }
