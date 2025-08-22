@@ -10,6 +10,7 @@ import {
 } from "@/app/lib/definitions";
 import GameweekRangeSelect from "./gameweek-range-select";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page({
     searchParams,
@@ -17,6 +18,8 @@ export default async function Page({
     searchParams?: {
         startGameweek?: string;
         endGameweek?: string;
+        sortBy?: string;
+        sortOrder?: string;
     };
 }) {
     const currentSeason = (await fetchCurrentFantasySeason()) as FantasySeason;
@@ -89,24 +92,56 @@ export default async function Page({
         };
     });
 
-    // Sort teams by total difficulty (easiest first)
-    teamDifficulties.sort((a, b) => a.totalDifficulty - b.totalDifficulty);
+    // Get current sort parameters
+    const currentSortBy = searchParams?.sortBy || 'totalDifficulty';
+    const currentSortOrder = searchParams?.sortOrder || 'asc';
 
-    // Calculate ranks considering ties
-    const teamRanks = teamDifficulties.map((teamData, index) => {
+    // Always calculate ranks based on total difficulty (easiest = rank 1, hardest = rank 38)
+    const baseTeamDifficulties = [...teamDifficulties].sort((a, b) => a.totalDifficulty - b.totalDifficulty);
+    const baseTeamRanks = baseTeamDifficulties.map((teamData, index) => {
         let rank = index + 1;
         if (index > 0) {
-            const previousTeam = teamDifficulties[index - 1];
+            const previousTeam = baseTeamDifficulties[index - 1];
             if (teamData.totalDifficulty === previousTeam.totalDifficulty) {
-                // Find the first team with this difficulty score
-                rank =
-                    teamDifficulties.findIndex(
-                        (t) => t.totalDifficulty === teamData.totalDifficulty,
-                    ) + 1;
+                rank = baseTeamDifficulties.findIndex(
+                    (t) => t.totalDifficulty === teamData.totalDifficulty,
+                ) + 1;
             }
         }
         return { ...teamData, rank };
     });
+
+    // Create a map of team ID to rank for easy lookup
+    const rankMap = new Map(baseTeamRanks.map(teamData => [teamData.team.id, teamData.rank]));
+
+    // Sort teams based on current sort parameters
+    teamDifficulties.sort((a, b) => {
+        let comparison = 0;
+        
+        switch (currentSortBy) {
+            case 'teamName':
+                comparison = a.team.name.localeCompare(b.team.name);
+                break;
+            case 'rank':
+                // Sort by the pre-calculated rank
+                comparison = (rankMap.get(a.team.id) || 0) - (rankMap.get(b.team.id) || 0);
+                break;
+            case 'totalDifficulty':
+            default:
+                comparison = a.totalDifficulty - b.totalDifficulty;
+                break;
+        }
+        
+        return currentSortOrder === 'desc' ? -comparison : comparison;
+    });
+
+    // Add ranks to the sorted teams
+    const teamRanks = teamDifficulties.map(teamData => ({
+        ...teamData,
+        rank: rankMap.get(teamData.team.id) || 1
+    }));
+
+
 
     // Helper function to get difficulty color
     const getDifficultyColor = (difficulty: number) => {
@@ -127,6 +162,39 @@ export default async function Page({
             .toUpperCase();
     };
 
+    // Helper function to build sort URL
+    const buildSortUrl = (column: string) => {
+        const params = new URLSearchParams();
+        if (startGameweek !== defaultStartGameweek) params.set('startGameweek', startGameweek.toString());
+        if (endGameweek !== defaultEndGameweek) params.set('endGameweek', endGameweek.toString());
+        
+        let newSortOrder = 'asc';
+        if (currentSortBy === column && currentSortOrder === 'asc') {
+            newSortOrder = 'desc';
+        }
+        
+        params.set('sortBy', column);
+        params.set('sortOrder', newSortOrder);
+        
+        const queryString = params.toString();
+        return queryString ? `?${queryString}` : '';
+    };
+
+    // Helper function to get sort indicator
+    const getSortIndicator = (column: string) => {
+        if (currentSortBy !== column) return '';
+        return currentSortOrder === 'asc' ? '↑' : '↓';
+    };
+
+    // Helper function to get header styling
+    const getHeaderStyle = (column: string) => {
+        const baseClasses = "flex items-center gap-2 hover:bg-gray-200 px-2 py-1 rounded transition-colors cursor-pointer font-medium";
+        if (currentSortBy === column) {
+            return `${baseClasses} bg-blue-50 border border-blue-200`;
+        }
+        return baseClasses;
+    };
+
     return (
         <div className="p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -141,10 +209,20 @@ export default async function Page({
                     <thead>
                         <tr className="bg-gray-100">
                             <th className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-sm sm:text-base">
-                                Team
+                                <Link 
+                                    href={buildSortUrl('teamName')}
+                                    className={getHeaderStyle('teamName')}
+                                >
+                                    Team {getSortIndicator('teamName')}
+                                </Link>
                             </th>
                             <th className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">
-                                Rank
+                                <Link 
+                                    href={buildSortUrl('rank')}
+                                    className={`${getHeaderStyle('rank')} justify-center`}
+                                >
+                                    Rank {getSortIndicator('rank')}
+                                </Link>
                             </th>
                             {Array.from(
                                 { length: endGameweek - startGameweek + 1 },
@@ -158,7 +236,12 @@ export default async function Page({
                                 ),
                             )}
                             <th className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">
-                                Total
+                                <Link 
+                                    href={buildSortUrl('totalDifficulty')}
+                                    className={`${getHeaderStyle('totalDifficulty')} justify-center`}
+                                >
+                                    Total {getSortIndicator('totalDifficulty')}
+                                </Link>
                             </th>
                         </tr>
                     </thead>
