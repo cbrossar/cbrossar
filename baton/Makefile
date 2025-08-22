@@ -50,8 +50,7 @@ deploy:
 		--set-secrets=DATABASE_URL=baton-db-url:latest \
 		--set-secrets=EMAIL_USER=baton-email-user:latest \
 		--set-secrets=EMAIL_PASS=baton-email-pass:latest \
-		--set-secrets=TELEGRAM_BOT_TOKEN=telegram-spurs-bot-token:latest \
-		--set-secrets=TELEGRAM_CHANNEL_ID=telegram-spurs-channel-id:latest \
+		--set-secrets=TELEGRAM_BOT_TOKEN=telegram-baton-bot-token:latest \
 		--set-secrets=REDDIT_CLIENT_ID=reddit-client-id:latest \
 		--set-secrets=REDDIT_CLIENT_SECRET=reddit-client-secret:latest
 
