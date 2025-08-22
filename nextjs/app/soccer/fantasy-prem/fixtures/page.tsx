@@ -140,7 +140,7 @@ export default async function Page({
                 <table className="min-w-full border border-gray-300">
                     <thead>
                         <tr className="bg-gray-100">
-                            <th className="border border-gray-300 px-2 sm:px-4 py-2 text-left text-sm sm:text-base">
+                            <th className="border border-gray-300 px-1 sm:px-2 py-2 text-left text-sm sm:text-base max-w-32">
                                 Team
                             </th>
                             <th className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">
@@ -169,15 +169,17 @@ export default async function Page({
                                 className="hover:bg-gray-50"
                             >
                                 <td className="border border-gray-300 px-2 sm:px-4 py-2 font-medium text-sm sm:text-base">
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 min-w-0">
                                         <Image
                                             src={`/fantasy-prem/${teamData.team.image_filename}`}
                                             alt={`${teamData.team.name} logo`}
                                             width={24}
                                             height={24}
-                                            className="object-contain"
+                                            className="object-contain flex-shrink-0"
                                         />
-                                        {teamData.team.name}
+                                        <span className="truncate" title={teamData.team.name}>
+                                            {teamData.team.name}
+                                        </span>
                                     </div>
                                 </td>
                                 <td className="border border-gray-300 px-2 sm:px-4 py-2 text-center text-sm sm:text-base">
