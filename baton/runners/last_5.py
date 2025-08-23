@@ -76,7 +76,7 @@ def store_last_5_points(season):
         # if last 5 leader has changed, send a telegram message
         if last_5_leader is not None and last_5_leader != previous_last_5_leader:
             send_telegram_message(
-                f"👑 New last 5 leader: {last_5_leader.first_name} {last_5_leader.second_name} with {last_5_leader.last_5_points} points",
+                f"👑 New last 5 leader: <b>{last_5_leader.first_name} {last_5_leader.second_name}</b> with <b>{last_5_leader.last_5_points}</b> points",
                 Channel.FANTASY_PREM,
             )
 
