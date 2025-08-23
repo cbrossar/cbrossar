@@ -23,7 +23,7 @@ export default async function Page({
     };
 }) {
     const currentSeason = (await fetchCurrentFantasySeason()) as FantasySeason;
-    const teams = (await fetchFantasyTeams()) as FantasyTeam[];
+    const teams = (await fetchFantasyTeams(currentSeason.id.toString())) as FantasyTeam[];
     const fixtures = (await fetchFantasyFixtures(
         currentSeason.id.toString(),
     )) as FantasyFixture[];

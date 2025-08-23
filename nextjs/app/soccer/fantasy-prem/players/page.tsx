@@ -82,7 +82,7 @@ export default async function Page({
         currentPosId,
     );
     const positions = (await fetchFantasyPositions()) as FantasyPosition[];
-    const teams = (await fetchFantasyTeams()) as FantasyTeam[];
+    const teams = (await fetchFantasyTeams(seasonId)) as FantasyTeam[];
     const latestUpdate = await fetchFantasyPremLatestUpdatedTime();
     const teamsById = teams.reduce(
         (acc, team) => {

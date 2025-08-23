@@ -101,7 +101,7 @@ export default async function Page({
         (player) => player.element_type === 4,
     );
 
-    const teams = (await fetchFantasyTeams()) as FantasyTeam[];
+    const teams = (await fetchFantasyTeams(currentSession.id.toString())) as FantasyTeam[];
 
     const teamsById = teams.reduce(
         (acc, team) => {

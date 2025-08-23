@@ -113,11 +113,10 @@ export async function fetchFantasyPositions() {
     }
 }
 
-export async function fetchFantasyTeams() {
+export async function fetchFantasyTeams(seasonId: string) {
     try {
         const response = await sql`
-            SELECT * FROM fantasy_teams
-            WHERE fpl_id IS NOT NULL
+            SELECT * FROM fantasy_teams WHERE season_id = ${seasonId}
             ORDER BY name
         `;
         return response.rows;
