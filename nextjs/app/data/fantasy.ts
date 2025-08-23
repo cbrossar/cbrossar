@@ -272,8 +272,8 @@ export async function fetchPlayersCount(
 
         // Add filter condition for team ID
         if (currentTeamId) {
-            whereClauses.push(`team = $${paramIndex}`);
-            queryParams.push(Number(currentTeamId));
+            whereClauses.push(`team_id = $${paramIndex}`);
+            queryParams.push(currentTeamId);
             paramIndex++;
         }
 
@@ -337,8 +337,8 @@ export async function fetchFantasyPlayersFiltered(
 
         // Add filter condition for team ID
         if (currentTeamId) {
-            whereClauses.push(`team = $${paramIndex}`);
-            queryParams.push(Number(currentTeamId));
+            whereClauses.push(`team_id = $${paramIndex}`);
+            queryParams.push(currentTeamId);
             paramIndex++;
         }
 

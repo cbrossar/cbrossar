@@ -29,8 +29,12 @@ export default function SeasonSelect({
             params.delete("season");
         }
 
-        // Reset to page 1 when changing season
+        // Clear all other filters when changing season
         params.delete("page");
+        params.delete("query");
+        params.delete("team");
+        params.delete("pos");
+        params.delete("sortby");
 
         router.push(`/soccer/fantasy-prem/players?${params.toString()}`);
     };
