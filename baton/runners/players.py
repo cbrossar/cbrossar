@@ -2,7 +2,7 @@ from db import Session
 from sqlalchemy.dialects.postgresql import insert
 from logger import logger
 from models import FantasyPlayers, FantasyPremUpdates
-from utils.fpl import get_fpl_general_info, get_current_season
+from utils.fpl import get_fpl_general_info, get_current_season, get_fpl_teams
 from datetime import datetime
 
 
@@ -15,12 +15,13 @@ def run_update_players():
     data = get_fpl_general_info()
 
     season = get_current_season()
+    teams = get_fpl_teams(season.id)
 
     if season is None:
         logger.info("Not updating players, no season found")
         return True
 
-    update_players(data, season)
+    update_players(data, season, teams)
 
     end_time = datetime.now()
     duration = end_time - start_time
@@ -30,9 +31,11 @@ def run_update_players():
     return True
 
 
-def update_players(data, season):
+def update_players(data, season, teams):
 
     player_dicts = []
+
+    team_map = {team.fpl_id: team for team in teams}
 
     for element in data["elements"]:
         player_dicts.append(
@@ -41,6 +44,7 @@ def update_players(data, season):
                 "first_name": element["first_name"],
                 "second_name": element["second_name"],
                 "team": element["team"],
+                "team_id": team_map[element["team"]].id,
                 "element_type": element["element_type"],
                 "cost_change_start": element["cost_change_start"],
                 "now_cost": element["now_cost"],

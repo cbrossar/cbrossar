@@ -1,4 +1,4 @@
-from utils.fpl import get_fpl_general_info
+from utils.fpl import get_fpl_general_info, get_current_season
 from models import FantasyTeams
 from db import Session
 from logger import logger
@@ -7,6 +7,7 @@ from logger import logger
 def run_teams():
 
     fpl_general_info = get_fpl_general_info()
+    season = get_current_season()
     fpl_teams = fpl_general_info["teams"]
 
     with Session() as session:
@@ -17,7 +18,9 @@ def run_teams():
 
             team = (
                 session.query(FantasyTeams)
-                .filter(FantasyTeams.name == team_name)
+                .filter(
+                    FantasyTeams.name == team_name, FantasyTeams.season_id == season.id
+                )
                 .first()
             )
 
@@ -30,6 +33,7 @@ def run_teams():
                 team = FantasyTeams(
                     name=team_name,
                     fpl_id=team_id,
+                    season_id=season.id,
                 )
                 logger.info(
                     f"Created team {team_name} with FPL ID {team_id}, id {team.id}"

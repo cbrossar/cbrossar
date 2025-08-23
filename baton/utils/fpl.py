@@ -1,6 +1,6 @@
 from db import Session
 from logger import logger
-from models import FantasySeasons
+from models import FantasySeasons, FantasyTeams
 import requests
 from datetime import datetime, timedelta
 
@@ -59,3 +59,13 @@ def get_fixtures_for_team(team_id):
         for fixture in fixtures
         if fixture["team_h"] == team_id or fixture["team_a"] == team_id
     ]
+
+
+def get_fpl_teams(season_id):
+    with Session() as session:
+        teams = (
+            session.query(FantasyTeams)
+            .filter(FantasyTeams.season_id == season_id)
+            .all()
+        )
+        return teams

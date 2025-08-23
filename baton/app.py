@@ -22,7 +22,9 @@ async def health_check():
         return {"status": "healthy"}
     except Exception as e:
         logger.error(f"Health check error: {str(e)}")
-        send_telegram_message(f"🚨 <b>Baton: Health check failed</b>\n\n{str(e)}", Channel.BATON)
+        send_telegram_message(
+            f"🚨 <b>Baton: Health check failed</b>\n\n{str(e)}", Channel.BATON
+        )
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -38,7 +40,9 @@ async def players():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Players error: {str(e)}")
-        send_telegram_message(f"🚨 <b>Baton: Players update failed</b>\n\n{str(e)}", Channel.BATON)
+        send_telegram_message(
+            f"🚨 <b>Baton: Players update failed</b>\n\n{str(e)}", Channel.BATON
+        )
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -53,7 +57,10 @@ async def player_gameweeks():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Player gameweeks error: {str(e)}")
-        send_telegram_message(f"🚨 <b>Baton: Player gameweeks update failed</b>\n\n{str(e)}", Channel.BATON)
+        send_telegram_message(
+            f"🚨 <b>Baton: Player gameweeks update failed</b>\n\n{str(e)}",
+            Channel.BATON,
+        )
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -66,7 +73,9 @@ async def last_5():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Last 5 points error: {str(e)}")
-        send_telegram_message(f"🚨 <b>Baton: Last 5 points update failed</b>\n\n{str(e)}", Channel.BATON)
+        send_telegram_message(
+            f"🚨 <b>Baton: Last 5 points update failed</b>\n\n{str(e)}", Channel.BATON
+        )
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -79,7 +88,9 @@ async def reddit_spurs():
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Reddit Spurs error: {str(e)}")
-        send_telegram_message(f"🚨 <b>Baton: Reddit Spurs update failed</b>\n\n{str(e)}", Channel.BATON)
+        send_telegram_message(
+            f"🚨 <b>Baton: Reddit Spurs update failed</b>\n\n{str(e)}", Channel.BATON
+        )
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -9,10 +9,11 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 SPURS_CHANNEL_ID = "-1002928194045"
 BATON_CHANNEL_ID = "-1003085470422"
 
+
 class Channel(Enum):
     SPURS = "spurs"
     BATON = "baton"
-    
+
     def get_channel_id(self) -> Union[str, None]:
         """Get the Telegram channel ID for this channel."""
         if self == Channel.SPURS:
@@ -22,6 +23,7 @@ class Channel(Enum):
         else:
             return None
 
+
 def send_telegram_message(message: str, channel: Channel = Channel.SPURS) -> bool:
     if not TELEGRAM_BOT_TOKEN:
         logger.warning("Telegram bot not configured - skipping message send")
@@ -29,7 +31,9 @@ def send_telegram_message(message: str, channel: Channel = Channel.SPURS) -> boo
 
     channel_id = channel.get_channel_id()
     if not channel_id:
-        logger.warning(f"Channel ID not configured for {channel.value} - skipping message send")
+        logger.warning(
+            f"Channel ID not configured for {channel.value} - skipping message send"
+        )
         return False
 
     try:
@@ -50,5 +54,7 @@ def send_telegram_message(message: str, channel: Channel = Channel.SPURS) -> boo
         logger.error(f"Error sending Telegram message to {channel.value} channel: {e}")
         return False
     except Exception as e:
-        logger.error(f"Unexpected error sending Telegram message to {channel.value} channel: {e}")
+        logger.error(
+            f"Unexpected error sending Telegram message to {channel.value} channel: {e}"
+        )
         return False

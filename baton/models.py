@@ -79,6 +79,9 @@ class FantasySeasons(Base):
     start_date: Mapped[datetime.date] = mapped_column(Date)
     end_date: Mapped[datetime.date] = mapped_column(Date)
 
+    fantasy_teams: Mapped[List["FantasyTeams"]] = relationship(
+        "FantasyTeams", back_populates="season"
+    )
     fantasy_players: Mapped[List["FantasyPlayers"]] = relationship(
         "FantasyPlayers", back_populates="season"
     )
@@ -87,32 +90,6 @@ class FantasySeasons(Base):
     )
     fantasy_player_gameweeks: Mapped[List["FantasyPlayerGameweeks"]] = relationship(
         "FantasyPlayerGameweeks", back_populates="season"
-    )
-
-
-class FantasyTeams(Base):
-    __tablename__ = "fantasy_teams"
-    __table_args__ = (
-        PrimaryKeyConstraint("id", name="fantasy_teams_pkey"),
-        UniqueConstraint("fpl_id", name="unique_fpl_id"),
-    )
-
-    name: Mapped[str] = mapped_column(String(255))
-    id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, primary_key=True, server_default=text("gen_random_uuid()")
-    )
-    image_filename: Mapped[Optional[str]] = mapped_column(String(255))
-    fpl_id: Mapped[Optional[int]] = mapped_column(Integer)
-
-    fantasy_prem_fixtures: Mapped[List["FantasyPremFixtures"]] = relationship(
-        "FantasyPremFixtures",
-        foreign_keys="[FantasyPremFixtures.team_a_id]",
-        back_populates="team_a",
-    )
-    fantasy_prem_fixtures_: Mapped[List["FantasyPremFixtures"]] = relationship(
-        "FantasyPremFixtures",
-        foreign_keys="[FantasyPremFixtures.team_h_id]",
-        back_populates="team_h",
     )
 
 
@@ -219,109 +196,37 @@ class VivinoWineries(Base):
     )
 
 
-class FantasyPlayers(Base):
-    __tablename__ = "fantasy_players"
+class FantasyTeams(Base):
+    __tablename__ = "fantasy_teams"
     __table_args__ = (
-        ForeignKeyConstraint(
-            ["element_type"],
-            ["fantasy_positions.id"],
-            name="fantasy_players_element_type_fkey",
-        ),
-        ForeignKeyConstraint(
-            ["season_id"], ["fantasy_seasons.id"], name="fantasy_players_season_fkey"
-        ),
-        PrimaryKeyConstraint("id", name="fantasy_players_pkey"),
-        UniqueConstraint("fpl_id", "season_id", name="unique_fpl_season"),
+        ForeignKeyConstraint(["season_id"], ["fantasy_seasons.id"], name="season_fk"),
+        PrimaryKeyConstraint("id", name="fantasy_teams_pkey"),
+        UniqueConstraint("fpl_id", "season_id", name="unique_fpl_season_id"),
     )
 
-    fpl_id: Mapped[int] = mapped_column(Integer)
-    first_name: Mapped[str] = mapped_column(String(255))
-    second_name: Mapped[str] = mapped_column(String(255))
-    team: Mapped[int] = mapped_column(Integer)
-    element_type: Mapped[int] = mapped_column(Integer)
-    cost_change_start: Mapped[float] = mapped_column(Double(53))
-    now_cost: Mapped[float] = mapped_column(Double(53))
-    total_points: Mapped[int] = mapped_column(Integer)
-    event_points: Mapped[int] = mapped_column(Integer)
-    minutes: Mapped[int] = mapped_column(Integer)
-    goals_scored: Mapped[int] = mapped_column(Integer)
-    assists: Mapped[int] = mapped_column(Integer)
-    clean_sheets: Mapped[int] = mapped_column(Integer)
-    expected_goals: Mapped[float] = mapped_column(Double(53))
-    expected_assists: Mapped[float] = mapped_column(Double(53))
-    transfers_in: Mapped[int] = mapped_column(Integer)
-    transfers_in_event: Mapped[int] = mapped_column(Integer)
+    name: Mapped[str] = mapped_column(String(255))
     id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
+        Uuid, primary_key=True, server_default=text("gen_random_uuid()")
     )
-    fdr_5: Mapped[Optional[int]] = mapped_column(Integer)
-    transfer_index: Mapped[Optional[float]] = mapped_column(Double(53))
-    last_5_points: Mapped[Optional[int]] = mapped_column(
-        Integer, server_default=text("0")
-    )
-    season_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
-
-    fantasy_positions: Mapped["FantasyPositions"] = relationship(
-        "FantasyPositions", back_populates="fantasy_players"
-    )
-    season: Mapped[Optional["FantasySeasons"]] = relationship(
-        "FantasySeasons", back_populates="fantasy_players"
-    )
-    fantasy_player_gameweeks: Mapped[List["FantasyPlayerGameweeks"]] = relationship(
-        "FantasyPlayerGameweeks", back_populates="player"
-    )
-
-
-class FantasyPremFixtures(Base):
-    __tablename__ = "fantasy_prem_fixtures"
-    __table_args__ = (
-        ForeignKeyConstraint(
-            ["season_id"],
-            ["fantasy_seasons.id"],
-            name="fantasy_prem_fixtures_season_id_fkey",
-        ),
-        ForeignKeyConstraint(
-            ["team_a_id"],
-            ["fantasy_teams.id"],
-            name="fantasy_prem_fixtures_team_a_id_fkey",
-        ),
-        ForeignKeyConstraint(
-            ["team_h_id"],
-            ["fantasy_teams.id"],
-            name="fantasy_prem_fixtures_team_h_id_fkey",
-        ),
-        PrimaryKeyConstraint("id", name="fantasy_prem_fixtures_pkey"),
-    )
-
-    id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
-    )
-    event: Mapped[Optional[int]] = mapped_column(Integer)
-    finished: Mapped[Optional[bool]] = mapped_column(Boolean)
-    finished_provisional: Mapped[Optional[bool]] = mapped_column(Boolean)
+    image_filename: Mapped[Optional[str]] = mapped_column(String(255))
     fpl_id: Mapped[Optional[int]] = mapped_column(Integer)
-    kickoff_time: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(True))
-    minutes: Mapped[Optional[int]] = mapped_column(Integer)
-    provisional_start_time: Mapped[Optional[bool]] = mapped_column(Boolean)
-    started: Mapped[Optional[bool]] = mapped_column(Boolean)
-    team_a_difficulty: Mapped[Optional[int]] = mapped_column(Integer)
-    team_a_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
-    team_a_score: Mapped[Optional[int]] = mapped_column(Integer)
-    team_h_difficulty: Mapped[Optional[int]] = mapped_column(Integer)
-    team_h_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
-    team_h_score: Mapped[Optional[int]] = mapped_column(Integer)
     season_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
 
     season: Mapped[Optional["FantasySeasons"]] = relationship(
-        "FantasySeasons", back_populates="fantasy_prem_fixtures"
+        "FantasySeasons", back_populates="fantasy_teams"
     )
-    team_a: Mapped[Optional["FantasyTeams"]] = relationship(
-        "FantasyTeams", foreign_keys=[team_a_id], back_populates="fantasy_prem_fixtures"
+    fantasy_players: Mapped[List["FantasyPlayers"]] = relationship(
+        "FantasyPlayers", back_populates="team_"
     )
-    team_h: Mapped[Optional["FantasyTeams"]] = relationship(
-        "FantasyTeams",
-        foreign_keys=[team_h_id],
-        back_populates="fantasy_prem_fixtures_",
+    fantasy_prem_fixtures: Mapped[List["FantasyPremFixtures"]] = relationship(
+        "FantasyPremFixtures",
+        foreign_keys="[FantasyPremFixtures.team_a_id]",
+        back_populates="team_a",
+    )
+    fantasy_prem_fixtures_: Mapped[List["FantasyPremFixtures"]] = relationship(
+        "FantasyPremFixtures",
+        foreign_keys="[FantasyPremFixtures.team_h_id]",
+        back_populates="team_h",
     )
 
 
@@ -397,46 +302,119 @@ class VivinoCountries(Base):
     )
 
 
-class FantasyPlayerGameweeks(Base):
-    __tablename__ = "fantasy_player_gameweeks"
+class FantasyPlayers(Base):
+    __tablename__ = "fantasy_players"
     __table_args__ = (
         ForeignKeyConstraint(
-            ["player_id"],
-            ["fantasy_players.id"],
-            name="fantasy_player_gameweeks_player_id_fkey",
+            ["element_type"],
+            ["fantasy_positions.id"],
+            name="fantasy_players_element_type_fkey",
         ),
+        ForeignKeyConstraint(
+            ["season_id"], ["fantasy_seasons.id"], name="fantasy_players_season_fkey"
+        ),
+        ForeignKeyConstraint(
+            ["team_id"], ["fantasy_teams.id"], name="fantasy_players_team_id_fkey"
+        ),
+        PrimaryKeyConstraint("id", name="fantasy_players_pkey"),
+        UniqueConstraint("fpl_id", "season_id", name="unique_fpl_season"),
+    )
+
+    fpl_id: Mapped[int] = mapped_column(Integer)
+    first_name: Mapped[str] = mapped_column(String(255))
+    second_name: Mapped[str] = mapped_column(String(255))
+    team: Mapped[int] = mapped_column(Integer)
+    element_type: Mapped[int] = mapped_column(Integer)
+    cost_change_start: Mapped[float] = mapped_column(Double(53))
+    now_cost: Mapped[float] = mapped_column(Double(53))
+    total_points: Mapped[int] = mapped_column(Integer)
+    event_points: Mapped[int] = mapped_column(Integer)
+    minutes: Mapped[int] = mapped_column(Integer)
+    goals_scored: Mapped[int] = mapped_column(Integer)
+    assists: Mapped[int] = mapped_column(Integer)
+    clean_sheets: Mapped[int] = mapped_column(Integer)
+    expected_goals: Mapped[float] = mapped_column(Double(53))
+    expected_assists: Mapped[float] = mapped_column(Double(53))
+    transfers_in: Mapped[int] = mapped_column(Integer)
+    transfers_in_event: Mapped[int] = mapped_column(Integer)
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
+    )
+    fdr_5: Mapped[Optional[int]] = mapped_column(Integer)
+    transfer_index: Mapped[Optional[float]] = mapped_column(Double(53))
+    last_5_points: Mapped[Optional[int]] = mapped_column(
+        Integer, server_default=text("0")
+    )
+    season_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
+    team_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
+
+    fantasy_positions: Mapped["FantasyPositions"] = relationship(
+        "FantasyPositions", back_populates="fantasy_players"
+    )
+    season: Mapped[Optional["FantasySeasons"]] = relationship(
+        "FantasySeasons", back_populates="fantasy_players"
+    )
+    team_: Mapped[Optional["FantasyTeams"]] = relationship(
+        "FantasyTeams", back_populates="fantasy_players"
+    )
+    fantasy_player_gameweeks: Mapped[List["FantasyPlayerGameweeks"]] = relationship(
+        "FantasyPlayerGameweeks", back_populates="player"
+    )
+
+
+class FantasyPremFixtures(Base):
+    __tablename__ = "fantasy_prem_fixtures"
+    __table_args__ = (
         ForeignKeyConstraint(
             ["season_id"],
             ["fantasy_seasons.id"],
-            name="fantasy_player_gameweeks_season_id_fkey",
+            name="fantasy_prem_fixtures_season_id_fkey",
         ),
-        PrimaryKeyConstraint("id", name="fantasy_player_gameweeks_pkey"),
+        ForeignKeyConstraint(
+            ["team_a_id"],
+            ["fantasy_teams.id"],
+            name="fantasy_prem_fixtures_team_a_id_fkey",
+        ),
+        ForeignKeyConstraint(
+            ["team_h_id"],
+            ["fantasy_teams.id"],
+            name="fantasy_prem_fixtures_team_h_id_fkey",
+        ),
+        PrimaryKeyConstraint("id", name="fantasy_prem_fixtures_pkey"),
+        UniqueConstraint(
+            "fpl_id", "season_id", name="fantasy_prem_fixtures_fpl_id_season_id_key"
+        ),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(
         Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
     )
-    season_id: Mapped[uuid.UUID] = mapped_column(Uuid)
-    round: Mapped[int] = mapped_column(Integer)
-    fixture: Mapped[int] = mapped_column(Integer)
-    opponent_team: Mapped[int] = mapped_column(Integer)
-    total_points: Mapped[int] = mapped_column(Integer)
-    minutes: Mapped[int] = mapped_column(Integer)
-    goals_scored: Mapped[int] = mapped_column(Integer)
-    assists: Mapped[int] = mapped_column(Integer)
-    clean_sheets: Mapped[int] = mapped_column(Integer)
-    bonus: Mapped[int] = mapped_column(Integer)
-    expected_goals: Mapped[float] = mapped_column(Double(53))
-    expected_assists: Mapped[float] = mapped_column(Double(53))
-    transfers_in: Mapped[int] = mapped_column(Integer)
-    transfers_out: Mapped[int] = mapped_column(Integer)
-    player_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
+    event: Mapped[Optional[int]] = mapped_column(Integer)
+    finished: Mapped[Optional[bool]] = mapped_column(Boolean)
+    finished_provisional: Mapped[Optional[bool]] = mapped_column(Boolean)
+    fpl_id: Mapped[Optional[int]] = mapped_column(Integer)
+    kickoff_time: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(True))
+    minutes: Mapped[Optional[int]] = mapped_column(Integer)
+    provisional_start_time: Mapped[Optional[bool]] = mapped_column(Boolean)
+    started: Mapped[Optional[bool]] = mapped_column(Boolean)
+    team_a_difficulty: Mapped[Optional[int]] = mapped_column(Integer)
+    team_a_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
+    team_a_score: Mapped[Optional[int]] = mapped_column(Integer)
+    team_h_difficulty: Mapped[Optional[int]] = mapped_column(Integer)
+    team_h_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
+    team_h_score: Mapped[Optional[int]] = mapped_column(Integer)
+    season_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
 
-    player: Mapped[Optional["FantasyPlayers"]] = relationship(
-        "FantasyPlayers", back_populates="fantasy_player_gameweeks"
+    season: Mapped[Optional["FantasySeasons"]] = relationship(
+        "FantasySeasons", back_populates="fantasy_prem_fixtures"
     )
-    season: Mapped["FantasySeasons"] = relationship(
-        "FantasySeasons", back_populates="fantasy_player_gameweeks"
+    team_a: Mapped[Optional["FantasyTeams"]] = relationship(
+        "FantasyTeams", foreign_keys=[team_a_id], back_populates="fantasy_prem_fixtures"
+    )
+    team_h: Mapped[Optional["FantasyTeams"]] = relationship(
+        "FantasyTeams",
+        foreign_keys=[team_h_id],
+        back_populates="fantasy_prem_fixtures_",
     )
 
 
@@ -485,6 +463,49 @@ class VivinoRegions(Base):
     )
     vivino_wines: Mapped[List["VivinoWines"]] = relationship(
         "VivinoWines", back_populates="region"
+    )
+
+
+class FantasyPlayerGameweeks(Base):
+    __tablename__ = "fantasy_player_gameweeks"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["player_id"],
+            ["fantasy_players.id"],
+            name="fantasy_player_gameweeks_player_id_fkey",
+        ),
+        ForeignKeyConstraint(
+            ["season_id"],
+            ["fantasy_seasons.id"],
+            name="fantasy_player_gameweeks_season_id_fkey",
+        ),
+        PrimaryKeyConstraint("id", name="fantasy_player_gameweeks_pkey"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
+    )
+    season_id: Mapped[uuid.UUID] = mapped_column(Uuid)
+    round: Mapped[int] = mapped_column(Integer)
+    fixture: Mapped[int] = mapped_column(Integer)
+    opponent_team: Mapped[int] = mapped_column(Integer)
+    total_points: Mapped[int] = mapped_column(Integer)
+    minutes: Mapped[int] = mapped_column(Integer)
+    goals_scored: Mapped[int] = mapped_column(Integer)
+    assists: Mapped[int] = mapped_column(Integer)
+    clean_sheets: Mapped[int] = mapped_column(Integer)
+    bonus: Mapped[int] = mapped_column(Integer)
+    expected_goals: Mapped[float] = mapped_column(Double(53))
+    expected_assists: Mapped[float] = mapped_column(Double(53))
+    transfers_in: Mapped[int] = mapped_column(Integer)
+    transfers_out: Mapped[int] = mapped_column(Integer)
+    player_id: Mapped[Optional[uuid.UUID]] = mapped_column(Uuid)
+
+    player: Mapped[Optional["FantasyPlayers"]] = relationship(
+        "FantasyPlayers", back_populates="fantasy_player_gameweeks"
+    )
+    season: Mapped["FantasySeasons"] = relationship(
+        "FantasySeasons", back_populates="fantasy_player_gameweeks"
     )
 
 
