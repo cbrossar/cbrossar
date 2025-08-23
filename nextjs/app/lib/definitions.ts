@@ -40,6 +40,7 @@ export interface FantasyPlayer {
     first_name: string;
     second_name: string;
     team: number;
+    team_id: number;
     element_type: number;
     cost_change_start: number;
     now_cost: number;

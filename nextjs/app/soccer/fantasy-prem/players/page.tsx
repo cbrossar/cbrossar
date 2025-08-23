@@ -86,7 +86,7 @@ export default async function Page({
     const latestUpdate = await fetchFantasyPremLatestUpdatedTime();
     const teamsById = teams.reduce(
         (acc, team) => {
-            acc[team.fpl_id!] = {
+            acc[team.id] = {
                 name: team.name,
                 image_filename: team.image_filename || "",
             };
@@ -171,9 +171,9 @@ export default async function Page({
                                         </td>
                                         <td>
                                             <Image
-                                                src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
+                                                src={`/fantasy-prem/${teamsById[player.team_id].image_filename}`}
                                                 alt={
-                                                    teamsById[player.team].name
+                                                    teamsById[player.team_id].name
                                                 }
                                                 width={30} // Adjust width
                                                 height={30} // Adjust height

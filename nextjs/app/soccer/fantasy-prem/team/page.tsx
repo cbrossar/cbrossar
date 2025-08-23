@@ -105,7 +105,7 @@ export default async function Page({
 
     const teamsById = teams.reduce(
         (acc, team) => {
-            acc[team.fpl_id!] = {
+            acc[team.id] = {
                 name: team.name,
                 image_filename: team.image_filename || "",
             };
@@ -140,8 +140,8 @@ export default async function Page({
                                     <div className={styles.playerName}>
                                         {player.first_name} {player.second_name}
                                         <Image
-                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                            alt={teamsById[player.team].name}
+                                            src={`/fantasy-prem/${teamsById[player.team_id].image_filename}`}
+                                            alt={teamsById[player.team_id].name}
                                             width={20}
                                             height={20}
                                             style={{
@@ -192,8 +192,8 @@ export default async function Page({
                                     <div className={styles.playerName}>
                                         {player.first_name} {player.second_name}
                                         <Image
-                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                            alt={teamsById[player.team].name}
+                                            src={`/fantasy-prem/${teamsById[player.team_id].image_filename}`}
+                                            alt={teamsById[player.team_id].name}
                                             width={20}
                                             height={20}
                                             style={{
@@ -244,8 +244,8 @@ export default async function Page({
                                     <div className={styles.playerName}>
                                         {player.first_name} {player.second_name}
                                         <Image
-                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                            alt={teamsById[player.team].name}
+                                            src={`/fantasy-prem/${teamsById[player.team_id].image_filename}`}
+                                            alt={teamsById[player.team_id].name}
                                             width={20}
                                             height={20}
                                             style={{
@@ -296,8 +296,8 @@ export default async function Page({
                                     <div className={styles.playerName}>
                                         {player.first_name} {player.second_name}
                                         <Image
-                                            src={`/fantasy-prem/${teamsById[player.team].image_filename}`}
-                                            alt={teamsById[player.team].name}
+                                            src={`/fantasy-prem/${teamsById[player.team_id].image_filename}`}
+                                            alt={teamsById[player.team_id].name}
                                             width={20}
                                             height={20}
                                             style={{
