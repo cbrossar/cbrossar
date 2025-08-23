@@ -1,6 +1,7 @@
 from db import Session
 from logger import logger
 from utils.fpl import get_current_season
+from utils.telegram import send_telegram_message, Channel
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from datetime import datetime
 
@@ -29,6 +30,15 @@ def store_last_5_points(season):
     highest_last_5_points = 0
 
     with Session() as session:
+
+        # Get previous last 5 leader
+        previous_last_5_leader = (
+            session.query(FantasyPlayers)
+            .filter(FantasyPlayers.season_id == season.id)
+            .order_by(FantasyPlayers.last_5_points.desc())
+            .first()
+        )
+
         # Preload all relevant gameweeks and group by player_id
         gameweeks = (
             session.query(
@@ -54,11 +64,21 @@ def store_last_5_points(season):
             .filter(FantasyPlayers.season_id == season.id)
             .all()
         )
+
+        last_5_leader = None
         for player in players:
             last_5_points = sum(player_points.get(player.id, []))
             player.last_5_points = last_5_points
             if last_5_points > highest_last_5_points:
                 highest_last_5_points = last_5_points
+                last_5_leader = player
+
+        # if last 5 leader has changed, send a telegram message
+        if last_5_leader is not None and last_5_leader != previous_last_5_leader:
+            send_telegram_message(
+                f"👑 New last 5 leader: {last_5_leader.first_name} {last_5_leader.second_name} with {last_5_leader.last_5_points} points",
+                Channel.FANTASY_PREM,
+            )
 
         logger.info(f"Updating {len(players)} players")
         logger.info(f"Highest last 5 points: {highest_last_5_points}")

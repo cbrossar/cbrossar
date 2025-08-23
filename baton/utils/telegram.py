@@ -8,11 +8,13 @@ from typing import Union
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 SPURS_CHANNEL_ID = "-1002928194045"
 BATON_CHANNEL_ID = "-1003085470422"
+FANTASY_PREM_CHANNEL_ID = "-1003017705597"
 
 
 class Channel(Enum):
     SPURS = "spurs"
     BATON = "baton"
+    FANTASY_PREM = "fantasy_prem"
 
     def get_channel_id(self) -> Union[str, None]:
         """Get the Telegram channel ID for this channel."""
@@ -20,6 +22,8 @@ class Channel(Enum):
             return SPURS_CHANNEL_ID
         elif self == Channel.BATON:
             return BATON_CHANNEL_ID
+        elif self == Channel.FANTASY_PREM:
+            return FANTASY_PREM_CHANNEL_ID
         else:
             return None
 
