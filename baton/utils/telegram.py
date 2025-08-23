@@ -2,18 +2,18 @@ import os
 import requests
 from loguru import logger
 from enum import Enum
+from typing import Union
 
 # Telegram Bot Configuration
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 SPURS_CHANNEL_ID = "-1002928194045"
 BATON_CHANNEL_ID = "-1003085470422"
 
-# Channel enum for type safety and validation
 class Channel(Enum):
     SPURS = "spurs"
     BATON = "baton"
     
-    def get_channel_id(self) -> str | None:
+    def get_channel_id(self) -> Union[str, None]:
         """Get the Telegram channel ID for this channel."""
         if self == Channel.SPURS:
             return SPURS_CHANNEL_ID
