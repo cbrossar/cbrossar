@@ -61,7 +61,6 @@ def update_players(data, season, teams):
                 "season_id": season.id,
             }
         )
-        break
 
     with Session() as session:
         stmt = insert(FantasyPlayers).values(player_dicts)
