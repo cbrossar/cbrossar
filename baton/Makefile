@@ -97,3 +97,6 @@ lint-and-format: format lint
 
 db-backup:
 	./scripts/backup-db.sh
+
+manager:
+	$(python) -c "from runners.manager import run_manager; run_manager()"

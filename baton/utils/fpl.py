@@ -69,3 +69,15 @@ def get_fpl_teams(season_id):
             .all()
         )
         return teams
+
+
+def get_my_team(event_id):
+    manager_id = "2287765"
+
+    my_team_url = f"https://fantasy.premierleague.com/api/entry/{manager_id}/event/{event_id}/picks/"
+    response = requests.get(my_team_url)
+    if response.status_code != 200:
+        logger.error(f"Failed to fetch data: {response.status_code}")
+        return None
+    return response.json()
+
