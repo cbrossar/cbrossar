@@ -69,10 +69,12 @@ def update_players(data, season, teams, players, my_team):
     for element in data["elements"]:
 
         if element["id"] in my_player_ids:
-            if (
+
+            player_status_became_unavailable = (
                 element["status"] != PlayerStatus.AVAILABLE.value
                 and player_map[element["id"]].status == PlayerStatus.AVAILABLE.value
-            ):
+            )
+            if player_status_became_unavailable:
                 send_telegram_message(
                     f"⚠️ Player {element['first_name']} {element['second_name']} is {PlayerStatus(element['status'])}",
                     Channel.FANTASY_PREM,
