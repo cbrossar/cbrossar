@@ -35,18 +35,23 @@ def run_update_players():
 
     season = get_current_season()
 
+    if season is None:
+        logger.info("Not updating players, no season found")
+        return True
+
     current_gameweek = None
     for event in data["events"]:
         if event["is_current"]:
             current_gameweek = event["id"]
 
     my_team = get_my_team(current_gameweek)
+
+    if my_team is None:
+        logger.info("Not updating players, no my team found")
+        return True
+
     teams = get_fpl_teams(season.id)
     players = get_players()
-
-    if season is None:
-        logger.info("Not updating players, no season found")
-        return True
 
     update_players(data, season, teams, players, my_team)
 
