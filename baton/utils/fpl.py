@@ -1,6 +1,6 @@
 from db import Session
 from logger import logger
-from models import FantasySeasons, FantasyTeams
+from models import FantasySeasons, FantasyTeams, FantasyPlayers
 import requests
 from datetime import datetime, timedelta
 
@@ -71,6 +71,12 @@ def get_fpl_teams(season_id):
         return teams
 
 
+def get_players():
+    with Session() as session:
+        players = session.query(FantasyPlayers).all()
+        return players
+
+
 def get_my_team(event_id):
     manager_id = "2287765"
 
@@ -80,4 +86,3 @@ def get_my_team(event_id):
         logger.error(f"Failed to fetch data: {response.status_code}")
         return None
     return response.json()
-

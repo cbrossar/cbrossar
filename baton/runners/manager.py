@@ -1,6 +1,19 @@
-from utils.fpl import get_my_team, get_fpl_general_info, get_fpl_player
+from utils.fpl import get_my_team, get_fpl_general_info
+from utils.telegram import send_telegram_message, Channel
 from datetime import datetime
 from logger import logger
+from enum import Enum
+
+
+class PlayerStatus(Enum):
+    AVAILABLE = "a"
+    INJURED = "i"
+    DOUBTFUL = "d"
+    SUSPENDED = "s"
+    UNAVAILABLE = "u"
+
+    def __str__(self):
+        return self.name.capitalize()
 
 
 def run_manager():
@@ -24,8 +37,11 @@ def run_manager():
 
     for element in general_info["elements"]:
         if element["id"] in my_player_ids:
-            if element["status"] != "a":
-                logger.info(f"Player {element['first_name']} {element['second_name']} is not available")
+            if element["status"] != PlayerStatus.AVAILABLE.value:
+                send_telegram_message(
+                    f"⚠️ Player {element['first_name']} {element['second_name']} is {PlayerStatus(element['status'])}",
+                    Channel.FANTASY_PREM,
+                )
 
     end_time = datetime.now()
     duration = end_time - start_time

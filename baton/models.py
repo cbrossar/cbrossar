@@ -340,6 +340,9 @@ class FantasyPlayers(Base):
     id: Mapped[uuid.UUID] = mapped_column(
         Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
     )
+    status: Mapped[str] = mapped_column(
+        String(1), server_default=text("'a'::character varying")
+    )
     fdr_5: Mapped[Optional[int]] = mapped_column(Integer)
     transfer_index: Mapped[Optional[float]] = mapped_column(Double(53))
     last_5_points: Mapped[Optional[int]] = mapped_column(

@@ -2,8 +2,27 @@ from db import Session
 from sqlalchemy.dialects.postgresql import insert
 from logger import logger
 from models import FantasyPlayers, FantasyPremUpdates
-from utils.fpl import get_fpl_general_info, get_current_season, get_fpl_teams
+from utils.fpl import (
+    get_fpl_general_info,
+    get_current_season,
+    get_fpl_teams,
+    get_my_team,
+    get_players,
+)
+from utils.telegram import send_telegram_message, Channel
 from datetime import datetime
+from enum import Enum
+
+
+class PlayerStatus(Enum):
+    AVAILABLE = "a"
+    INJURED = "i"
+    DOUBTFUL = "d"
+    SUSPENDED = "s"
+    UNAVAILABLE = "u"
+
+    def __str__(self):
+        return self.name.capitalize()
 
 
 def run_update_players():
@@ -15,13 +34,21 @@ def run_update_players():
     data = get_fpl_general_info()
 
     season = get_current_season()
+
+    current_gameweek = None
+    for event in data["events"]:
+        if event["is_current"]:
+            current_gameweek = event["id"]
+
+    my_team = get_my_team(current_gameweek)
     teams = get_fpl_teams(season.id)
+    players = get_players()
 
     if season is None:
         logger.info("Not updating players, no season found")
         return True
 
-    update_players(data, season, teams)
+    update_players(data, season, teams, players, my_team)
 
     end_time = datetime.now()
     duration = end_time - start_time
@@ -31,13 +58,26 @@ def run_update_players():
     return True
 
 
-def update_players(data, season, teams):
+def update_players(data, season, teams, players, my_team):
 
     player_dicts = []
 
     team_map = {team.fpl_id: team for team in teams}
+    player_map = {player.fpl_id: player for player in players}
+    my_player_ids = [pick["element"] for pick in my_team["picks"]]
 
     for element in data["elements"]:
+
+        if element["id"] in my_player_ids:
+            if (
+                element["status"] != PlayerStatus.AVAILABLE.value
+                and player_map[element["id"]].status == PlayerStatus.AVAILABLE.value
+            ):
+                send_telegram_message(
+                    f"⚠️ Player {element['first_name']} {element['second_name']} is {PlayerStatus(element['status'])}",
+                    Channel.FANTASY_PREM,
+                )
+
         player_dicts.append(
             {
                 "fpl_id": element["id"],
@@ -59,6 +99,7 @@ def update_players(data, season, teams):
                 "transfers_in": element["transfers_in"],
                 "transfers_in_event": element["transfers_in_event"],
                 "season_id": season.id,
+                "status": element["status"],
             }
         )
 
