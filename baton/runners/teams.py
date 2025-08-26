@@ -23,8 +23,10 @@ def run_teams():
                 )
                 .first()
             )
-
             if team:
+                if team.fpl_id == team_id:
+                    continue
+
                 team.fpl_id = team_id
                 logger.info(
                     f"Updated team {team_name} with FPL ID {team_id}, id {team.id}"
