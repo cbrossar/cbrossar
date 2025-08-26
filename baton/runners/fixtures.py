@@ -16,7 +16,9 @@ def run_fixtures():
 
     with Session() as session:
         teams = (
-            session.query(FantasyTeams).filter(FantasyTeams.fpl_id.isnot(None)).all()
+            session.query(FantasyTeams)
+            .filter(FantasyTeams.season_id == season.id)
+            .all()
         )
     teams_map = {team.fpl_id: team for team in teams}
     fixtures = get_fixtures()

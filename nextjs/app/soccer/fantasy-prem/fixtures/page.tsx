@@ -141,8 +141,6 @@ export default async function Page({
         rank: rankMap.get(teamData.team.id) || 1
     }));
 
-
-
     // Helper function to get difficulty color
     const getDifficultyColor = (difficulty: number) => {
         if (difficulty <= 2) return "bg-green-200";

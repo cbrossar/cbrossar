@@ -489,6 +489,7 @@ export async function fetchCurrentFantasySeason() {
 
 export async function fetchFantasyFixtures(seasonId: string) {
     try {
+        noStore();
         const response = await sql`
             SELECT * FROM fantasy_prem_fixtures WHERE season_id = ${seasonId}
         `;
