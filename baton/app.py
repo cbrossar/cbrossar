@@ -5,6 +5,7 @@ from runners.last_5 import run_last_5_points
 from runners.players import run_update_players
 from runners.reddit_spurs import run_reddit_spurs
 from runners.teams import run_teams
+from runners.fixtures import run_fixtures
 from logger import logger
 import os
 from utils.telegram import send_telegram_message, Channel
@@ -38,6 +39,9 @@ async def players():
         success = run_teams()
         if not success:
             raise HTTPException(status_code=500, detail="Teams update failed")
+        success = run_fixtures()
+        if not success:
+            raise HTTPException(status_code=500, detail="Fixtures update failed")
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Players error: {str(e)}")
