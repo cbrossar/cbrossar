@@ -9,6 +9,7 @@ from logger import logger
 import os
 from utils.telegram import send_telegram_message, Channel
 import uvicorn
+import db
 
 app = FastAPI()
 
