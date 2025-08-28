@@ -121,9 +121,6 @@ async def beat():
         success = run_reddit_spurs()
         if not success:
             raise HTTPException(status_code=500, detail="Reddit Spurs update failed")
-        success = run_spotify()
-        if not success:
-            raise HTTPException(status_code=500, detail="Spotify update failed")
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Beat error: {str(e)}")
