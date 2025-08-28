@@ -52,7 +52,10 @@ deploy:
 		--set-secrets=EMAIL_PASS=baton-email-pass:latest \
 		--set-secrets=TELEGRAM_BOT_TOKEN=telegram-baton-bot-token:latest \
 		--set-secrets=REDDIT_CLIENT_ID=reddit-client-id:latest \
-		--set-secrets=REDDIT_CLIENT_SECRET=reddit-client-secret:latest
+		--set-secrets=REDDIT_CLIENT_SECRET=reddit-client-secret:latest \
+		--set-secrets=SPOTIFY_CLIENT_ID=spotify-client-id:latest \
+		--set-secrets=SPOTIFY_CLIENT_SECRET=spotify-client-secret:latest \
+		--set-secrets=SPOTIFY_REFRESH_TOKEN=spotify-refresh-token:latest
 
 build-and-deploy:
 	$(MAKE) build
