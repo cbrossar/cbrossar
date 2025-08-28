@@ -56,3 +56,7 @@ def run_fixtures():
         )
         session.execute(stmt)
         session.commit()
+
+    logger.info("Fixtures update complete")
+
+    return True

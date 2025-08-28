@@ -113,7 +113,7 @@ async def spotify():
             f"🚨 <b>Baton: Spotify update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
-    
+
 
 @app.post("/beat")
 async def beat():
@@ -131,6 +131,7 @@ async def beat():
             f"🚨 <b>Baton: Beat update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
