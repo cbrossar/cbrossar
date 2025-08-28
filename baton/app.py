@@ -113,7 +113,24 @@ async def spotify():
             f"🚨 <b>Baton: Spotify update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
+    
 
+@app.post("/beat")
+async def beat():
+    try:
+        success = run_reddit_spurs()
+        if not success:
+            raise HTTPException(status_code=500, detail="Reddit Spurs update failed")
+        success = run_spotify()
+        if not success:
+            raise HTTPException(status_code=500, detail="Spotify update failed")
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Beat error: {str(e)}")
+        send_telegram_message(
+            f"🚨 <b>Baton: Beat update failed</b>\n\n{str(e)}", Channel.BATON
+        )
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
