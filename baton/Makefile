@@ -100,3 +100,6 @@ db-backup:
 
 manager:
 	$(python) -c "from runners.manager import run_manager; run_manager()"
+
+spotify:
+	$(python) -c "from runners.spotify import run_spotify; run_spotify()"

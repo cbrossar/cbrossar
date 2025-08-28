@@ -9,12 +9,14 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 SPURS_CHANNEL_ID = "-1002928194045"
 BATON_CHANNEL_ID = "-1003085470422"
 FANTASY_PREM_CHANNEL_ID = "-1003017705597"
+SPOTIFY_CHANNEL_ID = "-1002921058470"
 
 
 class Channel(Enum):
     SPURS = "spurs"
     BATON = "baton"
     FANTASY_PREM = "fantasy_prem"
+    SPOTIFY = "spotify"
 
     def get_channel_id(self) -> Union[str, None]:
         """Get the Telegram channel ID for this channel."""
@@ -24,6 +26,8 @@ class Channel(Enum):
             return BATON_CHANNEL_ID
         elif self == Channel.FANTASY_PREM:
             return FANTASY_PREM_CHANNEL_ID
+        elif self == Channel.SPOTIFY:
+            return SPOTIFY_CHANNEL_ID
         else:
             return None
 

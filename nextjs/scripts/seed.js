@@ -7,8 +7,9 @@ async function main() {
     // await seedDoomsdayAttempts(client);
     // await seedSoccerStats(client);
     // await seedWine(client);
-    await seedFantasyPremierLeagueStats(client);
+    // await seedFantasyPremierLeagueStats(client);
     // await seedRedditSpurs(client);
+    // await seedSpotify(client);
     await client.end();
 }
 
@@ -499,6 +500,46 @@ async function seedRedditSpurs(client) {
         };
     } catch (error) {
         console.error("Error seeding reddit spurs:", error);
+        throw error;
+    }
+}
+// CREATE TABLE spotify_releases (
+//     id TEXT PRIMARY KEY,             -- album/track ID from Spotify
+//     artist_id TEXT NOT NULL,         -- Spotify artist ID
+//     artist_name TEXT NOT NULL,       -- Cached for notifications
+//     name TEXT NOT NULL,              -- Album/track name
+//     release_date DATE,               -- Parsed from release_date
+//     release_date_precision TEXT,     -- year | month | day
+//     spotify_url TEXT NOT NULL,       -- external_urls.spotify
+//     image_url TEXT,                  -- main cover art (optional)
+//     notified BOOLEAN DEFAULT FALSE,  -- whether you've already sent a notification
+//     inserted_at TIMESTAMP DEFAULT now()
+// );
+
+async function seedSpotify(client) {
+    try {
+        const createSpotifyReleasesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS spotify_releases (
+                id TEXT PRIMARY KEY,
+                artist_id TEXT NOT NULL,
+                artist_name TEXT NOT NULL,
+                name TEXT NOT NULL,
+                release_date DATE,
+                release_date_precision TEXT,
+                spotify_url TEXT NOT NULL,
+                image_url TEXT,
+                notified BOOLEAN DEFAULT FALSE,
+                inserted_at TIMESTAMP DEFAULT now()
+            );
+        `;
+
+        console.log(`Created "spotify_releases" table`);
+
+        return {
+            createSpotifyReleasesTable,
+        };
+    } catch (error) {
+        console.error("Error seeding spotify:", error);
         throw error;
     }
 }

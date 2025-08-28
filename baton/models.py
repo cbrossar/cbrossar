@@ -136,6 +136,26 @@ class RedditSpurs(Base):
     permalink: Mapped[str] = mapped_column(String(255))
 
 
+class SpotifyReleases(Base):
+    __tablename__ = "spotify_releases"
+    __table_args__ = (PrimaryKeyConstraint("id", name="spotify_releases_pkey"),)
+
+    id: Mapped[str] = mapped_column(Text, primary_key=True)
+    artist_id: Mapped[str] = mapped_column(Text)
+    artist_name: Mapped[str] = mapped_column(Text)
+    name: Mapped[str] = mapped_column(Text)
+    spotify_url: Mapped[str] = mapped_column(Text)
+    release_date: Mapped[Optional[datetime.date]] = mapped_column(Date)
+    release_date_precision: Mapped[Optional[str]] = mapped_column(Text)
+    image_url: Mapped[Optional[str]] = mapped_column(Text)
+    notified: Mapped[Optional[bool]] = mapped_column(
+        Boolean, server_default=text("false")
+    )
+    inserted_at: Mapped[Optional[datetime.datetime]] = mapped_column(
+        DateTime, server_default=text("now()")
+    )
+
+
 class Teams(Base):
     __tablename__ = "teams"
     __table_args__ = (
