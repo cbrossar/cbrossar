@@ -6,6 +6,7 @@ from runners.players import run_update_players
 from runners.reddit_spurs import run_reddit_spurs
 from runners.teams import run_teams
 from runners.fixtures import run_fixtures
+from runners.spotify import run_spotify
 from logger import logger
 import os
 from utils.telegram import send_telegram_message, Channel
@@ -95,6 +96,21 @@ async def reddit_spurs():
         logger.error(f"Reddit Spurs error: {str(e)}")
         send_telegram_message(
             f"🚨 <b>Baton: Reddit Spurs update failed</b>\n\n{str(e)}", Channel.BATON
+        )
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/spotify")
+async def spotify():
+    try:
+        success = run_spotify()
+        if not success:
+            raise HTTPException(status_code=500, detail="Spotify update failed")
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Spotify error: {str(e)}")
+        send_telegram_message(
+            f"🚨 <b>Baton: Spotify update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
 
