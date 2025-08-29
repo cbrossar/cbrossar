@@ -37,13 +37,6 @@ async def players():
         success = run_update_players()
         if not success:
             raise HTTPException(status_code=500, detail="Players update failed")
-        success = run_teams()
-        if not success:
-            raise HTTPException(status_code=500, detail="Teams update failed")
-        success = run_fixtures()
-        if not success:
-            raise HTTPException(status_code=500, detail="Fixtures update failed")
-        return {"status": "success"}
     except Exception as e:
         logger.error(f"Players error: {str(e)}")
         send_telegram_message(
@@ -115,17 +108,41 @@ async def spotify():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/beat")
-async def beat():
+@app.post("/beat-30")
+async def beat_30():
     try:
         success = run_reddit_spurs()
         if not success:
             raise HTTPException(status_code=500, detail="Reddit Spurs update failed")
         return {"status": "success"}
     except Exception as e:
-        logger.error(f"Beat error: {str(e)}")
+        logger.error(f"Beat 30 error: {str(e)}")
         send_telegram_message(
-            f"🚨 <b>Baton: Beat update failed</b>\n\n{str(e)}", Channel.BATON
+            f"🚨 <b>Baton: Beat 30 update failed</b>\n\n{str(e)}", Channel.BATON
+        )
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/beat-daily")
+async def beat_daily():
+    try:
+        success = run_update_players()
+        if not success:
+            raise HTTPException(status_code=500, detail="Players update failed")
+        success = run_teams()
+        if not success:
+            raise HTTPException(status_code=500, detail="Teams update failed")
+        success = run_fixtures()
+        if not success:
+            raise HTTPException(status_code=500, detail="Fixtures update failed")
+        success = run_spotify()
+        if not success:
+            raise HTTPException(status_code=500, detail="Spotify update failed")
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Beat daily error: {str(e)}")
+        send_telegram_message(
+            f"🚨 <b>Baton: Beat daily update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
 

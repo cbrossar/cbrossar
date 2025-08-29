@@ -14,14 +14,42 @@ REFRESH_TOKEN = os.getenv("SPOTIFY_REFRESH_TOKEN")
 def run_spotify():
     logger.info("Running Spotify runner")
     token = get_access_token()
-    artists = get_followed_artists(token)
 
+    artists = get_followed_artists(token)
+    logger.info(f"Found {len(artists)} followed artists")
+
+    new_releases = get_new_releases(artists, token)
+    logger.info(f"Found {len(new_releases)} new releases")  
+
+    today_releases = notify_today_releases()
+    logger.info(f"Found {len(today_releases)} today's releases")
+
+    return True
+
+
+def notify_today_releases():
+    today = datetime.date.today()
+    with Session() as session:
+        today_releases = session.query(SpotifyReleases).filter(
+            SpotifyReleases.release_date == today,
+            SpotifyReleases.notified == False,
+        ).all()
+        logger.info(f"Found {len(today_releases)} releases for today")
+
+        for release in today_releases:
+            message = f"🚨 Music Drop!\n🎵 {release.name} by {release.artist_name} released today!\n🎧 Listen: {release.spotify_url}"
+            send_telegram_message(message, Channel.SPOTIFY)
+            release.notified = True
+        session.commit()
+
+    return today_releases
+
+
+def get_new_releases(artists, token):
     with Session() as session:
         existing_release_ids = {
             release.id for release in session.query(SpotifyReleases).all()
         }
-
-    logger.info(f"Found {len(artists)} followed artists")
 
     new_releases = []
 
@@ -54,7 +82,7 @@ def run_spotify():
                 f"Saved {spotify_release.name} by {spotify_release.artist_name}"
             )
 
-            message = f"🎵 New Release! 🎉\n{spotify_release.name} by {spotify_release.artist_name} released on {spotify_release.release_date}\n🎧 Listen: {spotify_release.spotify_url}"
+            message = f"🪇 New Release!\n🎵 {spotify_release.name} by {spotify_release.artist_name} releases on {spotify_release.release_date}\n🎧 Listen: {spotify_release.spotify_url}"
             send_telegram_message(message, Channel.SPOTIFY)
 
     if new_releases:
@@ -62,8 +90,7 @@ def run_spotify():
             logger.info(f"Adding {len(new_releases)} new releases")
             session.bulk_save_objects(new_releases)
 
-    return True
-
+    return new_releases
 
 # Get fresh access token using refresh token
 def get_access_token():
