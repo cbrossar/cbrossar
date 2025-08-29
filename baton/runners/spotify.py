@@ -5,6 +5,7 @@ import datetime
 from models import SpotifyReleases
 from db import Session
 from utils.telegram import send_telegram_message, Channel
+import random
 
 CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -71,7 +72,8 @@ def get_new_releases(artists, token):
                 if spotify_release.release_date == str(datetime.date.today())
                 else f"releases on {spotify_release.release_date}"
             )
-            message = f"🪇 Music Drop!\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
+            music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
+            message = f"{random.choice(music_emojis)} Music Drop!\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
             send_telegram_message(message, Channel.SPOTIFY)
 
     if new_releases:
