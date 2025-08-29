@@ -148,10 +148,8 @@ class SpotifyReleases(Base):
     release_date: Mapped[Optional[datetime.date]] = mapped_column(Date)
     release_date_precision: Mapped[Optional[str]] = mapped_column(Text)
     image_url: Mapped[Optional[str]] = mapped_column(Text)
-    notified: Mapped[Optional[bool]] = mapped_column(
-        Boolean, server_default=text("false")
-    )
-    inserted_at: Mapped[Optional[datetime.datetime]] = mapped_column(
+    notified: Mapped[Optional[bool]] = mapped_column(Boolean)
+    created: Mapped[Optional[datetime.datetime]] = mapped_column(
         DateTime, server_default=text("now()")
     )
 
