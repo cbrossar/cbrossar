@@ -1,3 +1,7 @@
+import os
+import uvicorn
+import db
+from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from runners.health import run_health_check
 from runners.player_gameweeks import run_player_gameweeks
@@ -8,11 +12,8 @@ from runners.teams import run_teams
 from runners.fixtures import run_fixtures
 from runners.spotify import run_spotify
 from runners.backup_db import run_backup_db
-from logger import logger
-import os
 from utils.telegram import send_telegram_message, Channel
-import uvicorn
-import db
+from logger import logger
 
 app = FastAPI()
 
@@ -139,29 +140,22 @@ async def beat_daily():
         success = run_spotify()
         if not success:
             raise HTTPException(status_code=500, detail="Spotify update failed")
+
+        # Only run db backup on Sunday
+        is_sunday = datetime.now().weekday() == 6
+        if is_sunday:
+            success = run_backup_db()
+            if not success:
+                raise HTTPException(status_code=500, detail="Backup db update failed")
+
         return {"status": "success"}
+
     except Exception as e:
         logger.error(f"Beat daily error: {str(e)}")
         send_telegram_message(
             f"🚨 <b>Baton: Beat daily update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
-    
-
-@app.post("/beat-monthly")
-async def beat_monthly():
-    try:
-        success = run_backup_db()
-        if not success:
-            raise HTTPException(status_code=500, detail="Backup db update failed")
-        return {"status": "success"}
-    except Exception as e:
-        logger.error(f"Beat monthly error: {str(e)}")
-        send_telegram_message(
-            f"🚨 <b>Baton: Beat monthly update failed</b>\n\n{str(e)}", Channel.BATON
-        )
-        raise HTTPException(status_code=500, detail=str(e))
-
 
 
 if __name__ == "__main__":
