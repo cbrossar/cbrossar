@@ -55,27 +55,15 @@ async def player_gameweeks():
             raise HTTPException(
                 status_code=500, detail="Player gameweeks update failed"
             )
+        success = run_last_5_points()
+        if not success:
+            raise HTTPException(status_code=500, detail="Last 5 points update failed")
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Player gameweeks error: {str(e)}")
         send_telegram_message(
             f"🚨 <b>Baton: Player gameweeks update failed</b>\n\n{str(e)}",
             Channel.BATON,
-        )
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/last-5")
-async def last_5():
-    try:
-        success = run_last_5_points()
-        if not success:
-            raise HTTPException(status_code=500, detail="Last 5 points update failed")
-        return {"status": "success"}
-    except Exception as e:
-        logger.error(f"Last 5 points error: {str(e)}")
-        send_telegram_message(
-            f"🚨 <b>Baton: Last 5 points update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
 

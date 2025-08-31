@@ -4,6 +4,7 @@ from utils.fpl import get_current_season
 from utils.telegram import send_telegram_message, Channel
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from datetime import datetime
+from collections import defaultdict
 
 
 def run_last_5_points():
@@ -51,8 +52,6 @@ def store_last_5_points(season):
             .all()
         )
 
-        from collections import defaultdict
-
         # Accumulate last 5 gameweeks' points per player
         player_points = defaultdict(list)
         for gw in gameweeks:
@@ -65,13 +64,16 @@ def store_last_5_points(season):
             .all()
         )
 
+        players_to_update = []
         last_5_leader = None
         for player in players:
             last_5_points = sum(player_points.get(player.id, []))
-            player.last_5_points = last_5_points
-            if last_5_points > highest_last_5_points:
-                highest_last_5_points = last_5_points
-                last_5_leader = player
+            if player.last_5_points != last_5_points:
+                players_to_update.append(player)
+                player.last_5_points = last_5_points
+                if last_5_points > highest_last_5_points:
+                    highest_last_5_points = last_5_points
+                    last_5_leader = player
 
         # if last 5 leader has changed, send a telegram message
         if last_5_leader is not None and last_5_leader != previous_last_5_leader:
@@ -80,8 +82,8 @@ def store_last_5_points(season):
                 Channel.FANTASY_PREM,
             )
 
-        logger.info(f"Updating {len(players)} players")
+        logger.info(f"Updating {len(players_to_update)} players")
         logger.info(f"Highest last 5 points: {highest_last_5_points}")
 
         with Session.begin() as update_session:
-            update_session.bulk_save_objects(players)
+            update_session.bulk_save_objects(players_to_update)
