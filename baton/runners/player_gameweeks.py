@@ -52,12 +52,10 @@ def store_fpl_player_gameweeks(data, season):
 
         gameweeks = fetch_player_gameweeks(player.id, season.id)
 
-        completed_gameweeks = set(
-            [
-                (gameweek.round, gameweek.fixture, gameweek.opponent_team)
-                for gameweek in gameweeks
-            ]
-        )
+        completed_gameweeks = {
+            (gameweek.round, gameweek.fixture, gameweek.opponent_team): gameweek
+            for gameweek in gameweeks
+        }
 
         # sum fixture difficulty for next 5 fixtures
         player.fdr_5 = sum(f["difficulty"] for f in fpl_player["fixtures"][:5])
@@ -71,8 +69,19 @@ def store_fpl_player_gameweeks(data, season):
                 fpl_player_gameweek["fixture"],
                 fpl_player_gameweek["opponent_team"],
             )
+
+            # if the gameweek is already in the database, check if the total points are different
             if gameweek_key in completed_gameweeks:
-                continue
+                if (
+                    fpl_player_gameweek["total_points"]
+                    == completed_gameweeks[gameweek_key].total_points
+                ):
+                    continue
+                with Session() as session:
+                    logger.info(
+                        f"Deleting gameweek {gameweek_key} for player {player.first_name} {player.second_name}"
+                    )
+                    session.delete(completed_gameweeks[gameweek_key])
 
             player_gameweek = FantasyPlayerGameweeks(
                 player_id=player.id,
