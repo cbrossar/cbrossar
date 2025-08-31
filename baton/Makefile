@@ -106,3 +106,6 @@ manager:
 
 spotify:
 	$(python) -c "from runners.spotify import run_spotify; run_spotify()"
+
+restore-tables:
+	$(python) -c "from runners.restore_tables import run_restore_tables; run_restore_tables()"

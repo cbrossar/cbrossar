@@ -82,6 +82,7 @@ def store_fpl_player_gameweeks(data, season):
                         f"Deleting gameweek {gameweek_key} for player {player.first_name} {player.second_name}"
                     )
                     session.delete(completed_gameweeks[gameweek_key])
+                    session.commit()
 
             player_gameweek = FantasyPlayerGameweeks(
                 player_id=player.id,
