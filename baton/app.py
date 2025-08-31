@@ -7,6 +7,7 @@ from runners.reddit_spurs import run_reddit_spurs
 from runners.teams import run_teams
 from runners.fixtures import run_fixtures
 from runners.spotify import run_spotify
+from runners.backup_db import run_backup_db
 from logger import logger
 import os
 from utils.telegram import send_telegram_message, Channel
@@ -108,17 +109,17 @@ async def spotify():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/beat-30")
-async def beat_30():
+@app.post("/beat-hourly")
+async def beat_hourly():
     try:
         success = run_reddit_spurs()
         if not success:
             raise HTTPException(status_code=500, detail="Reddit Spurs update failed")
         return {"status": "success"}
     except Exception as e:
-        logger.error(f"Beat 30 error: {str(e)}")
+        logger.error(f"Beat hourly error: {str(e)}")
         send_telegram_message(
-            f"🚨 <b>Baton: Beat 30 update failed</b>\n\n{str(e)}", Channel.BATON
+            f"🚨 <b>Baton: Beat hourly update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -145,6 +146,22 @@ async def beat_daily():
             f"🚨 <b>Baton: Beat daily update failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+@app.post("/beat-monthly")
+async def beat_monthly():
+    try:
+        success = run_backup_db()
+        if not success:
+            raise HTTPException(status_code=500, detail="Backup db update failed")
+        return {"status": "success"}
+    except Exception as e:
+        logger.error(f"Beat monthly error: {str(e)}")
+        send_telegram_message(
+            f"🚨 <b>Baton: Beat monthly update failed</b>\n\n{str(e)}", Channel.BATON
+        )
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 if __name__ == "__main__":

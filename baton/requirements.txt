@@ -45,3 +45,4 @@ update-checker==0.18.0
 urllib3==2.4.0
 uvicorn==0.24.0
 websocket-client==1.8.0
+google-cloud-storage==2.14.0
