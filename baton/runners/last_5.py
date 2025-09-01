@@ -68,13 +68,13 @@ def store_last_5_points(season):
         last_5_leader = None
         for player in players:
             last_5_points = sum(player_points.get(player.id, []))
+            if last_5_points > highest_last_5_points:
+                highest_last_5_points = last_5_points
+                last_5_leader = player
             if player.last_5_points != last_5_points:
                 players_to_update.append(player)
                 player.last_5_points = last_5_points
-                if last_5_points > highest_last_5_points:
-                    highest_last_5_points = last_5_points
-                    last_5_leader = player
-
+    
         # if last 5 leader has changed, send a telegram message
         if last_5_leader is not None and last_5_leader != previous_last_5_leader:
             send_telegram_message(
