@@ -1,20 +1,31 @@
 import os
+import praw
 from datetime import datetime
 from models import RedditSpurs
 from db import Session
-import praw
 from utils.telegram import send_telegram_message, Channel
+from enum import Enum
 from logger import logger
 
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
 
 
+class Flair(Enum):
+    TRANSFER_NEWS = "Transfer News: Tier 1"
+    INJURY_NEWS = "Injury News"
+
+
 def run_reddit_spurs():
     scraper = RedditSpursScraper()
-    posts = scraper.get_posts_by_flair(flair_name="Transfer News: Tier 1", limit=10)
+    transfer_posts = scraper.get_posts_by_flair(
+        flair_name=Flair.TRANSFER_NEWS.value, limit=10
+    )
+    injury_posts = scraper.get_posts_by_flair(
+        flair_name=Flair.INJURY_NEWS.value, limit=10
+    )
 
-    save_posts_to_db(posts)
+    save_posts_to_db(transfer_posts + injury_posts)
 
     return True
 
