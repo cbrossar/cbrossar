@@ -37,11 +37,12 @@ def get_new_releases(artists, token):
         }
 
     new_releases = []
+    new_release_ids = set()
 
     for artist in artists:
         releases = get_artist_releases(token, artist["id"])
         for r in releases:
-            if r["id"] in existing_release_ids:
+            if r["id"] in existing_release_ids or r["id"] in new_release_ids:
                 continue
 
             release_date = (
@@ -61,10 +62,11 @@ def get_new_releases(artists, token):
                 image_url=r["images"][0]["url"] if r["images"] else None,
                 notified=True,
             )
+            new_release_ids.add(spotify_release.id)
             new_releases.append(spotify_release)
 
             logger.info(
-                f"Saved {spotify_release.name} by {spotify_release.artist_name}"
+                f"Saving {spotify_release.name} by {spotify_release.artist_name}"
             )
 
             release_text = (
@@ -100,7 +102,7 @@ def get_access_token():
 
 
 # Get followed artists
-def get_followed_artists(access_token, limit=20):
+def get_followed_artists(access_token, limit=50):
     url = "https://api.spotify.com/v1/me/following"
     headers = {"Authorization": f"Bearer {access_token}"}
     params = {"type": "artist", "limit": limit}
@@ -128,13 +130,24 @@ def get_artist_releases(access_token, artist_id, limit=5):
     url = f"https://api.spotify.com/v1/artists/{artist_id}/albums"
     headers = {"Authorization": f"Bearer {access_token}"}
     params = {
-        "include_groups": "album,single",
+        "include_groups": "album",
         "limit": limit,
         "market": "US",  # optional, helps filter region-available releases
     }
     resp = requests.get(url, headers=headers, params=params)
     resp.raise_for_status()
-    return resp.json()["items"]
+    new_albums = resp.json()["items"]
+
+    params = {
+        "include_groups": "single",
+        "limit": limit,
+        "market": "US",  # optional, helps filter region-available releases
+    }
+    resp = requests.get(url, headers=headers, params=params)
+    resp.raise_for_status()
+    new_singles = resp.json()["items"]
+
+    return new_albums + new_singles
 
 
 def add_releases_to_playlist(releases, access_token):
