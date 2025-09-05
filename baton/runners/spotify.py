@@ -266,6 +266,9 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
     headers = {"User-Agent": "cbrossar/1.0 ( cole.brossart@gmail.com )"}
 
     today = datetime.date.today()
+    existing_release_ids = set()
+    with Session() as session:
+        existing_release_ids = {release.id for release in session.query(MusicbrainzReleases).all()}
     upcoming_releases = []
 
     limit = 100
@@ -290,6 +293,9 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
             break
 
         for rg in release_groups:
+            if rg.get("id") in existing_release_ids:
+                continue
+
             title = rg.get("title")
             release_date = rg.get("first-release-date")
 
@@ -298,7 +304,8 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                     parsed_date = datetime.date.fromisoformat(release_date)
                     if parsed_date > today:
                         # Get cover art URL for this release
-                        image_url = get_cover_art_url(rg.get("id"))
+                        release_id = rg.get("releases")[0].get("id")
+                        image_url = get_cover_art_url(release_id)
 
                         upcoming_releases.append(
                             MusicbrainzReleases(
@@ -318,14 +325,14 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
         if offset >= data.get("release-group-count", 0):
             break
 
-    # if upcoming_releases:
-    #     with Session.begin() as session:
-    #         logger.info(f"Adding {len(upcoming_releases)} upcoming releases")
-    #         session.bulk_save_objects(upcoming_releases)
+    if upcoming_releases:
+        with Session.begin() as session:
+            logger.info(f"Adding {len(upcoming_releases)} upcoming releases")
+            session.bulk_save_objects(upcoming_releases)
 
-    # for release in upcoming_releases:
-    #     music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
-    #     message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release!\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
-    #     send_telegram_message(message, Channel.SPOTIFY)
+        for release in upcoming_releases:
+            music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
+            message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release!\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
+            send_telegram_message(message, Channel.SPOTIFY)
 
     return upcoming_releases
