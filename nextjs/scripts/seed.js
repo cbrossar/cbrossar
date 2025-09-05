@@ -10,6 +10,7 @@ async function main() {
     // await seedFantasyPremierLeagueStats(client);
     // await seedRedditSpurs(client);
     // await seedSpotify(client);
+    await seedMusicBrainz(client);
     await client.end();
 }
 
@@ -540,6 +541,36 @@ async function seedSpotify(client) {
         };
     } catch (error) {
         console.error("Error seeding spotify:", error);
+        throw error;
+    }
+}
+
+// "title": title,
+// "release_date": parsed_date.isoformat(),
+// "id": rg.get("id"),
+// "primary_type": rg.get("primary-type"),
+// "artist_name": artist_name,
+
+async function seedMusicBrainz(client) {
+    try {
+        const createMusicBrainzReleasesTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS musicbrainz_releases (
+                id TEXT PRIMARY KEY,
+                title TEXT NOT NULL,
+                release_date DATE NOT NULL,
+                primary_type TEXT NOT NULL,
+                artist_name TEXT NOT NULL,
+                created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `;
+
+        console.log(`Created "musicbrainz_releases" table`);
+
+        return {
+            createMusicBrainzReleasesTable,
+        };
+    } catch (error) {
+        console.error("Error seeding musicbrainz:", error);
         throw error;
     }
 }
