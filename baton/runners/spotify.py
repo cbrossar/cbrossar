@@ -220,6 +220,47 @@ def get_album_tracks(access_token, album_id):
     return track_ids
 
 
+def get_cover_art_url(release_id: str) -> str | None:
+    """
+    Get cover art URL from Cover Art Archive for a MusicBrainz release.
+
+    Args:
+        release_id: MusicBrainz release ID
+
+    Returns:
+        Cover art URL or None if not available
+    """
+    try:
+        # First try to get the JSON API to check available images
+        caa_url = f"https://coverartarchive.org/release/{release_id}"
+        response = requests.get(caa_url, timeout=5)
+
+        if response.status_code == 200:
+            data = response.json()
+            images = data.get("images", [])
+
+            # Look for front cover
+            for image in images:
+                if image.get("front", False):
+                    return image.get("image")
+
+            # If no front cover, return the first available image
+            if images:
+                return images[0].get("image")
+
+        # Fallback: try direct front cover URL
+        front_url = f"https://coverartarchive.org/release/{release_id}/front"
+        response = requests.head(front_url, timeout=5)
+
+        if response.status_code == 200:
+            return front_url
+
+    except Exception as e:
+        logger.debug(f"Failed to get cover art for release {release_id}: {e}")
+
+    return None
+
+
 def get_musicbrainz_upcoming_release_groups(artist_name: str):
     base_url = "https://musicbrainz.org/ws/2/"
     headers = {"User-Agent": "cbrossar/1.0 ( cole.brossart@gmail.com )"}
@@ -256,6 +297,9 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                 try:
                     parsed_date = datetime.date.fromisoformat(release_date)
                     if parsed_date > today:
+                        # Get cover art URL for this release
+                        image_url = get_cover_art_url(rg.get("id"))
+
                         upcoming_releases.append(
                             MusicbrainzReleases(
                                 title=title,
@@ -263,6 +307,7 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                                 id=rg.get("id"),
                                 primary_type=rg.get("primary-type"),
                                 artist_name=artist_name,
+                                image_url=image_url,
                             )
                         )
                 except Exception:
@@ -273,14 +318,14 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
         if offset >= data.get("release-group-count", 0):
             break
 
-    if upcoming_releases:
-        with Session.begin() as session:
-            logger.info(f"Adding {len(upcoming_releases)} upcoming releases")
-            session.bulk_save_objects(upcoming_releases)
+    # if upcoming_releases:
+    #     with Session.begin() as session:
+    #         logger.info(f"Adding {len(upcoming_releases)} upcoming releases")
+    #         session.bulk_save_objects(upcoming_releases)
 
-    for release in upcoming_releases:
-        music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
-        message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release!\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
-        send_telegram_message(message, Channel.SPOTIFY)
+    # for release in upcoming_releases:
+    #     music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
+    #     message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release!\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
+    #     send_telegram_message(message, Channel.SPOTIFY)
 
     return upcoming_releases

@@ -545,12 +545,6 @@ async function seedSpotify(client) {
     }
 }
 
-// "title": title,
-// "release_date": parsed_date.isoformat(),
-// "id": rg.get("id"),
-// "primary_type": rg.get("primary-type"),
-// "artist_name": artist_name,
-
 async function seedMusicBrainz(client) {
     try {
         const createMusicBrainzReleasesTable = await client.sql`
@@ -560,6 +554,7 @@ async function seedMusicBrainz(client) {
                 release_date DATE NOT NULL,
                 primary_type TEXT NOT NULL,
                 artist_name TEXT NOT NULL,
+                image_url TEXT,
                 created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `;

@@ -142,6 +142,7 @@ class MusicbrainzReleases(Base):
     release_date: Mapped[datetime.date] = mapped_column(Date)
     primary_type: Mapped[str] = mapped_column(Text)
     artist_name: Mapped[str] = mapped_column(Text)
+    image_url: Mapped[Optional[str]] = mapped_column(Text)
     created: Mapped[Optional[datetime.datetime]] = mapped_column(
         DateTime, server_default=text("CURRENT_TIMESTAMP")
     )

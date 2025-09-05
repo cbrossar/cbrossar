@@ -74,7 +74,7 @@ def store_last_5_points(season):
             if player.last_5_points != last_5_points:
                 players_to_update.append(player)
                 player.last_5_points = last_5_points
-    
+
         # if last 5 leader has changed, send a telegram message
         if last_5_leader is not None and last_5_leader != previous_last_5_leader:
             send_telegram_message(
