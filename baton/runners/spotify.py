@@ -15,6 +15,7 @@ NEW_RELEASES_PLAYLIST_ID = "5JFQVM9ZFSd3OAKnmNEwg0"
 
 def run_spotify():
     logger.info("Running Spotify runner")
+    start_time = datetime.datetime.now()
     token = get_access_token()
 
     artists = get_followed_artists(token)
@@ -26,6 +27,10 @@ def run_spotify():
     if new_releases:
         add_releases_to_playlist(new_releases, token)
         logger.info(f"Added {len(new_releases)} new releases to playlist")
+
+    end_time = datetime.datetime.now()
+    duration = end_time - start_time
+    logger.info(f"Spotify runner completed in {duration.total_seconds():.2f} seconds")
 
     return True
 
@@ -78,7 +83,7 @@ def get_new_releases(artists, token):
                 else f"releases on {spotify_release.release_date}"
             )
             music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
-            message = f"{random.choice(music_emojis)} Spotify Music Drop!\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
+            message = f"{random.choice(music_emojis)} Spotify Music Drop\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
             send_telegram_message(message, Channel.SPOTIFY)
 
     if new_releases:
@@ -338,7 +343,7 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
 
         for release in upcoming_releases:
             music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
-            message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release!\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
+            message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
             send_telegram_message(message, Channel.SPOTIFY)
 
     return upcoming_releases
