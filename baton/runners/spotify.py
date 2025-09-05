@@ -304,8 +304,14 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                     parsed_date = datetime.date.fromisoformat(release_date)
                     if parsed_date > today:
                         # Get cover art URL for this release
-                        release_id = rg.get("releases")[0].get("id")
-                        image_url = get_cover_art_url(release_id)
+                        image_url = None
+                        releases = rg.get("releases")
+                        index = 0
+                        if releases:
+                            while image_url is None and index < len(releases):
+                                release_id = releases[index].get("id")
+                                image_url = get_cover_art_url(release_id)
+                                index += 1
 
                         upcoming_releases.append(
                             MusicbrainzReleases(
