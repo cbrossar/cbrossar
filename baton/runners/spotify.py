@@ -273,7 +273,9 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
     today = datetime.date.today()
     existing_release_ids = set()
     with Session() as session:
-        existing_release_ids = {release.id for release in session.query(MusicbrainzReleases).all()}
+        existing_release_ids = {
+            release.id for release in session.query(MusicbrainzReleases).all()
+        }
     upcoming_releases = []
 
     limit = 100
