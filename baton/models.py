@@ -167,6 +167,7 @@ class SpotifyReleases(Base):
     created: Mapped[Optional[datetime.datetime]] = mapped_column(
         DateTime, server_default=text("now()")
     )
+    album_type: Mapped[Optional[str]] = mapped_column(Text)
 
 
 class Teams(Base):

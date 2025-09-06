@@ -70,6 +70,7 @@ def get_new_releases(artists, token):
                 spotify_url=r["external_urls"]["spotify"],
                 image_url=r["images"][0]["url"] if r["images"] else None,
                 notified=True,
+                album_type=r["album_type"],
             )
             new_release_ids.add(spotify_release.id)
             new_releases.append(spotify_release)
