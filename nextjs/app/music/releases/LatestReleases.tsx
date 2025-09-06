@@ -35,7 +35,7 @@ export default function LatestReleases({ releases }: LatestReleasesProps) {
                                 </span>
                                 <div className="flex gap-1">
                                     <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded">
-                                        Single
+                                        {release.album_type}
                                     </span>
                                 </div>
                             </div>

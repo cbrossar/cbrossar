@@ -169,6 +169,7 @@ export interface SpotifyRelease {
     id: string;
     artist_id: string;
     artist_name: string;
+    album_type: string;
     name: string;
     spotify_url: string;
     release_date: string;
