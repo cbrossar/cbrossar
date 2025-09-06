@@ -10,6 +10,14 @@ module.exports = {
                 protocol: "https",
                 hostname: "cbrossar-website.s3.amazonaws.com",
             },
+            {
+                protocol: "https",
+                hostname: "i.scdn.co",
+            },
+            {
+                protocol: "https",
+                hostname: "coverartarchive.org",
+            },
         ],
     },
     experimental: {
