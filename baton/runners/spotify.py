@@ -2,6 +2,7 @@ from logger import logger
 import requests
 import os
 import datetime
+from typing import Optional
 from models import SpotifyReleases, MusicbrainzReleases
 from db import Session
 from utils.telegram import send_telegram_message, Channel
@@ -225,7 +226,7 @@ def get_album_tracks(access_token, album_id):
     return track_ids
 
 
-def get_cover_art_url(release_id: str) -> str | None:
+def get_cover_art_url(release_id: str) -> Optional[str]:
     """
     Get cover art URL from Cover Art Archive for a MusicBrainz release.
 
