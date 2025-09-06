@@ -13,14 +13,16 @@ export default function UpcomingReleases({ releases }: UpcomingReleasesProps) {
             <div className="space-y-4">
                 {releases.map((release) => (
                     <div key={release.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors">
-                        <div className="flex gap-3">
-                            <Image
-                                src={release.image_url}
-                                alt={`${release.title} by ${release.artist_name}`}
-                                width={60}
-                                height={60}
-                                className="w-15 h-15 object-cover rounded-lg flex-shrink-0"
-                            />
+                        <div className="flex gap-3 items-start">
+                            <div className="w-15 h-15 flex-shrink-0">
+                                <Image
+                                    src={release.image_url}
+                                    alt={`${release.title} by ${release.artist_name}`}
+                                    width={60}
+                                    height={60}
+                                    className="w-full h-full aspect-square object-cover rounded-lg"
+                                />
+                            </div>
                             <div className="flex-1 min-w-0">
                                 <h3 className="text-gray-900 font-semibold text-sm mb-1 line-clamp-2">
                                     {release.title}
