@@ -163,3 +163,28 @@ export interface WineQuiz {
     rating_score: number;
     score: number;
 }
+
+
+export interface SpotifyRelease {
+    id: string;
+    artist_id: string;
+    artist_name: string;
+    name: string;
+    spotify_url: string;
+    release_date: string;
+    release_date_precision: string;
+    image_url: string;
+    notified: boolean;
+    created: string;
+}
+
+
+export interface MusicbrainzRelease {
+    id: string;
+    title: string;
+    release_date: string;
+    primary_type: string;
+    artist_name: string;
+    image_url: string;
+    created: string;
+}

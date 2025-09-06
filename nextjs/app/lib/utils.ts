@@ -30,3 +30,33 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
         totalPages,
     ];
 };
+
+export function getDaysAgo(releaseDate: string): string {
+    const today = new Date();
+    const release = new Date(releaseDate);
+    const diffTime = Math.abs(today.getTime() - release.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+        return "Today";
+    } else if (diffDays === 1) {
+        return "Yesterday";
+    } else {
+        return `${diffDays} days ago`;
+    }
+}
+
+export function getUpcomingDays(releaseDate: string): string {
+    const today = new Date();
+    const release = new Date(releaseDate);
+    const diffTime = release.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays <= 0) {
+        return "Released";
+    } else if (diffDays === 1) {
+        return "Tomorrow";
+    } else {
+        return `In ${diffDays} days`;
+    }
+}

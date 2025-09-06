@@ -1,4 +1,4 @@
-import { MusicReview } from "@/app/lib/definitions";
+import { MusicbrainzRelease, MusicReview, SpotifyRelease } from "@/app/lib/definitions";
 import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
 
@@ -42,6 +42,31 @@ export async function fetchMusicReviewById(id: string) {
             "Database error: Failed to fetch music review data.",
             error,
         );
+        return null;
+    }
+}
+
+
+export async function fetchSpotifyReleases() {
+    noStore();
+
+    try {
+        const data = await sql<SpotifyRelease>`SELECT * FROM spotify_releases ORDER BY release_date DESC LIMIT 15`;
+        return data.rows;
+    } catch (error) {
+        console.error("Database error: Failed to fetch spotify releases.", error);
+        return null;
+    }
+}
+
+export async function fetchMusicbrainzReleases() {
+    noStore();
+
+    try {
+        const data = await sql<MusicbrainzRelease>`SELECT * FROM musicbrainz_releases ORDER BY release_date ASC LIMIT 5`;
+        return data.rows;
+    } catch (error) {
+        console.error("Database error: Failed to fetch musicbrainz releases.", error);
         return null;
     }
 }

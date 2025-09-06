@@ -1,10 +1,23 @@
-import Image from "next/image";
+import { fetchSpotifyReleases, fetchMusicbrainzReleases } from "@/app/data/music";
+import LatestReleases from "./LatestReleases";
+import UpcomingReleases from "./UpcomingReleases";
 
 export default async function Page() {
+    const spotifyReleases = await fetchSpotifyReleases();
+    const musicbrainzReleases = await fetchMusicbrainzReleases();
+
+    if (!spotifyReleases || !musicbrainzReleases) {
+        return <div className="text-gray-900">Failed to load releases</div>;
+    }
+
     return (
-        <div>
-            <h1>Hello, World!</h1>
-            <Image src="https://coverartarchive.org/release/23ed446f-c436-4bd1-9ac1-af5f68226217/42723200377.jpg" alt="Hello" width={100} height={100} />
+        <div className="min-h-screen bg-white p-8">
+            <div className="max-w-7xl mx-auto">
+                <div className="flex gap-8">
+                    <LatestReleases releases={spotifyReleases} />
+                    <UpcomingReleases releases={musicbrainzReleases} />
+                </div>
+            </div>
         </div>
     );
 }
