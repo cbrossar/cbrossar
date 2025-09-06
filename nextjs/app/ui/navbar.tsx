@@ -33,7 +33,7 @@ export default function Navbar() {
                     <span />
                     <span />
                 </MenuButton>
-                <NavLink href="/music">Music</NavLink>
+                <NavLink href="/music/reviews">Music</NavLink>
                 <NavLink href="/soccer/fantasy-prem/players">Soccer</NavLink>
                 <HomeLink href="/" onClick={handleCoinFlip}>
                     <CoinFlipContainer>
@@ -51,7 +51,7 @@ export default function Navbar() {
                 <SideNavLink href="/" onClick={toggleMenu}>
                     Home
                 </SideNavLink>
-                <SideNavLink href="/music" onClick={toggleMenu}>
+                <SideNavLink href="/music/reviews" onClick={toggleMenu}>
                     Music
                 </SideNavLink>
                 <SideNavLink

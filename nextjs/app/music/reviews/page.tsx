@@ -29,13 +29,15 @@ export default async function Page({
 
     return (
         <div>
-            <div className={styles.topBar}>
-                <div className={styles.search}>
-                    <Search placeholder="Search" shouldSetPage={false} />
+            <div className={styles.header}>
+                <div>
+                    <Search placeholder="Search Reviews" shouldSetPage={false} />
                 </div>
-                <Link href="/music/create" className={styles.addButton}>
-                    <PlusIcon className="h-5 w-5" />
-                </Link>
+                <div className={styles.topRightCorner}>
+                    <Link href="/music/create" className={styles.addButton}>
+                        <PlusIcon className="h-5 w-5" />
+                    </Link>
+                </div>
             </div>
             {musicReviews.length === 0 ? (
                 <div className="flex items-center justify-center">

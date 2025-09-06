@@ -1,11 +1,32 @@
 .grid {
     grid-column-gap: 1.25rem;
     grid-row-gap: 1.25rem;
+    grid-template-columns: repeat(5, 1fr);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     margin: 1.25rem 0;
     padding: 0;
-    grid-template-columns: repeat(5, 1fr);
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align children to the bottom */
+    align-items: center; /* Center the items horizontally */
+    text-align: center; /* Center the text */
+}
+
+.imageWrapper {
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the items horizontally */
+    text-align: center; /* Center the text */
+}
+
+.imageWrapper img {
+    display: block;
+    margin: auto auto;
 }
 
 .imageWrapper {
@@ -24,110 +45,204 @@
     }
 }
 
-.imageText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition:
-        background-color 0.2s ease-in-out,
-        opacity 0.2s ease-in-out;
-    font-size: 1.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    color: white;
-    opacity: 0;
-    z-index: 2;
+.caption {
+    margin-top: 10px; /* Space between the image and the caption */
 }
 
-.circle {
-    position: relative;
-    border: 3px solid white;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    text-align: center;
-    color: white;
-}
-
-.rating {
-    display: block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+.centerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
-    color: white;
-    --type-token: globalEditorial.numerical-large;
-    text-transform: none;
-    font-family: Walfork, helvetica, sans-serif;
-    font-feature-settings: normal;
-    font-style: normal;
-    letter-spacing: normal;
-    line-break: auto;
-    line-height: 1em;
-    font-size: 30px;
-    font-weight: 400;
-    overflow-wrap: normal;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-@media (max-width: 1024px) {
-    .grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+.formHeader {
+    display: flex;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.formSection {
+    margin-bottom: 30px;
+}
+
+.formRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.formImageWrapper {
+    margin-right: 20px;
+}
+
+.formTeam {
+    margin-right: 10px;
+    font-size: 16px;
+    width: 150px;
+}
+
+.resultRow {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    cursor: default;
+}
+
+.w,
+.l,
+.d {
+    display: flex;
+    height: 24px;
+    width: 24px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.w {
+    background-color: #00985f;
+}
+
+.l {
+    background-color: #dd3636;
+}
+
+.d {
+    background-color: #8d9499;
+}
+
+.wLine,
+.lLine,
+.dLine {
+    content: "";
+    display: block;
+    width: 16px;
+    bottom: -4px;
+    left: 4px;
+    position: absolute;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-radius: 2px;
+}
+
+.wLine {
+    border-bottom-color: #00985f;
+}
+
+.lLine {
+    border-bottom-color: #dd3636;
+}
+
+.dLine {
+    border-bottom-color: #8d9499;
 }
 
 @media (max-width: 900px) {
     .grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    .imageText {
-        opacity: 0;
-        font-size: 1.125rem;
-    }
 }
 
-@media (min-width: 900px) {
-    .imageWrapper:hover .imageText {
-        opacity: 1;
-    }
-}
-
-.topBar {
+.navBar {
     display: flex;
-    justify-content: center; /* Center content horizontally */
-    align-items: center;
-    position: relative;
-    padding: 4px 70px 4px 40px; /* More padding on right to account for button space */
-}
-
-.search {
-    flex-grow: 1;
-    max-width: 400px; /* Limit the search bar's width */
-    text-align: center; /* Center the content inside the search bar */
-}
-
-.addButton {
-    position: absolute;
-    right: 0; /* Align the button to the right */
-    text-decoration: none;
-    color: #333;
-    background-color: #fafafa;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    transition: all 0.15s ease;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    padding: 0 0 0.5rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: white;
+    font-size: 0.8rem;
 }
 
-.addButton:hover {
-    background-color: #f0f0f0;
-    border-color: #d0d0d0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-    transform: translateY(-0.5px);
+@media (max-width: 640px) {
+    .navBar {
+        margin-left: 0;
+    }
+}
+
+.navLink {
+    color: #111;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0;
+    background: none;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.navLink:hover {
+    background: #111;
+    color: #ffd600;
+    font-weight: 600;
+    border-radius: 0;
+    padding: 0.25rem 0.5rem;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.navLinkActive {
+    background: #111;
+    color: #ffd600;
+    font-weight: 600;
+    border-radius: 0;
+    padding: 0.25rem 0.5rem;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.navDot {
+    font-size: 1.5rem;
+    color: #111;
+    margin: 0 0.5rem;
+    user-select: none;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 640px) {
+    .navBar {
+        gap: 0;
+        padding: 0 0 0.25rem 0;
+    }
+    .navLink,
+    .navLinkActive {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.5rem;
+    }
+    .navDot {
+        font-size: 0.9rem;
+        margin: 0 0.25rem;
+    }
+
+    .formTeam {
+        font-size: 14px;
+    }
 }

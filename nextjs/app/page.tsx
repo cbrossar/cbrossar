@@ -29,7 +29,7 @@ export default function Home() {
     return (
         <HomeWrapper>
             <ImageWrapper>
-                <ImageLink href="/music">
+                <ImageLink href="/music/reviews">
                     <Image
                         src="/vinyl-collage.jpg"
                         width={900}
