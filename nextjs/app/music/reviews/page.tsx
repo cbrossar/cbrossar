@@ -66,8 +66,12 @@ export default async function Page({
                                     </div>
                                 </Link>
                             </div>
-                            <p>{review.album}</p>
-                            <p>{review.artist}</p>
+                            <h3 className="text-gray-900 font-semibold text-sm mb-1 line-clamp-2">
+                                {review.album}
+                            </h3>
+                            <p className="text-gray-600 text-xs mb-2">
+                                {review.artist}
+                            </p>
                         </div>
                     ))}
                 </div>
