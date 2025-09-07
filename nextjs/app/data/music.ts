@@ -63,7 +63,7 @@ export async function fetchMusicbrainzReleases() {
     noStore();
 
     try {
-        const data = await sql<MusicbrainzRelease>`SELECT * FROM musicbrainz_releases ORDER BY release_date ASC LIMIT 5`;
+        const data = await sql<MusicbrainzRelease>`SELECT * FROM musicbrainz_releases WHERE release_date > CURRENT_DATE ORDER BY release_date ASC LIMIT 10`;
         return data.rows;
     } catch (error) {
         console.error("Database error: Failed to fetch musicbrainz releases.", error);

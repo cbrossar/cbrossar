@@ -9,9 +9,9 @@ interface LatestReleasesProps {
 
 export default function LatestReleases({ releases }: LatestReleasesProps) {
     return (
-        <div className="w-2/3 pr-6">
+        <div className="w-full lg:w-2/3 lg:pr-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Latest Releases</h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {releases.map((release) => (
                     <Link key={release.id} href={release.spotify_url} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors">
                         <div className="relative">

@@ -13,7 +13,7 @@ export default async function Page() {
     return (
         <div className="min-h-screen bg-white p-2">
             <div className="max-w-7xl mx-auto">
-                <div className="flex gap-8">
+                <div className="flex flex-col lg:flex-row gap-8">
                     <LatestReleases releases={spotifyReleases} />
                     <UpcomingReleases releases={musicbrainzReleases} />
                 </div>
