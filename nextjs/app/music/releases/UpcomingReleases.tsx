@@ -8,7 +8,7 @@ interface UpcomingReleasesProps {
 
 export default function UpcomingReleases({ releases }: UpcomingReleasesProps) {
     return (
-        <div className="w-full lg:w-1/3">
+        <div className="w-full lg:w-1/3 order-1 lg:order-2">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Upcoming Next</h2>
             <div className="space-y-4">
                 {releases.map((release) => (

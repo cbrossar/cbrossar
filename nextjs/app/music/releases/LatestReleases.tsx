@@ -9,7 +9,7 @@ interface LatestReleasesProps {
 
 export default function LatestReleases({ releases }: LatestReleasesProps) {
     return (
-        <div className="w-full lg:w-2/3 lg:pr-6">
+        <div className="w-full lg:w-2/3 lg:pr-6 order-2 lg:order-1">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Latest Releases</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                 {releases.map((release) => (
