@@ -1,8 +1,15 @@
-import { fetchSpotifyReleases, fetchMusicbrainzReleases } from "@/app/data/music";
+import {
+    fetchSpotifyReleases,
+    fetchMusicbrainzReleases,
+} from "@/app/data/music";
 import LatestReleases from "./LatestReleases";
 import UpcomingReleases from "./UpcomingReleases";
 
-export default async function Page() {
+interface PageProps {
+    searchParams: { type?: string };
+}
+
+export default async function Page({ searchParams }: PageProps) {
     const spotifyReleases = await fetchSpotifyReleases();
     const musicbrainzReleases = await fetchMusicbrainzReleases();
 
@@ -10,11 +17,20 @@ export default async function Page() {
         return <div className="text-gray-900">Failed to load releases</div>;
     }
 
+    // Filter releases based on search params
+    const filteredReleases = searchParams.type
+        ? spotifyReleases.filter(
+              (release) =>
+                  release.album_type?.toLowerCase() ===
+                  searchParams.type!.toLowerCase(),
+          )
+        : spotifyReleases;
+
     return (
         <div className="min-h-screen bg-white p-2">
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row gap-8">
-                    <LatestReleases releases={spotifyReleases} />
+                    <LatestReleases releases={filteredReleases} />
                     <UpcomingReleases releases={musicbrainzReleases} />
                 </div>
             </div>

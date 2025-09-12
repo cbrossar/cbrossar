@@ -9,10 +9,15 @@ interface UpcomingReleasesProps {
 export default function UpcomingReleases({ releases }: UpcomingReleasesProps) {
     return (
         <div className="w-full lg:w-1/3 order-1 lg:order-2">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Upcoming Next</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Upcoming Next
+            </h2>
             <div className="space-y-4">
                 {releases.map((release) => (
-                    <div key={release.id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                    <div
+                        key={release.id}
+                        className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+                    >
                         <div className="flex gap-3 items-start">
                             <div className="w-15 h-15 flex-shrink-0">
                                 <Image
@@ -36,9 +41,11 @@ export default function UpcomingReleases({ releases }: UpcomingReleasesProps) {
                                     </span>
                                     <div className="flex items-center text-gray-500 text-xs">
                                         <span className="mr-1">
-                                            {new Date(release.release_date).toLocaleDateString('en-US', { 
-                                                month: 'short', 
-                                                day: 'numeric' 
+                                            {new Date(
+                                                release.release_date,
+                                            ).toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
                                             })}
                                         </span>
                                     </div>
@@ -48,7 +55,6 @@ export default function UpcomingReleases({ releases }: UpcomingReleasesProps) {
                     </div>
                 ))}
             </div>
-               
         </div>
     );
 }

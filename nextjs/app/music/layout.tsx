@@ -18,9 +18,7 @@ export default function SoccerLayout({
                 <Link
                     href="/music/reviews"
                     className={
-                        isReviews
-                            ? styles.navLinkActive
-                            : styles.navLink
+                        isReviews ? styles.navLinkActive : styles.navLink
                     }
                 >
                     Reviews
@@ -29,9 +27,7 @@ export default function SoccerLayout({
                 <Link
                     href="/music/releases"
                     className={
-                        isReleases
-                            ? styles.navLinkActive
-                            : styles.navLink
+                        isReleases ? styles.navLinkActive : styles.navLink
                     }
                 >
                     Releases

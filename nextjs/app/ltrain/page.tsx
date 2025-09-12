@@ -47,9 +47,11 @@ function LTrain() {
             new Date(),
         );
 
-        const nowEST = new Date(new Date().toLocaleString("en-US", {
-            timeZone: "America/New_York",
-        }));
+        const nowEST = new Date(
+            new Date().toLocaleString("en-US", {
+                timeZone: "America/New_York",
+            }),
+        );
 
         // Calculate minutes until train
         const minutesUntil = Math.round(

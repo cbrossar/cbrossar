@@ -37,7 +37,7 @@ export default async function Page({
     const numMidfielders = 9;
     const numForwards = 7;
 
-    const currentSession = await fetchCurrentFantasySeason();    
+    const currentSession = await fetchCurrentFantasySeason();
 
     const playersByPositionAll = await fetchPlayersByPositionAll(
         numGoalies,
@@ -101,7 +101,9 @@ export default async function Page({
         (player) => player.element_type === 4,
     );
 
-    const teams = (await fetchFantasyTeams(currentSession.id.toString())) as FantasyTeam[];
+    const teams = (await fetchFantasyTeams(
+        currentSession.id.toString(),
+    )) as FantasyTeam[];
 
     const teamsById = teams.reduce(
         (acc, team) => {

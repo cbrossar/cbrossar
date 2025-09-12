@@ -31,7 +31,10 @@ export default async function Page({
         <div>
             <div className={styles.header}>
                 <div>
-                    <Search placeholder="Search Reviews" shouldSetPage={false} />
+                    <Search
+                        placeholder="Search Reviews"
+                        shouldSetPage={false}
+                    />
                 </div>
                 <div className={styles.topRightCorner}>
                     <Link href="/music/create" className={styles.addButton}>

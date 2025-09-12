@@ -173,7 +173,8 @@ export default async function Page({
                                             <Image
                                                 src={`/fantasy-prem/${teamsById[player.team_id].image_filename}`}
                                                 alt={
-                                                    teamsById[player.team_id].name
+                                                    teamsById[player.team_id]
+                                                        .name
                                                 }
                                                 width={30} // Adjust width
                                                 height={30} // Adjust height

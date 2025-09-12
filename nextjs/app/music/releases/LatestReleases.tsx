@@ -2,6 +2,7 @@ import { SpotifyRelease } from "@/app/lib/definitions";
 import { getDaysAgo } from "@/app/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import ReleaseTypeSelect from "./ReleaseTypeSelect";
 
 interface LatestReleasesProps {
     releases: SpotifyRelease[];
@@ -10,10 +11,19 @@ interface LatestReleasesProps {
 export default function LatestReleases({ releases }: LatestReleasesProps) {
     return (
         <div className="w-full lg:w-2/3 lg:pr-6 order-2 lg:order-1">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Latest Releases</h2>
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                    Latest Releases
+                </h2>
+                <ReleaseTypeSelect />
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                {releases.map((release) => (
-                    <Link key={release.id} href={release.spotify_url} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                {releases.slice(0, 15).map((release) => (
+                    <Link
+                        key={release.id}
+                        href={release.spotify_url}
+                        className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+                    >
                         <div className="relative">
                             <Image
                                 src={release.image_url}
