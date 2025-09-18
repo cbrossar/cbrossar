@@ -396,14 +396,14 @@ export async function fetchFantasyPlayersFiltered(
         let orderByClause;
         if (sortBy === "pts_per_cost") {
             // For the calculated column, we need to use the actual calculation in ORDER BY
-            orderByClause = `(CASE WHEN now_cost > 0 THEN total_points::float / now_cost ELSE NULL END) ${sortOrder.toUpperCase()}, second_name ASC`;
+            orderByClause = `(CASE WHEN now_cost > 0 THEN total_points::float / now_cost * 10 ELSE NULL END) ${sortOrder.toUpperCase()}, second_name ASC`;
         } else {
             orderByClause = `${sortBy} ${sortOrder.toUpperCase()}, second_name ASC`;
         }
 
         const sqlQuery = `
             SELECT *, 
-                   (CASE WHEN now_cost > 0 THEN total_points::float / now_cost ELSE NULL END) as pts_per_cost
+                   (CASE WHEN now_cost > 0 THEN total_points::float / now_cost * 10 ELSE NULL END) as pts_per_cost
             FROM fantasy_players
             ${whereClause}
             ORDER BY ${orderByClause}
