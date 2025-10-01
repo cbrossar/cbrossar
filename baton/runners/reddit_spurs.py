@@ -7,7 +7,7 @@ from utils.telegram import send_telegram_message, Channel
 from enum import Enum
 from logger import logger
 
-REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
+REDDIT_CLIENT_ID = "SZTg3bGzBbFq5SP8HWqfCg"
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
 
 

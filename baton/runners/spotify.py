@@ -8,7 +8,7 @@ from db import Session
 from utils.telegram import send_telegram_message, Channel
 import random
 
-CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+CLIENT_ID = "baac07f1249a49cca7a9d39a92bf25e9"
 CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 REFRESH_TOKEN = os.getenv("SPOTIFY_REFRESH_TOKEN")
 NEW_RELEASES_PLAYLIST_ID = "5JFQVM9ZFSd3OAKnmNEwg0"

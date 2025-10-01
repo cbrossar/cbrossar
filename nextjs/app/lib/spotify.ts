@@ -1,4 +1,4 @@
-const client_id = process.env.SPOTIFY_CLIENT_ID as string;
+const client_id = "baac07f1249a49cca7a9d39a92bf25e9";
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET as string;
 
 const getAccessToken = async (): Promise<string> => {
