@@ -8,7 +8,7 @@ import os
 def send_email(subject, body, to):
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
-    smtp_username = os.getenv("EMAIL_USER")
+    smtp_username = "cole.brossart@gmail.com"
     smtp_password = os.getenv("EMAIL_PASS")
 
     msg = MIMEMultipart()

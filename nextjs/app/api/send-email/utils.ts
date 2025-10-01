@@ -5,7 +5,7 @@ export async function sendEmail(email: string, subject: string, text: string) {
     let transporter = nodemailer.createTransport({
         service: "Gmail", // You can use any service
         auth: {
-            user: process.env.EMAIL_USER, // Your email address
+            user: "cole.brossart@gmail.com", // Your email address
             pass: process.env.EMAIL_PASS, // Your email password or app-specific password
         },
     });
@@ -13,7 +13,7 @@ export async function sendEmail(email: string, subject: string, text: string) {
     try {
         // Send mail with defined transport object
         let info = await transporter.sendMail({
-            from: `"${process.env.EMAIL_NAME}" <${process.env.EMAIL_USER}>`, // sender address
+            from: `"Cole Brossart" <cole.brossard@gmail.com>`, // sender address
             to: email, // list of receivers
             subject: subject, // Subject line
             text: text, // plain text body

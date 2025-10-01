@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         const result = await createWineQuiz(wineQuiz, clientIp);
         const wine = await fetchWineById(wineQuiz.wine_id);
         await sendEmail(
-            process.env.EMAIL_USER as string,
+            "cole.brossart@gmail.com",
             "New Wine Quiz",
             `Wine: ${wine.winery_name}, ${wine.name}\nScore: ${wineQuiz.score}`,
         );

@@ -48,7 +48,6 @@ deploy:
 		--min-instances 0 \
 		--max-instances 10 \
 		--set-secrets=DATABASE_URL=baton-db-url:latest \
-		--set-secrets=EMAIL_USER=baton-email-user:latest \
 		--set-secrets=EMAIL_PASS=baton-email-pass:latest \
 		--set-secrets=TELEGRAM_BOT_TOKEN=telegram-baton-bot-token:latest \
 		--set-secrets=REDDIT_CLIENT_ID=reddit-client-id:latest \

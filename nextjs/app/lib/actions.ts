@@ -102,7 +102,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
         const id = result.rows[0]["id"];
 
         // send email
-        const email = process.env.EMAIL_USER;
+        const email = "cole.brossart@gmail.com";
         const subject = "New Music Review";
         const text = `A new music review has been added by ${name}. Album: ${album}, Artist: ${artist}, Rating: ${rating}, \nLink: https://cbrossar.com/music/${id}`;
 
