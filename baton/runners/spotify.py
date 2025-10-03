@@ -47,7 +47,7 @@ def get_new_releases(artists, token):
 
     for artist in artists:
 
-        upcoming_releases = get_musicbrainz_upcoming_release_groups(artist["name"])
+        get_musicbrainz_upcoming_release_groups(artist["name"])
 
         releases = get_artist_releases(token, artist["id"])
         for r in releases:
@@ -79,14 +79,16 @@ def get_new_releases(artists, token):
                 f"Saving {spotify_release.name} by {spotify_release.artist_name}"
             )
 
-            release_text = (
-                f"released today"
-                if spotify_release.release_date == str(datetime.date.today())
-                else f"releases on {spotify_release.release_date}"
-            )
-            music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
-            message = f"{random.choice(music_emojis)} Spotify Music Drop\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
-            send_telegram_message(message, Channel.SPOTIFY)
+            # if release date is within 30 days, send telegrammessage
+            if spotify_release.release_date <= datetime.date.today() + datetime.timedelta(days=30):
+                release_text = (
+                    f"released today"
+                    if spotify_release.release_date == str(datetime.date.today())
+                    else f"releases on {spotify_release.release_date}"
+                )
+                music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
+                message = f"{random.choice(music_emojis)} Spotify Music Drop\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
+                send_telegram_message(message, Channel.SPOTIFY)
 
     if new_releases:
         with Session.begin() as session:
