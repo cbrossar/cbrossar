@@ -1,6 +1,6 @@
 "use client";
 
-import { createMusicReview } from "@/app/lib/actions";
+import { createMusicReview, State } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
 import { Button } from "@/app/ui/button";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -30,7 +30,7 @@ interface ArtistSearchResult {
 }
 
 export default function Form() {
-    const initialState = { message: "", errors: {} };
+    const initialState: State = { message: "", errors: {} };
     const [state, dispatch] = useFormState(createMusicReview, initialState);
 
     // State for artist search
@@ -420,7 +420,7 @@ export default function Form() {
                         aria-live="polite"
                         aria-atomic="true"
                     >
-                        {state.errors?.artist &&
+                        {state?.errors?.artist &&
                             state.errors.artist.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
@@ -484,7 +484,7 @@ export default function Form() {
                         )}
                     </div>
                     <div id="album-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.album &&
+                        {state?.errors?.album &&
                             state.errors.album.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
@@ -517,7 +517,7 @@ export default function Form() {
                         aria-live="polite"
                         aria-atomic="true"
                     >
-                        {state.errors?.rating &&
+                        {state?.errors?.rating &&
                             state.errors.rating.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
@@ -550,7 +550,7 @@ export default function Form() {
                         aria-live="polite"
                         aria-atomic="true"
                     >
-                        {state.errors?.review &&
+                        {state?.errors?.review &&
                             state.errors.review.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
@@ -579,7 +579,7 @@ export default function Form() {
                         aria-describedby="name-error"
                     />
                     <div id="name-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.name &&
+                        {state?.errors?.name &&
                             state.errors.name.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
@@ -675,7 +675,7 @@ export default function Form() {
                         aria-live="polite"
                         aria-atomic="true"
                     >
-                        {state.errors?.image_file &&
+                        {state?.errors?.image_file &&
                             state.errors.image_file.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
@@ -688,7 +688,7 @@ export default function Form() {
                 </div>
 
                 <div id="error-message" aria-live="polite" aria-atomic="true">
-                    {state.message && (
+                    {state?.message && (
                         <p className="mt-2 text-sm text-red-500">
                             {state.message}
                         </p>

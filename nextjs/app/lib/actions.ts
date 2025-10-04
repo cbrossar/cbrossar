@@ -43,10 +43,16 @@ const UpdateMusicReview = BaseFormSchema.omit({ id: true }).refine((data) => {
 
 export type State = {
     errors?: {
+        album?: string[];
+        artist?: string[];
         rating?: string[];
+        review?: string[];
+        name?: string[];
+        image_file?: string[];
+        image_url?: string[];
     };
-    message?: string | null;
-};
+    message: string;
+} | undefined;
 
 export async function createMusicReview(prevState: State, formData: FormData) {
     const validatedFields = CreateMusicReview.safeParse({
