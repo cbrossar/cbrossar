@@ -503,6 +503,98 @@ export default function Form() {
                     </div>
                 </div>
 
+                {/* Cover Art */}
+                <div className="mb-4">
+                    <label className="mb-2 block text-sm font-medium">
+                        Album Cover Image
+                    </label>
+                    <p className="mb-3 text-sm text-gray-600">
+                        Upload an image file or use the cover art found from MusicBrainz.
+                    </p>
+                    
+                    {/* Cover art preview */}
+                    {coverArtUrl && (
+                        <div className="mb-4">
+                            <div className="flex items-center gap-4">
+                                <Image
+                                    src={coverArtUrl}
+                                    alt={`${selectedAlbum?.album} cover art`}
+                                    width={96}
+                                    height={96}
+                                    className="rounded-md object-cover border border-gray-200"
+                                />
+                                <div className="flex-1">
+                                    <p className="text-sm text-gray-600 mb-2">
+                                        Cover art found for this album
+                                    </p>
+                                    <label className="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={useCoverArt}
+                                            onChange={(e) => setUseCoverArt(e.target.checked)}
+                                            className="rounded border-gray-300"
+                                        />
+                                        <span className="text-sm">Use this cover art</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Loading state */}
+                    {isLoadingCoverArt && (
+                        <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+                            Loading cover art...
+                        </div>
+                    )}
+
+                    {/* File upload - only show if not using MusicBrainz cover art */}
+                    {!(coverArtUrl && useCoverArt) && (
+                        <div>
+                            <label
+                                htmlFor="image_file"
+                                className="mb-2 block text-sm font-medium"
+                            >
+                                Upload Image File (Square - 1:1 Aspect Ratio)
+                            </label>
+                            <input
+                                id="image_file"
+                                name="image_file"
+                                type="file"
+                                accept="image/*"
+                                className="block w-full rounded-md border border-gray-200 p-2 text-sm"
+                                aria-describedby="image_file-error"
+                            />
+                        </div>
+                    )}
+
+                    {/* Hidden field for cover art URL */}
+                    {coverArtUrl && useCoverArt && (
+                        <input
+                            type="hidden"
+                            name="image_url"
+                            value={coverArtUrl}
+                        />
+                    )}
+                    
+                    <div
+                        id="image_file-error"
+                        aria-live="polite"
+                        aria-atomic="true"
+                    >
+                        {state?.errors?.image_file &&
+                            state.errors.image_file.map((error: string) => (
+                                <p
+                                    className="mt-2 text-sm text-red-500"
+                                    key={error}
+                                >
+                                    {error}
+                                </p>
+                            ))}
+                    </div>
+                </div>
+
                 {/* Rating */}
                 <div className="mb-4">
                     <label
@@ -588,102 +680,6 @@ export default function Form() {
                     <div id="name-error" aria-live="polite" aria-atomic="true">
                         {state?.errors?.name &&
                             state.errors.name.map((error: string) => (
-                                <p
-                                    className="mt-2 text-sm text-red-500"
-                                    key={error}
-                                >
-                                    {error}
-                                </p>
-                            ))}
-                    </div>
-                </div>
-
-                {/* Cover Art */}
-                <div className="mb-4">
-                    <label className="mb-2 block text-sm font-medium">
-                        Album Cover Image (Square - 1:1 Aspect Ratio)
-                    </label>
-                    <p className="mb-3 text-sm text-gray-600">
-                        Upload an image file or use the cover art found from MusicBrainz.
-                    </p>
-                    
-                    {/* Cover art preview */}
-                    {coverArtUrl && (
-                        <div className="mb-4">
-                            <div className="flex items-center gap-4">
-                                <Image
-                                    src={coverArtUrl}
-                                    alt={`${selectedAlbum?.album} cover art`}
-                                    width={96}
-                                    height={96}
-                                    className="rounded-md object-cover border border-gray-200"
-                                />
-                                <div className="flex-1">
-                                    <p className="text-sm text-gray-600 mb-2">
-                                        Cover art found for this album
-                                    </p>
-                                    <label className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={useCoverArt}
-                                            onChange={(e) => setUseCoverArt(e.target.checked)}
-                                            className="rounded border-gray-300"
-                                        />
-                                        <span className="text-sm">Use this cover art</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Loading state */}
-                    {isLoadingCoverArt && (
-                        <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
-                            Loading cover art...
-                        </div>
-                    )}
-
-                    {/* File upload */}
-                    <div className={coverArtUrl && useCoverArt ? "opacity-50" : ""}>
-                        <label
-                            htmlFor="image_file"
-                            className="mb-2 block text-sm font-medium"
-                        >
-                            Upload Image File
-                        </label>
-                        <input
-                            id="image_file"
-                            name="image_file"
-                            type="file"
-                            accept="image/*"
-                            disabled={!!(coverArtUrl && useCoverArt)}
-                            className="block w-full rounded-md border border-gray-200 p-2 text-sm"
-                            aria-describedby="image_file-error"
-                        />
-                        {coverArtUrl && useCoverArt && (
-                            <p className="mt-1 text-xs text-gray-500">
-                                Using cover art from MusicBrainz
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Hidden field for cover art URL */}
-                    {coverArtUrl && useCoverArt && (
-                        <input
-                            type="hidden"
-                            name="image_url"
-                            value={coverArtUrl}
-                        />
-                    )}
-                    
-                    <div
-                        id="image_file-error"
-                        aria-live="polite"
-                        aria-atomic="true"
-                    >
-                        {state?.errors?.image_file &&
-                            state.errors.image_file.map((error: string) => (
                                 <p
                                     className="mt-2 text-sm text-red-500"
                                     key={error}
