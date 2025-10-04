@@ -4,6 +4,7 @@ import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { searchAlbum } from "./spotify";
+import { sendTelegramMessage } from "./telegram";
 
 const BaseFormSchema = z.object({
     id: z.string(),
@@ -48,7 +49,6 @@ export type State = {
 };
 
 export async function createMusicReview(prevState: State, formData: FormData) {
-    console.log("hi");
     const validatedFields = CreateMusicReview.safeParse({
         album: formData.get("album"),
         artist: formData.get("artist"),
@@ -73,9 +73,6 @@ export async function createMusicReview(prevState: State, formData: FormData) {
 
     let final_image_url = image_url;
 
-    console.log(image_file);
-    console.log(image_url);
-
     // If image_file is provided, upload it and use the resulting URL
     if (image_file && image_file instanceof File && image_file.size > 0) {
         const uploaded_url = await uploadFile(image_file);
@@ -94,6 +91,8 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     const spotify_album_id = !!spotifyResults.length
         ? spotifyResults[0].id
         : "";
+
+    let id = "";
 
     try {
         const existingReview = await sql`
@@ -118,34 +117,20 @@ export async function createMusicReview(prevState: State, formData: FormData) {
             RETURNING id
         `;
 
-        const id = result.rows[0]["id"];
+        id = result.rows[0]["id"];
 
-        // send email
-        const email = "cole.brossart@gmail.com";
-        const subject = "New Music Review";
-        const text = `A new music review has been added by ${name}. Album: ${album}, Artist: ${artist}, Rating: ${rating}, \nLink: https://cbrossar.com/music/${id}`;
-
-        const res = await fetch(
-            process.env.NEXT_PUBLIC_BASE_URL + "/api/send-email",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, subject, text }),
-            },
-        );
-
-        const emailResult = await res.json();
-        console.log(emailResult);
+        // send telegram message
+        const message = `A new music review has been created by ${name}. Album: ${album}, Artist: ${artist}, Rating: ${rating}, \nLink: https://cbrossar.com/music/${id}`;
+        await sendTelegramMessage(message);
     } catch (error) {
         return {
             message: "Database Error: Failed to Create Music Review.",
         };
     }
-
-    revalidatePath("/music");
-    redirect("/music");
+    if (id) {
+        revalidatePath(`/music/${id}`);
+        redirect(`/music/${id}`);
+    }
 }
 
 export async function updateMusicReview(
