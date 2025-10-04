@@ -18,6 +18,10 @@ module.exports = {
                 protocol: "https",
                 hostname: "coverartarchive.org",
             },
+            {
+                protocol: "http",
+                hostname: "coverartarchive.org",
+            },
         ],
     },
     experimental: {
