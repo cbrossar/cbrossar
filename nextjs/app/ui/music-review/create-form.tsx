@@ -41,8 +41,7 @@ export default function Form() {
     const [selectedArtist, setSelectedArtist] =
         useState<ArtistSearchResult | null>(null);
     const [isSearchingArtist, setIsSearchingArtist] = useState(false);
-    const artistDropdownRef = useRef<HTMLDivElement>(null);
-    const artistInputRef = useRef<HTMLInputElement>(null);
+    const [highlightedArtistIndex, setHighlightedArtistIndex] = useState(-1);
 
     // State for album search
     const [albumQuery, setAlbumQuery] = useState("");
@@ -56,8 +55,7 @@ export default function Form() {
     const [selectedAlbum, setSelectedAlbum] =
         useState<AlbumSearchResult | null>(null);
     const [isSearchingAlbum, setIsSearchingAlbum] = useState(false);
-    const albumDropdownRef = useRef<HTMLDivElement>(null);
-    const albumInputRef = useRef<HTMLInputElement>(null);
+    const [highlightedAlbumIndex, setHighlightedAlbumIndex] = useState(-1);
 
     // Search functions
     const searchArtists = useCallback(async (query: string) => {
@@ -128,16 +126,6 @@ export default function Form() {
                     !album.secondaryTypes || album.secondaryTypes.length === 0,
             );
 
-            console.log("All albums:", allArtistAlbums.length);
-            console.log("Main albums (no secondary types):", mainAlbums.length);
-            console.log(
-                "Albums with secondary types:",
-                allArtistAlbums.filter(
-                    (album) =>
-                        album.secondaryTypes && album.secondaryTypes.length > 0,
-                ),
-            );
-
             if (!query.trim()) {
                 // Show all main albums if no query
                 setAlbumSearchResults(mainAlbums);
@@ -199,10 +187,13 @@ export default function Form() {
         setSelectedArtist(artist);
         setArtistQuery(artist.name);
         setShowArtistDropdown(false);
+        setHighlightedArtistIndex(-1);
 
         // Clear album selection when artist changes
         setSelectedAlbum(null);
         setAlbumQuery("");
+        setShowAlbumDropdown(false);
+        setHighlightedAlbumIndex(-1);
         const albumInput = document.getElementById("album") as HTMLInputElement;
         if (albumInput) {
             albumInput.value = "";
@@ -217,6 +208,7 @@ export default function Form() {
         setSelectedAlbum(album);
         setAlbumQuery(album.album);
         setShowAlbumDropdown(false);
+        setHighlightedAlbumIndex(-1);
     };
 
     // Handle artist input change
@@ -225,18 +217,17 @@ export default function Form() {
     ) => {
         const value = e.target.value;
         setArtistQuery(value);
+        setHighlightedArtistIndex(-1);
 
         // Clear selection if user is typing
         if (selectedArtist && value !== selectedArtist.name) {
             setSelectedArtist(null);
-            // Also clear album selection and cached albums
             setSelectedAlbum(null);
             setAlbumQuery("");
+            setShowAlbumDropdown(false);
             setAllArtistAlbums([]);
             setAlbumSearchResults([]);
-            const albumInput = document.getElementById(
-                "album",
-            ) as HTMLInputElement;
+            const albumInput = document.getElementById("album") as HTMLInputElement;
             if (albumInput) {
                 albumInput.value = "";
             }
@@ -252,6 +243,7 @@ export default function Form() {
 
         const value = e.target.value;
         setAlbumQuery(value);
+        setHighlightedAlbumIndex(-1);
 
         // Clear selection if user is typing
         if (selectedAlbum && value !== selectedAlbum.album) {
@@ -259,33 +251,79 @@ export default function Form() {
         }
     };
 
-    // Handle album input click/focus
-    const handleAlbumInputClick = () => {
-        if (selectedArtist && albumSearchResults.length > 0) {
-            setShowAlbumDropdown(true);
+    // Simple keyboard navigation
+    const handleArtistKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!showArtistDropdown || artistSearchResults.length === 0) return;
+
+        switch (e.key) {
+            case "ArrowDown":
+                e.preventDefault();
+                setHighlightedArtistIndex(prev => 
+                    prev < artistSearchResults.length - 1 ? prev + 1 : 0
+                );
+                break;
+            case "ArrowUp":
+                e.preventDefault();
+                setHighlightedArtistIndex(prev => 
+                    prev > 0 ? prev - 1 : artistSearchResults.length - 1
+                );
+                break;
+            case "Enter":
+                e.preventDefault();
+                if (highlightedArtistIndex >= 0) {
+                    handleArtistSelect(artistSearchResults[highlightedArtistIndex]);
+                }
+                break;
+            case "Escape":
+                setShowArtistDropdown(false);
+                setHighlightedArtistIndex(-1);
+                break;
         }
     };
 
-    // Close dropdowns when clicking outside
+    const handleAlbumKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!showAlbumDropdown || albumSearchResults.length === 0) return;
+
+        switch (e.key) {
+            case "ArrowDown":
+                e.preventDefault();
+                setHighlightedAlbumIndex(prev => 
+                    prev < albumSearchResults.length - 1 ? prev + 1 : 0
+                );
+                break;
+            case "ArrowUp":
+                e.preventDefault();
+                setHighlightedAlbumIndex(prev => 
+                    prev > 0 ? prev - 1 : albumSearchResults.length - 1
+                );
+                break;
+            case "Enter":
+                e.preventDefault();
+                if (highlightedAlbumIndex >= 0) {
+                    handleAlbumSelect(albumSearchResults[highlightedAlbumIndex]);
+                }
+                break;
+            case "Escape":
+                setShowAlbumDropdown(false);
+                setHighlightedAlbumIndex(-1);
+                break;
+        }
+    };
+
+    // Click outside to close dropdowns
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (
-                artistDropdownRef.current &&
-                !artistDropdownRef.current.contains(event.target as Node)
-            ) {
+            const target = event.target as Element;
+            if (!target.closest('[data-dropdown]')) {
                 setShowArtistDropdown(false);
-            }
-            if (
-                albumDropdownRef.current &&
-                !albumDropdownRef.current.contains(event.target as Node)
-            ) {
                 setShowAlbumDropdown(false);
+                setHighlightedArtistIndex(-1);
+                setHighlightedAlbumIndex(-1);
             }
         };
 
         document.addEventListener("mousedown", handleClickOutside);
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     return (
@@ -299,15 +337,15 @@ export default function Form() {
                     >
                         Artist
                     </label>
-                    <div className="relative" ref={artistDropdownRef}>
+                    <div className="relative" data-dropdown>
                         <input
-                            ref={artistInputRef}
                             id="artist"
                             name="artist"
                             type="text"
                             placeholder="Search for artist..."
                             value={artistQuery}
                             onChange={handleArtistInputChange}
+                            onKeyDown={handleArtistKeyDown}
                             className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                             aria-describedby="artist-error"
                             autoComplete="off"
@@ -317,34 +355,27 @@ export default function Form() {
                                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
                             </div>
                         )}
-                        {showArtistDropdown &&
-                            artistSearchResults.length > 0 && (
-                                <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
-                                    {artistSearchResults.map((artist) => (
-                                        <div
-                                            key={artist.id}
-                                            className="cursor-pointer px-3 py-2 text-sm hover:bg-gray-100"
-                                            onClick={() =>
-                                                handleArtistSelect(artist)
-                                            }
-                                        >
-                                            <div className="font-medium">
-                                                {artist.name}
-                                            </div>
-                                            {artist.beginArea && (
-                                                <div className="text-gray-600">
-                                                    {artist.beginArea}
-                                                </div>
-                                            )}
-                                            {artist.country && (
-                                                <div className="text-xs text-gray-500">
-                                                    {artist.country}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                        {showArtistDropdown && artistSearchResults.length > 0 && (
+                            <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+                                {artistSearchResults.map((artist, index) => (
+                                    <div
+                                        key={artist.id}
+                                        className={`cursor-pointer px-3 py-2 text-sm hover:bg-gray-100 ${
+                                            index === highlightedArtistIndex ? "bg-blue-100" : ""
+                                        }`}
+                                        onClick={() => handleArtistSelect(artist)}
+                                    >
+                                        <div className="font-medium">{artist.name}</div>
+                                        {artist.beginArea && (
+                                            <div className="text-gray-600">{artist.beginArea}</div>
+                                        )}
+                                        {artist.country && (
+                                            <div className="text-xs text-gray-500">{artist.country}</div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                     <div
                         id="artist-error"
@@ -371,9 +402,8 @@ export default function Form() {
                     >
                         Album
                     </label>
-                    <div className="relative" ref={albumDropdownRef}>
+                    <div className="relative" data-dropdown>
                         <input
-                            ref={albumInputRef}
                             id="album"
                             name="album"
                             type="text"
@@ -384,7 +414,7 @@ export default function Form() {
                             }
                             value={albumQuery}
                             onChange={handleAlbumInputChange}
-                            onClick={handleAlbumInputClick}
+                            onKeyDown={handleAlbumKeyDown}
                             className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                             aria-describedby="album-error"
                             autoComplete="off"
@@ -397,22 +427,18 @@ export default function Form() {
                         )}
                         {showAlbumDropdown && albumSearchResults.length > 0 && (
                             <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
-                                {albumSearchResults.map((album) => (
+                                {albumSearchResults.map((album, index) => (
                                     <div
                                         key={album.id}
-                                        className="cursor-pointer px-3 py-2 text-sm hover:bg-gray-100"
+                                        className={`cursor-pointer px-3 py-2 text-sm hover:bg-gray-100 ${
+                                            index === highlightedAlbumIndex ? "bg-blue-100" : ""
+                                        }`}
                                         onClick={() => handleAlbumSelect(album)}
                                     >
-                                        <div className="font-medium">
-                                            {album.album}
-                                        </div>
-                                        <div className="text-gray-600">
-                                            {album.artist}
-                                        </div>
+                                        <div className="font-medium">{album.album}</div>
+                                        <div className="text-gray-600">{album.artist}</div>
                                         {album.date && (
-                                            <div className="text-xs text-gray-500">
-                                                {album.date}
-                                            </div>
+                                            <div className="text-xs text-gray-500">{album.date}</div>
                                         )}
                                     </div>
                                 ))}
