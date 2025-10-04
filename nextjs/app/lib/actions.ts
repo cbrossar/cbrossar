@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { searchAlbum } from "./spotify";
 
-const FormSchema = z.object({
+const BaseFormSchema = z.object({
     id: z.string(),
     album: z.string(),
     artist: z.string(),
@@ -20,11 +20,25 @@ const FormSchema = z.object({
     review: z.string(),
     name: z.string(),
     spotify_album_id: z.string(),
-    image_file: z.instanceof(File),
+    image_file: z.union([z.instanceof(File), z.literal(""), z.null()]).optional(),
+    image_url: z.string().optional(),
 });
 
-const CreateMusicReview = FormSchema.omit({ id: true, spotify_album_id: true });
-const UpdateMusicReview = FormSchema.omit({ id: true });
+const CreateMusicReview = BaseFormSchema.omit({ id: true, spotify_album_id: true }).refine((data) => {
+    // At least one of image_file or image_url must be provided
+    return data.image_file || data.image_url;
+}, {
+    message: "Either image_file or image_url must be provided",
+    path: ["image_file", "image_url"],
+});
+
+const UpdateMusicReview = BaseFormSchema.omit({ id: true }).refine((data) => {
+    // At least one of image_file or image_url must be provided
+    return data.image_file || data.image_url;
+}, {
+    message: "Either image_file or image_url must be provided",
+    path: ["image_file", "image_url"],
+});
 
 export type State = {
     errors?: {
@@ -34,6 +48,7 @@ export type State = {
 };
 
 export async function createMusicReview(prevState: State, formData: FormData) {
+    console.log("hi");
     const validatedFields = CreateMusicReview.safeParse({
         album: formData.get("album"),
         artist: formData.get("artist"),
@@ -41,6 +56,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
         review: formData.get("review"),
         name: formData.get("name"),
         image_file: formData.get("image_file"),
+        image_url: formData.get("image_url"),
     });
 
     // If form validation fails, return errors early. Otherwise, continue.
@@ -52,22 +68,25 @@ export async function createMusicReview(prevState: State, formData: FormData) {
     }
 
     // Prepare data for insertion into the database
-    const { album, artist, rating, review, name, image_file } =
+    const { album, artist, rating, review, name, image_file, image_url } =
         validatedFields.data;
 
-    // Upload the image to the Blob Storage
-    if (image_file.size === 0) {
-        return {
-            message: "Image File Missing. Failed to Create Music Review.",
-        };
-    }
+    let final_image_url = image_url;
 
-    const image_url = await uploadFile(image_file);
+    console.log(image_file);
+    console.log(image_url);
 
-    if (!image_url) {
-        return {
-            message: "Image Upload Failed. Failed to Create Music Review.",
-        };
+    // If image_file is provided, upload it and use the resulting URL
+    if (image_file && image_file instanceof File && image_file.size > 0) {
+        const uploaded_url = await uploadFile(image_file);
+
+        if (!uploaded_url) {
+            return {
+                message: "Image Upload Failed. Failed to Create Music Review.",
+            };
+        }
+        
+        final_image_url = uploaded_url;
     }
 
     // Get spotify album id
@@ -95,7 +114,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
 
         const result = await sql`
             INSERT INTO music_reviews (album, artist, rating, review, name, spotify_album_id, image_url)
-            VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${spotify_album_id}, ${image_url})
+            VALUES (${album}, ${artist}, ${rating}, ${review}, ${name}, ${spotify_album_id}, ${final_image_url})
             RETURNING id
         `;
 
@@ -142,6 +161,7 @@ export async function updateMusicReview(
         name: formData.get("name"),
         spotify_album_id: formData.get("spotify_album_id"),
         image_file: formData.get("image_file"),
+        image_url: formData.get("image_url"),
     });
 
     if (!validatedFields.success) {
@@ -159,34 +179,30 @@ export async function updateMusicReview(
         name,
         spotify_album_id,
         image_file,
+        image_url,
     } = validatedFields.data;
 
-    let image_url = null;
+    let final_image_url = image_url;
 
-    if (image_file.size > 0) {
-        image_url = await uploadFile(image_file);
+    // If image_file is provided, upload it and use the resulting URL
+    if (image_file && image_file instanceof File && image_file.size > 0) {
+        const uploaded_url = await uploadFile(image_file);
 
-        if (!image_url) {
+        if (!uploaded_url) {
             return {
                 message: "Image Upload Failed. Failed to Update Music Review.",
             };
         }
+        
+        final_image_url = uploaded_url;
     }
 
     try {
-        if (image_url === null) {
-            await sql`
-                UPDATE music_reviews
-                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}, spotify_album_id = ${spotify_album_id}
-                WHERE id = ${id}
-            `;
-        } else {
-            await sql`
-                UPDATE music_reviews
-                SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}, spotify_album_id = ${spotify_album_id}, image_url = ${image_url}
-                WHERE id = ${id}
-            `;
-        }
+        await sql`
+            UPDATE music_reviews
+            SET album = ${album}, artist = ${artist}, rating = ${rating}, review = ${review}, name = ${name}, spotify_album_id = ${spotify_album_id}, image_url = ${final_image_url}
+            WHERE id = ${id}
+        `;
     } catch (error) {
         return {
             message: "Database Error: Failed to Update Music Review.",

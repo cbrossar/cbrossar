@@ -364,26 +364,8 @@ export default function Form() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Handle form submission with cover art
-    const handleSubmit = async (formData: FormData) => {
-        // If user chose to use cover art, download it and add as file
-        if (useCoverArt && coverArtUrl) {
-            try {
-                const response = await fetch(coverArtUrl);
-                const blob = await response.blob();
-                const file = new File([blob], 'cover-art.jpg', { type: 'image/jpeg' });
-                formData.set('image_file', file);
-            } catch (error) {
-                console.error('Failed to download cover art:', error);
-                // Fall back to regular form submission
-            }
-        }
-        
-        dispatch(formData);
-    };
-
     return (
-        <form action={handleSubmit}>
+        <form action={dispatch}>
             <div className="rounded-md bg-gray-50 p-4 md:p-6">
                 {/* Artist name */}
                 <div className="mb-4">
@@ -612,8 +594,11 @@ export default function Form() {
                 {/* Cover Art */}
                 <div className="mb-4">
                     <label className="mb-2 block text-sm font-medium">
-                        Cover Art (Square - 1:1 Aspect Ratio)
+                        Album Cover Image (Square - 1:1 Aspect Ratio)
                     </label>
+                    <p className="mb-3 text-sm text-gray-600">
+                        Upload an image file or use the cover art found from MusicBrainz.
+                    </p>
                     
                     {/* Cover art preview */}
                     {coverArtUrl && (
@@ -654,6 +639,12 @@ export default function Form() {
 
                     {/* File upload */}
                     <div className={coverArtUrl && useCoverArt ? "opacity-50" : ""}>
+                        <label
+                            htmlFor="image_file"
+                            className="mb-2 block text-sm font-medium"
+                        >
+                            Upload Image File
+                        </label>
                         <input
                             id="image_file"
                             name="image_file"
@@ -669,6 +660,15 @@ export default function Form() {
                             </p>
                         )}
                     </div>
+
+                    {/* Hidden field for cover art URL */}
+                    {coverArtUrl && useCoverArt && (
+                        <input
+                            type="hidden"
+                            name="image_url"
+                            value={coverArtUrl}
+                        />
+                    )}
                     
                     <div
                         id="image_file-error"
