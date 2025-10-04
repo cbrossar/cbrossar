@@ -131,12 +131,18 @@ export default function Form() {
             if (response.ok) {
                 const data = await response.json();
                 setCoverArtUrl(data.coverArtUrl);
+                // Automatically select the cover art if it's found
+                if (data.coverArtUrl) {
+                    setUseCoverArt(true);
+                }
             } else {
                 setCoverArtUrl(null);
+                setUseCoverArt(false);
             }
         } catch (error) {
             console.error("Error fetching cover art:", error);
             setCoverArtUrl(null);
+            setUseCoverArt(false);
         } finally {
             setIsLoadingCoverArt(false);
         }
@@ -242,6 +248,7 @@ export default function Form() {
             fetchCoverArt(album.releaseGroupId);
         } else {
             setCoverArtUrl(null);
+            setUseCoverArt(false);
         }
     };
 
