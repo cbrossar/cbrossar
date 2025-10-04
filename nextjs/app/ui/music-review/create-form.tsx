@@ -550,7 +550,7 @@ export default function Form() {
                     )}
 
                     {/* File upload - only show if not using MusicBrainz cover art */}
-                    {!(coverArtUrl && useCoverArt) && (
+                    {selectedAlbum && !(coverArtUrl && useCoverArt) && (
                         <div>
                             <label
                                 htmlFor="image_file"
