@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
             const params = new URLSearchParams({
                 query: searchQuery,
                 fmt: "json",
-                limit: (artist || artistId) && !query ? "25" : "10", // Show more albums when browsing all from an artist
+                limit: "100", // Show more albums when browsing all from an artist
                 inc: "artist-credits",
             });
 
