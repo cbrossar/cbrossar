@@ -4,6 +4,7 @@ import { createMusicReview } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
 import { Button } from "@/app/ui/button";
 import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 
 interface AlbumSearchResult {
     id: string;
@@ -56,6 +57,11 @@ export default function Form() {
         useState<AlbumSearchResult | null>(null);
     const [isSearchingAlbum, setIsSearchingAlbum] = useState(false);
     const [highlightedAlbumIndex, setHighlightedAlbumIndex] = useState(-1);
+
+    // Cover art state
+    const [coverArtUrl, setCoverArtUrl] = useState<string | null>(null);
+    const [isLoadingCoverArt, setIsLoadingCoverArt] = useState(false);
+    const [useCoverArt, setUseCoverArt] = useState(false);
 
     // Search functions
     const searchArtists = useCallback(async (query: string) => {
@@ -116,6 +122,25 @@ export default function Form() {
         },
         [],
     );
+
+    // Fetch cover art for selected album
+    const fetchCoverArt = useCallback(async (releaseId: string) => {
+        setIsLoadingCoverArt(true);
+        try {
+            const response = await fetch(`/api/musicbrainz/cover-art?releaseGroupId=${encodeURIComponent(releaseId)}`);
+            if (response.ok) {
+                const data = await response.json();
+                setCoverArtUrl(data.coverArtUrl);
+            } else {
+                setCoverArtUrl(null);
+            }
+        } catch (error) {
+            console.error("Error fetching cover art:", error);
+            setCoverArtUrl(null);
+        } finally {
+            setIsLoadingCoverArt(false);
+        }
+    }, []);
 
     // Client-side album filtering
     const filterAlbums = useCallback(
@@ -194,6 +219,8 @@ export default function Form() {
         setAlbumQuery("");
         setShowAlbumDropdown(false);
         setHighlightedAlbumIndex(-1);
+        setCoverArtUrl(null);
+        setUseCoverArt(false);
         const albumInput = document.getElementById("album") as HTMLInputElement;
         if (albumInput) {
             albumInput.value = "";
@@ -209,6 +236,13 @@ export default function Form() {
         setAlbumQuery(album.album);
         setShowAlbumDropdown(false);
         setHighlightedAlbumIndex(-1);
+
+        // Fetch cover art if we have a release group ID
+        if (album.releaseGroupId) {
+            fetchCoverArt(album.releaseGroupId);
+        } else {
+            setCoverArtUrl(null);
+        }
     };
 
     // Handle artist input change
@@ -225,6 +259,8 @@ export default function Form() {
             setSelectedAlbum(null);
             setAlbumQuery("");
             setShowAlbumDropdown(false);
+            setCoverArtUrl(null);
+            setUseCoverArt(false);
             setAllArtistAlbums([]);
             setAlbumSearchResults([]);
             const albumInput = document.getElementById("album") as HTMLInputElement;
@@ -248,6 +284,8 @@ export default function Form() {
         // Clear selection if user is typing
         if (selectedAlbum && value !== selectedAlbum.album) {
             setSelectedAlbum(null);
+            setCoverArtUrl(null);
+            setUseCoverArt(false);
         }
     };
 
@@ -326,8 +364,26 @@ export default function Form() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    // Handle form submission with cover art
+    const handleSubmit = async (formData: FormData) => {
+        // If user chose to use cover art, download it and add as file
+        if (useCoverArt && coverArtUrl) {
+            try {
+                const response = await fetch(coverArtUrl);
+                const blob = await response.blob();
+                const file = new File([blob], 'cover-art.jpg', { type: 'image/jpeg' });
+                formData.set('image_file', file);
+            } catch (error) {
+                console.error('Failed to download cover art:', error);
+                // Fall back to regular form submission
+            }
+        }
+        
+        dispatch(formData);
+    };
+
     return (
-        <form action={dispatch}>
+        <form action={handleSubmit}>
             <div className="rounded-md bg-gray-50 p-4 md:p-6">
                 {/* Artist name */}
                 <div className="mb-4">
@@ -553,21 +609,67 @@ export default function Form() {
                     </div>
                 </div>
 
-                {/* Image file */}
+                {/* Cover Art */}
                 <div className="mb-4">
-                    <label
-                        htmlFor="image_file"
-                        className="mb-2 block text-sm font-medium"
-                    >
-                        Image (Square - 1:1 Aspect Ratio)
+                    <label className="mb-2 block text-sm font-medium">
+                        Cover Art (Square - 1:1 Aspect Ratio)
                     </label>
-                    <input
-                        id="image_file"
-                        name="image_file"
-                        type="file"
-                        className="block w-full rounded-md border border-gray-200 p-2 text-sm"
-                        aria-describedby="image_file-error"
-                    />
+                    
+                    {/* Cover art preview */}
+                    {coverArtUrl && (
+                        <div className="mb-4">
+                            <div className="flex items-center gap-4">
+                                <Image
+                                    src={coverArtUrl}
+                                    alt={`${selectedAlbum?.album} cover art`}
+                                    width={96}
+                                    height={96}
+                                    className="rounded-md object-cover border border-gray-200"
+                                />
+                                <div className="flex-1">
+                                    <p className="text-sm text-gray-600 mb-2">
+                                        Cover art found for this album
+                                    </p>
+                                    <label className="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={useCoverArt}
+                                            onChange={(e) => setUseCoverArt(e.target.checked)}
+                                            className="rounded border-gray-300"
+                                        />
+                                        <span className="text-sm">Use this cover art</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Loading state */}
+                    {isLoadingCoverArt && (
+                        <div className="mb-4 flex items-center gap-2 text-sm text-gray-600">
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+                            Loading cover art...
+                        </div>
+                    )}
+
+                    {/* File upload */}
+                    <div className={coverArtUrl && useCoverArt ? "opacity-50" : ""}>
+                        <input
+                            id="image_file"
+                            name="image_file"
+                            type="file"
+                            accept="image/*"
+                            disabled={!!(coverArtUrl && useCoverArt)}
+                            className="block w-full rounded-md border border-gray-200 p-2 text-sm"
+                            aria-describedby="image_file-error"
+                        />
+                        {coverArtUrl && useCoverArt && (
+                            <p className="mt-1 text-xs text-gray-500">
+                                Using cover art from MusicBrainz
+                            </p>
+                        )}
+                    </div>
+                    
                     <div
                         id="image_file-error"
                         aria-live="polite"
