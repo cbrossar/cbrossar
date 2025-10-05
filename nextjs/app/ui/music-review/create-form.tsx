@@ -109,7 +109,21 @@ export default function Form() {
                             !album.secondaryTypes ||
                             album.secondaryTypes.length === 0,
                     );
-                    setAlbumSearchResults(mainAlbums);
+                    
+                    // Sort by reverse release date (newest first)
+                    const sortedAlbums = mainAlbums.sort((a: AlbumSearchResult, b: AlbumSearchResult) => {
+                        // Handle albums without dates - put them at the end
+                        if (!a.date && !b.date) return 0;
+                        if (!a.date) return 1;
+                        if (!b.date) return -1;
+                        
+                        // Parse dates and compare (newest first)
+                        const dateA = new Date(a.date);
+                        const dateB = new Date(b.date);
+                        return dateB.getTime() - dateA.getTime();
+                    });
+                    
+                    setAlbumSearchResults(sortedAlbums);
                     // Don't show dropdown automatically - let user click album field
                 }
             } catch (error) {
@@ -157,15 +171,30 @@ export default function Form() {
                     !album.secondaryTypes || album.secondaryTypes.length === 0,
             );
 
+            // Sort albums by reverse release date (newest first)
+            const sortAlbums = (albums: AlbumSearchResult[]) => {
+                return albums.sort((a: AlbumSearchResult, b: AlbumSearchResult) => {
+                    // Handle albums without dates - put them at the end
+                    if (!a.date && !b.date) return 0;
+                    if (!a.date) return 1;
+                    if (!b.date) return -1;
+                    
+                    // Parse dates and compare (newest first)
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateB.getTime() - dateA.getTime();
+                });
+            };
+
             if (!query.trim()) {
                 // Show all main albums if no query
-                setAlbumSearchResults(mainAlbums);
+                setAlbumSearchResults(sortAlbums(mainAlbums));
             } else {
                 // Filter main albums by query
                 const filtered = mainAlbums.filter((album) =>
                     album.album.toLowerCase().includes(query.toLowerCase()),
                 );
-                setAlbumSearchResults(filtered);
+                setAlbumSearchResults(sortAlbums(filtered));
             }
             setShowAlbumDropdown(true);
         },
