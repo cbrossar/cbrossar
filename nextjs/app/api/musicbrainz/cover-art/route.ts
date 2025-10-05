@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
     try {
         // First, get releases from the release group
-        const releaseUrl = `https://musicbrainz.org/ws/2/release?release-group=${releaseGroupId}&fmt=json&limit=1`;
+        const releaseUrl = `https://musicbrainz.org/ws/2/release?release-group=${releaseGroupId}&fmt=json&limit=100&inc=media`;
         const releaseResponse = await fetch(releaseUrl, {
             headers: {
                 'User-Agent': 'cbrossar/1.0 (cole.brossart@gmail.com)'
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 
         const releaseData = await releaseResponse.json();
         const releases = releaseData.releases || [];
-        
+
         if (releases.length === 0) {
             return NextResponse.json({ 
                 coverArtUrl: null,
@@ -34,7 +34,18 @@ export async function GET(request: NextRequest) {
             });
         }
 
-        const releaseId = releases[0].id;
+        // Prioritize Digital Media format releases with cover art
+        const digitalMediaRelease = releases.find(
+            (r: any) =>
+                r.media?.some((media: any) => media.format === 'Digital Media') &&
+                r['cover-art-archive']?.front &&
+                r['cover-art-archive']?.artwork
+        );
+
+        // Use Digital Media release if found, otherwise fall back to the first release
+        const selectedRelease = digitalMediaRelease || releases[0];
+        const releaseId = selectedRelease.id;
+
 
         // Now try to get cover art using the release ID
         const caaUrl = `https://coverartarchive.org/release/${releaseId}`;
@@ -46,6 +57,7 @@ export async function GET(request: NextRequest) {
 
         if (response.ok) {
             const data = await response.json();
+
             const images = data.images || [];
 
             // Look for front cover
@@ -67,6 +79,7 @@ export async function GET(request: NextRequest) {
             }
         }
 
+        
         // Fallback: try direct front cover URL
         const frontUrl = `https://coverartarchive.org/release/${releaseId}/front`;
         const frontResponse = await fetch(frontUrl, { method: 'HEAD' });
