@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
             // Search for artists
             const baseUrl = "https://musicbrainz.org/ws/2/artist";
             const params = new URLSearchParams({
-                query: `artist:${query}*`,
+                query: `artist:${query}`,
                 fmt: "json",
                 limit: "10",
             });
@@ -101,12 +101,12 @@ export async function GET(request: NextRequest) {
                     ? `arid:${artistId}`
                     : `artist:${artist}`;
                 if (query) {
-                    searchQuery = `${artistFilter} AND releasegroup:${query}* AND primarytype:Album`;
+                    searchQuery = `${artistFilter} AND releasegroup:${query} AND primarytype:Album`;
                 } else {
                     searchQuery = `${artistFilter} AND primarytype:Album`;
                 }
             } else {
-                searchQuery = `releasegroup:${query}* AND primarytype:Album`;
+                searchQuery = `releasegroup:${query} AND primarytype:Album`;
             }
 
             const params = new URLSearchParams({
