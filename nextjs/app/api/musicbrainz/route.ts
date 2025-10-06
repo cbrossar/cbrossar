@@ -82,7 +82,12 @@ export async function GET(request: NextRequest) {
                     beginArea: artist["begin-area"]?.name,
                     lifeSpan: artist["life-span"],
                 }))
-                .filter((artist) => artist.country); // Filter out artists without a country
+                .filter((artist) => {
+                    // Filter out artists without any geographic information
+                    // This is less strict than requiring beginArea specifically
+                    return artist.country || artist.beginArea;
+                });
+
 
             return NextResponse.json({ artists });
         } else {
