@@ -73,14 +73,16 @@ export async function GET(request: NextRequest) {
 
             const data: MusicBrainzArtistResponse = await response.json();
 
-            const artists = data.artists.map((artist) => ({
-                id: artist.id,
-                name: artist.name,
-                sortName: artist["sort-name"],
-                country: artist.country,
-                beginArea: artist["begin-area"]?.name,
-                lifeSpan: artist["life-span"],
-            }));
+            const artists = data.artists
+                .map((artist) => ({
+                    id: artist.id,
+                    name: artist.name,
+                    sortName: artist["sort-name"],
+                    country: artist.country,
+                    beginArea: artist["begin-area"]?.name,
+                    lifeSpan: artist["life-span"],
+                }))
+                .filter((artist) => artist.country); // Filter out artists without a country
 
             return NextResponse.json({ artists });
         } else {
