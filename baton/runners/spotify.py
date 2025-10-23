@@ -53,11 +53,15 @@ def get_new_releases(artists, token):
             if r["id"] in existing_release_ids or r["id"] in new_release_ids:
                 continue
 
-            release_date = (
-                datetime.date(int(r["release_date"]), 1, 1)
-                if r.get("release_date_precision") == "year"
-                else r["release_date"]
-            )
+            # Parse release_date based on precision
+            precision = r.get("release_date_precision")
+            if precision == "year":
+                release_date = datetime.date(int(r["release_date"]), 1, 1)
+            elif precision == "month":
+                year, month = r["release_date"].split("-")
+                release_date = datetime.date(int(year), int(month), 1)
+            else:  # day precision
+                release_date = datetime.date.fromisoformat(r["release_date"])
 
             spotify_release = SpotifyReleases(
                 id=r["id"],
