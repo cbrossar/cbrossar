@@ -82,7 +82,7 @@ def get_new_releases(artists, token):
             if spotify_release.release_date <= datetime.date.today() + datetime.timedelta(days=30):
                 release_text = (
                     f"released today"
-                    if spotify_release.release_date == str(datetime.date.today())
+                    if spotify_release.release_date == datetime.date.today()
                     else f"releases on {spotify_release.release_date}"
                 )
                 music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
