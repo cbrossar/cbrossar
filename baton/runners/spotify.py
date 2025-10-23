@@ -17,8 +17,9 @@ NEW_RELEASES_PLAYLIST_ID = "5JFQVM9ZFSd3OAKnmNEwg0"
 def run_spotify():
     logger.info("Running Spotify runner")
     start_time = datetime.datetime.now()
+    import pdb; pdb.set_trace()
     token = get_access_token()
-
+    import pdb; pdb.set_trace()
     artists = get_followed_artists(token)
     logger.info(f"Found {len(artists)} followed artists")
 

@@ -3,6 +3,7 @@ import requests
 from loguru import logger
 from enum import Enum
 from typing import Union
+import html
 
 # Telegram Bot Configuration
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -45,6 +46,13 @@ def send_telegram_message(message: str, channel: Channel = Channel.SPURS) -> boo
         return False
 
     try:
+        # Escape HTML special characters while preserving allowed tags
+        message = escape_html_except_tags(message)
+        
+        # Truncate message if too long (Telegram limit is 4096 characters)
+        if len(message) > 4096:
+            message = message[:4093] + "..."
+        
         url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
         data = {
             "chat_id": channel_id,
@@ -66,3 +74,33 @@ def send_telegram_message(message: str, channel: Channel = Channel.SPURS) -> boo
             f"Unexpected error sending Telegram message to {channel.value} channel: {e}"
         )
         return False
+
+
+def escape_html_except_tags(text: str) -> str:
+    """
+    Escape HTML special characters but preserve allowed Telegram HTML tags.
+    Telegram supports: <b>, <i>, <u>, <s>, <a>, <code>, <pre>
+    """
+    # First, escape all HTML
+    escaped = html.escape(text)
+    
+    # Then unescape the allowed tags
+    allowed_tags = [
+        ('&lt;b&gt;', '<b>'),
+        ('&lt;/b&gt;', '</b>'),
+        ('&lt;i&gt;', '<i>'),
+        ('&lt;/i&gt;', '</i>'),
+        ('&lt;u&gt;', '<u>'),
+        ('&lt;/u&gt;', '</u>'),
+        ('&lt;s&gt;', '<s>'),
+        ('&lt;/s&gt;', '</s>'),
+        ('&lt;code&gt;', '<code>'),
+        ('&lt;/code&gt;', '</code>'),
+        ('&lt;pre&gt;', '<pre>'),
+        ('&lt;/pre&gt;', '</pre>'),
+    ]
+    
+    for escaped_tag, original_tag in allowed_tags:
+        escaped = escaped.replace(escaped_tag, original_tag)
+    
+    return escaped
