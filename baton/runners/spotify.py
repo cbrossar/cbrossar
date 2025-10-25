@@ -274,89 +274,89 @@ def get_cover_art_url(release_id: str) -> Optional[str]:
 
 
 def get_musicbrainz_upcoming_release_groups(artist_name: str):
-    try:
-        base_url = "https://musicbrainz.org/ws/2/"
-        headers = {"User-Agent": "cbrossar/1.0 ( cole.brossart@gmail.com )"}
+    base_url = "https://musicbrainz.org/ws/2/"
+    headers = {"User-Agent": "cbrossar/1.0 ( cole.brossart@gmail.com )"}
 
-        today = datetime.date.today()
-        existing_release_ids = set()
-        with Session() as session:
-            existing_release_ids = {
-                release.id for release in session.query(MusicbrainzReleases).all()
-            }
-        upcoming_releases = []
+    today = datetime.date.today()
+    existing_release_ids = set()
+    with Session() as session:
+        existing_release_ids = {
+            release.id for release in session.query(MusicbrainzReleases).all()
+        }
+    upcoming_releases = []
 
-        limit = 100
-        offset = 0
+    limit = 100
+    offset = 0
 
-        while True:
-            params = {
-                "query": f'artist:"{artist_name}"',
-                "fmt": "json",
-                "limit": limit,
-                "offset": offset,
-            }
+    while True:
+        params = {
+            "query": f'artist:"{artist_name}"',
+            "fmt": "json",
+            "limit": limit,
+            "offset": offset,
+        }
 
+        try:
             response = requests.get(
                 f"{base_url}release-group", params=params, headers=headers
             )
             response.raise_for_status()
             data = response.json()
+        except Exception as e:
+            logger.error(f"Error getting musicbrainz upcoming release groups for artist {artist_name}: {e}")
+            break
 
-            release_groups = data.get("release-groups", [])
-            if not release_groups:
-                break
+        release_groups = data.get("release-groups", [])
+        if not release_groups:
+            break
 
-            for rg in release_groups:
-                if rg.get("id") in existing_release_ids:
-                    continue
+        for rg in release_groups:
+            if rg.get("id") in existing_release_ids:
+                continue
 
-                title = rg.get("title")
-                release_date = rg.get("first-release-date")
+            title = rg.get("title")
+            release_date = rg.get("first-release-date")
 
-                if release_date:
-                    try:
-                        parsed_date = datetime.date.fromisoformat(release_date)
-                        if parsed_date > today:
-                            # Get cover art URL for this release
-                            image_url = None
-                            releases = rg.get("releases")
-                            index = 0
-                            if releases:
-                                while image_url is None and index < len(releases):
-                                    release_id = releases[index].get("id")
-                                    image_url = get_cover_art_url(release_id)
-                                    index += 1
+            if release_date:
+                try:
+                    parsed_date = datetime.date.fromisoformat(release_date)
+                    if parsed_date > today:
+                        # Get cover art URL for this release
+                        image_url = None
+                        releases = rg.get("releases")
+                        index = 0
+                        if releases:
+                            while image_url is None and index < len(releases):
+                                release_id = releases[index].get("id")
+                                image_url = get_cover_art_url(release_id)
+                                index += 1
 
-                            upcoming_releases.append(
-                                MusicbrainzReleases(
-                                    title=title,
-                                    release_date=parsed_date.isoformat(),
-                                    id=rg.get("id"),
-                                    primary_type=rg.get("primary-type"),
-                                    artist_name=artist_name,
-                                    image_url=image_url,
-                                )
+                        upcoming_releases.append(
+                            MusicbrainzReleases(
+                                title=title,
+                                release_date=parsed_date.isoformat(),
+                                id=rg.get("id"),
+                                primary_type=rg.get("primary-type"),
+                                artist_name=artist_name,
+                                image_url=image_url,
                             )
-                    except Exception:
-                        pass
+                        )
+                except Exception:
+                    pass
 
-            # pagination
-            offset += limit
-            if offset >= data.get("release-group-count", 0):
-                break
+        # pagination
+        offset += limit
+        if offset >= data.get("release-group-count", 0):
+            break
 
-        if upcoming_releases:
-            with Session.begin() as session:
-                logger.info(f"Adding {len(upcoming_releases)} upcoming releases")
-                session.bulk_save_objects(upcoming_releases)
+    if upcoming_releases:
+        with Session.begin() as session:
+            logger.info(f"Adding {len(upcoming_releases)} upcoming releases")
+            session.bulk_save_objects(upcoming_releases)
 
-            for release in upcoming_releases:
-                music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
-                message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
-                send_telegram_message(message, Channel.SPOTIFY)
+        for release in upcoming_releases:
+            music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
+            message = f"{random.choice(music_emojis)} Musicbrainz Upcoming Release\n🎵 {release.title} by {release.artist_name} releases on {release.release_date}"
+            send_telegram_message(message, Channel.SPOTIFY)
 
-        return upcoming_releases
-    except Exception as e:
-        logger.error(f"Error getting musicbrainz upcoming release groups for artist {artist_name}: {e}")
-        return []
+    return upcoming_releases
