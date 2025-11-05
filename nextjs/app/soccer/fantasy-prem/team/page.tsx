@@ -10,7 +10,7 @@ import Image from "next/image";
 import { maximizeFantasyTeam } from "./utils";
 import styles from "./styles.module.css"; // Import the CSS module for styles
 import SettingsModal from "./settings-modal"; // Import the modal component
-import { FantasySeason, FantasyTeam } from "@/app/lib/definitions";
+import { FantasyTeam } from "@/app/lib/definitions";
 
 export default async function Page({
     searchParams,
@@ -30,7 +30,7 @@ export default async function Page({
 
     const isNowCost = searchParams?.isNowCost !== "false";
 
-    const pointsView = searchParams?.pointsView || "current";
+    const pointsView = searchParams?.pointsView || "last5";
 
     const numGoalies = 4;
     const numDefenders = 8;
