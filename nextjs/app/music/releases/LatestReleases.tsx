@@ -6,18 +6,20 @@ import ReleaseTypeSelect from "./ReleaseTypeSelect";
 
 interface LatestReleasesProps {
     releases: SpotifyRelease[];
+    className?: string;
+    gridClassName?: string;
 }
 
-export default function LatestReleases({ releases }: LatestReleasesProps) {
+export default function LatestReleases({ releases, className = "", gridClassName = "" }: LatestReleasesProps) {
     return (
-        <div className="w-full lg:w-2/3 lg:pr-6 order-2 lg:order-1">
+        <div className={`w-full lg:w-2/3 lg:pr-6 order-2 lg:order-1 ${className}`}>
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">
                     Latest Releases
                 </h2>
                 <ReleaseTypeSelect />
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className={`grid grid-cols-1 lg:grid-cols-3 gap-4 ${gridClassName}`}>
                 {releases.slice(0, 15).map((release) => (
                     <Link
                         key={release.id}
