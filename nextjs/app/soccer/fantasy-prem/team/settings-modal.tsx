@@ -27,7 +27,7 @@ export default function SettingsModal() {
     const [formation, setFormation] = useState(formationParam);
 
     const pointsViewParam =
-        (searchParams.get("pointsView") as PointsView) || "current";
+        (searchParams.get("pointsView") as PointsView) || "last5";
     const [pointsView, setPointsView] = useState<PointsView>(pointsViewParam);
 
     const isNowCostParam = searchParams.get("isNowCost") !== "false";
