@@ -73,7 +73,11 @@ def get_fpl_teams(season_id):
 
 def get_players(season_id):
     with Session() as session:
-        players = session.query(FantasyPlayers).filter(FantasyPlayers.season_id == season_id).all()
+        players = (
+            session.query(FantasyPlayers)
+            .filter(FantasyPlayers.season_id == season_id)
+            .all()
+        )
         return players
 
 

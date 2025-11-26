@@ -304,7 +304,9 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
             response.raise_for_status()
             data = response.json()
         except Exception as e:
-            logger.error(f"Error getting musicbrainz upcoming release groups for artist {artist_name}: {e}")
+            logger.error(
+                f"Error getting musicbrainz upcoming release groups for artist {artist_name}: {e}"
+            )
             break
 
         release_groups = data.get("release-groups", [])
@@ -319,9 +321,12 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
             release_date = rg.get("first-release-date")
 
             if release_date:
-                try:                    
+                try:
                     parsed_date = datetime.date.fromisoformat(release_date)
-                    if parsed_date > today and parsed_date < today + datetime.timedelta(days=365 * 10):
+                    if (
+                        parsed_date > today
+                        and parsed_date < today + datetime.timedelta(days=365 * 10)
+                    ):
                         # Get cover art URL for this release
                         image_url = None
                         releases = rg.get("releases")

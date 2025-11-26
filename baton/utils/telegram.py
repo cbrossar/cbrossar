@@ -48,11 +48,11 @@ def send_telegram_message(message: str, channel: Channel = Channel.SPURS) -> boo
     try:
         # Escape HTML special characters while preserving allowed tags
         message = escape_html_except_tags(message)
-        
+
         # Truncate message if too long (Telegram limit is 4096 characters)
         if len(message) > 4096:
             message = message[:4093] + "..."
-        
+
         url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
         data = {
             "chat_id": channel_id,
@@ -83,24 +83,24 @@ def escape_html_except_tags(text: str) -> str:
     """
     # First, escape all HTML
     escaped = html.escape(text)
-    
+
     # Then unescape the allowed tags
     allowed_tags = [
-        ('&lt;b&gt;', '<b>'),
-        ('&lt;/b&gt;', '</b>'),
-        ('&lt;i&gt;', '<i>'),
-        ('&lt;/i&gt;', '</i>'),
-        ('&lt;u&gt;', '<u>'),
-        ('&lt;/u&gt;', '</u>'),
-        ('&lt;s&gt;', '<s>'),
-        ('&lt;/s&gt;', '</s>'),
-        ('&lt;code&gt;', '<code>'),
-        ('&lt;/code&gt;', '</code>'),
-        ('&lt;pre&gt;', '<pre>'),
-        ('&lt;/pre&gt;', '</pre>'),
+        ("&lt;b&gt;", "<b>"),
+        ("&lt;/b&gt;", "</b>"),
+        ("&lt;i&gt;", "<i>"),
+        ("&lt;/i&gt;", "</i>"),
+        ("&lt;u&gt;", "<u>"),
+        ("&lt;/u&gt;", "</u>"),
+        ("&lt;s&gt;", "<s>"),
+        ("&lt;/s&gt;", "</s>"),
+        ("&lt;code&gt;", "<code>"),
+        ("&lt;/code&gt;", "</code>"),
+        ("&lt;pre&gt;", "<pre>"),
+        ("&lt;/pre&gt;", "</pre>"),
     ]
-    
+
     for escaped_tag, original_tag in allowed_tags:
         escaped = escaped.replace(escaped_tag, original_tag)
-    
+
     return escaped
