@@ -63,6 +63,9 @@ def get_new_releases(artists, token):
             else:  # day precision
                 release_date = datetime.date.fromisoformat(r["release_date"])
 
+            if release_date < datetime.date.today() - datetime.timedelta(days=30):
+                continue
+
             spotify_release = SpotifyReleases(
                 id=r["id"],
                 artist_id=artist["id"],
@@ -82,16 +85,14 @@ def get_new_releases(artists, token):
                 f"Saving {spotify_release.name} by {spotify_release.artist_name}"
             )
 
-            # if release date is within 30 days, send telegrammessage
-            if spotify_release.release_date <= datetime.date.today() + datetime.timedelta(days=30):
-                release_text = (
-                    f"released today"
-                    if spotify_release.release_date == datetime.date.today()
-                    else f"releases on {spotify_release.release_date}"
-                )
-                music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
-                message = f"{random.choice(music_emojis)} Spotify Music Drop\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
-                send_telegram_message(message, Channel.SPOTIFY)
+            release_text = (
+                f"released today"
+                if spotify_release.release_date == datetime.date.today()
+                else f"releases on {spotify_release.release_date}"
+            )
+            music_emojis = ["🎺", "🎷", "🎸", "🎻", "🥁", "🪇", "🪗"]
+            message = f"{random.choice(music_emojis)} Spotify Music Drop\n🎵 {spotify_release.name} by {spotify_release.artist_name} {release_text}!\n🎧 Listen: {spotify_release.spotify_url}"
+            send_telegram_message(message, Channel.SPOTIFY)
 
     if new_releases:
         with Session.begin() as session:
@@ -318,9 +319,9 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
             release_date = rg.get("first-release-date")
 
             if release_date:
-                try:
+                try:                    
                     parsed_date = datetime.date.fromisoformat(release_date)
-                    if parsed_date > today:
+                    if parsed_date > today and parsed_date < today + datetime.timedelta(days=365 * 10):
                         # Get cover art URL for this release
                         image_url = None
                         releases = rg.get("releases")

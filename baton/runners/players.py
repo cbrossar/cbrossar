@@ -51,7 +51,7 @@ def run_update_players():
         return True
 
     teams = get_fpl_teams(season.id)
-    players = get_players()
+    players = get_players(season.id)
 
     update_players(data, season, teams, players, my_team)
 
