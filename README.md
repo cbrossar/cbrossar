@@ -1,4 +1,4 @@
-# cbrossar - Personal Website
+# cbrossar
 Personal website and projects
 
 ## nextjs - Frontend
