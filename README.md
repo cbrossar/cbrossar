@@ -1,4 +1,5 @@
 # cbrossar - Personal Website
+Personal website and projects
 
 ## nextjs - Frontend
 The Frontend is built with Next.js showcaseing music reviews, fantasy premier league stats, film photography and other various projects. Hosted with Vercel.
