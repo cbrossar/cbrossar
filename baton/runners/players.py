@@ -20,9 +20,10 @@ class PlayerStatus(Enum):
     DOUBTFUL = "d"
     SUSPENDED = "s"
     UNAVAILABLE = "u"
+    NOT_IN_SQUAD = "n"
 
     def __str__(self):
-        return self.name.capitalize()
+        return self.name.capitalize().replace("_", " ")
 
 
 def run_update_players():

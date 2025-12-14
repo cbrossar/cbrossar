@@ -17,11 +17,12 @@ COPY pyproject.toml uv.lock ./
 COPY . .
 
 # Install dependencies and project using uv lock file for reproducible builds
-RUN uv sync --system --frozen --no-dev
+RUN uv sync --frozen --no-dev
 
 # Set environment variables
 ENV PORT=8080
 ENV PYTHONPATH=/app
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Run the application
 CMD ["python", "app.py"] 
