@@ -1,12 +1,11 @@
-from langchain.tools import tool
 import ast
 import operator
 import re
+from crewai.tools import tool
 
-class CalculatorTools():
 
-    @tool("Make a calculation")
-    def calculate(operation):
+@tool("Make a calculation")
+def calculate(operation: str) -> str:
         """Useful to perform any mathematical calculations, 
         like sum, minus, multiplication, division, etc.
         The input to this tool should be a mathematical 
@@ -62,3 +61,7 @@ class CalculatorTools():
             return f"Error: {str(e)}"
         except Exception as e:
             return "Error: Invalid mathematical expression"
+
+
+class CalculatorTools():
+    calculate = calculate

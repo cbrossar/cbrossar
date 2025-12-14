@@ -2,13 +2,11 @@ import json
 import os
 
 import requests
-from langchain.tools import tool
+from crewai.tools import tool
 
 
-class SearchTools():
-
-  @tool("Search the internet")
-  def search_internet(query):
+@tool("Search the internet")
+def search_internet(query: str) -> str:
     """Useful to search the internet
     about a a given topic and return relevant results"""
     top_result_to_return = 4
@@ -35,3 +33,7 @@ class SearchTools():
           next
 
       return '\n'.join(string)
+
+
+class SearchTools():
+    search_internet = search_internet

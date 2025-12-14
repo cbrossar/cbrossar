@@ -2,15 +2,13 @@ import json
 import os
 
 import requests
-from crewai import Agent, Task
-from langchain.tools import tool
+from crewai import Agent, Task, Crew
+from crewai.tools import tool
 from unstructured.partition.html import partition_html
 
 
-class BrowserTools():
-
-  @tool("Scrape website content")
-  def scrape_and_summarize_website(website):
+@tool("Scrape website content")
+def scrape_and_summarize_website(website: str) -> str:
     """Useful to scrape and summarize a website content"""
     url = f"https://chrome.browserless.io/content?token={os.environ['BROWSERLESS_API_KEY']}"
     payload = json.dumps({"url": website})
@@ -27,12 +25,19 @@ class BrowserTools():
           'Do amazing researches and summaries based on the content you are working with',
           backstory=
           "You're a Principal Researcher at a big company and you need to do a research about a given topic.",
-          allow_delegation=False)
+          allow_delegation=False,
+          verbose=False)
       task = Task(
           agent=agent,
           description=
-          f'Analyze and summarize the content bellow, make sure to include the most relevant information in the summary, return only the summary nothing else.\n\nCONTENT\n----------\n{chunk}'
+          f'Analyze and summarize the content bellow, make sure to include the most relevant information in the summary, return only the summary nothing else.\n\nCONTENT\n----------\n{chunk}',
+          expected_output="A concise summary of the most relevant information from the content"
       )
-      summary = task.execute()
-      summaries.append(summary)
+      crew = Crew(agents=[agent], tasks=[task], verbose=False)
+      result = crew.kickoff()
+      summaries.append(str(result))
     return "\n\n".join(summaries)
+
+
+class BrowserTools():
+    scrape_and_summarize_website = scrape_and_summarize_website
