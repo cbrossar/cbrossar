@@ -1,14 +1,11 @@
 import os
-from pathlib import Path
 from dotenv import load_dotenv
 import uvicorn
 import db
 from fastapi import FastAPI
 from routes import router
 
-env_path = Path(__file__).parent / ".env"
-if env_path.exists():
-    load_dotenv(env_path)
+load_dotenv()
 
 app = FastAPI()
 app.include_router(router)
