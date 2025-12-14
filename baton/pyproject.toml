@@ -1,3 +1,63 @@
+[project]
+name = "baton"
+version = "0.1.0"
+description = ""
+requires-python = ">=3.9"
+dependencies = [
+    "annotated-types==0.7.0",
+    "anyio==3.7.1",
+    "beautifulsoup4==4.13.4",
+    "certifi==2025.8.3",
+    "charset-normalizer==3.4.1",
+    "click==8.1.8",
+    "exceptiongroup==1.2.2",
+    "fastapi>=0.112.0",
+    "feedparser==6.0.11",
+    "filelock==3.19.1",
+    "h11==0.16.0",
+    "idna==3.10",
+    "inflect==7.5.0",
+    "loguru==0.7.3",
+    "lxml==6.0.0",
+    "more-itertools==10.7.0",
+    "packaging==25.0",
+    "praw==7.8.1",
+    "prawcore==2.4.0",
+    "psycopg2-binary==2.9.10",
+    "pydantic>=2.12.0",
+    "pydantic_core>=2.40.0",
+    "PySocks==1.7.1",
+    "requests==2.32.3",
+    "sgmllib3k==1.0.0",
+    "sniffio==1.3.1",
+    "snscrape==0.7.0.20230622",
+    "soupsieve==2.7",
+    "SQLAlchemy>=2.0.40",
+    "starlette>=0.37.2",
+    "tomli==2.2.1",
+    "typeguard==4.4.2",
+    "typing-inspection>=0.4.2",
+    "typing_extensions>=4.14.1",
+    "update-checker==0.18.0",
+    "urllib3==2.4.0",
+    "uvicorn>=0.30.0",
+    "websocket-client==1.8.0",
+    "google-cloud-storage==2.14.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black==24.2.0",
+    "flake8==7.0.0",
+    "mccabe==0.7.0",
+    "mypy_extensions==1.1.0",
+    "pathspec==0.12.1",
+    "platformdirs==4.3.8",
+    "pycodestyle==2.11.1",
+    "pyflakes==3.2.0",
+    "sqlacodegen==3.0.0",
+]
+
 [tool.black]
 line-length = 88
 target-version = ['py39']

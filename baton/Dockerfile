@@ -7,9 +7,14 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first to leverage Docker cache
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install uv
+RUN pip install --no-cache-dir uv
+
+# Copy project configuration first to leverage Docker cache
+COPY pyproject.toml ./
+
+# Install dependencies using uv (much faster than pip)
+RUN uv pip install --system .
 
 # Copy the rest of the application
 COPY . .

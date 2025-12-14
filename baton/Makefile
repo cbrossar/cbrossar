@@ -1,10 +1,10 @@
 python = venv/bin/python
 
 init:
-	python3 -m venv venv
+	uv venv venv
 
 install:
-	$(python) -m pip install -r requirements.txt
+	uv pip install --python $(python) -e .
 
 run:
 	$(python) app.py
