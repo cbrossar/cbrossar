@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
@@ -10,14 +10,14 @@ RUN apt-get update && apt-get install -y \
 # Install uv
 RUN pip install --no-cache-dir uv
 
-# Copy project configuration first to leverage Docker cache
-COPY pyproject.toml ./
-
-# Install dependencies using uv (much faster than pip)
-RUN uv pip install --system .
+# Copy project configuration and lock file first to leverage Docker cache
+COPY pyproject.toml uv.lock ./
 
 # Copy the rest of the application
 COPY . .
+
+# Install dependencies and project using uv lock file for reproducible builds
+RUN uv sync --system --frozen --no-dev
 
 # Set environment variables
 ENV PORT=8080

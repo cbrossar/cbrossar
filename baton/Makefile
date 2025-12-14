@@ -1,10 +1,7 @@
 python = venv/bin/python
 
-init:
-	uv venv venv
-
 install:
-	uv pip install --python $(python) -e .
+	uv sync --active
 
 run:
 	$(python) app.py
