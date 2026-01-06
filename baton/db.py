@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import NullPool
 from logger import logger
 import os
 
@@ -10,11 +11,11 @@ if not DATABASE_URL:
 
 engine = create_engine(
     DATABASE_URL,
-    pool_size=5,
-    max_overflow=10,
-    pool_pre_ping=True,
-    pool_recycle=3600,
-    connect_args={"connect_timeout": 10, "application_name": "baton_app"},
+    poolclass=NullPool,
+    connect_args={
+        "connect_timeout": 10,
+        "application_name": "baton_app",
+    },
 )
 
 try:

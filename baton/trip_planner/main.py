@@ -68,10 +68,10 @@ class TripCrew:
 if __name__ == "__main__":
   print("## Welcome to Trip Planner Crew")
   print('-------------------------------')
-  location = "California"
-  cities = "Rome, Venice, Florence"
-  date_range = "2026-01-01 to 2026-01-07"
-  interests = "History, Art, Food"
+  location = "San Francisco"
+  cities = "Jackson Hole, Wyoming"
+  date_range = "2026-03-05 to 2026-03-09"
+  interests = "Skiing, Western Bars, Restaurants, Bachelor Party Activities"
   
   trip_crew = TripCrew(location, cities, date_range, interests)
   result = trip_crew.run()
