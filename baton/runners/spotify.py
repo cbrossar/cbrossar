@@ -7,6 +7,7 @@ from models import SpotifyReleases, MusicbrainzReleases
 from db import Session
 from utils.telegram import send_telegram_message, Channel
 import random
+import time
 
 CLIENT_ID = "baac07f1249a49cca7a9d39a92bf25e9"
 CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -297,19 +298,26 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
             "offset": offset,
         }
 
-        try:
-            response = requests.get(
-                f"{base_url}release-group", params=params, headers=headers
-            )
-            response.raise_for_status()
-            data = response.json()
-        except Exception as e:
-            logger.error(
-                f"Error getting musicbrainz upcoming release groups for artist {artist_name}: {e}"
-            )
-            break
+        for i in range(3):
+            try:
+                response = requests.get(
+                    f"{base_url}release-group",
+                    params=params,
+                    headers=headers,
+                    timeout=10,
+                )
+                response.raise_for_status()
+                data = response.json()
+                release_groups = data.get("release-groups", [])
+                break
+            except Exception as e:
+                if i == 2:
+                    logger.error(
+                        f"Error getting musicbrainz upcoming release groups for artist {artist_name}: {e}"
+                    )
+                    raise
+                time.sleep(2 ** (i + 1))
 
-        release_groups = data.get("release-groups", [])
         if not release_groups:
             break
 

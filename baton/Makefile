@@ -39,7 +39,7 @@ deploy:
 		--platform managed \
 		--region us-central1 \
 		--allow-unauthenticated \
-		--timeout 300 \
+		--timeout 2000 \
 		--memory 512Mi \
 		--cpu 1 \
 		--min-instances 0 \
