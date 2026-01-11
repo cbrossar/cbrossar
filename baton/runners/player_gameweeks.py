@@ -1,8 +1,10 @@
+from collections import defaultdict
+from datetime import datetime
+
 from db import Session
 from logger import logger
 from models import FantasyPlayers, FantasyPlayerGameweeks
 from utils.fpl import get_current_season, get_fpl_general_info, get_fpl_player
-from datetime import datetime
 
 
 def run_player_gameweeks():
@@ -29,11 +31,8 @@ def run_player_gameweeks():
 
 def store_fpl_player_gameweeks(data, season):
     fpl_player_types = [1, 2, 3, 4]
-    players_fdr_5_updated = []
     player_gameweeks_to_add = []
-
-    # Get all players from the database
-    with Session() as session:
+    with Session.begin() as session:
         players = (
             session.query(FantasyPlayers)
             .filter(
@@ -42,77 +41,79 @@ def store_fpl_player_gameweeks(data, season):
             )
             .all()
         )
-
-    for player in players:
-
-        fpl_player = get_fpl_player(player.fpl_id)
-        if fpl_player is None:
-            logger.error(f"Failed to fetch FPL data for player {player.second_name}")
-            continue
-
-        gameweeks = fetch_player_gameweeks(player.id, season.id)
-
-        completed_gameweeks = {
-            (gameweek.round, gameweek.fixture, gameweek.opponent_team): gameweek
-            for gameweek in gameweeks
-        }
-
-        # sum fixture difficulty for next 5 fixtures
-        player.fdr_5 = sum(f["difficulty"] for f in fpl_player["fixtures"][:5])
-        players_fdr_5_updated.append(player)
-
-        fpl_player_gameweek_history = fpl_player["history"]
-
-        for fpl_player_gameweek in fpl_player_gameweek_history:
-            gameweek_key = (
-                fpl_player_gameweek["round"],
-                fpl_player_gameweek["fixture"],
-                fpl_player_gameweek["opponent_team"],
+        player_ids = [player.id for player in players]
+        existing_gameweeks = (
+            session.query(FantasyPlayerGameweeks)
+            .filter(
+                FantasyPlayerGameweeks.season_id == season.id,
+                FantasyPlayerGameweeks.player_id.in_(player_ids),
             )
+            .all()
+        )
 
-            # if the gameweek is already in the database, check if the total points are different
-            if gameweek_key in completed_gameweeks:
-                if (
-                    fpl_player_gameweek["total_points"]
-                    == completed_gameweeks[gameweek_key].total_points
-                ):
-                    continue
-                with Session() as session:
+        completed_gameweeks_by_player = defaultdict(dict)
+        for gameweek in existing_gameweeks:
+            completed_gameweeks_by_player[gameweek.player_id][
+                (gameweek.round, gameweek.fixture, gameweek.opponent_team)
+            ] = gameweek
+
+        for player in players:
+            fpl_player = get_fpl_player(player.fpl_id)
+            if fpl_player is None:
+                logger.error(
+                    f"Failed to fetch FPL data for player {player.second_name}"
+                )
+                continue
+
+            completed_gameweeks = completed_gameweeks_by_player.get(player.id, {})
+
+            # sum fixture difficulty for next 5 fixtures
+            player.fdr_5 = sum(f["difficulty"] for f in fpl_player["fixtures"][:5])
+
+            fpl_player_gameweek_history = fpl_player["history"]
+
+            for fpl_player_gameweek in fpl_player_gameweek_history:
+                gameweek_key = (
+                    fpl_player_gameweek["round"],
+                    fpl_player_gameweek["fixture"],
+                    fpl_player_gameweek["opponent_team"],
+                )
+
+                # if the gameweek is already in the database, check if the total points are different
+                existing_gameweek = completed_gameweeks.get(gameweek_key)
+                if existing_gameweek is not None:
+                    if (
+                        fpl_player_gameweek["total_points"]
+                        == existing_gameweek.total_points
+                    ):
+                        continue
                     logger.info(
                         f"Deleting gameweek {gameweek_key} for player {player.first_name} {player.second_name}"
                     )
-                    session.delete(completed_gameweeks[gameweek_key])
-                    session.commit()
+                    session.delete(existing_gameweek)
 
-            player_gameweek = FantasyPlayerGameweeks(
-                player_id=player.id,
-                season_id=season.id,
-                round=fpl_player_gameweek["round"],
-                fixture=fpl_player_gameweek["fixture"],
-                opponent_team=fpl_player_gameweek["opponent_team"],
-                total_points=fpl_player_gameweek["total_points"],
-                minutes=fpl_player_gameweek["minutes"],
-                goals_scored=fpl_player_gameweek["goals_scored"],
-                assists=fpl_player_gameweek["assists"],
-                clean_sheets=fpl_player_gameweek["clean_sheets"],
-                bonus=fpl_player_gameweek["bonus"],
-                expected_goals=fpl_player_gameweek["expected_goals"],
-                expected_assists=fpl_player_gameweek["expected_assists"],
-                transfers_in=fpl_player_gameweek["transfers_in"],
-                transfers_out=fpl_player_gameweek["transfers_out"],
-            )
-            player_gameweeks_to_add.append(player_gameweek)
+                player_gameweek = FantasyPlayerGameweeks(
+                    player_id=player.id,
+                    season_id=season.id,
+                    round=fpl_player_gameweek["round"],
+                    fixture=fpl_player_gameweek["fixture"],
+                    opponent_team=fpl_player_gameweek["opponent_team"],
+                    total_points=fpl_player_gameweek["total_points"],
+                    minutes=fpl_player_gameweek["minutes"],
+                    goals_scored=fpl_player_gameweek["goals_scored"],
+                    assists=fpl_player_gameweek["assists"],
+                    clean_sheets=fpl_player_gameweek["clean_sheets"],
+                    bonus=fpl_player_gameweek["bonus"],
+                    expected_goals=fpl_player_gameweek["expected_goals"],
+                    expected_assists=fpl_player_gameweek["expected_assists"],
+                    transfers_in=fpl_player_gameweek["transfers_in"],
+                    transfers_out=fpl_player_gameweek["transfers_out"],
+                )
+                player_gameweeks_to_add.append(player_gameweek)
 
-    # Bulk insert all gameweeks at once
-    if player_gameweeks_to_add:
-        with Session.begin() as session:
+        if player_gameweeks_to_add:
             logger.info(f"Adding {len(player_gameweeks_to_add)} player gameweeks")
             session.bulk_save_objects(player_gameweeks_to_add)
-
-    if players_fdr_5_updated:
-        with Session.begin() as session:
-            logger.info(f"Updating {len(players_fdr_5_updated)} player FDR5")
-            session.bulk_save_objects(players_fdr_5_updated)
 
 
 def fetch_player(player_id):
