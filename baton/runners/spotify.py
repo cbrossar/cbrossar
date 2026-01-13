@@ -313,10 +313,11 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
             except Exception as e:
                 if i == 2:
                     logger.error(
-                        f"Error getting musicbrainz upcoming release groups for artist {artist_name}: {e}"
+                        f"Error getting musicbrainz upcoming release groups for artist {artist_name}, attempt {i + 1}: {e}"
                     )
                     raise
-                time.sleep(2 ** (i + 1))
+                logger.warning(f"Error getting musicbrainz upcoming release groups for artist {artist_name}, sleeping for {2 ** (i + 3)} seconds")
+                time.sleep(2 ** (i + 3))
 
         if not release_groups:
             break
