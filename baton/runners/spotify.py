@@ -291,6 +291,7 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
     offset = 0
 
     while True:
+        time.sleep(1)
         params = {
             "query": f'artist:"{artist_name}"',
             "fmt": "json",
