@@ -184,6 +184,6 @@ export interface MusicbrainzRelease {
     release_date: string;
     primary_type: string;
     artist_name: string;
-    image_url: string;
+    image_url: string | null;
     created: string;
 }
