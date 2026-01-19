@@ -18,7 +18,6 @@ dependencies = [
     "h11==0.16.0",
     "idna==3.10",
     "inflect==7.5.0",
-    "loguru==0.7.3",
     "lxml==6.0.0",
     "more-itertools==10.7.0",
     "packaging==25.0",

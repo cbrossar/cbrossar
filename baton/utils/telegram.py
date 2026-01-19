@@ -1,6 +1,6 @@
 import os
 import requests
-from loguru import logger
+from logger import logger
 from enum import Enum
 from typing import Union
 import html
