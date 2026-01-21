@@ -317,8 +317,8 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                         f"Musicbrainz Error: fetching upcoming release groups for artist {artist_name}, attempt {i + 1}: {e}"
                     )
                     raise
-                logger.warning(f"Musicbrainz Warning: fetching upcoming release groups for artist {artist_name}, sleeping for {10 * (i + 1)} seconds")
-                time.sleep(10 * (i + 1))
+                logger.warning(f"Musicbrainz Warning: fetching upcoming release groups for artist {artist_name}, sleeping for {20 * (i + 1)} seconds")
+                time.sleep(20 * (i + 1))
 
         if not release_groups:
             break
