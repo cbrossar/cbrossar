@@ -277,7 +277,7 @@ def get_cover_art_url(release_id: str) -> Optional[str]:
 
 def get_musicbrainz_upcoming_release_groups(artist_name: str):
     base_url = "https://musicbrainz.org/ws/2/"
-    headers = {"User-Agent": "cbrossar/1.0 ( cole.brossart@gmail.com )"}
+    headers = {"User-Agent": "baton/1.0 ( cole.brossart@gmail.com )"}
 
     today = datetime.date.today()
     existing_release_ids = set()
@@ -316,9 +316,9 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                     logger.error(
                         f"Musicbrainz Error: fetching upcoming release groups for artist {artist_name}, attempt {i + 1}: {e}"
                     )
-                    raise
-                logger.warning(f"Musicbrainz Warning: fetching upcoming release groups for artist {artist_name}, sleeping for {20 * (i + 1)} seconds")
-                time.sleep(20 * (i + 1))
+                    break
+                logger.warning(f"Musicbrainz Warning: fetching upcoming release groups for artist {artist_name}, sleeping for {40 * (i + 1)} seconds")
+                time.sleep(40 * (i + 1))
 
         if not release_groups:
             break
