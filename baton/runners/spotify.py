@@ -308,8 +308,6 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                     timeout=10,
                 )
                 response.raise_for_status()
-                data = response.json()
-                release_groups = data.get("release-groups", [])
                 break
             except Exception as e:
                 if i == 2:
@@ -317,11 +315,14 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
                         f"Musicbrainz Error: fetching upcoming release groups for artist {artist_name}, attempt {i + 1}: {e}"
                     )
                     break
-                logger.warning(f"Musicbrainz Warning: fetching upcoming release groups for artist {artist_name}, sleeping for {40 * (i + 1)} seconds")
-                time.sleep(40 * (i + 1))
+                logger.warning(f"Musicbrainz Warning: fetching upcoming release groups for artist {artist_name}, sleeping for {60 * (i + 1)} seconds")
+                time.sleep(60 * (i + 1))
 
-        if not release_groups:
+        if not response:
             break
+
+        data = response.json()
+        release_groups = data.get("release-groups", [])
 
         for rg in release_groups:
             if rg.get("id") in existing_release_ids:
