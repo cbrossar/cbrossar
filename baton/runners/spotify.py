@@ -299,6 +299,7 @@ def get_musicbrainz_upcoming_release_groups(artist_name: str):
             "offset": offset,
         }
 
+        response = None
         for i in range(3):
             try:
                 response = requests.get(
