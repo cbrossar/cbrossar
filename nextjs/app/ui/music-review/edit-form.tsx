@@ -247,6 +247,13 @@ export default function EditMusicReviewForm({
                             Current file: {fileName}
                         </p>
                     )}
+                    {musicReview.image_url && (
+                        <input
+                            type="hidden"
+                            name="image_url"
+                            value={musicReview.image_url}
+                        />
+                    )}
                     <div
                         id="image_file-error"
                         aria-live="polite"
