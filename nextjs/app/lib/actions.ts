@@ -21,38 +21,51 @@ const BaseFormSchema = z.object({
     review: z.string(),
     name: z.string(),
     spotify_album_id: z.string(),
-    image_file: z.union([z.instanceof(File), z.literal(""), z.null()]).optional(),
+    image_file: z
+        .union([z.instanceof(File), z.literal(""), z.null()])
+        .optional(),
     image_url: z.string().optional(),
 });
 
-const CreateMusicReview = BaseFormSchema.omit({ id: true, spotify_album_id: true }).refine((data) => {
-    // At least one of image_file or image_url must be provided
-    return data.image_file || data.image_url;
-}, {
-    message: "Either image_file or image_url must be provided",
-    path: ["image_file", "image_url"],
-});
+const CreateMusicReview = BaseFormSchema.omit({
+    id: true,
+    spotify_album_id: true,
+}).refine(
+    (data) => {
+        // At least one of image_file or image_url must be provided
+        return data.image_file || data.image_url;
+    },
+    {
+        message: "Either image_file or image_url must be provided",
+        path: ["image_file", "image_url"],
+    },
+);
 
-const UpdateMusicReview = BaseFormSchema.omit({ id: true }).refine((data) => {
-    // At least one of image_file or image_url must be provided
-    return data.image_file || data.image_url;
-}, {
-    message: "Either image_file or image_url must be provided",
-    path: ["image_file", "image_url"],
-});
+const UpdateMusicReview = BaseFormSchema.omit({ id: true }).refine(
+    (data) => {
+        // At least one of image_file or image_url must be provided
+        return data.image_file || data.image_url;
+    },
+    {
+        message: "Either image_file or image_url must be provided",
+        path: ["image_file", "image_url"],
+    },
+);
 
-export type State = {
-    errors?: {
-        album?: string[];
-        artist?: string[];
-        rating?: string[];
-        review?: string[];
-        name?: string[];
-        image_file?: string[];
-        image_url?: string[];
-    };
-    message: string;
-} | undefined;
+export type State =
+    | {
+          errors?: {
+              album?: string[];
+              artist?: string[];
+              rating?: string[];
+              review?: string[];
+              name?: string[];
+              image_file?: string[];
+              image_url?: string[];
+          };
+          message: string;
+      }
+    | undefined;
 
 export async function createMusicReview(prevState: State, formData: FormData) {
     const validatedFields = CreateMusicReview.safeParse({
@@ -88,7 +101,7 @@ export async function createMusicReview(prevState: State, formData: FormData) {
                 message: "Image Upload Failed. Failed to Create Music Review.",
             };
         }
-        
+
         final_image_url = uploaded_url;
     }
 
@@ -184,7 +197,7 @@ export async function updateMusicReview(
                 message: "Image Upload Failed. Failed to Update Music Review.",
             };
         }
-        
+
         final_image_url = uploaded_url;
     }
 

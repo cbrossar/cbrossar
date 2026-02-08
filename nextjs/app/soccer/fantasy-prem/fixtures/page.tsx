@@ -25,6 +25,11 @@ export default async function Page({
     };
 }) {
     const currentSeason = (await fetchCurrentFantasySeason()) as FantasySeason;
+
+    if (!currentSeason) {
+        throw new Error("No current fantasy season found.");
+    }
+
     const teams = (await fetchFantasyTeams(
         currentSeason.id.toString(),
     )) as FantasyTeam[];
@@ -35,7 +40,7 @@ export default async function Page({
     // Find the first gameweek that is not finished
     const defaultStartGameweek =
         fixtures
-            .filter((fixture) => !fixture.finished)
+            .filter((fixture) => !fixture.finished && fixture.event !== null)
             .sort((a, b) => a.event - b.event)[0]?.event || 1;
 
     const defaultEndGameweek = Math.min(defaultStartGameweek + 3, 38);

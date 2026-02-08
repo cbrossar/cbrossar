@@ -30,10 +30,18 @@ export default async function Page({ searchParams }: PageProps) {
         <div className="min-h-screen bg-white p-2">
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row gap-8">
-                    <LatestReleases 
-                        releases={filteredReleases} 
-                        className={musicbrainzReleases.length === 0 ? "lg:w-full lg:pr-0" : ""}
-                        gridClassName={musicbrainzReleases.length === 0 ? "lg:grid-cols-4" : ""}
+                    <LatestReleases
+                        releases={filteredReleases}
+                        className={
+                            musicbrainzReleases.length === 0
+                                ? "lg:w-full lg:pr-0"
+                                : ""
+                        }
+                        gridClassName={
+                            musicbrainzReleases.length === 0
+                                ? "lg:grid-cols-4"
+                                : ""
+                        }
                     />
                     {musicbrainzReleases.length > 0 && (
                         <UpcomingReleases releases={musicbrainzReleases} />

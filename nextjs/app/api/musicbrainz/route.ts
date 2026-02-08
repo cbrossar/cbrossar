@@ -88,7 +88,6 @@ export async function GET(request: NextRequest) {
                     return artist.country || artist.beginArea;
                 });
 
-
             return NextResponse.json({ artists });
         } else {
             // Search for release groups (full albums, not singles)

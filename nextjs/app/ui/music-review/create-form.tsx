@@ -109,20 +109,22 @@ export default function Form() {
                             !album.secondaryTypes ||
                             album.secondaryTypes.length === 0,
                     );
-                    
+
                     // Sort by reverse release date (newest first)
-                    const sortedAlbums = mainAlbums.sort((a: AlbumSearchResult, b: AlbumSearchResult) => {
-                        // Handle albums without dates - put them at the end
-                        if (!a.date && !b.date) return 0;
-                        if (!a.date) return 1;
-                        if (!b.date) return -1;
-                        
-                        // Parse dates and compare (newest first)
-                        const dateA = new Date(a.date);
-                        const dateB = new Date(b.date);
-                        return dateB.getTime() - dateA.getTime();
-                    });
-                    
+                    const sortedAlbums = mainAlbums.sort(
+                        (a: AlbumSearchResult, b: AlbumSearchResult) => {
+                            // Handle albums without dates - put them at the end
+                            if (!a.date && !b.date) return 0;
+                            if (!a.date) return 1;
+                            if (!b.date) return -1;
+
+                            // Parse dates and compare (newest first)
+                            const dateA = new Date(a.date);
+                            const dateB = new Date(b.date);
+                            return dateB.getTime() - dateA.getTime();
+                        },
+                    );
+
                     setAlbumSearchResults(sortedAlbums);
                     // Don't show dropdown automatically - let user click album field
                 }
@@ -141,7 +143,9 @@ export default function Form() {
     const fetchCoverArt = useCallback(async (releaseId: string) => {
         setIsLoadingCoverArt(true);
         try {
-            const response = await fetch(`/api/musicbrainz/cover-art?releaseGroupId=${encodeURIComponent(releaseId)}`);
+            const response = await fetch(
+                `/api/musicbrainz/cover-art?releaseGroupId=${encodeURIComponent(releaseId)}`,
+            );
             if (response.ok) {
                 const data = await response.json();
                 setCoverArtUrl(data.coverArtUrl);
@@ -173,17 +177,19 @@ export default function Form() {
 
             // Sort albums by reverse release date (newest first)
             const sortAlbums = (albums: AlbumSearchResult[]) => {
-                return albums.sort((a: AlbumSearchResult, b: AlbumSearchResult) => {
-                    // Handle albums without dates - put them at the end
-                    if (!a.date && !b.date) return 0;
-                    if (!a.date) return 1;
-                    if (!b.date) return -1;
-                    
-                    // Parse dates and compare (newest first)
-                    const dateA = new Date(a.date);
-                    const dateB = new Date(b.date);
-                    return dateB.getTime() - dateA.getTime();
-                });
+                return albums.sort(
+                    (a: AlbumSearchResult, b: AlbumSearchResult) => {
+                        // Handle albums without dates - put them at the end
+                        if (!a.date && !b.date) return 0;
+                        if (!a.date) return 1;
+                        if (!b.date) return -1;
+
+                        // Parse dates and compare (newest first)
+                        const dateA = new Date(a.date);
+                        const dateB = new Date(b.date);
+                        return dateB.getTime() - dateA.getTime();
+                    },
+                );
             };
 
             if (!query.trim()) {
@@ -299,7 +305,9 @@ export default function Form() {
             setUseCoverArt(false);
             setAllArtistAlbums([]);
             setAlbumSearchResults([]);
-            const albumInput = document.getElementById("album") as HTMLInputElement;
+            const albumInput = document.getElementById(
+                "album",
+            ) as HTMLInputElement;
             if (albumInput) {
                 albumInput.value = "";
             }
@@ -332,20 +340,22 @@ export default function Form() {
         switch (e.key) {
             case "ArrowDown":
                 e.preventDefault();
-                setHighlightedArtistIndex(prev => 
-                    prev < artistSearchResults.length - 1 ? prev + 1 : 0
+                setHighlightedArtistIndex((prev) =>
+                    prev < artistSearchResults.length - 1 ? prev + 1 : 0,
                 );
                 break;
             case "ArrowUp":
                 e.preventDefault();
-                setHighlightedArtistIndex(prev => 
-                    prev > 0 ? prev - 1 : artistSearchResults.length - 1
+                setHighlightedArtistIndex((prev) =>
+                    prev > 0 ? prev - 1 : artistSearchResults.length - 1,
                 );
                 break;
             case "Enter":
                 e.preventDefault();
                 if (highlightedArtistIndex >= 0) {
-                    handleArtistSelect(artistSearchResults[highlightedArtistIndex]);
+                    handleArtistSelect(
+                        artistSearchResults[highlightedArtistIndex],
+                    );
                 }
                 break;
             case "Escape":
@@ -361,20 +371,22 @@ export default function Form() {
         switch (e.key) {
             case "ArrowDown":
                 e.preventDefault();
-                setHighlightedAlbumIndex(prev => 
-                    prev < albumSearchResults.length - 1 ? prev + 1 : 0
+                setHighlightedAlbumIndex((prev) =>
+                    prev < albumSearchResults.length - 1 ? prev + 1 : 0,
                 );
                 break;
             case "ArrowUp":
                 e.preventDefault();
-                setHighlightedAlbumIndex(prev => 
-                    prev > 0 ? prev - 1 : albumSearchResults.length - 1
+                setHighlightedAlbumIndex((prev) =>
+                    prev > 0 ? prev - 1 : albumSearchResults.length - 1,
                 );
                 break;
             case "Enter":
                 e.preventDefault();
                 if (highlightedAlbumIndex >= 0) {
-                    handleAlbumSelect(albumSearchResults[highlightedAlbumIndex]);
+                    handleAlbumSelect(
+                        albumSearchResults[highlightedAlbumIndex],
+                    );
                 }
                 break;
             case "Escape":
@@ -388,7 +400,7 @@ export default function Form() {
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Element;
-            if (!target.closest('[data-dropdown]')) {
+            if (!target.closest("[data-dropdown]")) {
                 setShowArtistDropdown(false);
                 setShowAlbumDropdown(false);
                 setHighlightedArtistIndex(-1);
@@ -397,7 +409,8 @@ export default function Form() {
         };
 
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     return (
@@ -429,27 +442,41 @@ export default function Form() {
                                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
                             </div>
                         )}
-                        {showArtistDropdown && artistSearchResults.length > 0 && (
-                            <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
-                                {artistSearchResults.map((artist, index) => (
-                                    <div
-                                        key={artist.id}
-                                        className={`cursor-pointer px-3 py-2 text-sm hover:bg-gray-100 ${
-                                            index === highlightedArtistIndex ? "bg-blue-100" : ""
-                                        }`}
-                                        onClick={() => handleArtistSelect(artist)}
-                                    >
-                                        <div className="font-medium">{artist.name}</div>
-                                        {artist.beginArea && (
-                                            <div className="text-gray-600">{artist.beginArea}</div>
-                                        )}
-                                        {artist.country && (
-                                            <div className="text-xs text-gray-500">{artist.country}</div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        {showArtistDropdown &&
+                            artistSearchResults.length > 0 && (
+                                <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+                                    {artistSearchResults.map(
+                                        (artist, index) => (
+                                            <div
+                                                key={artist.id}
+                                                className={`cursor-pointer px-3 py-2 text-sm hover:bg-gray-100 ${
+                                                    index ===
+                                                    highlightedArtistIndex
+                                                        ? "bg-blue-100"
+                                                        : ""
+                                                }`}
+                                                onClick={() =>
+                                                    handleArtistSelect(artist)
+                                                }
+                                            >
+                                                <div className="font-medium">
+                                                    {artist.name}
+                                                </div>
+                                                {artist.beginArea && (
+                                                    <div className="text-gray-600">
+                                                        {artist.beginArea}
+                                                    </div>
+                                                )}
+                                                {artist.country && (
+                                                    <div className="text-xs text-gray-500">
+                                                        {artist.country}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ),
+                                    )}
+                                </div>
+                            )}
                     </div>
                     <div
                         id="artist-error"
@@ -505,14 +532,22 @@ export default function Form() {
                                     <div
                                         key={album.id}
                                         className={`cursor-pointer px-3 py-2 text-sm hover:bg-gray-100 ${
-                                            index === highlightedAlbumIndex ? "bg-blue-100" : ""
+                                            index === highlightedAlbumIndex
+                                                ? "bg-blue-100"
+                                                : ""
                                         }`}
                                         onClick={() => handleAlbumSelect(album)}
                                     >
-                                        <div className="font-medium">{album.album}</div>
-                                        <div className="text-gray-600">{album.artist}</div>
+                                        <div className="font-medium">
+                                            {album.album}
+                                        </div>
+                                        <div className="text-gray-600">
+                                            {album.artist}
+                                        </div>
                                         {album.date && (
-                                            <div className="text-xs text-gray-500">{album.date}</div>
+                                            <div className="text-xs text-gray-500">
+                                                {album.date}
+                                            </div>
                                         )}
                                     </div>
                                 ))}
@@ -538,9 +573,10 @@ export default function Form() {
                         Album Cover Image
                     </label>
                     <p className="mb-3 text-sm text-gray-600">
-                        Upload an image file or use the cover art found from MusicBrainz.
+                        Upload an image file or use the cover art found from
+                        MusicBrainz.
                     </p>
-                    
+
                     {/* Cover art preview */}
                     {coverArtUrl && (
                         <div className="mb-4">
@@ -560,10 +596,14 @@ export default function Form() {
                                         <input
                                             type="checkbox"
                                             checked={useCoverArt}
-                                            onChange={(e) => setUseCoverArt(e.target.checked)}
+                                            onChange={(e) =>
+                                                setUseCoverArt(e.target.checked)
+                                            }
                                             className="rounded border-gray-300"
                                         />
-                                        <span className="text-sm">Use this cover art</span>
+                                        <span className="text-sm">
+                                            Use this cover art
+                                        </span>
                                     </label>
                                 </div>
                             </div>
@@ -579,24 +619,27 @@ export default function Form() {
                     )}
 
                     {/* File upload - only show if not using MusicBrainz cover art */}
-                    {selectedAlbum && !isLoadingCoverArt && !(coverArtUrl && useCoverArt) && (
-                        <div>
-                            <label
-                                htmlFor="image_file"
-                                className="mb-2 block text-sm font-medium"
-                            >
-                                Upload Image File (Square - 1:1 Aspect Ratio)
-                            </label>
-                            <input
-                                id="image_file"
-                                name="image_file"
-                                type="file"
-                                accept="image/*"
-                                className="block w-full rounded-md border border-gray-200 p-2 text-sm"
-                                aria-describedby="image_file-error"
-                            />
-                        </div>
-                    )}
+                    {selectedAlbum &&
+                        !isLoadingCoverArt &&
+                        !(coverArtUrl && useCoverArt) && (
+                            <div>
+                                <label
+                                    htmlFor="image_file"
+                                    className="mb-2 block text-sm font-medium"
+                                >
+                                    Upload Image File (Square - 1:1 Aspect
+                                    Ratio)
+                                </label>
+                                <input
+                                    id="image_file"
+                                    name="image_file"
+                                    type="file"
+                                    accept="image/*"
+                                    className="block w-full rounded-md border border-gray-200 p-2 text-sm"
+                                    aria-describedby="image_file-error"
+                                />
+                            </div>
+                        )}
 
                     {/* Hidden field for cover art URL */}
                     {coverArtUrl && useCoverArt && (
@@ -606,7 +649,7 @@ export default function Form() {
                             value={coverArtUrl}
                         />
                     )}
-                    
+
                     <div
                         id="image_file-error"
                         aria-live="polite"

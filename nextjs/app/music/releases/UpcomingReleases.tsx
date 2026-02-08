@@ -30,7 +30,9 @@ export default function UpcomingReleases({ releases }: UpcomingReleasesProps) {
                                     />
                                 ) : (
                                     <div className="w-full h-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                                        <span className="text-gray-400 text-xs">No Image</span>
+                                        <span className="text-gray-400 text-xs">
+                                            No Image
+                                        </span>
                                     </div>
                                 )}
                             </div>
