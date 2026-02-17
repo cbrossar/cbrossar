@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import styles from "./styles.module.css";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -51,7 +52,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div className={styles.review}>
                 <div className={styles.reviewText}>
-                    <ReactMarkdown>{review.review}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkBreaks]}>{review.review}</ReactMarkdown>
                 </div>
                 <p className={styles.reviewedBy}>
                     - {review.name}, {reviewDate}
