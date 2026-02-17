@@ -2,6 +2,7 @@ import { fetchMusicReviewById } from "@/app/data/music";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import styles from "./styles.module.css";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -49,14 +50,9 @@ export default async function Page({ params }: { params: { id: string } }) {
                 </div>
             </div>
             <div className={styles.review}>
-                <p className={styles.reviewText}>
-                    {review.review.split("\n").map((line, index) => (
-                        <span key={index}>
-                            {line}
-                            <br />
-                        </span>
-                    ))}
-                </p>
+                <div className={styles.reviewText}>
+                    <ReactMarkdown>{review.review}</ReactMarkdown>
+                </div>
                 <p className={styles.reviewedBy}>
                     - {review.name}, {reviewDate}
                 </p>

@@ -132,7 +132,7 @@ export default function EditMusicReviewForm({
                         htmlFor="review"
                         className="mb-2 block text-sm font-medium"
                     >
-                        Review
+                        Review (Markdown supported)
                     </label>
                     <textarea
                         id="review"
