@@ -100,9 +100,9 @@ export async function GET(request: NextRequest) {
                     ? `arid:${artistId}`
                     : `artist:${artist}`;
                 if (query) {
-                    searchQuery = `${artistFilter} AND releasegroup:${query} AND primarytype:Album`;
+                    searchQuery = `${artistFilter} AND releasegroup:${query} AND primarytype:Album NOT secondarytype:Live NOT secondarytype:Compilation NOT secondarytype:Bootleg NOT secondarytype:Remix`;
                 } else {
-                    searchQuery = `${artistFilter} AND primarytype:Album`;
+                    searchQuery = `${artistFilter} AND primarytype:Album NOT secondarytype:Live NOT secondarytype:Compilation NOT secondarytype:Bootleg NOT secondarytype:Remix`;
                 }
             } else {
                 searchQuery = `releasegroup:${query} AND primarytype:Album`;

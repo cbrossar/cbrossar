@@ -516,6 +516,11 @@ export default function Form() {
                             value={albumQuery}
                             onChange={handleAlbumInputChange}
                             onKeyDown={handleAlbumKeyDown}
+                            onFocus={() => {
+                                if (selectedArtist) {
+                                    filterAlbums(albumQuery);
+                                }
+                            }}
                             className="block w-full rounded-md border border-gray-200 p-2 text-sm"
                             aria-describedby="album-error"
                             autoComplete="off"
