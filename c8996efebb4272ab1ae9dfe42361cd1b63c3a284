@@ -1,0 +1,25 @@
+nextjs/app/api/musicbrainz/route.ts
+  b1d1cda2321214b0 103,105
+nextjs/app/ui/music-review/create-form.tsx
+  b1d1cda2321214b0 519-523
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.17",
+  "base_commit_sha": "c8996efebb4272ab1ae9dfe42361cd1b63c3a284",
+  "prompts": {
+    "b1d1cda2321214b0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "85d16fdc-c326-4011-a701-564840f72920",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Cole Brossart <cole.brossart@scribehow.com>",
+      "messages": [],
+      "total_additions": 7,
+      "total_deletions": 2,
+      "accepted_lines": 7,
+      "overriden_lines": 0
+    }
+  }
+}
