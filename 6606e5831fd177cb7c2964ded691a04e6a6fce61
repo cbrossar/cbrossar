@@ -1,0 +1,23 @@
+baton/README.md
+  dd3a18541f800596 20,28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.17",
+  "base_commit_sha": "6606e5831fd177cb7c2964ded691a04e6a6fce61",
+  "prompts": {
+    "dd3a18541f800596": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "357cca57-2848-46b2-b293-8f9d440cf08b",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Cole Brossart <cole.brossart@scribehow.com>",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 2,
+      "accepted_lines": 2,
+      "overriden_lines": 0
+    }
+  }
+}
