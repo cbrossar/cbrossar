@@ -1,0 +1,23 @@
+baton/db.py
+  c71b7f0444b9228a 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.17",
+  "base_commit_sha": "34e5ada7417833c824b036c7740b5ceb73182a83",
+  "prompts": {
+    "c71b7f0444b9228a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ee770bec-e883-41f0-9faf-b634c37c1fb6",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Cole Brossart <cole.brossart@scribehow.com>",
+      "messages": [],
+      "total_additions": 4,
+      "total_deletions": 1,
+      "accepted_lines": 2,
+      "overriden_lines": 1
+    }
+  }
+}
