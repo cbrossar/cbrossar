@@ -1,4 +1,4 @@
-python = venv/bin/python
+python = .venv/bin/python
 
 install:
 	uv sync --active

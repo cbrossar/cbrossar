@@ -1,7 +1,17 @@
-1. Setup on EC2 with cron jobs
-2. Move to AWS Lambda or GCP compute free tier
-3. Try GCP Cloud Run (Bingo)
+# Setup
 
+```bash
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source $HOME/.local/bin/env
+
+# Install dependencies and activate virtual environment
+uv sync
+source .venv/bin/activate
+
+# Run the app
+make run
+```
 
 # Spotify Refresh Token
 
@@ -16,4 +26,4 @@ Run in shell to get refresh token.
 curl -X POST "https://accounts.spotify.com/api/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=authorization_code&code=CODE&redirect_uri=http://localhost:8888/callback&client_id=baac07f1249a49cca7a9d39a92bf25e9&client_secret=CLIENT_SECRET"
-  ```
+```
