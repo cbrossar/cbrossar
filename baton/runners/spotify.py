@@ -8,6 +8,9 @@ from db import Session
 from utils.telegram import send_telegram_message, Channel
 import random
 import time
+from dotenv import load_dotenv
+
+load_dotenv()
 
 CLIENT_ID = "baac07f1249a49cca7a9d39a92bf25e9"
 CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -21,6 +24,7 @@ def run_spotify():
     token = get_access_token()
     artists = get_followed_artists(token)
     logger.info(f"Found {len(artists)} followed artists")
+
 
     new_releases = get_new_releases(artists, token)
     logger.info(f"Found {len(new_releases)} new releases")
