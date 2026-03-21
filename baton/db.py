@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
+from dotenv import load_dotenv
 from logger import logger
 import os
+
+load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
