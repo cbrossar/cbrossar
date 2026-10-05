@@ -9,6 +9,9 @@ from utils import edges, kalshi, odds_api
 
 SPORTS = ("nfl", "epl")
 WINDOW_HOURS = 24
+# Kalshi prices outside this range mean the game is effectively decided; book odds
+# from The Odds API lag behind at that point, so edges there are noise.
+MIN_PRICE, MAX_PRICE = 0.03, 0.97
 
 with open(os.path.join(os.path.dirname(__file__), "..", "utils", "edge_teams.json")) as f:
     TEAMS = json.load(f)  # Kalshi yes_sub_title -> The Odds API team name
@@ -75,6 +78,10 @@ def run_edge_scan():
     }
 
 
+def _tradable(price):
+    return price is not None and MIN_PRICE <= price <= MAX_PRICE
+
+
 def _parse_time(s):
     return datetime.fromisoformat(s.replace("Z", "+00:00"))
 
@@ -130,15 +137,17 @@ def _outcome_rows(sport, game, markets, fee_multiplier, now):
         m = markets[name]
         bid, ask, no_ask = m["bid"], m["ask"], m["no_ask"]
         mid = (bid + ask) / 2 if bid and ask else None
+        if not _tradable(mid):
+            mid = None
         fd = prices.get(name)
         p_fair = fair.get(name)
 
         edge_b_yes = edge_b_no = None
         if p_fair is not None:
-            if ask:
+            if _tradable(ask):
                 fee = edges.kalshi_fee_per_contract(ask, fee_multiplier)
                 edge_b_yes = edges.edge_b(p_fair, ask, fee)
-            if no_ask:
+            if _tradable(no_ask):
                 # Buying NO pays out when this outcome does NOT happen
                 fee = edges.kalshi_fee_per_contract(no_ask, fee_multiplier)
                 edge_b_no = edges.edge_b(1 - p_fair, no_ask, fee)
