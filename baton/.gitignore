@@ -13,3 +13,4 @@ lambda_deployment.zip
 scripts/db-backups/
 
 baton.egg-info/
+.venv
