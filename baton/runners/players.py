@@ -76,9 +76,11 @@ def update_players(data, season, teams, players, my_team):
 
         if element["id"] in my_player_ids:
 
+            existing_player = player_map.get(element["id"])
             player_status_became_unavailable = (
-                element["status"] != PlayerStatus.AVAILABLE.value
-                and player_map[element["id"]].status == PlayerStatus.AVAILABLE.value
+                existing_player is not None
+                and element["status"] != PlayerStatus.AVAILABLE.value
+                and existing_player.status == PlayerStatus.AVAILABLE.value
             )
             if player_status_became_unavailable:
                 send_telegram_message(

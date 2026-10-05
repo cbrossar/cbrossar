@@ -126,12 +126,12 @@ async def beat_hourly():
 @router.post("/beat-daily")
 async def beat_daily():
     try:
-        success = run_update_players()
-        if not success:
-            raise HTTPException(status_code=500, detail="Players update failed")
         success = run_teams()
         if not success:
             raise HTTPException(status_code=500, detail="Teams update failed")
+        success = run_update_players()
+        if not success:
+            raise HTTPException(status_code=500, detail="Players update failed")
         success = run_fixtures()
         if not success:
             raise HTTPException(status_code=500, detail="Fixtures update failed")

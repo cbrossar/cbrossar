@@ -1,5 +1,5 @@
 from utils.fpl import get_fpl_general_info, get_current_season
-from models import FantasyTeams
+from models import FantasySeasons, FantasyTeams
 from db import Session
 from logger import logger
 
@@ -32,11 +32,25 @@ def run_teams():
                     f"Updated team {team_name} with FPL ID {team_id}, id {team.id}"
                 )
             else:
+                # reuse the logo from the most recent season this team appeared in
+                previous_team = (
+                    session.query(FantasyTeams)
+                    .join(FantasySeasons, FantasyTeams.season_id == FantasySeasons.id)
+                    .filter(
+                        FantasyTeams.name == team_name,
+                        FantasyTeams.image_filename.isnot(None),
+                    )
+                    .order_by(FantasySeasons.start_date.desc())
+                    .first()
+                )
                 team = FantasyTeams(
                     name=team_name,
                     fpl_id=team_id,
                     season_id=season.id,
+                    image_filename=previous_team.image_filename if previous_team else None,
                 )
+                if previous_team is None:
+                    logger.warning(f"No logo found for new team {team_name}")
                 logger.info(
                     f"Created team {team_name} with FPL ID {team_id}, id {team.id}"
                 )

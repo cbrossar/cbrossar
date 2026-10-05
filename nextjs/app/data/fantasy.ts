@@ -38,6 +38,7 @@ export async function upsertFantasyPlayer(player: FantasyPlayer) {
 }
 
 export async function fetchFantasyMaxStats() {
+    noStore();
     try {
         const response = await sql`
             SELECT
@@ -102,6 +103,7 @@ export async function fetchFantasyPlayers() {
 }
 
 export async function fetchFantasyPositions() {
+    noStore();
     try {
         const response = await sql`
             SELECT * FROM fantasy_positions
@@ -114,6 +116,7 @@ export async function fetchFantasyPositions() {
 }
 
 export async function fetchFantasyTeams(seasonId: string) {
+    noStore();
     try {
         const response = await sql`
             SELECT * FROM fantasy_teams WHERE season_id = ${seasonId}
@@ -440,6 +443,7 @@ export async function updateFantasyPlayerData(
 }
 
 export async function fetchFantasyPremLatestUpdatedTime() {
+    noStore();
     try {
         const response = await sql`
             SELECT updated FROM fantasy_prem_updates ORDER BY updated DESC LIMIT 1
@@ -452,6 +456,7 @@ export async function fetchFantasyPremLatestUpdatedTime() {
 }
 
 export async function fetchFantasySeasons() {
+    noStore();
     try {
         const response = await sql`
             SELECT * FROM fantasy_seasons ORDER BY name DESC
@@ -464,6 +469,7 @@ export async function fetchFantasySeasons() {
 }
 
 export async function fetchFantasySeasonsByName(season: string) {
+    noStore();
     try {
         const response = await sql`
             SELECT * FROM fantasy_seasons WHERE name = ${season}
@@ -476,6 +482,7 @@ export async function fetchFantasySeasonsByName(season: string) {
 }
 
 export async function fetchCurrentFantasySeason() {
+    noStore();
     try {
         const response = await sql`
             SELECT * FROM fantasy_seasons WHERE start_date <= CURRENT_DATE AND end_date >= CURRENT_DATE
@@ -488,6 +495,7 @@ export async function fetchCurrentFantasySeason() {
 }
 
 export async function fetchFantasyFixtures(seasonId: string) {
+    noStore();
     try {
         const response = await sql`
             SELECT * FROM fantasy_prem_fixtures WHERE season_id = ${seasonId}
