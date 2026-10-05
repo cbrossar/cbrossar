@@ -48,18 +48,18 @@ export default function Page() {
                 <div className={styles.caption}>Fantasy Prem</div>
             </div>
             <div className={styles.item}>
-                <Link href="bethpage">
+                <Link href="edges">
                     <div className={styles.imageWrapper}>
                         <Image
-                            src="/code/bethpage.jpeg"
+                            src="/code/edges.png"
                             width={200}
                             height={200}
-                            alt="bethpage"
+                            alt="Edge Scanner"
                             priority
                         />
                     </div>
                 </Link>
-                <div className={styles.caption}>Bethpage</div>
+                <div className={styles.caption}>Edge Scanner</div>
             </div>
             <div className={styles.item}>
                 <Link href="ltrain">

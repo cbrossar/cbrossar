@@ -9,6 +9,7 @@ from runners.teams import run_teams
 from runners.fixtures import run_fixtures
 from runners.spotify import run_spotify
 from runners.backup_db import run_backup_db
+from runners.edge_scan import run_edge_scan
 from utils.telegram import send_telegram_message, Channel
 from logger import logger
 
@@ -91,6 +92,18 @@ async def spotify():
         logger.error(f"Spotify error: {str(e)}")
         send_telegram_message(
             f"🚨 <b>Baton: Spotify update failed</b>\n\n{str(e)}", Channel.BATON
+        )
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/edge-scan")
+async def edge_scan():
+    try:
+        return run_edge_scan()
+    except Exception as e:
+        logger.error(f"Edge scan error: {str(e)}")
+        send_telegram_message(
+            f"🚨 <b>Baton: Edge scan failed</b>\n\n{str(e)}", Channel.BATON
         )
         raise HTTPException(status_code=500, detail=str(e))
 

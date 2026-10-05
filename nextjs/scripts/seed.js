@@ -10,7 +10,8 @@ async function main() {
     // await seedFantasyPremierLeagueStats(client);
     // await seedRedditSpurs(client);
     // await seedSpotify(client);
-    await seedMusicBrainz(client);
+    // await seedMusicBrainz(client);
+    await seedEdgeScanner(client);
     await client.end();
 }
 
@@ -566,6 +567,49 @@ async function seedMusicBrainz(client) {
         };
     } catch (error) {
         console.error("Error seeding musicbrainz:", error);
+        throw error;
+    }
+}
+
+async function seedEdgeScanner(client) {
+    try {
+        await client.sql`
+            CREATE TABLE IF NOT EXISTS edge_scans (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                created TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+                credits_used INT NOT NULL,
+                credits_remaining INT,
+                games INT NOT NULL
+            );
+        `;
+        console.log(`Created "edge_scans" table`);
+
+        await client.sql`
+            CREATE TABLE IF NOT EXISTS edge_outcomes (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                scan_id UUID NOT NULL REFERENCES edge_scans(id) ON DELETE CASCADE,
+                sport VARCHAR(10) NOT NULL,
+                game VARCHAR(255) NOT NULL,
+                team VARCHAR(255) NOT NULL,
+                commence_time TIMESTAMPTZ NOT NULL,
+                is_live BOOLEAN NOT NULL,
+                kalshi_ticker VARCHAR(255) NOT NULL,
+                kalshi_bid DOUBLE PRECISION,
+                kalshi_ask DOUBLE PRECISION,
+                kalshi_no_ask DOUBLE PRECISION,
+                fd_odds INT,
+                fd_fair_prob DOUBLE PRECISION,
+                edge_a DOUBLE PRECISION,
+                edge_b_yes DOUBLE PRECISION,
+                edge_b_no DOUBLE PRECISION
+            );
+        `;
+        await client.sql`
+            CREATE INDEX IF NOT EXISTS edge_outcomes_scan_id_idx ON edge_outcomes(scan_id);
+        `;
+        console.log(`Created "edge_outcomes" table`);
+    } catch (error) {
+        console.error("Error seeding edge scanner tables:", error);
         throw error;
     }
 }

@@ -27,6 +27,9 @@ teams:
 fixtures:
 	$(python) -c "from runners.fixtures import run_fixtures; run_fixtures()"
 
+edge-scan:
+	$(python) -c "from runners.edge_scan import run_edge_scan; print(run_edge_scan())"
+
 update-db-models:
 	$(python) -m sqlacodegen ${DATABASE_URL} --outfile models.py
 
@@ -49,7 +52,8 @@ deploy:
 		--set-secrets=TELEGRAM_BOT_TOKEN=telegram-baton-bot-token:latest \
 		--set-secrets=REDDIT_CLIENT_SECRET=reddit-client-secret:latest \
 		--set-secrets=SPOTIFY_CLIENT_SECRET=spotify-client-secret:latest \
-		--set-secrets=SPOTIFY_REFRESH_TOKEN=spotify-refresh-token:latest
+		--set-secrets=SPOTIFY_REFRESH_TOKEN=spotify-refresh-token:latest \
+		--set-secrets=ODDS_API_KEY=odds-api-key:latest
 
 build-and-deploy:
 	$(MAKE) build
