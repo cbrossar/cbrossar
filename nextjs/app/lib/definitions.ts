@@ -187,3 +187,30 @@ export interface MusicbrainzRelease {
     image_url: string | null;
     created: string;
 }
+
+export interface EdgeScan {
+    id: string;
+    created: Date;
+    credits_used: number;
+    credits_remaining: number | null;
+    games: number;
+}
+
+export interface EdgeOutcome {
+    id: string;
+    scan_id: string;
+    sport: string;
+    game: string;
+    team: string;
+    commence_time: Date;
+    is_live: boolean;
+    kalshi_ticker: string;
+    kalshi_bid: number | null;
+    kalshi_ask: number | null;
+    kalshi_no_ask: number | null;
+    fd_odds: number | null;
+    fd_fair_prob: number | null;
+    edge_a: number | null;
+    edge_b_yes: number | null;
+    edge_b_no: number | null;
+}

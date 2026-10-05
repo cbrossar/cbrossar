@@ -39,6 +39,61 @@ class DoomsdayAttempt(Base):
     )
 
 
+class EdgeScans(Base):
+    __tablename__ = "edge_scans"
+    __table_args__ = (PrimaryKeyConstraint("id", name="edge_scans_pkey"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
+    )
+    credits_used: Mapped[int] = mapped_column(Integer)
+    games: Mapped[int] = mapped_column(Integer)
+    created: Mapped[Optional[datetime.datetime]] = mapped_column(
+        DateTime(True), server_default=text("CURRENT_TIMESTAMP")
+    )
+    credits_remaining: Mapped[Optional[int]] = mapped_column(Integer)
+
+    edge_outcomes: Mapped[List["EdgeOutcomes"]] = relationship(
+        "EdgeOutcomes", back_populates="scan"
+    )
+
+
+class EdgeOutcomes(Base):
+    __tablename__ = "edge_outcomes"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["scan_id"],
+            ["edge_scans.id"],
+            ondelete="CASCADE",
+            name="edge_outcomes_scan_id_fkey",
+        ),
+        PrimaryKeyConstraint("id", name="edge_outcomes_pkey"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid, primary_key=True, server_default=text("uuid_generate_v4()")
+    )
+    scan_id: Mapped[uuid.UUID] = mapped_column(Uuid)
+    sport: Mapped[str] = mapped_column(String(10))
+    game: Mapped[str] = mapped_column(String(255))
+    team: Mapped[str] = mapped_column(String(255))
+    commence_time: Mapped[datetime.datetime] = mapped_column(DateTime(True))
+    is_live: Mapped[bool] = mapped_column(Boolean)
+    kalshi_ticker: Mapped[str] = mapped_column(String(255))
+    kalshi_bid: Mapped[Optional[float]] = mapped_column(Double(53))
+    kalshi_ask: Mapped[Optional[float]] = mapped_column(Double(53))
+    kalshi_no_ask: Mapped[Optional[float]] = mapped_column(Double(53))
+    fd_odds: Mapped[Optional[int]] = mapped_column(Integer)
+    fd_fair_prob: Mapped[Optional[float]] = mapped_column(Double(53))
+    edge_a: Mapped[Optional[float]] = mapped_column(Double(53))
+    edge_b_yes: Mapped[Optional[float]] = mapped_column(Double(53))
+    edge_b_no: Mapped[Optional[float]] = mapped_column(Double(53))
+
+    scan: Mapped["EdgeScans"] = relationship(
+        "EdgeScans", back_populates="edge_outcomes"
+    )
+
+
 class FantasyPositions(Base):
     __tablename__ = "fantasy_positions"
     __table_args__ = (PrimaryKeyConstraint("id", name="fantasy_positions_pkey"),)
