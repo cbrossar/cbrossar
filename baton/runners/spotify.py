@@ -53,7 +53,14 @@ def get_new_releases(artists, token):
 
         get_musicbrainz_upcoming_release_groups(artist["name"])
 
-        releases = get_artist_releases(token, artist["id"])
+        # Skip an artist whose releases can't be fetched; the next run will pick
+        # them up since we look back 30 days
+        try:
+            releases = get_artist_releases(token, artist["id"])
+        except Exception as e:
+            logger.warning(f"Skipping {artist['name']}: failed to fetch releases: {e}")
+            continue
+
         for r in releases:
             if r["id"] in existing_release_ids or r["id"] in new_release_ids:
                 continue
@@ -155,20 +162,38 @@ def get_artist_releases(access_token, artist_id, limit=5):
         "limit": limit,
         "market": "US",  # optional, helps filter region-available releases
     }
-    resp = requests.get(url, headers=headers, params=params)
-    resp.raise_for_status()
-    new_albums = resp.json()["items"]
+    new_albums = spotify_get_with_retry(url, headers, params)["items"]
 
     params = {
         "include_groups": "single",
         "limit": limit,
         "market": "US",  # optional, helps filter region-available releases
     }
-    resp = requests.get(url, headers=headers, params=params)
-    resp.raise_for_status()
-    new_singles = resp.json()["items"]
+    new_singles = spotify_get_with_retry(url, headers, params)["items"]
 
     return new_albums + new_singles
+
+
+# GET with retries on transient Spotify errors (5xx, 429, timeouts)
+def spotify_get_with_retry(url, headers, params, attempts=3):
+    for i in range(attempts):
+        try:
+            resp = requests.get(url, headers=headers, params=params, timeout=10)
+            if resp.status_code == 429 or resp.status_code >= 500:
+                resp.raise_for_status()
+            break
+        except (requests.HTTPError, requests.ConnectionError, requests.Timeout) as e:
+            if i == attempts - 1:
+                raise
+            if e.response is not None and e.response.status_code == 429:
+                delay = int(e.response.headers.get("Retry-After", 5))
+            else:
+                delay = 2 * (i + 1)
+            logger.warning(f"Spotify request failed ({e}), retrying in {delay} seconds")
+            time.sleep(delay)
+
+    resp.raise_for_status()
+    return resp.json()
 
 
 def add_releases_to_playlist(releases, access_token):
