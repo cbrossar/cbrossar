@@ -129,38 +129,15 @@ export async function fetchFantasyTeams(seasonId: string) {
     }
 }
 
-export async function fetchPlayersByPosition(
-    numGoalies: number,
-    numDefenders: number,
-    numMidfielders: number,
-    numForwards: number,
-    seasonId: string,
-    pointsView: string,
-) {
+export async function fetchPlayersByPosition(seasonId: string) {
     noStore();
     try {
-        // One round trip: rank players within each position by the requested
-        // points column, then keep the top N for each position.
         const response = await sql`
-            SELECT * FROM (
-                SELECT *, ROW_NUMBER() OVER (
-                    PARTITION BY element_type
-                    ORDER BY CASE ${pointsView}
-                        WHEN 'current' THEN event_points
-                        WHEN 'last5' THEN last_5_points
-                        ELSE total_points
-                    END DESC
-                ) AS position_rank
-                FROM fantasy_players
-                WHERE season_id = ${seasonId}
-            ) ranked
-            WHERE position_rank <= CASE element_type
-                WHEN 1 THEN ${numGoalies}::int
-                WHEN 2 THEN ${numDefenders}::int
-                WHEN 3 THEN ${numMidfielders}::int
-                WHEN 4 THEN ${numForwards}::int
-                ELSE 0
-            END
+            SELECT id, first_name, second_name, team_id, element_type,
+                now_cost, cost_change_start, total_points, event_points,
+                last_5_points
+            FROM fantasy_players
+            WHERE season_id = ${seasonId}
         `;
 
         const players = response.rows as FantasyPlayer[];

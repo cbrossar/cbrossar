@@ -30,22 +30,10 @@ export default async function Page({
 
     const pointsView = searchParams?.pointsView || "last5";
 
-    const numGoalies = 4;
-    const numDefenders = 8;
-    const numMidfielders = 9;
-    const numForwards = 7;
-
     const currentSession = await fetchCurrentFantasySeason();
 
     const [playersByPosition, teams] = await Promise.all([
-        fetchPlayersByPosition(
-            numGoalies,
-            numDefenders,
-            numMidfielders,
-            numForwards,
-            currentSession.id.toString(),
-            pointsView,
-        ),
+        fetchPlayersByPosition(currentSession.id.toString()),
         fetchFantasyTeams(currentSession.id.toString()) as Promise<
             FantasyTeam[]
         >,
