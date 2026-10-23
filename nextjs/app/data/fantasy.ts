@@ -129,116 +129,46 @@ export async function fetchFantasyTeams(seasonId: string) {
     }
 }
 
-export async function fetchPlayersByPositionAll(
+export async function fetchPlayersByPosition(
     numGoalies: number,
     numDefenders: number,
     numMidfielders: number,
     numForwards: number,
     seasonId: string,
+    pointsView: string,
 ) {
     noStore();
     try {
-        const goalkeepers = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 1 AND season_id = ${seasonId} ORDER BY total_points DESC LIMIT ${numGoalies}
+        // One round trip: rank players within each position by the requested
+        // points column, then keep the top N for each position.
+        const response = await sql`
+            SELECT * FROM (
+                SELECT *, ROW_NUMBER() OVER (
+                    PARTITION BY element_type
+                    ORDER BY CASE ${pointsView}
+                        WHEN 'current' THEN event_points
+                        WHEN 'last5' THEN last_5_points
+                        ELSE total_points
+                    END DESC
+                ) AS position_rank
+                FROM fantasy_players
+                WHERE season_id = ${seasonId}
+            ) ranked
+            WHERE position_rank <= CASE element_type
+                WHEN 1 THEN ${numGoalies}::int
+                WHEN 2 THEN ${numDefenders}::int
+                WHEN 3 THEN ${numMidfielders}::int
+                WHEN 4 THEN ${numForwards}::int
+                ELSE 0
+            END
         `;
 
-        const defenders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 2 AND season_id = ${seasonId} ORDER BY total_points DESC LIMIT ${numDefenders}
-        `;
-
-        const midfielders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 3 AND season_id = ${seasonId} ORDER BY total_points DESC LIMIT ${numMidfielders}
-        `;
-
-        const forwards = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 4 AND season_id = ${seasonId} ORDER BY total_points DESC LIMIT ${numForwards}
-        `;
-
+        const players = response.rows as FantasyPlayer[];
         return {
-            1: goalkeepers.rows as FantasyPlayer[],
-            2: defenders.rows as FantasyPlayer[],
-            3: midfielders.rows as FantasyPlayer[],
-            4: forwards.rows as FantasyPlayer[],
-        };
-    } catch (error) {
-        console.error(
-            "Failed to fetch players by position. Database Error:",
-            error,
-        );
-        return null;
-    }
-}
-
-export async function fetchPlayersByPositionCurrent(
-    numGoalies: number,
-    numDefenders: number,
-    numMidfielders: number,
-    numForwards: number,
-    seasonId: string,
-) {
-    noStore();
-    try {
-        const goalkeepers = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 1 AND season_id = ${seasonId} ORDER BY event_points DESC LIMIT ${numGoalies}
-        `;
-
-        const defenders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 2 AND season_id = ${seasonId} ORDER BY event_points DESC LIMIT ${numDefenders}
-        `;
-
-        const midfielders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 3 AND season_id = ${seasonId} ORDER BY event_points DESC LIMIT ${numMidfielders}
-        `;
-
-        const forwards = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 4 AND season_id = ${seasonId} ORDER BY event_points DESC LIMIT ${numForwards}
-        `;
-
-        return {
-            1: goalkeepers.rows as FantasyPlayer[],
-            2: defenders.rows as FantasyPlayer[],
-            3: midfielders.rows as FantasyPlayer[],
-            4: forwards.rows as FantasyPlayer[],
-        };
-    } catch (error) {
-        console.error(
-            "Failed to fetch players by position. Database Error:",
-            error,
-        );
-        return null;
-    }
-}
-
-export async function fetchPlayersByPositionLast5(
-    numGoalies: number,
-    numDefenders: number,
-    numMidfielders: number,
-    numForwards: number,
-    seasonId: string,
-) {
-    noStore();
-    try {
-        const goalkeepers = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 1 AND season_id = ${seasonId} ORDER BY last_5_points DESC LIMIT ${numGoalies}
-        `;
-
-        const defenders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 2 AND season_id = ${seasonId} ORDER BY last_5_points DESC LIMIT ${numDefenders}
-        `;
-
-        const midfielders = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 3 AND season_id = ${seasonId} ORDER BY last_5_points DESC LIMIT ${numMidfielders}
-        `;
-
-        const forwards = await sql`
-            SELECT * FROM fantasy_players WHERE element_type = 4 AND season_id = ${seasonId} ORDER BY last_5_points DESC LIMIT ${numForwards}
-        `;
-
-        return {
-            1: goalkeepers.rows as FantasyPlayer[],
-            2: defenders.rows as FantasyPlayer[],
-            3: midfielders.rows as FantasyPlayer[],
-            4: forwards.rows as FantasyPlayer[],
+            1: players.filter((player) => player.element_type === 1),
+            2: players.filter((player) => player.element_type === 2),
+            3: players.filter((player) => player.element_type === 3),
+            4: players.filter((player) => player.element_type === 4),
         };
     } catch (error) {
         console.error(

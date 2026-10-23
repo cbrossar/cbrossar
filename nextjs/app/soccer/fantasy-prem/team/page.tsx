@@ -1,9 +1,7 @@
 import {
     fetchFantasyTeams,
     fetchCurrentFantasySeason,
-    fetchPlayersByPositionAll,
-    fetchPlayersByPositionCurrent,
-    fetchPlayersByPositionLast5,
+    fetchPlayersByPosition,
 } from "@/app/data/fantasy";
 import Link from "next/link";
 import Image from "next/image";
@@ -39,36 +37,19 @@ export default async function Page({
 
     const currentSession = await fetchCurrentFantasySeason();
 
-    const playersByPositionAll = await fetchPlayersByPositionAll(
-        numGoalies,
-        numDefenders,
-        numMidfielders,
-        numForwards,
-        currentSession.id.toString(),
-    );
-
-    const playersByPositionCurrent = await fetchPlayersByPositionCurrent(
-        numGoalies,
-        numDefenders,
-        numMidfielders,
-        numForwards,
-        currentSession.id.toString(),
-    );
-
-    const playersByPositionLast5 = await fetchPlayersByPositionLast5(
-        numGoalies,
-        numDefenders,
-        numMidfielders,
-        numForwards,
-        currentSession.id.toString(),
-    );
-
-    const playersByPosition =
-        pointsView === "current"
-            ? playersByPositionCurrent
-            : pointsView === "last5"
-              ? playersByPositionLast5
-              : playersByPositionAll;
+    const [playersByPosition, teams] = await Promise.all([
+        fetchPlayersByPosition(
+            numGoalies,
+            numDefenders,
+            numMidfielders,
+            numForwards,
+            currentSession.id.toString(),
+            pointsView,
+        ),
+        fetchFantasyTeams(currentSession.id.toString()) as Promise<
+            FantasyTeam[]
+        >,
+    ]);
 
     if (playersByPosition === null) {
         return (
@@ -100,10 +81,6 @@ export default async function Page({
     const forwards = optimalTeam.team.filter(
         (player) => player.element_type === 4,
     );
-
-    const teams = (await fetchFantasyTeams(
-        currentSession.id.toString(),
-    )) as FantasyTeam[];
 
     const teamsById = teams.reduce(
         (acc, team) => {
