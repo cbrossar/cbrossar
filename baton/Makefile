@@ -61,7 +61,7 @@ build-and-deploy:
 
 
 cleanup-images:
-	gcloud container images list-tags gcr.io/quixotic-geode-234622/baton --format='get(digest)' | while read digest; do \
+	gcloud container images list-tags gcr.io/quixotic-geode-234622/baton --filter='-tags:*' --format='get(digest)' | while read digest; do \
 		gcloud container images delete gcr.io/quixotic-geode-234622/baton@$$digest --quiet; \
 	done 
 
