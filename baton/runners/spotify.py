@@ -21,7 +21,7 @@ NEW_RELEASES_PLAYLIST_ID = "5JFQVM9ZFSd3OAKnmNEwg0"
 def run_spotify():
     logger.info("Running Spotify runner")
     start_time = datetime.datetime.now()
-    token = get_access_token()
+    token = SpotifyToken()
     artists = get_followed_artists(token)
     logger.info(f"Found {len(artists)} followed artists")
 
@@ -129,15 +129,36 @@ def get_access_token():
     return resp.json()["access_token"]
 
 
+# Access tokens last an hour and a run can take longer, so share one refreshable
+# token across the run
+class SpotifyToken:
+    def __init__(self):
+        self.refresh()
+
+    def refresh(self):
+        self.value = get_access_token()
+
+
+# Send a request with the current token, refreshing it once if it has expired
+def spotify_request(method, url, token, **kwargs):
+    headers = {"Authorization": f"Bearer {token.value}"}
+    resp = requests.request(method, url, headers=headers, **kwargs)
+    if resp.status_code == 401:
+        logger.info("Spotify access token expired, refreshing")
+        token.refresh()
+        headers = {"Authorization": f"Bearer {token.value}"}
+        resp = requests.request(method, url, headers=headers, **kwargs)
+    return resp
+
+
 # Get followed artists
-def get_followed_artists(access_token, limit=50):
+def get_followed_artists(token, limit=50):
     url = "https://api.spotify.com/v1/me/following"
-    headers = {"Authorization": f"Bearer {access_token}"}
     params = {"type": "artist", "limit": limit}
     artists = []
 
     while True:
-        resp = requests.get(url, headers=headers, params=params)
+        resp = spotify_request("GET", url, token, params=params)
         resp.raise_for_status()
         data = resp.json()
         items = data["artists"]["items"]
@@ -154,31 +175,30 @@ def get_followed_artists(access_token, limit=50):
 
 
 # Get recent albums/singles for an artist
-def get_artist_releases(access_token, artist_id, limit=5):
+def get_artist_releases(token, artist_id, limit=5):
     url = f"https://api.spotify.com/v1/artists/{artist_id}/albums"
-    headers = {"Authorization": f"Bearer {access_token}"}
     params = {
         "include_groups": "album",
         "limit": limit,
         "market": "US",  # optional, helps filter region-available releases
     }
-    new_albums = spotify_get_with_retry(url, headers, params)["items"]
+    new_albums = spotify_get_with_retry(url, token, params)["items"]
 
     params = {
         "include_groups": "single",
         "limit": limit,
         "market": "US",  # optional, helps filter region-available releases
     }
-    new_singles = spotify_get_with_retry(url, headers, params)["items"]
+    new_singles = spotify_get_with_retry(url, token, params)["items"]
 
     return new_albums + new_singles
 
 
 # GET with retries on transient Spotify errors (5xx, 429, timeouts)
-def spotify_get_with_retry(url, headers, params, attempts=3):
+def spotify_get_with_retry(url, token, params, attempts=3):
     for i in range(attempts):
         try:
-            resp = requests.get(url, headers=headers, params=params, timeout=10)
+            resp = spotify_request("GET", url, token, params=params, timeout=10)
             if resp.status_code == 429 or resp.status_code >= 500:
                 resp.raise_for_status()
             break
@@ -196,13 +216,12 @@ def spotify_get_with_retry(url, headers, params, attempts=3):
     return resp.json()
 
 
-def add_releases_to_playlist(releases, access_token):
+def add_releases_to_playlist(releases, token):
     """Add new releases to a personal Spotify playlist"""
 
     playlist_url = (
         f"https://api.spotify.com/v1/playlists/{NEW_RELEASES_PLAYLIST_ID}/tracks"
     )
-    headers = {"Authorization": f"Bearer {access_token}"}
 
     # Get track URIs from releases
     track_uris = []
@@ -210,7 +229,7 @@ def add_releases_to_playlist(releases, access_token):
         # For albums, we need to get the individual tracks
         if release.release_date_precision == "day":
             # This is a specific release date, get the tracks
-            tracks = get_album_tracks(access_token, release.id)
+            tracks = get_album_tracks(token, release.id)
             track_uris.extend([f"spotify:track:{track_id}" for track_id in tracks])
         else:
             # For year/month releases, we might want to skip or handle differently
@@ -226,7 +245,7 @@ def add_releases_to_playlist(releases, access_token):
         batch = track_uris[i : i + batch_size]
 
         payload = {"uris": batch}
-        resp = requests.post(playlist_url, headers=headers, json=payload)
+        resp = spotify_request("POST", playlist_url, token, json=payload)
 
         if resp.status_code == 201:
             logger.info(f"Added {len(batch)} tracks to playlist")
@@ -236,16 +255,15 @@ def add_releases_to_playlist(releases, access_token):
             )
 
 
-def get_album_tracks(access_token, album_id):
+def get_album_tracks(token, album_id):
     """Get all track IDs from an album"""
     url = f"https://api.spotify.com/v1/albums/{album_id}/tracks"
-    headers = {"Authorization": f"Bearer {access_token}"}
     params = {"limit": 50}  # Spotify's max for album tracks
 
     track_ids = []
 
     while True:
-        resp = requests.get(url, headers=headers, params=params)
+        resp = spotify_request("GET", url, token, params=params)
         resp.raise_for_status()
         data = resp.json()
 
